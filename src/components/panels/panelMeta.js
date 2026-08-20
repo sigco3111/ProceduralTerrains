@@ -20,13 +20,13 @@ export const PANEL_META = {
   water: { label: '물', title: '물', desc: 'Ocean surface, quality modes and volumetric settings.', icon: PANEL_ICONS.water },
   props: { label: '소품', title: '소품', desc: 'Biome-aware grass, flowers, rocks and trees.', icon: PANEL_ICONS.props },
   clouds: { label: '구름', title: '구름', desc: '볼류메트릭 구름 레이어.', icon: PANEL_ICONS.clouds },
-  visuals: { label: '비주얼', title: '비주얼', desc: 'Tile post effects, HDR sky and terrain surface polish.', icon: PANEL_ICONS.visuals, modes: ['studio'] },
+  visuals: { label: '비주얼', title: '비주얼', desc: '타일의 포스트 이펙트, HDR 하늘, 지형 표면 마감을 처리합니다.', icon: PANEL_ICONS.visuals, modes: ['studio'] },
   skybox: { label: '하늘', title: '하늘', desc: 'Sky environment, time of day and atmosphere.', icon: PANEL_ICONS.skybox },
   lighting: { label: '조명', title: '조명', desc: '태양, 대기 및 안개.', icon: PANEL_ICONS.lighting },
   export: { label: '내보내기', title: '내보내기', desc: '메시와 텍스처 내보내기.', icon: PANEL_ICONS.export },
-  performance: { label: '성능 우선', title: '성능 우선', desc: 'GPU, water, fog and cloud budgets.', icon: PANEL_ICONS.performance },
+  performance: { label: '성능 우선', title: '성능 우선', desc: 'GPU, 물, 안개, 구름 예산.', icon: PANEL_ICONS.performance },
   debug: { label: '디버그', title: '디버그', desc: '실시간 통계 및 진단.', icon: PANEL_ICONS.debug },
-  splines: { label: '스플라인', title: '스플라인', desc: 'Editable roads and rivers.', icon: PANEL_ICONS.splines, modes: ['studio'] },
+  splines: { label: '스플라인', title: '스플라인', desc: '편집 가능한 도로와 강입니다.', icon: PANEL_ICONS.splines, modes: ['studio'] },
   history: { label: '기록', title: '기록', desc: '제작자 체크포인트 및 동작.', icon: PANEL_ICONS.history },
 };
 

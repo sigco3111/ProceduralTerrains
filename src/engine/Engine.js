@@ -1599,8 +1599,8 @@ export class Engine {
       if (this.importedMaps.imagery) this._setImportState('imagery', { loading: false });
       if (!silent) {
         this.cb.onToast(imageryAnchor
-          ? `Loaded ${loc.name} + ${imageryStyle.shortLabel}`
-          : `Loaded ${loc.name} (height only — map texture failed)`);
+          ? `${loc.name} + ${imageryStyle.shortLabel} 불러옴`
+          : `${loc.name} 불러옴 (높이만 — 맵 텍스처 실패)`);
       }
 
       // Do not query the separately rate-limited OSM building service unless
@@ -1624,7 +1624,7 @@ export class Engine {
           }
         });
         const buildingCount = this._rebuildRealWorldBuildings({ force: true });
-        if (!silent && buildingCount) this.cb.onToast(`Loaded ${buildingCount} buildings`);
+        if (!silent && buildingCount) this.cb.onToast(`${buildingCount}개 건물 불러옴`);
         const skipped = Object.values(geoRef.buildingCells).some((patch) => patch?.skipped === 'area-too-large');
         if (!silent && skipped) this.cb.onToast('3D 건물 건너뜀: 선택한 영역이 공개 OSM 쿼리에 비해 너무 큽니다.');
       });
@@ -1693,7 +1693,7 @@ export class Engine {
     await this._syncRealWorldNeighborTiles({ silent: false });
     if (this.importedMaps.imagery && Object.keys(geo.imageryCells).length) {
       this._setImportState('imagery', { loading: false });
-      this.cb.onToast(`Map texture → ${style.shortLabel}`);
+      this.cb.onToast(`맵 텍스처 → ${style.shortLabel}`);
     } else {
       this.importedMaps.imagery = null;
       this._setImportState('imagery', { loading: false, error: `${style.shortLabel} tiles could not be loaded.` });
@@ -2520,13 +2520,13 @@ export class Engine {
     );
     this.planetStyle.applyToUniforms(this.uniforms);
     this._applyStudioFogFromStyle();
-    this.cb.onToast(`Planet: ${key}`);
+    this.cb.onToast(`행성: ${key}`);
   }
 
   applyPalettePresetByKey(key) {
     const style = this.planetStyle.applyPalettePreset(key);
     this._notifyPlanetStyle();
-    this.cb.onToast(`Palette: ${key}`);
+    this.cb.onToast(`팔레트: ${key}`);
     return style;
   }
 
@@ -2540,7 +2540,7 @@ export class Engine {
       false,
       Object.keys(params).some((k) => TERRAIN_FIELD_KEYS.has(k)),
     );
-    this.cb.onToast(`Noise: ${key}`);
+    this.cb.onToast(`노이즈: ${key}`);
   }
 
   /**
@@ -2550,7 +2550,7 @@ export class Engine {
    */
   applyNoiseStackPresetByKey(key) {
     const recipe = buildNoiseStackPresetRecipe(key);
-    if (!recipe) return Promise.resolve({ error: new Error(`Unknown noise stack preset: ${key}`) });
+    if (!recipe) return Promise.resolve({ error: new Error(`알 수 없는 노이즈 스택 프리셋: ${key}`) });
 
     const patch = recipe.terrainParams;
     const patchKeys = Object.keys(patch);
@@ -2583,7 +2583,7 @@ export class Engine {
       this._minimapDirtyAt = performance.now();
       this.minimap.requestRedraw();
       this._needsRender = true;
-      this.cb.onToast(`Noise stack: ${key}`);
+      this.cb.onToast(`노이즈 스택: ${key}`);
       return compileResult;
     });
   }
@@ -2593,7 +2593,7 @@ export class Engine {
     this.params.planetStyle = style;
     this._notifyPlanetStyle();
     const label = meta?.typeLabel ?? '절차적';
-    this.cb.onToast(`Planet generated: ${label}`);
+    this.cb.onToast(`행성 생성됨: ${label}`);
     return style;
   }
 
@@ -2617,7 +2617,7 @@ export class Engine {
     );
     this.planetStyle.applyToUniforms(this.uniforms);
     this._applyStudioFogFromStyle();
-    this.cb.onToast(`Random planet: ${style.planetPreset}`);
+    this.cb.onToast(`무작위 행성: ${style.planetPreset}`);
   }
 
   setPlanetStyleColor(key, rgb) {
@@ -3880,7 +3880,7 @@ export class Engine {
   _terrainBuildStatusText() {
     const b = this.board;
     if (!b?.targetChunkCount) return '지형 불러오는 중...';
-    return `Loading terrain ${b.activeChunkCount}/${b.targetChunkCount} chunks`;
+    return `지형 불러오는 중 ${b.activeChunkCount}/${b.targetChunkCount} 청크`;
   }
 
   _processTerrainBuildQueue(now = performance.now()) {
@@ -4704,7 +4704,7 @@ export class Engine {
           return;
         }
         if (waitMs >= timeoutMs) {
-          console.warn(`Shader compile wait timed out (${pending.size} material(s) still pending)`);
+          console.warn(`셰이더 컴파일 대기 시간 초과 (대기 중인 머티리얼 ${pending.size}개)`);
           resolve({
             ready: false,
             timedOut: true,
@@ -6550,7 +6550,7 @@ export class Engine {
       this.cb.onToast?.(out.backend === 'webgpu' ? '침식 베이크됨 (WebGPU 컴퓨트).' : '침식 베이크됨.');
       return true;
     } catch (err) {
-      this.cb.onToast?.(`Erosion failed: ${err?.message || err}`);
+      this.cb.onToast?.(`침식 실패: ${err?.message || err}`);
       return false;
     } finally {
       this._erosionBaking = false;
@@ -6996,9 +6996,9 @@ export class Engine {
   deleteSpline(id) { this.splineManager?.deleteSpline(id); }
   selectSpline(id) { this.splineManager?.selectSpline(id); }
   duplicateSpline(id) { this.splineManager?.duplicateSpline(id); }
-  setAnalysisMode(mode) { this.terrainAnalysis?.setMode(mode); this.projectHistory?.record('analysis', `Analysis: ${mode}`); }
+  setAnalysisMode(mode) { this.terrainAnalysis?.setMode(mode); this.projectHistory?.record('analysis', `분석: ${mode}`); }
   setAnalysisSettings(patch) { this.terrainAnalysis?.setSettings(patch); }
-  async createSnapshot(name) { const s = await this.projectHistory?.createSnapshot(name); if (s) this.cb.onToast(`Snapshot saved · ${s.name}`); return s; }
+  async createSnapshot(name) { const s = await this.projectHistory?.createSnapshot(name); if (s) this.cb.onToast(`스냅샷 저장됨 · ${s.name}`); return s; }
   restoreSnapshot(id) { return this.projectHistory?.restoreSnapshot(id); }
   restoreHistoryAction(id) { return this.projectHistory?.restoreAction(id); }
   deleteSnapshot(id) { this.projectHistory?.deleteSnapshot(id); }
@@ -9339,7 +9339,7 @@ export class Engine {
     this.params = this.waterSystem.applyPreset(presetKey);
     this.cb.onParams(this._paramsSnapshot());
     this._afterParamChange(false);
-    this.cb.onToast(`Water preset: ${presetKey}`);
+    this.cb.onToast(`물 프리셋: ${presetKey}`);
   }
 
   resetWaterSettings() {
@@ -9874,7 +9874,7 @@ export class Engine {
       this._tickBody();
     } catch (e) {
       if (!this._tickErrorLogged) {
-        console.error('Render tick error (recovering)', e);
+        console.error('렌더 틱 오류 (복구 중)', e);
         this._tickErrorLogged = true;
       }
     }

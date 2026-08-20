@@ -25,7 +25,7 @@ export default function SplinesPanel({ ctx }) {
   return <SidePanel title="스플라인" description="지형 경로를 그리고 다듬습니다." onClose={ctx.onClose}>
     <PanelTabs active={type} onChange={setType} tabs={[{ id: 'road', label: '도로' }, { id: 'river', label: '강' }]} />
     <div className={`spline-create-card${creating ? ' creating' : ''}`}>
-      <div className="spline-create-copy"><TypeIcon size={17} aria-hidden /><div><strong>{creating ? `Drawing ${meta.singular}` : `Create ${meta.singular}`}</strong><span>{creating ? `${state.draftPointCount} points placed · click terrain to add more` : 'Click terrain to add points'}</span></div></div>
+      <div className="spline-create-copy"><TypeIcon size={17} aria-hidden /><div><strong>{creating ? `${meta.singular} 그리는 중` : `${meta.singular} 만들기`}</strong><span>{creating ? `${state.draftPointCount} points placed · click terrain to add more` : '지형을 클릭하여 점 추가'}</span></div></div>
       {!creating && <button type="button" className="spline-create-btn" onClick={create} disabled={!!state.creatingType}><Plus size={15} aria-hidden />만들기</button>}
       {creating && <div className="spline-create-actions"><button type="button" className="spline-create-btn" onClick={ctx.onConfirmSplineCreation} disabled={state.draftPointCount < 2}>확인<kbd>Enter</kbd></button><button type="button" className="spline-cancel-btn" onClick={ctx.onCancelSplineCreation}>취소</button></div>}
     </div>

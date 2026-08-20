@@ -309,8 +309,8 @@ export default function PropsAssetLibrary({ value, onChange }) {
               <input type="color" value={selected.color} onChange={(event) => patchSelected({ color: event.target.value })} />
               <code>{selected.color.toUpperCase()}</code>
             </label>
-            <MiniSlider label="Mix weight" value={selected.density} min={0} max={2} step={0.05} onChange={(density) => patchSelected({ density })} />
-            <MiniSlider label="Overall scale" value={selected.scale} min={0.25} max={2.5} step={0.05} onChange={(scale) => patchSelected({ scale })} />
+            <MiniSlider label="믹스 가중치" value={selected.density} min={0} max={2} step={0.05} onChange={(density) => patchSelected({ density })} />
+            <MiniSlider label="전체 스케일" value={selected.scale} min={0.25} max={2.5} step={0.05} onChange={(scale) => patchSelected({ scale })} />
             <MiniSlider label="너비" value={selected.width} min={0.5} max={1.6} step={0.01} onChange={(width) => patchSelected({ width })} />
             <MiniSlider label="높이" value={selected.height} min={0.5} max={1.6} step={0.01} onChange={(height) => patchSelected({ height })} />
           </div>

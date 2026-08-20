@@ -145,7 +145,7 @@ export default function RealWorldMapPicker({
         signal: controller.signal,
         headers: { Accept: 'application/json' },
       });
-      if (!response.ok) throw new Error(`Search failed (${response.status})`);
+      if (!response.ok) throw new Error(`검색 실패 (${response.status})`);
       const payload = await response.json();
       const results = (Array.isArray(payload) ? payload : []).map((place) => ({
         id: String(place.place_id ?? `${place.lat}:${place.lon}`),
@@ -156,9 +156,9 @@ export default function RealWorldMapPicker({
       })).filter((place) => Number.isFinite(place.lat) && Number.isFinite(place.lon));
       geocodingCache.set(cacheKey, results);
       setSearchResults(results);
-      if (!results.length) setSearchError('No matching places found.');
+      if (!results.length) setSearchError('일치하는 장소가 없습니다.');
     } catch (error) {
-      if (error?.name !== '중단 오류') setSearchError('Place search is unavailable right now.');
+      if (error?.name !== '중단 오류') setSearchError('현재 장소 검색을 사용할 수 없습니다.');
     } finally {
       if (searchAbortRef.current === controller) {
         searchAbortRef.current = null;
@@ -340,7 +340,7 @@ export default function RealWorldMapPicker({
                     setSearchResults([]);
                     setSearchError('');
                   }}
-                  placeholder="Search city or place…"
+                  placeholder="도시 또는 장소 검색…"
                   aria-label="도시 또는 장소 검색"
                   autoComplete="off"
                   spellCheck={false}
@@ -390,14 +390,14 @@ export default function RealWorldMapPicker({
             </div>
 
             <SliderField
-              label="Area size"
+              label="영역 크기"
               value={spec.sizeKm}
               unit=" km"
               {...CUSTOM_AREA_LIMITS.sizeKm}
               onChange={(sizeKm) => update({ sizeKm })}
             />
             <SliderField
-              label="Terrain detail"
+              label="지형 디테일"
               value={spec.zoom}
               unit={` · z${info.zoom} effective`}
               {...CUSTOM_AREA_LIMITS.zoom}
@@ -405,7 +405,7 @@ export default function RealWorldMapPicker({
             />
 
             <div className="realworld-map-stats">
-              <Stat label="Selected area">{spec.sizeKm} × {spec.sizeKm} km</Stat>
+              <Stat label="선택 영역">{spec.sizeKm} × {spec.sizeKm} km</Stat>
               <Stat label="가져온 타일">{info.tilesX} × {info.tilesY}</Stat>
               <Stat label="출력 해상도">{info.outW} × {info.outH}</Stat>
               <Stat label="지표 해상도">≈{groundResolution} m/px</Stat>
@@ -427,7 +427,7 @@ export default function RealWorldMapPicker({
               onClick={() => onLoad(spec)}
             >
               <Download size={16} aria-hidden />
-              <span>{busy ? `Loading terrain… ${Math.round(progress * 100)}%` : 'Load selected area'}</span>
+              <span>{busy ? `Loading terrain… ${Math.round(progress * 100)}%` : '선택 영역 불러오기'}</span>
             </button>
           </aside>
         </div>

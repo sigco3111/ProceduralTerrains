@@ -38,20 +38,20 @@ const COLOR_GROUPS = [
 ];
 
 const COLOR_LABELS = {
-  deep: 'Deep Water',
-  shallow: 'Shallow',
+  deep: '깊은 물',
+  shallow: '얕음',
   sand: '모래',
   dune: '사구',
   dryGrass: '마른 풀',
   grass: '잔디',
   forest: '숲',
   jungle: '정글',
-  swamp: 'Swamp',
+  swamp: '늪지',
   tundra: '툰드라',
-  redRock: 'Red Rock',
-  redRock2: 'Red Rock B',
+  redRock: '붉은 바위',
+  redRock2: '붉은 바위 B',
   rock: '바위',
-  rockHi: 'High Rock',
+  rockHi: '높은 바위',
   snow: '눈',
   foam: '거품',
 };
@@ -64,7 +64,7 @@ const TUNING_SCHEMA = [
     max: 2,
     step: 0.05,
     digits: 2,
-    info: 'Increase or decrease color saturation across all biomes',
+    info: '모든 바이옴의 채도를 높이거나 낮춥니다',
     icon: (
       <svg viewBox="0 0 16 16" fill="none">
         <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" />
@@ -257,7 +257,7 @@ export default function ColorPalettePanel({
         </div>
         <p className="terrain-palette-description">
           {activeTerrainPalette?.description
-            ?? 'Choose a terrain palette to recolor water, vegetation, rock, and snow together.'}
+            ?? '물, 식생, 암석, 눈을 함께 다시 칠할 지형 팔레트를 선택하세요.'}
         </p>
       </section>
 
@@ -372,7 +372,7 @@ export default function ColorPalettePanel({
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
           </optgroup>
-          <optgroup label="Classic palettes">
+          <optgroup label="클래식 팔레트">
             {classicPalettePresets.map(([key, p]) => (
               <option key={key} value={key}>{p.label}</option>
             ))}

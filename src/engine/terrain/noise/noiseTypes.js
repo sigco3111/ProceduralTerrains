@@ -253,7 +253,7 @@ export const NOISE_TYPES = [
   {
     id: 'value', label: '값', category: 'height',
     defaultBlend: 'add', defaultStrength: 0.3,
-    desc: 'Simple blocky base noise for broad masks, biome zones, and stylized variation.',
+    desc: '광범위한 마스크, 바이옴 영역, 스타일라이즈된 변화를 위한 단순 블록 기반 노이즈.',
     scaleKey: 'scale', paKeys: [], pbKeys: [],
     params: [P_SCALE,
       { key: 'interp', label: '보간', type: 'enum', structural: true, default: 2,
@@ -299,16 +299,16 @@ export const NOISE_TYPES = [
 
   // ---------------------------------------------------------------- voronoi
   {
-    id: 'voronoi', label: 'Voronoi / Cellular', category: 'height',
+    id: 'voronoi', label: '보로노이 / 셀룰러', category: 'height',
     defaultBlend: 'add', defaultStrength: 0.4,
-    desc: 'Cell-based noise for tectonic plates, cracked deserts, ice, and alien patterns.',
+    desc: '판 구조, 갈라진 사막, 얼음, 외계 패턴을 위한 셀 기반 노이즈입니다.',
     scaleKey: 'scale', paKeys: ['jitter'], pbKeys: [],
     params: [{ ...P_SCALE, default: 2.0 },
-      { key: 'jitter', label: 'Jitter', min: 0, max: 1, step: 0.01, default: 1.0, digits: 2 },
+      { key: 'jitter', label: '지터', min: 0, max: 1, step: 0.01, default: 1.0, digits: 2 },
       { key: 'distanceMode', label: '거리', type: 'enum', structural: true, default: 0,
-        options: [{ value: 0, label: 'Euclidean' }, { value: 1, label: 'Manhattan' }, { value: 2, label: 'Chebyshev' }] },
+        options: [{ value: 0, label: '유클리드' }, { value: 1, label: '맨해튼' }, { value: 2, label: '체비셰프' }] },
       { key: 'outputMode', label: '출력', type: 'enum', structural: true, default: 2,
-        options: [{ value: 0, label: 'Cell Value' }, { value: 1, label: 'Dist Center' }, { value: 2, label: 'Dist Edge' }, { value: 3, label: 'Edge Lines' }] }],
+        options: [{ value: 0, label: '셀 값' }, { value: 1, label: '중심 거리' }, { value: 2, label: '가장자리 거리' }, { value: 3, label: '가장자리 라인' }] }],
     body2d: (l) => `val = voronoi2(P, pa.x, ${l.params.distanceMode | 0}, ${l.params.outputMode | 0});`,
     body3d: (l) => `val = voronoi3(P, pa.x, ${l.params.distanceMode | 0}, ${l.params.outputMode | 0});`,
     eval2d: (px, pz, l) => voronoiJs2(px, pz, l.params.jitter, l.params.distanceMode | 0, l.params.outputMode | 0),

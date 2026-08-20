@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowLeft, Database, Eye, Fingerprint, LockKeyhole, Mail, ShieldCheck } from 'lucide-react';
 
-const POLICY_UPDATED = 'July 23, 2026';
+const POLICY_UPDATED = '2026년 7월 23일';
 
 export default function ConfidentialityPage({ onBack }) {
   return (

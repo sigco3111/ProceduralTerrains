@@ -18,7 +18,7 @@ async function copyText(value) {
   input.select();
   const copied = document.execCommand('copy');
   input.remove();
-  if (!copied) throw new Error('Copying is not supported by this browser.');
+  if (!copied) throw new Error('이 브라우저에서는 복사가 지원되지 않습니다.');
 }
 
 export default function CloudProjectsPanel({ localProjects, onOpen, refreshToken = 0 }) {
@@ -39,7 +39,7 @@ export default function CloudProjectsPanel({ localProjects, onOpen, refreshToken
       const result = await projectApi.listMine();
       setProjects(result.projects);
     } catch (requestError) {
-      showPopup(requestError.message || 'Could not load cloud projects.', { type: 'error' });
+      showPopup(requestError.message || '클라우드 프로젝트를 불러올 수 없습니다.', { type: 'error' });
     } finally {
       setLoading(false);
     }
@@ -92,7 +92,7 @@ export default function CloudProjectsPanel({ localProjects, onOpen, refreshToken
       const imported = await projectStore.importCopy(result.project.data, { name: result.project.name });
       onOpen(imported);
     } catch (requestError) {
-      showPopup(requestError.message || 'Could not open this cloud project.', { type: 'error' });
+      showPopup(requestError.message || '이 클라우드 프로젝트를 열 수 없습니다.', { type: 'error' });
     } finally {
       setBusy('');
     }
@@ -112,14 +112,14 @@ export default function CloudProjectsPanel({ localProjects, onOpen, refreshToken
   };
 
   const rename = async (cloudProject) => {
-    const name = (await showPrompt({ title: 'Rename cloud project', inputLabel: '프로젝트 이름', initialValue: cloudProject.name, confirmLabel: '이름 변경', maxLength: 120 }))?.trim();
+    const name = (await showPrompt({ title: '클라우드 프로젝트 이름 바꾸기', inputLabel: '프로젝트 이름', initialValue: cloudProject.name, confirmLabel: '이름 변경', maxLength: 120 }))?.trim();
     if (!name || name === cloudProject.name) return;
     setBusy(cloudProject.id);
     try {
       await projectApi.update(cloudProject.id, { name });
       await refresh();
     } catch (requestError) {
-      showPopup(requestError.message || 'Could not rename this project.', { type: 'error' });
+      showPopup(requestError.message || '이 프로젝트의 이름을 변경할 수 없습니다.', { type: 'error' });
     } finally {
       setBusy('');
     }
@@ -127,9 +127,9 @@ export default function CloudProjectsPanel({ localProjects, onOpen, refreshToken
 
   const rotateCode = async (cloudProject) => {
     const confirmed = await showConfirm({
-      title: 'Replace sharing code?',
-      message: `Existing links to “${cloudProject.name}” will stop working.`,
-      confirmLabel: 'Replace code',
+      title: '공유 코드를 교체하시겠습니까?',
+      message: `“${cloudProject.name}”에 대한 기존 링크가 더 이상 작동하지 않습니다.`,
+      confirmLabel: '코드 교체',
       danger: true,
     });
     if (!confirmed) return;
@@ -137,9 +137,9 @@ export default function CloudProjectsPanel({ localProjects, onOpen, refreshToken
     try {
       const result = await projectApi.rotateShareCode(cloudProject.id);
       await refresh();
-      showPopup(`New sharing code: ${result.shareCode}`, { type: 'success' });
+      showPopup(`새 공유 코드: ${result.shareCode}`, { type: 'success' });
     } catch (requestError) {
-      showPopup(requestError.message || 'Could not replace the sharing code.', { type: 'error' });
+      showPopup(requestError.message || '공유 코드를 교체할 수 없습니다.', { type: 'error' });
     } finally {
       setBusy('');
     }
@@ -147,7 +147,7 @@ export default function CloudProjectsPanel({ localProjects, onOpen, refreshToken
 
   const remove = async (cloudProject) => {
     const confirmed = await showConfirm({
-      title: 'Delete cloud project?',
+      title: '클라우드 프로젝트를 삭제하시겠습니까?',
       message: `Delete “${cloudProject.name}” from your cloud projects? Your local copy is not affected.`,
       confirmLabel: '프로젝트 삭제',
       danger: true,
@@ -157,9 +157,9 @@ export default function CloudProjectsPanel({ localProjects, onOpen, refreshToken
     try {
       await projectApi.remove(cloudProject.id);
       await refresh();
-      showPopup('Cloud project deleted.', { type: 'success' });
+      showPopup('클라우드 프로젝트가 삭제되었습니다.', { type: 'success' });
     } catch (requestError) {
-      showPopup(requestError.message || 'Could not delete this cloud project.', { type: 'error' });
+      showPopup(requestError.message || '이 클라우드 프로젝트를 삭제할 수 없습니다.', { type: 'error' });
     } finally {
       setBusy('');
     }
@@ -170,13 +170,13 @@ export default function CloudProjectsPanel({ localProjects, onOpen, refreshToken
   }
 
   return (
-    <section className="cloud-projects-panel" aria-label="Cloud projects">
+    <section className="cloud-projects-panel" aria-label="클라우드 프로젝트">
       <div className="cloud-sync-bar">
-        <select value={selectedLocalId} onChange={(event) => setSelectedLocalId(event.target.value)} disabled={!localProjects.length || !!busy} aria-label="Local project to sync">
+        <select value={selectedLocalId} onChange={(event) => setSelectedLocalId(event.target.value)} disabled={!localProjects.length || !!busy} aria-label="동기화할 로컬 프로젝트">
           {!localProjects.length && <option value="">로컬 프로젝트 없음</option>}
           {localProjects.map((project) => <option key={project.id} value={project.id}>{project.metadata.name}</option>)}
         </select>
-        <button type="button" className="lp-primary sm" onClick={sync} disabled={!selectedLocal || !!busy}><CloudUpload size={14} /> {selectedCloud ? 'Update cloud copy' : '클라우드에 동기화'}</button>
+        <button type="button" className="lp-primary sm" onClick={sync} disabled={!selectedLocal || !!busy}><CloudUpload size={14} /> {selectedCloud ? '클라우드 사본 업데이트' : '클라우드에 동기화'}</button>
       </div>
 
       {loading ? <p className="cloud-loading">Loading cloud projects…</p> : projects.length === 0 ? <div className="cloud-empty"><Cloud size={20} /><span>아직 클라우드 프로젝트가 없습니다. 위의 로컬 지형 중 하나를 동기화하세요.</span></div> : (
@@ -190,16 +190,16 @@ export default function CloudProjectsPanel({ localProjects, onOpen, refreshToken
                   <span className={`cloud-visibility-icon ${project.visibility}`}><VisibilityIcon size={15} /></span>
                   <span><strong>{project.name}</strong><small>Updated {new Date(project.updatedAt).toLocaleDateString()}</small></span>
                 </button>
-                <select value={project.visibility} onChange={(event) => updateVisibility(project, event.target.value)} disabled={disabled} aria-label={`Visibility for ${project.name}`}>
+                <select value={project.visibility} onChange={(event) => updateVisibility(project, event.target.value)} disabled={disabled} aria-label={`${project.name} 공개 범위`}>
                   <option value="private">비공개</option><option value="unlisted">비공개(링크 보유자만)</option><option value="public">공개</option>
                 </select>
-                <code title="Sharing code">{project.shareCode}</code>
+                <code title="공유 코드">{project.shareCode}</code>
                 <div className="cloud-project-actions">
-                  <button type="button" onClick={() => openCloud(project)} disabled={disabled} title="Open as a local copy" aria-label={`Open ${project.name}`}><FolderOpen size={13} /></button>
-                  <button type="button" onClick={() => copyText(project.shareCode).then(() => showPopup(`Copied ${project.shareCode}.`, { type: 'success' })).catch((copyError) => showPopup(copyError.message, { type: 'error' }))} disabled={disabled || project.visibility === 'private'} title={project.visibility === 'private' ? 'Make the project unlisted or public to share it' : '공유 코드 복사'} aria-label={`Copy sharing code for ${project.name}`}><Copy size={13} /></button>
-                  <button type="button" onClick={() => rotateCode(project)} disabled={disabled} title="Replace sharing code" aria-label={`Replace sharing code for ${project.name}`}><KeyRound size={13} /></button>
-                  <button type="button" onClick={() => rename(project)} disabled={disabled} title="이름 변경" aria-label={`Rename ${project.name}`}><Pencil size={13} /></button>
-                  <button type="button" className="danger" onClick={() => remove(project)} disabled={disabled} title="Delete cloud project" aria-label={`Delete ${project.name}`}><Trash2 size={13} /></button>
+                  <button type="button" onClick={() => openCloud(project)} disabled={disabled} title="로컬 사본으로 열기" aria-label={`${project.name} 열기`}><FolderOpen size={13} /></button>
+                  <button type="button" onClick={() => copyText(project.shareCode).then(() => showPopup(`${project.shareCode}을(를) 복사했습니다.`, { type: 'success' })).catch((copyError) => showPopup(copyError.message, { type: 'error' }))} disabled={disabled || project.visibility === 'private'} title={project.visibility === 'private' ? '공유하려면 프로젝트를 미공개 또는 공개로 설정하세요' : '공유 코드 복사'} aria-label={`${project.name}의 공유 코드 복사`}><Copy size={13} /></button>
+                  <button type="button" onClick={() => rotateCode(project)} disabled={disabled} title="공유 코드 교체" aria-label={`${project.name}의 공유 코드 교체`}><KeyRound size={13} /></button>
+                  <button type="button" onClick={() => rename(project)} disabled={disabled} title="이름 변경" aria-label={`${project.name} 이름 바꾸기`}><Pencil size={13} /></button>
+                  <button type="button" className="danger" onClick={() => remove(project)} disabled={disabled} title="클라우드 프로젝트 삭제" aria-label={`${project.name} 삭제`}><Trash2 size={13} /></button>
                 </div>
               </article>
             );

@@ -7,7 +7,7 @@ import { applyCloudLightingState } from './CloudLightingState.js';
 import { CloudOccupancyPass } from './CloudOccupancyPass.js';
 
 // Resolution of the directional occupancy grid (octahedral). Low-res + dilated
-// is enough: it only needs to say "this column has some cloud" so the shader can
+// is enough: it only needs to say "이 열에는 일부 구름이 있습니다" so the shader can
 // skip the expensive density over empty sky.
 const OCC_SIZE = 48;
 

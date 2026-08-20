@@ -33,7 +33,7 @@ async function copyText(value) {
   input.select();
   const copied = document.execCommand('copy');
   input.remove();
-  if (!copied) throw new Error('Copying is not supported by this browser.');
+  if (!copied) throw new Error('이 브라우저에서는 복사가 지원되지 않습니다.');
 }
 
 function projectName(entry) {
@@ -242,7 +242,7 @@ export default function ProjectLibrary({
   const removeCloudCopy = useCallback(async (entry) => {
     if (!entry.cloudProject || busyId) return;
     const confirmed = await showConfirm({
-      title: 'Remove cloud copy?',
+      title: '클라우드 사본을 제거하시겠습니까?',
       message: `Remove “${projectName(entry)}” from the cloud? Your local project will remain available.`,
       confirmLabel: '클라우드 사본 제거',
       danger: true,
@@ -253,9 +253,9 @@ export default function ProjectLibrary({
       await projectApi.remove(entry.cloudProject.id);
       if (entry.localProject) await projectSyncStore.remove(entry.localProject.id);
       await refreshCloud();
-      showPopup('Cloud copy removed. Your local project is unchanged.', { type: 'success' });
+      showPopup('클라우드 사본이 제거되었습니다. 로컬 프로젝트는 변경되지 않았습니다.', { type: 'success' });
     } catch (error) {
-      showPopup(error.message || 'Could not remove this cloud copy.', { type: 'error' });
+      showPopup(error.message || '이 클라우드 사본을 제거할 수 없습니다.', { type: 'error' });
     } finally {
       setBusyId('');
       setMenuFor(null);
@@ -315,7 +315,7 @@ export default function ProjectLibrary({
                     {localProject?.metadata.thumbnail ? <img src={localProject.metadata.thumbnail} alt="" /> : localProject ? <LayoutTemplate size={28} /> : <Cloud size={28} />}
                   </span>
                   {localProject && <span className={`lp-template-kind-badge ${localProject.terrain.workspacePreset === 'real-terrain' ? 'real' : localProject.terrain.editorMode}`}>{localProject.terrain.workspacePreset === 'real-terrain' ? '실제 지형' : localProject.terrain.editorMode === 'nodes' ? '노드' : localProject.terrain.editorMode === 'manual' ? '매뉴얼' : '절차적'}</span>}
-                  {cloudProject && <span className={`project-library-cloud-badge ${cloudProject.visibility}`} title={`In the cloud · ${cloudProject.visibility}`} aria-label={`In the cloud · ${cloudProject.visibility}`}><Cloud size={12} /><VisibilityIcon size={12} /></span>}
+                  {cloudProject && <span className={`project-library-cloud-badge ${cloudProject.visibility}`} title={`클라우드에 있음 · ${cloudProject.visibility}`} aria-label={`클라우드에 있음 · ${cloudProject.visibility}`}><Cloud size={12} /><VisibilityIcon size={12} /></span>}
                   <span className="project-library-copy">
                     <strong>{name}</strong>
                     <small className="project-library-time"><Clock size={11} aria-hidden /> Updated {relativeTime(modified)}</small>
@@ -328,7 +328,7 @@ export default function ProjectLibrary({
                       {isBusy ? <RefreshCw size={13} className="spin" /> : entry.state === 'cloud-only' || entry.state === 'cloud-changes' ? <CloudDownload size={13} /> : <CloudUpload size={13} />}
                       {entry.action}
                     </button>
-                    <button type="button" className="project-library-menu-button" aria-label={`Actions for ${name}`} aria-expanded={menuFor === entry.id} onPointerDown={(event) => event.stopPropagation()} onClick={() => setMenuFor((current) => current === entry.id ? null : entry.id)}><EllipsisVertical size={16} /></button>
+                    <button type="button" className="project-library-menu-button" aria-label={`${name}에 대한 작업`} aria-expanded={menuFor === entry.id} onPointerDown={(event) => event.stopPropagation()} onClick={() => setMenuFor((current) => current === entry.id ? null : entry.id)}><EllipsisVertical size={16} /></button>
                   </div>
                 </div>
                 {menuFor === entry.id && (
@@ -340,10 +340,10 @@ export default function ProjectLibrary({
                     </>}
                     {cloudProject && <>
                       <span className="project-library-menu-label">구름 가시성</span>
-                      <div className="project-library-visibility-actions" role="group" aria-label={`Cloud visibility for ${name}`}>
+                      <div className="project-library-visibility-actions" role="group" aria-label={`${name}의 클라우드 가시성`}>
                         {Object.entries(visibilityIcons).map(([visibility, Icon]) => <button key={visibility} type="button" className={cloudProject.visibility === visibility ? 'active' : ''} onClick={() => changeVisibility(entry, visibility)} disabled={isBusy} title={visibility}><Icon size={13} /><span>{visibility}</span></button>)}
                       </div>
-                      {cloudProject.visibility !== 'private' && <button type="button" role="menuitem" onClick={() => copyText(cloudProject.shareCode).then(() => showPopup(`Copied ${cloudProject.shareCode}.`, { type: 'success' })).catch((error) => showPopup(error.message, { type: 'error' }))}><Copy size={13} />공유 코드 복사</button>}
+                      {cloudProject.visibility !== 'private' && <button type="button" role="menuitem" onClick={() => copyText(cloudProject.shareCode).then(() => showPopup(`${cloudProject.shareCode}을(를) 복사했습니다.`, { type: 'success' })).catch((error) => showPopup(error.message, { type: 'error' }))}><Copy size={13} />공유 코드 복사</button>}
                       <button type="button" role="menuitem" className="danger" onClick={() => removeCloudCopy(entry)} disabled={isBusy}><Cloud size={13} />클라우드 사본 제거</button>
                     </>}
                     {localProject && <button type="button" role="menuitem" className="danger" onClick={() => { setMenuFor(null); onDelete(localProject); }} disabled={projectActionBusy}><Trash2 size={13} />로컬 프로젝트 삭제</button>}

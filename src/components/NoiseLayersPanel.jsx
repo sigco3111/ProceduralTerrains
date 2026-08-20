@@ -65,7 +65,7 @@ function clampNumber(value, min, max) {
 // ---- add-layer type menu items (grouped) ------------------------------------
 const TYPE_GROUPS = [
   { label: '높이', items: ADDABLE_TYPES.filter((t) => { const d = getNoiseType(t); return d && d.category === 'height'; }) },
-  { label: 'Modifier', items: ADDABLE_TYPES.filter((t) => { const d = getNoiseType(t); return d && d.category === 'modifier'; }) },
+  { label: '수정자', items: ADDABLE_TYPES.filter((t) => { const d = getNoiseType(t); return d && d.category === 'modifier'; }) },
 ];
 
 // ---- drag & drop state (module-scoped to avoid re-render churn) -------------
@@ -118,7 +118,7 @@ function NoiseLayerItem({
         <div className="nl-body">
           {/* action bar */}
           <div className="nl-actions">
-            <button type="button" className={`nl-icon-btn${isSolo ? ' active' : ''}`} title="Solo preview" onClick={() => onSolo(isSolo ? null : layer.id)}><SoloIcon /></button>
+            <button type="button" className={`nl-icon-btn${isSolo ? ' active' : ''}`} title="단독 미리보기" onClick={() => onSolo(isSolo ? null : layer.id)}><SoloIcon /></button>
             <button type="button" className="nl-icon-btn" title="복제" onClick={() => onDuplicate(layer.id)} disabled={total >= MAX_LAYERS}><DupIcon /></button>
             <button type="button" className="nl-icon-btn danger" title="삭제" onClick={() => onRemove(layer.id)} disabled={total <= 0}><TrashIcon /></button>
           </div>

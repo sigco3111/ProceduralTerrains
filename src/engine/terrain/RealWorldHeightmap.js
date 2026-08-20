@@ -7,7 +7,7 @@
 // importedMaps.imagery on the same geoRef / Web Mercator grid so albedo lines
 // up with the mesh.
 //
-// Source: AWS Open Data "Terrain Tiles" in Terrarium encoding — public, no API
+// Source: AWS Open Data "지형 타일" in Terrarium encoding — public, no API
 // key, CORS-enabled, derived from SRTM/NED/etc. Elevation is packed across RGB:
 //     elevation_m = (R * 256 + G + B / 256) - 32768
 //

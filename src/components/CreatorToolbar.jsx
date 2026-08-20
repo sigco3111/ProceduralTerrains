@@ -12,7 +12,7 @@ export default function CreatorToolbar({ active, onToggle }) {
         type="button"
         className={`creator-toolbar-btn${active ? ' active' : ''}`}
         onClick={onToggle}
-        title="Toggle spline editor (S)"
+        title="스플라인 편집기 토글 (S)"
         aria-label="스플라인 에디터 토글"
         aria-pressed={active}
       >

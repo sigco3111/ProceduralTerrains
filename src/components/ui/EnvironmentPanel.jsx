@@ -39,7 +39,7 @@ const SUN_INTENSITY = {
 
 const CLOUD_SHADOW_OPACITY = {
   key: 'cloudShadowOpacity',
-  label: 'Shadow Strength',
+  label: '그림자 강도',
   min: 0,
   max: 0.85,
   step: 0.01,
@@ -54,13 +54,13 @@ const GOD_RAYS = {
   max: 0.8,
   step: 0.02,
   digits: 2,
-  info: 'Screen-space atmospheric light shafts aligned with the active skybox sun.',
+  info: '활성 스카이박스 태양에 정렬된 스크린 공간 대기 광선 기둥.',
 };
 
 const WATER_LIGHTING_SLIDERS = [
   {
     key: 'waterAtmosphereInfluence',
-    label: 'Sky Influence',
+    label: '하늘 영향',
     min: 0,
     max: 1,
     step: 0.02,
@@ -74,7 +74,7 @@ const WATER_LIGHTING_SLIDERS = [
     max: 2,
     step: 0.05,
     digits: 2,
-    info: 'Strength of direct sunlight received by the water surface and volume.',
+    info: '수면과 수중 볼륨이 받는 직사광의 강도.',
   },
   {
     key: 'waterAmbientResponse',
@@ -83,11 +83,11 @@ const WATER_LIGHTING_SLIDERS = [
     max: 2,
     step: 0.05,
     digits: 2,
-    info: 'Strength of sky ambient light and ground bounce on the water.',
+    info: '물의 하늘 주변광과 지면 반사 강도.',
   },
   {
     key: 'waterFoamLighting',
-    label: 'Foam Lighting',
+    label: '거품 조명',
     min: 0,
     max: 1,
     step: 0.01,
@@ -100,7 +100,7 @@ const ATMOSPHERE_COLORS = [
   {
     key: 'skyAmbient',
     label: '하늘 주변광',
-    info: 'Color of ambient scattered sky light reflecting onto the terrain',
+    info: '지형에 반사되는 산란된 주변 하늘 빛의 색상',
     icon: (
       <svg viewBox="0 0 16 16" fill="none">
         <path d="M8 3a4 4 0 0 1 4 4H4a4 4 0 0 1 4-4zM2 10h12M4 13h8" stroke="currentColor" strokeWidth="1.2" />
@@ -110,7 +110,7 @@ const ATMOSPHERE_COLORS = [
   {
     key: 'groundBounce',
     label: '지면 반사',
-    info: 'Color of light bouncing from the ground back up into shadowed areas',
+    info: '그라운드에서 그림자 영역으로 다시 반사되는 빛의 색상',
     icon: (
       <svg viewBox="0 0 16 16" fill="none">
         <path d="M2 13h12M4 4l4 6 4-6" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />

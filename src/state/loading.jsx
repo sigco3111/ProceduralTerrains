@@ -41,7 +41,7 @@ export function LoadingProvider({ children }) {
 
   const fail = done; // same effect on the task list; caller raises a toast
 
-  // Wrap async work so the task is ALWAYS cleared (covers the "stuck loading"
+  // Wrap async work so the task is ALWAYS cleared (covers the "로딩 멈춤"
   // edge case). `fn` receives an `update(patch)` helper bound to this task.
   const run = useCallback(async (id, opts, fn) => {
     start(id, opts);

@@ -67,10 +67,10 @@ export default function ProfilePage({ onBack }) {
     try {
       await changePassword({ currentPassword: passwords.currentPassword, newPassword: passwords.newPassword });
       setPasswords({ currentPassword: '', newPassword: '', confirmPassword: '' });
-      showPopup('Password changed. Your other sessions were signed out.', { type: 'success' });
+      showPopup('비밀번호가 변경되었습니다. 다른 세션은 로그아웃 처리되었습니다.', { type: 'success' });
     } catch (error) {
       setPasswordErrors(error.fields ?? {});
-      showPopup(error.message || 'Could not change your password.', { type: 'error', title: 'Password not changed' });
+      showPopup(error.message || '비밀번호를 변경할 수 없습니다.', { type: 'error', title: '비밀번호가 변경되지 않았습니다' });
     } finally {
       setBusy('');
     }
@@ -81,22 +81,22 @@ export default function ProfilePage({ onBack }) {
     event.target.value = '';
     if (!file) return;
     if (!AVATAR_TYPES.has(file.type)) {
-      showPopup('Choose a PNG, JPEG, or WebP image.', { type: 'error', title: 'Unsupported image' });
+      showPopup('PNG, JPEG 또는 WebP 이미지를 선택하세요.', { type: 'error', title: '지원하지 않는 이미지' });
       return;
     }
     if (file.size > MAX_AVATAR_BYTES) {
-      showPopup('Profile pictures must be 1 MB or smaller.', { type: 'error', title: 'Image is too large' });
+      showPopup('프로필 사진은 1MB 이하여야 합니다.', { type: 'error', title: '이미지가 너무 큼' });
       return;
     }
     const reader = new FileReader();
-    reader.onerror = () => showPopup('Could not read this image.', { type: 'error' });
+    reader.onerror = () => showPopup('이 이미지를 읽을 수 없습니다.', { type: 'error' });
     reader.onload = async () => {
       setBusy('avatar');
       try {
         await updateAvatar(reader.result);
-        showPopup('Profile picture updated.', { type: 'success' });
+        showPopup('프로필 사진이 업데이트되었습니다.', { type: 'success' });
       } catch (error) {
-        showPopup(error.fields?.avatar || error.message || 'Could not update your profile picture.', { type: 'error' });
+        showPopup(error.fields?.avatar || error.message || '프로필 사진을 업데이트할 수 없습니다.', { type: 'error' });
       } finally {
         setBusy('');
       }
@@ -108,9 +108,9 @@ export default function ProfilePage({ onBack }) {
     setBusy('avatar');
     try {
       await removeAvatar();
-      showPopup('Profile picture removed.', { type: 'success' });
+      showPopup('프로필 사진이 제거되었습니다.', { type: 'success' });
     } catch (error) {
-      showPopup(error.message || 'Could not remove your profile picture.', { type: 'error' });
+      showPopup(error.message || '프로필 사진을 제거할 수 없습니다.', { type: 'error' });
     } finally {
       setBusy('');
     }

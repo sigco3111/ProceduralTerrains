@@ -493,8 +493,8 @@ export class ManualTerrainModeManager {
     this.preview.visible = false;
     this._rebuildTerrain();
     this._syncVisuals();
-    this._emit({ terrainChanged: true, label: `Added ${shape.name}` });
-    this.onStableAction?.(`Added ${shape.name}`);
+    this._emit({ terrainChanged: true, label: `${shape.name}을(를) 추가했습니다` });
+    this.onStableAction?.(`${shape.name}을(를) 추가했습니다`);
     return shape;
   }
 
@@ -513,8 +513,8 @@ export class ManualTerrainModeManager {
     const terrainChanged = Object.keys(patch).some((key) => key !== 'name');
     if (terrainChanged) this._rebuildTerrain();
     this._syncVisuals();
-    this._emit({ terrainChanged, documentChanged: true, label: `Updated ${next.name}` });
-    if (stable) this.onStableAction?.(`Updated ${next.name}`);
+    this._emit({ terrainChanged, documentChanged: true, label: `${next.name} 업데이트됨` });
+    if (stable) this.onStableAction?.(`${next.name} 업데이트됨`);
     return next;
   }
 
@@ -539,7 +539,7 @@ export class ManualTerrainModeManager {
       return null;
     }
     const layer = createManualShapeLayer(type, { seedOffset: shape.seed + shape.layers.length * 1013 });
-    this._commitShapeLayers(shapeIndex, [...shape.layers, layer], `Added ${layer.name} to ${shape.name}`);
+    this._commitShapeLayers(shapeIndex, [...shape.layers, layer], `${layer.name}을(를) ${shape.name}에 추가했습니다`);
     return layer;
   }
 
@@ -556,7 +556,7 @@ export class ManualTerrainModeManager {
       params: { ...current.params, ...(patch.params || {}) },
     }, layerIndex);
     const layers = shape.layers.map((layer, index) => index === layerIndex ? nextLayer : layer);
-    this._commitShapeLayers(shapeIndex, layers, `Updated ${nextLayer.name} on ${shape.name}`);
+    this._commitShapeLayers(shapeIndex, layers, `${shape.name}의 ${nextLayer.name} 업데이트됨`);
     return nextLayer;
   }
 
@@ -569,7 +569,7 @@ export class ManualTerrainModeManager {
     this._commitShapeLayers(
       shapeIndex,
       shape.layers.filter((candidate) => candidate.id !== layerId),
-      `Deleted ${layer.name} from ${shape.name}`,
+      `${shape.name}에서 ${layer.name}을(를) 삭제했습니다`,
     );
     return true;
   }
@@ -594,7 +594,7 @@ export class ManualTerrainModeManager {
     });
     const layers = [...shape.layers];
     layers.splice(layerIndex + 1, 0, copy);
-    this._commitShapeLayers(shapeIndex, layers, `Duplicated ${source.name} on ${shape.name}`);
+    this._commitShapeLayers(shapeIndex, layers, `${shape.name}에 ${source.name}을(를) 복제했습니다`);
     return copy;
   }
 
@@ -608,7 +608,7 @@ export class ManualTerrainModeManager {
     const layers = [...shape.layers];
     const [layer] = layers.splice(layerIndex, 1);
     layers.splice(nextIndex, 0, layer);
-    this._commitShapeLayers(shapeIndex, layers, `Reordered ${layer.name} on ${shape.name}`);
+    this._commitShapeLayers(shapeIndex, layers, `${shape.name}에서 ${layer.name} 순서 변경됨`);
     return true;
   }
 
@@ -632,8 +632,8 @@ export class ManualTerrainModeManager {
     this.selectedId = this.shapes[Math.min(index, this.shapes.length - 1)]?.id ?? null;
     this._rebuildTerrain();
     this._syncVisuals();
-    this._emit({ terrainChanged: true, label: `Deleted ${removed.name}` });
-    this.onStableAction?.(`Deleted ${removed.name}`);
+    this._emit({ terrainChanged: true, label: `${removed.name}을(를) 삭제했습니다` });
+    this.onStableAction?.(`${removed.name}을(를) 삭제했습니다`);
     return true;
   }
 
@@ -660,8 +660,8 @@ export class ManualTerrainModeManager {
     this.shapes.splice(nextIndex, 0, shape);
     this._rebuildTerrain();
     this._syncVisuals();
-    this._emit({ terrainChanged: true, documentChanged: true, label: `Reordered ${shape.name}` });
-    this.onStableAction?.(`Reordered ${shape.name}`);
+    this._emit({ terrainChanged: true, documentChanged: true, label: `${shape.name} 순서 변경됨` });
+    this.onStableAction?.(`${shape.name} 순서 변경됨`);
     return true;
   }
 

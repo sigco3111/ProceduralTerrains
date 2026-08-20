@@ -40,7 +40,7 @@ export class ProjectHistoryManager {
     this.snapshots.push(snap); if (automatic) { const autos = this.snapshots.filter((s) => s.automatic); while (autos.length > 5) { const old = autos.shift(); this.snapshots = this.snapshots.filter((s) => s.id !== old.id); } }
     await this._put(snap); this._emit(); return snap;
   }
-  async restoreSnapshot(id) { const s = this.snapshots.find((x) => x.id === id); if (!s) return false; const restored = await this._restore(s.projectState); if (!restored) return false; this.record('snapshot', `Restored ${s.name}`); return true; }
+  async restoreSnapshot(id) { const s = this.snapshots.find((x) => x.id === id); if (!s) return false; const restored = await this._restore(s.projectState); if (!restored) return false; this.record('snapshot', `${s.name} 복원됨`); return true; }
   deleteSnapshot(id) { this.snapshots = this.snapshots.filter((s) => s.id !== id); this._delete(id); this._emit(); }
   renameSnapshot(id, name) { const s = this.snapshots.find((x) => x.id === id); if (!s) return; s.name = name; this._put(s); this._emit(); }
   serializeMetadata() { return this.snapshots.filter((s) => !s.automatic).map(({ projectState, ...meta }) => meta); }

@@ -123,7 +123,7 @@ const LANDFORM_DEFINITIONS = [
       select('bulk', '대량', MOUNTAIN_BULK_OPTIONS, 'medium', { section: '산', tier: 'essential', control: 'segmented', help: 'Controls how much high-altitude mass survives later erosion.' }),
       number('scale', '스케일', 0.1, 4, 0.01, 0.62, { section: '산', tier: 'essential', help: 'Sets the mountain footprint.' }),
       number('height', '높이', 0, 2.5, 0.01, 1.25, { section: '산', tier: 'essential', help: 'Controls vertical relief before output normalization.' }),
-      { key: 'reduceDetails', label: 'Reduce Details', type: 'boolean', default: false, section: '산', tier: 'essential', help: 'Keeps the primitive broad when later nodes will provide the surface detail.' },
+      { key: 'reduceDetails', label: '디테일 줄이기', type: 'boolean', default: false, section: '산', tier: 'essential', help: 'Keeps the primitive broad when later nodes will provide the surface detail.' },
       number('seed', '시드', 0, 999999, 1, 1201, { section: '변형', control: 'seed', help: '동일한 설정의 결정론적 변형을 생성합니다.' }),
       number('x', 'X', -2, 2, 0.01, 0, { section: 'Placement' }),
       number('y', 'Y', -2, 2, 0.01, 0, { section: 'Placement' }),
@@ -186,8 +186,8 @@ const LANDFORM_DEFINITIONS = [
       number('depth', '깊이', 0, 2, 0.01, 0.75, { section: '충격' }),
       number('scale', '스케일', 0.1, 4, 0.01, 0.85, { section: '충격' }),
       number('radius', '반지름', 0.2, 2, 0.01, 0.9, { section: '충격' }),
-      number('rimHeight', '림 높이', 0, 1, 0.01, 0.42, { section: 'Rim' }),
-      number('rimWidth', '림 너비', 0.03, 0.6, 0.01, 0.18, { section: 'Rim' }),
+      number('rimHeight', '림 높이', 0, 1, 0.01, 0.42, { section: '림' }),
+      number('rimWidth', '림 너비', 0.03, 0.6, 0.01, 0.18, { section: '림' }),
       number('roughness', '데미지', 0, 1, 0.01, 0.2, { section: '표면' }),
       number('octaves', '디테일 옥타브', 1, 8, 1, 4, { structural: true, section: '표면' }),
       number('seed', '시드', 0, 999999, 1, 5501, { section: '변형' }),
@@ -229,7 +229,7 @@ const LANDFORM_DEFINITIONS = [
 
 const BLEND_OPTIONS = [
   ...Object.entries(BLEND_LABELS).map(([value, label]) => ({ value, label })),
-  { value: 'mix', label: 'Mix' },
+  { value: 'mix', label: '믹스' },
 ];
 
 const MATH_OPTIONS = [
@@ -311,7 +311,7 @@ const definitions = [
     id: 'combine', label: '결합', category: '결합', color: 'blue',
     description: '노이즈 스택 블렌드 연산 또는 �스를 사용하여 두 지형 신호를 결합합니다.',
     executionKind: 'analytical', inputs: [input('a', 'A'), input('b', 'B')], outputs: [output()],
-    inspector: [select('operation', '작업', BLEND_OPTIONS, 'add'), number('mix', 'Mix', 0, 1, 0.01, 0.5)],
+    inspector: [select('operation', '작업', BLEND_OPTIONS, 'add'), number('mix', '믹스', 0, 1, 0.01, 0.5)],
     defaults: { operation: 'add', mix: 0.5 }, structuralParams: ['operation'], uniformSlots: () => 1,
     glslCompiler: execute('combine'), cpuEvaluator: execute('combine'),
   },

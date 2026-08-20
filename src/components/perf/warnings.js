@@ -28,23 +28,23 @@ export function computeWarnings(snap, T = WARN_THRESHOLDS) {
   const { fps, frame, render, gpu, memory, diag, tasks } = snap;
 
   // --- frame rate / time ---
-  if (fps > 0 && fps < T.fpsCritical) add('critical', `FPS critical: ${fps}`);
-  else if (fps > 0 && fps < T.fpsWarning) add('warning', `FPS low: ${fps}`);
+  if (fps > 0 && fps < T.fpsCritical) add('critical', `FPS 위험: ${fps}`);
+  else if (fps > 0 && fps < T.fpsWarning) add('warning', `FPS 낮음: ${fps}`);
 
-  if (frame && frame.avg > T.frameCritical) add('critical', `Frame time ${frame.avg.toFixed(1)}ms (>${T.frameCritical}ms)`);
-  else if (frame && frame.avg > T.frameWarning) add('warning', `Frame time ${frame.avg.toFixed(1)}ms`);
+  if (frame && frame.avg > T.frameCritical) add('critical', `프레임 시간 ${frame.avg.toFixed(1)}ms (>${T.frameCritical}ms)`);
+  else if (frame && frame.avg > T.frameWarning) add('warning', `프레임 시간 ${frame.avg.toFixed(1)}ms`);
 
   // --- renderer load ---
   if (render) {
-    if (render.calls > T.drawCalls) add('warning', `High draw calls: ${render.calls}`);
-    if (render.triangles > T.triangles) add('warning', `High triangle count: ${fmtNum(render.triangles)}`);
-    if (render.textures > T.textures) add('warning', `Many textures loaded: ${render.textures}`);
+    if (render.calls > T.drawCalls) add('warning', `드로우 콜 많음: ${render.calls}`);
+    if (render.triangles > T.triangles) add('warning', `삼각형 수 많음: ${fmtNum(render.triangles)}`);
+    if (render.textures > T.textures) add('warning', `불러온 텍스처 많음: ${render.textures}`);
   }
 
   // --- memory ---
   if (memory && memory.supported && memory.jsHeapLimit) {
     const ratio = memory.usedJSHeap / memory.jsHeapLimit;
-    if (ratio > T.heapRatio) add('critical', `JS heap usage high: ${(ratio * 100).toFixed(0)}%`);
+    if (ratio > T.heapRatio) add('critical', `JS 힙 사용량 높음: ${(ratio * 100).toFixed(0)}%`);
   } else if (memory && !memory.supported) {
     add('info', '메모리 API 사용 불가');
   }
@@ -54,7 +54,7 @@ export function computeWarnings(snap, T = WARN_THRESHOLDS) {
 
   // --- scene / mode specific ---
   if (diag) {
-    if (diag.pixelRatio > T.pixelRatio) add('warning', `Pixel ratio high: ${diag.pixelRatio.toFixed(2)}`);
+    if (diag.pixelRatio > T.pixelRatio) add('warning', `픽셀 비율 높음: ${diag.pixelRatio.toFixed(2)}`);
 
     const renderer = diag.renderer || {};
     const caps = renderer.capabilities || {};
@@ -72,12 +72,12 @@ export function computeWarnings(snap, T = WARN_THRESHOLDS) {
     if (renderer.reloadRequired) add('info', '렌더러 환경설정 변경은 재로드가 필요합니다');
 
     const total = diag.culling?.total ?? 0;
-    if (total > T.chunks) add('warning', `Many chunks active: ${total}`);
+    if (total > T.chunks) add('warning', `활성 청크 많음: ${total}`);
 
     if (diag.clouds?.enabled) {
-      if (diag.clouds.steps > T.cloudSteps) add('warning', `Cloud raymarch steps high: ${diag.clouds.steps}`);
+      if (diag.clouds.steps > T.cloudSteps) add('warning', `구름 레이마칭 단계 (고품질): ${diag.clouds.steps}`);
       if (diag.clouds.lod === 'none') add('info', '클라우드 LOD 비활성화');
-      add('info', `Cloud culling: ${diag.clouds.cullingMode}`);
+      add('info', `구름 컬링: ${diag.clouds.cullingMode}`);
     }
 
     if (diag.water?.enabled) {

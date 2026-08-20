@@ -37,7 +37,7 @@ async function copyText(value) {
   input.select();
   const copied = document.execCommand('copy');
   input.remove();
-  if (!copied) throw new Error('Copying is not supported by this browser.');
+  if (!copied) throw new Error('이 브라우저에서는 복사가 지원되지 않습니다.');
 }
 
 function shareCodeFromHash() {
@@ -86,7 +86,7 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
       setPages(result.pages);
       setTotal(result.total);
     } catch (requestError) {
-      showPopup(requestError.message || 'Could not load community projects.', { type: 'error' });
+      showPopup(requestError.message || '커뮤니티 프로젝트를 불러올 수 없습니다.', { type: 'error' });
     } finally {
       setLoading(false);
     }
@@ -155,7 +155,7 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
       showPopup('열기 링크가 클립보드에 복사되었습니다.', { type: 'success' });
       window.setTimeout(() => setCopiedCode((current) => current === normalized ? '' : current), 1800);
     } catch (copyError) {
-      showPopup(copyError.message || 'Could not copy the opening link.', { type: 'error' });
+      showPopup(copyError.message || '오프닝 링크를 복사할 수 없습니다.', { type: 'error' });
     }
   };
 
@@ -171,7 +171,7 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
       }
       showPopup(successMessage, { type: 'success' });
     } catch (requestError) {
-      showPopup(requestError.message || 'Could not update this terrain.', { type: 'error' });
+      showPopup(requestError.message || '이 지형을 업데이트할 수 없습니다.', { type: 'error' });
     } finally {
       setBusy('');
     }
@@ -179,14 +179,14 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
 
   const rename = async (project) => {
     const name = (await showPrompt({
-      title: 'Rename community terrain',
-      inputLabel: 'Terrain name',
+      title: '커뮤니티 지형 이름 바꾸기',
+      inputLabel: '지형 이름',
       initialValue: project.name,
       confirmLabel: '이름 변경',
       maxLength: 120,
     }))?.trim();
     if (!name || name === project.name) return;
-    await updateOwnerProject(project, { name }, `Renamed to ${name}.`);
+    await updateOwnerProject(project, { name }, `${name}(으)로 이름이 변경되었습니다.`);
   };
 
   const ownerProjects = useMemo(() => new Set(
@@ -194,7 +194,7 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
   ), [projects, user?.id]);
 
   const resultsTitle = activeQuery
-    ? `Results for “${activeQuery}”`
+    ? `“${activeQuery}” 검색 결과`
     : activeType ? `${typeLabel(activeType)} terrains` : '최근 공유됨';
 
   return (
@@ -208,7 +208,7 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
 
       <form className="community-search" onSubmit={search}>
         <Search size={14} aria-hidden />
-        <input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search names, creators, or sharing codes" aria-label="커뮤니티 프로젝트 검색" />
+        <input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="이름, 제작자 또는 공유 코드 검색" aria-label="커뮤니티 프로젝트 검색" />
         <button type="submit" className="lp-secondary sm">검색</button>
       </form>
 
@@ -238,7 +238,7 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
                 <div className={`community-card-art ${project.editorMode || 'procedural'}`}>
                   <span className="community-card-icon"><Icon size={30} aria-hidden /></span>
                   <span className="community-card-type">{typeLabel(project.editorMode)}</span>
-                  <button type="button" className="community-share-link" onClick={() => copyShareLink(project.shareCode)} title="Copy opening link" aria-label={`Copy opening link for ${project.name}`}>
+                  <button type="button" className="community-share-link" onClick={() => copyShareLink(project.shareCode)} title="오프닝 링크 복사" aria-label={`${project.name}의 오프닝 링크 복사`}>
                     {copiedCode === project.shareCode ? <Check size={11} aria-hidden /> : <Copy size={11} aria-hidden />}<code>{project.shareCode}</code>
                   </button>
                 </div>
@@ -259,9 +259,9 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
                       <div className="community-owner-panel-head"><strong>지형 관리</strong><button type="button" onClick={() => setEditingId('')} aria-label="지형 설정 닫기"><X size={13} /></button></div>
                       <div className="community-owner-actions">
                         <button type="button" className="lp-secondary sm" onClick={() => rename(project)} disabled={disabled}><Pencil size={13} /> 이름 변경</button>
-                        <label className="community-visibility-select"><span>가시성</span><span className="community-select-wrap">{project.visibility === 'public' ? <Globe2 size={12} /> : project.visibility === 'unlisted' ? <Eye size={12} /> : <Lock size={12} />}<select value={project.visibility} onChange={(event) => updateOwnerProject(project, { visibility: event.target.value }, `가시성을 ${event.target.value}(으)로 변경했습니다.`)} disabled={disabled} aria-label={`Visibility for ${project.name}`}><option value="private">비공개</option><option value="unlisted">비공개(링크 보유자만)</option><option value="public">공개</option></select></span></label>
+                        <label className="community-visibility-select"><span>가시성</span><span className="community-select-wrap">{project.visibility === 'public' ? <Globe2 size={12} /> : project.visibility === 'unlisted' ? <Eye size={12} /> : <Lock size={12} />}<select value={project.visibility} onChange={(event) => updateOwnerProject(project, { visibility: event.target.value }, `가시성을 ${event.target.value}(으)로 변경했습니다.`)} disabled={disabled} aria-label={`${project.name} 공개 범위`}><option value="private">비공개</option><option value="unlisted">비공개(링크 보유자만)</option><option value="public">공개</option></select></span></label>
                       </div>
-                      <div className="community-icon-picker"><span>카드 아이콘</span><div>{COMMUNITY_ICONS.map((option) => { const OptionIcon = option.Icon; return <button type="button" key={option.id} className={selectedCommunityIcon === option.id ? 'active' : ''} onClick={() => updateOwnerProject(project, { communityIcon: option.id }, `${option.label} icon selected.`)} disabled={disabled} title={option.label} aria-label={`Use ${option.label} icon`}><OptionIcon size={14} /></button>; })}</div></div>
+                      <div className="community-icon-picker"><span>카드 아이콘</span><div>{COMMUNITY_ICONS.map((option) => { const OptionIcon = option.Icon; return <button type="button" key={option.id} className={selectedCommunityIcon === option.id ? 'active' : ''} onClick={() => updateOwnerProject(project, { communityIcon: option.id }, `${option.label} icon selected.`)} disabled={disabled} title={option.label} aria-label={`${option.label} 아이콘 사용`}><OptionIcon size={14} /></button>; })}</div></div>
                     </div>
                   )}
                 </div>

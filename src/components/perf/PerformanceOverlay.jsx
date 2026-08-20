@@ -136,7 +136,7 @@ export default function PerformanceOverlay({
             </div>
           </div>
 
-          <GraphCard label="Frame rate" hint="~24 s">
+          <GraphCard label="프레임 레이트" hint="~24초">
             <PerfSparkline
               data={history?.fps}
               color="var(--success)"
@@ -183,16 +183,16 @@ export default function PerformanceOverlay({
           </div>
         </div>
 
-        <Section id="summary" title="Summary" collapsed={collapsed.summary} onToggle={onToggleSection}>
+        <Section id="summary" title="요약" collapsed={collapsed.summary} onToggle={onToggleSection}>
           <Row label="FPS" value={fps} warn={fps > 0 && fps < 45} />
-          <Row label="Avg FPS" value={snapshot.fpsAvg} />
+          <Row label="평균 FPS" value={snapshot.fpsAvg} />
           <Row label="프레임" value={fmtMs(frame?.avg)} warn={frame?.avg > 22} />
-          <Row label="Frame min/max" value={`${fmtMs(frame?.min)} / ${fmtMs(frame?.max)}`} />
+          <Row label="프레임 최소/최대" value={`${fmtMs(frame?.min)} / ${fmtMs(frame?.max)}`} />
           <Row label="최빈값" value={diag?.mode || '–'} />
           <Row label="상태" value={diag?.state || '–'} />
           <Row label="품질 우선" value={diag?.qualityPreset || '–'} />
-          <Row label="Pixel ratio" value={diag?.pixelRatio?.toFixed(2) ?? '–'} warn={diag?.pixelRatio > 2.5} />
-          <Row label="Render size" value={diag?.drawingBuffer ? `${diag.drawingBuffer.w}×${diag.drawingBuffer.h}` : '–'} />
+          <Row label="픽셀 비율" value={diag?.pixelRatio?.toFixed(2) ?? '–'} warn={diag?.pixelRatio > 2.5} />
+          <Row label="렌더 크기" value={diag?.drawingBuffer ? `${diag.drawingBuffer.w}×${diag.drawingBuffer.h}` : '–'} />
           <Row label="카메라" value={cam ? `${cam.x.toFixed(0)}, ${cam.y.toFixed(0)}, ${cam.z.toFixed(0)}` : '–'} />
         </Section>
 
@@ -202,10 +202,10 @@ export default function PerformanceOverlay({
               <Row label="드로우 콜" value={render.calls} warn={render.calls > 1500} />
               <Row label="삼각형" value={fmtNum(render.triangles)} warn={render.triangles > 3e6} />
               <Row label="점들" value={render.points} />
-              <Row label="Lines" value={render.lines} />
+              <Row label="선" value={render.lines} />
               <Row label="지오메트리" value={render.geometries} />
               <Row label="텍스처" value={render.textures} warn={render.textures > 120} />
-              <Row label="Programs" value={render.programs} />
+              <Row label="프로그램" value={render.programs} />
               <Row label="그림자" value={diag?.shadowsEnabled ? 'on' : 'off'} />
               <Row label="수중 패스" value={diag?.postProcessing?.underwater ? 'active' : 'inactive'} />
             </>
@@ -219,16 +219,16 @@ export default function PerformanceOverlay({
         </Section>
 
         <Section id="gpu" title="GPU / 렌더러" collapsed={collapsed.gpu} onToggle={onToggleSection}>
-          <Row label="Renderer backend" value={diag?.renderer?.requestedBackendLabel || 'â€“'} />
+          <Row label="렌더러 백엔드" value={diag?.renderer?.requestedBackendLabel || 'â€“'} />
           <Row label="활성 렌더러" value={diag?.renderer?.activeBackendLabel || 'â€“'} warn={diag?.renderer?.reloadRequired} />
-          <Row label="GPU preference" value={diag?.renderer?.requestedGpuPreferenceLabel || 'â€“'} />
-          <Row label="Applied preference" value={diag?.renderer?.activeGpuPreferenceLabel || 'â€“'} warn={diag?.renderer?.reloadRequired} />
+          <Row label="GPU 환경설정" value={diag?.renderer?.requestedGpuPreferenceLabel || 'â€“'} />
+          <Row label="적용된 환경설정" value={diag?.renderer?.activeGpuPreferenceLabel || 'â€“'} warn={diag?.renderer?.reloadRequired} />
           <Row label="감지된 GPU" value={diag?.renderer?.capabilities?.detectedGpu || diag?.gpuName || 'â€“'} warn={diag?.renderer?.capabilities?.gpuInfoAvailable === false} />
-          <Row label="WebGPU support" value={diag?.renderer?.capabilities?.webgpu?.supported ? 'available' : 'unavailable'} />
+          <Row label="WebGPU 지원" value={diag?.renderer?.capabilities?.webgpu?.supported ? 'available' : 'unavailable'} />
           {gpu && gpu.supported ? (
             <>
               <Row label="프레임 GPU" value={fmtMs(gpu.frameMs)} />
-              <Row label="Per-pass" value="whole-frame only" />
+              <Row label="Per-pass" value="전체 프레임 전용" />
               {gpu.disjoint && <Row label="메모" value="분리됨 — 결과 신뢰할 수 없음" warn />}
             </>
           ) : <Row label="GPU 타이밍" value="이 브라우저/디바이스에서 사용할 수 없음" />}
@@ -239,7 +239,7 @@ export default function PerformanceOverlay({
           {memory && memory.supported ? (
             <>
               <Row label="JS 힙 사용량" value={mb(memory.usedJSHeap)} warn={memory.usedJSHeap / memory.jsHeapLimit > 0.85} />
-              <Row label="JS heap total" value={mb(memory.totalJSHeap)} />
+              <Row label="JS 힙 전체" value={mb(memory.totalJSHeap)} />
               <Row label="JS 힙 한도" value={mb(memory.jsHeapLimit)} />
             </>
           ) : <Row label="메모리 API" value="unavailable" />}
@@ -265,20 +265,20 @@ export default function PerformanceOverlay({
         <Section id="culling" title="컬링 & LOD" collapsed={collapsed.culling} onToggle={onToggleSection}>
           <Row label="전체 청크" value={cull.total ?? '–'} />
           <Row label="표시됨" value={cull.visible ?? '–'} />
-          <Row label="Culled" value={cull.culled ?? '–'} />
+          <Row label="컬링됨" value={cull.culled ?? '–'} />
           {lod.map((c, i) => <Row key={i} label={`LOD${i}`} value={c} />)}
         </Section>
 
-        <Section id="props" title="Terrain Props" collapsed={collapsed.props} onToggle={onToggleSection}>
+        <Section id="props" title="지형 소품" collapsed={collapsed.props} onToggle={onToggleSection}>
           {diag?.props ? (
             <>
-              <Row label="Quality tier" value={diag.props.quality ?? '–'} />
-              <Row label="Grass / flowers" value={`${fmtNum(diag.props.instances?.grass || 0)} / ${fmtNum(diag.props.instances?.flowers || 0)}`} />
-              <Row label="Rocks / trees" value={`${fmtNum(diag.props.instances?.rocks || 0)} / ${fmtNum(diag.props.instances?.trees || 0)}`} />
+              <Row label="품질 단계" value={diag.props.quality ?? '–'} />
+              <Row label="풀 / 꽃" value={`${fmtNum(diag.props.instances?.grass || 0)} / ${fmtNum(diag.props.instances?.flowers || 0)}`} />
+              <Row label="바위 / 나무" value={`${fmtNum(diag.props.instances?.rocks || 0)} / ${fmtNum(diag.props.instances?.trees || 0)}`} />
               <Row label="드로우 콜" value={diag.props.drawCalls ?? 0} warn={diag.props.drawCalls > 9} />
               <Row label="삼각형" value={fmtNum(diag.props.triangles || 0)} warn={diag.props.triangles > 65000} />
-              <Row label="Sectors / queued" value={`${diag.props.sectors || 0} / ${diag.props.queuedSectors || 0}`} />
-              <Row label="Last update" value={fmtMs(diag.props.buildMs)} warn={diag.props.buildMs > 8} />
+              <Row label="섹터 / 대기열" value={`${diag.props.sectors || 0} / ${diag.props.queuedSectors || 0}`} />
+              <Row label="최근 업데이트" value={fmtMs(diag.props.buildMs)} warn={diag.props.buildMs > 8} />
               <Row label="표면 읽기" value={diag.props.surfaceReadbacks || 0} />
             </>
           ) : <Row label="소품" value="unavailable" />}
@@ -383,7 +383,7 @@ export default function PerformanceOverlay({
         </Section>
 
         {settings.showWarnings && (
-          <Section id="warnings" title={`Warnings (${warnings.length})`} collapsed={collapsed.warnings} onToggle={onToggleSection}>
+          <Section id="warnings" title={`경고 (${warnings.length})`} collapsed={collapsed.warnings} onToggle={onToggleSection}>
             {warnings.length ? warnings.map((w, i) => (
               <div key={i} className={`perf-warn perf-warn-${w.level}`}>
                 <span className="perf-warn-level">{w.level}</span>
@@ -418,19 +418,19 @@ function renderTerrain(diag) {
   if (diag.mode === 'infinite') {
     return (
       <>
-        <Row label="Chunk size" value={fmtMaybe(t.chunkSize)} />
-        <Row label="View radius" value={fmtMaybe(t.viewRadius)} />
-        <Row label="Render distance" value={fmtMaybe(t.renderDistance)} />
-        <Row label="LOD thresholds" value={(t.lodThresholds || []).map((x) => x.toFixed(0)).join(', ') || '–'} />
-        <Row label="Last chunk gen" value={t.lastChunkGenMs != null ? `${t.lastChunkGenMs.toFixed(1)} ms` : '–'} />
+        <Row label="청크 크기" value={fmtMaybe(t.chunkSize)} />
+        <Row label="뷰 반경" value={fmtMaybe(t.viewRadius)} />
+        <Row label="렌더 거리" value={fmtMaybe(t.renderDistance)} />
+        <Row label="LOD 임계값" value={(t.lodThresholds || []).map((x) => x.toFixed(0)).join(', ') || '–'} />
+        <Row label="마지막 청크 생성" value={t.lastChunkGenMs != null ? `${t.lastChunkGenMs.toFixed(1)} ms` : '–'} />
       </>
     );
   }
   if (diag.mode === 'planet') {
     return (
       <>
-        <Row label="Planet radius" value={fmtMaybe(t.planetRadius)} />
-        <Row label="Face grid" value={fmtMaybe(t.faceGrid)} />
+        <Row label="행성 반지름" value={fmtMaybe(t.planetRadius)} />
+        <Row label="면 그리드" value={fmtMaybe(t.faceGrid)} />
         <Row label="베이크된 높이 텍스처" value={t.bakedHeightTex ? 'yes' : 'no'} />
         <Row label="마지막 재구축" value={t.lastRebuildMs != null ? `${t.lastRebuildMs.toFixed(1)} ms` : '–'} />
       </>
@@ -439,9 +439,9 @@ function renderTerrain(diag) {
   return (
     <>
       <Row label="해상도" value={fmtMaybe(t.resolution)} />
-      <Row label="Board size" value={fmtMaybe(t.boardSize)} />
+      <Row label="보드 크기" value={fmtMaybe(t.boardSize)} />
       <Row label="타일" value={fmtMaybe(t.tiles)} />
-      <Row label="Height scale" value={fmtMaybe(t.heightScale)} />
+      <Row label="높이 스케일" value={fmtMaybe(t.heightScale)} />
       <Row label="옥타브" value={fmtMaybe(t.octaves)} />
       <Row label="노이즈 레이어" value={fmtMaybe(t.noiseLayers)} />
       <Row label="베이크된 높이 텍스처" value={t.bakedHeightTex ? 'yes' : 'no'} />

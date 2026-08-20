@@ -43,7 +43,7 @@ function getDevice() {
   if (!_devicePromise) {
     _devicePromise = (async () => {
       const adapter = await navigator.gpu.requestAdapter();
-      if (!adapter) throw new Error('no WebGPU adapter');
+      if (!adapter) throw new Error('WebGPU 어댑터 없음');
       const device = await adapter.requestDevice();
       device.lost.then(() => { _devicePromise = null; });
       return device;
@@ -395,7 +395,7 @@ export async function erodeWebGPU({ width, height, heightmap, params, onProgress
     const depI = await readBack(device, q, depBuf, staging, N * 4);
 
     const gpuError = await device.popErrorScope();
-    if (gpuError) throw new Error(`WebGPU validation: ${gpuError.message}`);
+    if (gpuError) throw new Error(`WebGPU 검증: ${gpuError.message}`);
 
     const map = new Float32Array(N);
     const flow = new Float32Array(N);

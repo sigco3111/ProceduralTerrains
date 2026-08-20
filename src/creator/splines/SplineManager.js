@@ -35,7 +35,7 @@ export class SplineManager {
   }
   updateSpline(id, patch, { preview = false } = {}) {
     const s = this._find(id); if (!s || s.locked) return;
-    Object.assign(s, patch, { updatedAt: new Date().toISOString() }); this.bake({ preview }); if (!preview) this._scheduleStable(`Changed ${s.type}`);
+    Object.assign(s, patch, { updatedAt: new Date().toISOString() }); this.bake({ preview }); if (!preview) this._scheduleStable(`${s.type} 변경됨`);
   }
   deleteSpline(id) { const i = this.splines.findIndex((s) => s.id === id); if (i < 0) return; this.splines.splice(i, 1); if (this.selectedId === id) this.selectedId = null; this.bake(); this._stable('스플라인 삭제됨'); }
   duplicateSpline(id) { const s = this._find(id); if (!s) return; const clone = JSON.parse(JSON.stringify(s)); clone.id = uid('spline'); clone.name = `${s.name} copy`; clone.controlPoints.forEach((p) => { p.id = uid('point'); p.x += 10; p.z += 10; }); this.splines.push(clone); this.selectedId = clone.id; this.bake(); this._stable('중복된 스플라인'); }

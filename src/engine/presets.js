@@ -74,7 +74,7 @@ export const DEFAULT_PARAMS = {
 
   // planet mode: base sphere radius in world units (terrain rises above it)
   planetRadius: 16000,
-  // planet mode: chunks per cube-face side (the spherical "chunk count")
+  // planet mode: chunks per cube-face side (the spherical "청크 개수")
   planetFaceGrid: 8,
 
   wireframe: false,

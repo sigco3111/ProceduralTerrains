@@ -43,53 +43,53 @@ function fmtWaterMemory(bytes) {
 const SEA_LEVEL_DEF = TERRAIN_SLIDERS.find((s) => s.key === 'seaLevel');
 
 const MODE_HINTS = {
-  off: 'Water disabled — no mesh, no underwater effect.',
-  legacy: 'Fast original water shader. Best for performance and Infinite World.',
-  realistic: 'RGB absorption, live sky reflection, directional waves, and shoreline foam.',
+  off: '물 비활성화 — 메쉬 없음, 수면 효과 없음.',
+  legacy: '원본 물 셰이더의 고속 버전. 성능과 무한 세계(Infinite World)에 최적입니다.',
+  realistic: 'RGB 흡수, 실시간 하늘 반사, 방향성 파도, 해안선 거품.',
   volumetric: 'Realistic surface plus half-resolution scene refraction, depth rejection, and higher-tier underwater effects.',
   cinematic: 'Volumetric water plus displaced geometry, sparse crest foam, and planar scene reflections. Best for Tile screenshots.',
 };
 
 const MATERIAL_SLIDERS = [
-  { key: 'waterOpacity', label: 'Density / Opacity', min: 0.2, max: 1, step: 0.01, digits: 2, info: 'Optical density in Realistic modes; traditional transparency in Legacy mode.' },
-  { key: 'waterRoughness', label: '거칠기', min: 0, max: 1, step: 0.02, digits: 2, info: 'Broadens the reflected sky and sun highlight, and softens micro ripples.' },
-  { key: 'waterFresnelStrength', label: 'Fresnel Strength', min: 0, max: 2, step: 0.05, digits: 2 },
+  { key: 'waterOpacity', label: '밀도 / 불투명도', min: 0.2, max: 1, step: 0.01, digits: 2, info: 'Realistic 모드에서는 광학 밀도, Legacy 모드에서는 전통적 투명도입니다.' },
+  { key: 'waterRoughness', label: '거칠기', min: 0, max: 1, step: 0.02, digits: 2, info: '반사된 하늘과 태양 하이라이트를 넓히고 미세한 잔물결을 부드럽게 합니다.' },
+  { key: 'waterFresnelStrength', label: '프레넬 강도', min: 0, max: 2, step: 0.05, digits: 2 },
   { key: 'waterRefractionStrength', label: '투과 / 굴절', min: 0.05, max: 1.5, step: 0.05, digits: 2, info: 'Controls transmission clarity in Realistic mode and scene distortion in Volumetric/Cinematic modes.' },
-  { key: 'waterSpecularStrength', label: 'Specular Strength', min: 0, max: 2, step: 0.05, digits: 2 },
+  { key: 'waterSpecularStrength', label: '스펙큘러 강도', min: 0, max: 2, step: 0.05, digits: 2 },
 ];
 
 const DEPTH_SLIDERS = [
-  { key: 'waterDepthColorStrength', label: 'Depth Color Strength', min: 0, max: 2, step: 0.05, digits: 2 },
-  { key: 'waterDepthOpacityStrength', label: 'Depth Opacity Strength', min: 0, max: 2, step: 0.05, digits: 2 },
-  { key: 'waterMaxVisibleDepth', label: 'Max Visible Depth', min: 20, max: 250, step: 5, unit: ' u' },
-  { key: 'waterDepthFalloff', label: 'Depth Falloff', min: 0.2, max: 3, step: 0.05, digits: 2 },
-  { key: 'waterShallowDistance', label: 'Shallow Distance', min: 2, max: 30, step: 0.5, digits: 1, unit: ' u' },
-  { key: 'waterDeepDistance', label: 'Deep Distance', min: 20, max: 120, step: 1, unit: ' u' },
+  { key: 'waterDepthColorStrength', label: '심부 색상 강도', min: 0, max: 2, step: 0.05, digits: 2 },
+  { key: 'waterDepthOpacityStrength', label: '심부 불투명도 강도', min: 0, max: 2, step: 0.05, digits: 2 },
+  { key: 'waterMaxVisibleDepth', label: '최대 가시 깊이', min: 20, max: 250, step: 5, unit: ' u' },
+  { key: 'waterDepthFalloff', label: '심부 감쇠', min: 0.2, max: 3, step: 0.05, digits: 2 },
+  { key: 'waterShallowDistance', label: '얕은 거리', min: 2, max: 30, step: 0.5, digits: 1, unit: ' u' },
+  { key: 'waterDeepDistance', label: '심부 거리', min: 20, max: 120, step: 1, unit: ' u' },
   { key: 'waterAbsorptionStrength', label: '흡수 강도', min: 0, max: 2, step: 0.05, digits: 2 },
 ];
 
 const WAVE_SLIDERS = [
   { key: 'waterWaveSpeed', label: '물결 속도', min: 0, max: 3, step: 0.05, digits: 2 },
-  { key: 'waterWaveScale', label: 'Wave Scale', min: 0.3, max: 3, step: 0.05, digits: 2 },
-  { key: 'waterWaveStrength', label: 'Wave Strength', min: 0, max: 2, step: 0.05, digits: 2 },
-  { key: 'waterSmallWaveStrength', label: 'Small Waves', min: 0, max: 2, step: 0.05, digits: 2 },
-  { key: 'waterLargeWaveStrength', label: 'Large Waves', min: 0, max: 2, step: 0.05, digits: 2 },
-  { key: 'waterNormalIntensity', label: 'Normal Intensity', min: 0, max: 2, step: 0.05, digits: 2 },
+  { key: 'waterWaveScale', label: '파도 스케일', min: 0.3, max: 3, step: 0.05, digits: 2 },
+  { key: 'waterWaveStrength', label: '파도 강도', min: 0, max: 2, step: 0.05, digits: 2 },
+  { key: 'waterSmallWaveStrength', label: '잔잔한 파도', min: 0, max: 2, step: 0.05, digits: 2 },
+  { key: 'waterLargeWaveStrength', label: '큰 파도', min: 0, max: 2, step: 0.05, digits: 2 },
+  { key: 'waterNormalIntensity', label: '노멀 강도', min: 0, max: 2, step: 0.05, digits: 2 },
   { key: 'waterWaveDirection', label: '물결 방향', min: 0, max: 360, step: 1, unit: '°' },
   { key: 'waterAnimSpeed', label: '애니메이션 속도', min: 0, max: 3, step: 0.05, digits: 2 },
 ];
 
 const FOAM_SLIDERS = [
-  { key: 'waterFoamStrength', label: 'Shoreline Foam Strength', min: 0, max: 1.5, step: 0.02, digits: 2 },
-  { key: 'waterFoamSoftness', label: 'Foam Softness', min: 0.1, max: 4, step: 0.1, digits: 1 },
-  { key: 'waterFoamAnimSpeed', label: 'Foam Animation', min: 0, max: 3, step: 0.05, digits: 2 },
-  { key: 'waterSlopeFoam', label: 'Slope-Based Foam', min: 0, max: 1.5, step: 0.05, digits: 2 },
-  { key: 'waterCliffFoam', label: 'Cliff / Rock Foam', min: 0, max: 1.5, step: 0.05, digits: 2 },
+  { key: 'waterFoamStrength', label: '해안선 거품 강도', min: 0, max: 1.5, step: 0.02, digits: 2 },
+  { key: 'waterFoamSoftness', label: '거품 부드러움', min: 0.1, max: 4, step: 0.1, digits: 1 },
+  { key: 'waterFoamAnimSpeed', label: '거품 애니메이션', min: 0, max: 3, step: 0.05, digits: 2 },
+  { key: 'waterSlopeFoam', label: '경사 기반 거품', min: 0, max: 1.5, step: 0.05, digits: 2 },
+  { key: 'waterCliffFoam', label: '절벽 / 암석 거품', min: 0, max: 1.5, step: 0.05, digits: 2 },
 ];
 
 const SHORE_DISTANCE_SLIDER = {
   key: 'waterFoamWidth',
-  label: 'Shore Distance',
+  label: '해안 거리',
   min: 0.5,
   max: 12,
   step: 0.1,
@@ -108,11 +108,11 @@ const UNDERWATER_SLIDERS = [
 
 const CAUSTIC_SLIDERS = [
   { key: 'waterUnderwaterCaustics', label: '반사광 세도', min: 0, max: 1.5, step: 0.05, digits: 2 },
-  { key: 'waterUnderwaterCausticScale', label: 'Caustics Scale', min: 0.25, max: 3, step: 0.05, digits: 2 },
-  { key: 'waterUnderwaterCausticSpeed', label: 'Caustics Speed', min: 0, max: 3, step: 0.05, digits: 2 },
+  { key: 'waterUnderwaterCausticScale', label: '코스틱 스케일', min: 0.25, max: 3, step: 0.05, digits: 2 },
+  { key: 'waterUnderwaterCausticSpeed', label: '코스틱 속도', min: 0, max: 3, step: 0.05, digits: 2 },
   {
     key: 'waterUnderwaterCausticMinDepth',
-    label: 'Minimum Caustics Depth',
+    label: '최소 캐스틱 깊이',
     min: 0,
     max: 20,
     step: 0.25,
@@ -122,27 +122,27 @@ const CAUSTIC_SLIDERS = [
   },
   {
     key: 'waterUnderwaterCausticMinDepthFalloff',
-    label: 'Minimum Depth Falloff',
+    label: '최소 깊이 폴오프',
     min: 0.1,
     max: 20,
     step: 0.25,
     digits: 2,
     unit: ' u',
-    info: 'Distance over which caustics fade in after the minimum depth.',
+    info: '최소 심도 이후 코스틱이 페이드 인되는 거리입니다.',
   },
 ];
 
 const REALISTIC_PERF_SLIDERS = [
-  { key: 'waterReflectionQuality', label: 'Reflection Quality', min: 0, max: 1.5, step: 0.05, digits: 2, expensive: true, info: 'Up to 1× controls analytical sky clarity. Above 1× enables planar scene reflection in Cinematic Tile mode.' },
-  { key: 'waterFoamQuality', label: 'Foam Quality', min: 0, max: 1.5, step: 0.05, digits: 2 },
-  { key: 'waterCausticsQuality', label: 'Caustics Quality', min: 0, max: 1.5, step: 0.05, digits: 2, expensive: true },
-  { key: 'waterNormalResolution', label: 'Micro Wave Detail', min: 0.25, max: 1.5, step: 0.05, digits: 2, info: 'Scales only the fine procedural ripples; it does not change the main wave size.' },
-  { key: 'waterDisableExpensiveBelowFps', label: 'FPS Downgrade Threshold', min: 24, max: 60, step: 1, digits: 0 },
+  { key: 'waterReflectionQuality', label: '반사 품질', min: 0, max: 1.5, step: 0.05, digits: 2, expensive: true, info: 'Up to 1× controls analytical sky clarity. Above 1× enables planar scene reflection in Cinematic Tile mode.' },
+  { key: 'waterFoamQuality', label: '거품 품질', min: 0, max: 1.5, step: 0.05, digits: 2 },
+  { key: 'waterCausticsQuality', label: '코스틱 품질', min: 0, max: 1.5, step: 0.05, digits: 2, expensive: true },
+  { key: 'waterNormalResolution', label: '마이크로 파도 디테일', min: 0.25, max: 1.5, step: 0.05, digits: 2, info: '미세한 프로시저럴 잔물결만 조정하며 주 파도 크기는 변경하지 않습니다.' },
+  { key: 'waterDisableExpensiveBelowFps', label: 'FPS 다운그레이드 임계값', min: 24, max: 60, step: 1, digits: 0 },
 ];
 
 const REFRACTION_PERF_SLIDERS = [
-  { key: 'waterRefractionQuality', label: 'Refraction Detail', min: 0.1, max: 1.5, step: 0.05, digits: 2, expensive: true, info: 'Controls distortion detail and terrain-silhouette rejection.' },
-  { key: 'waterRenderScale', label: 'Water Pass Resolution', min: 0.5, max: 2, step: 0.25, digits: 2, expensive: true, info: '1× renders refraction at half resolution; 2× reaches full resolution and also raises Cinematic reflection resolution.' },
+  { key: 'waterRefractionQuality', label: '굴절 디테일', min: 0.1, max: 1.5, step: 0.05, digits: 2, expensive: true, info: '왜곡 디테일과 지형 실루엣 차단을 제어합니다.' },
+  { key: 'waterRenderScale', label: '물 패스 해상도', min: 0.5, max: 2, step: 0.25, digits: 2, expensive: true, info: '1× renders refraction at half resolution; 2× reaches full resolution and also raises Cinematic reflection resolution.' },
 ];
 
 const REFLECTION_UPDATE_OPTIONS = [
@@ -266,7 +266,7 @@ export default function WaterPanelInner({
           <p className="section-hint warning">
             Rendering as {effectiveLabel}
             {isInfinite && val(params, 'waterAutoDowngradeInfinite') ? ' (자동 다운그레이드 활성)' : ''}
-            {isPlanet && selectedRealistic ? ' (planet spherical fallback)' : ''}
+            {isPlanet && selectedRealistic ? ' (행성 구형 폴백)' : ''}
           </p>
         )}
       </div>
@@ -440,7 +440,7 @@ export default function WaterPanelInner({
         >
           {!effectiveRealistic && (
             <p className="section-hint">
-              Stored for Tile / Infinite World. {isPlanet ? 'Planet currently renders Legacy water.' : '유효 모드가 선택한 모드와 다릅니다.'}
+              Stored for Tile / Infinite World. {isPlanet ? '행성이 현재 Legacy 물을 렌더링합니다.' : '유효 모드가 선택한 모드와 다릅니다.'}
             </p>
           )}
           {DEPTH_SLIDERS.map((def) => (
@@ -532,7 +532,7 @@ export default function WaterPanelInner({
               <p className={`section-hint${uwFellBack ? ' warning' : ''}`}>
                 {uwResolved === 'off'
                   ? '수중 효과가 꺼져 있습니다.'
-                  : `Active mode: ${uwResolved === 'high' ? 'High' : 'Lite'}`}
+                  : `활성 모드: ${uwResolved === 'high' ? '고품질' : '라이트'}`}
                 {uwFellBack ? ' — High는 Realistic 렌더러가 필요하며 Lite로 폴백합니다.' : ''}
               </p>
             )}
@@ -596,7 +596,7 @@ export default function WaterPanelInner({
       })()}
 
       {enabled && isPlanet && (
-        <ControlSection id={`${id}-planet`} title="Planet Ocean" defaultOpen={false} settingId="water.section.planet">
+        <ControlSection id={`${id}-planet`} title="행성 바다" defaultOpen={false} settingId="water.section.planet">
           <p className="section-hint">
             Planet uses a spherical ocean shell at sea level. Water colors and animation apply immediately.
             Underwater post-processing is disabled on the planet (curved surface). Realistic depth/foam settings are saved for other modes.
@@ -690,7 +690,7 @@ export default function WaterPanelInner({
           whole-frame GPU time when available, draw calls, triangles, and water shader compile time.
         </p>
         <SelectRow
-          label="Water Debug View"
+          label="물 디버그 뷰"
           value={val(params, 'waterDebugView')}
           options={WATER_DEBUG_VIEWS}
           onChange={(v) => onParam('waterDebugView', v)}
@@ -698,14 +698,14 @@ export default function WaterPanelInner({
           info="Inspect water inputs and terms on the surface (requires effective Realistic mode)."
         />
         <ToggleRow
-          label="Show Water Mesh Bounds"
+          label="물 메쉬 경계 표시"
           value={!!val(params, 'waterShowMeshBounds')}
           onChange={(v) => onParam('waterShowMeshBounds', v)}
           settingId="water.waterShowMeshBounds"
-          info="Outline the active water mesh for this world mode."
+          info="이 월드 모드의 활성 물 메쉬 윤곽선을 표시합니다."
         />
         <ToggleRow
-          label="Show Water Performance Cost"
+          label="물 성능 비용 표시"
           value={!!val(params, 'waterShowPerfCost')}
           onChange={(v) => onParam('waterShowPerfCost', v)}
           settingId="water.waterShowPerfCost"
@@ -731,7 +731,7 @@ export default function WaterPanelInner({
           {isStudio
             ? 'Export water masks from the tile height field, or use the Export panel for GLB output.'
             : isInfinite
-              ? 'Mask export samples the current procedural height field at the board scale.'
+              ? '마스크 내보내기는 현재 절차적 높이 필드를 보드 스케일로 샘플링합니다.'
               : '마스크 내보내기는 가능한 경우 행성 높이 샘플링을 사용합니다. GLB 내보내기에는 해양 셸이 포함됩니다.'}
         </p>
         <button type="button" className="action-btn" onClick={() => onExportWaterMasks?.({ exportWaterMask: true, exportDepthMap: true })}>물 + 깊이 마스크 내보내기</button>

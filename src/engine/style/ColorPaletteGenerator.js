@@ -9,7 +9,7 @@ export const PLANET_GEN_TYPES = [
   { key: 'earth', label: 'Earth-like' },
   { key: 'alien', label: '에일리언' },
   { key: 'desert', label: '사막' },
-  { key: 'ice', label: 'Ice' },
+  { key: 'ice', label: '얼음' },
   { key: 'toxic', label: '유독성' },
   { key: 'volcanic', label: '화산성' },
   { key: 'fungal', label: '균사체' },
