@@ -1,4 +1,4 @@
-import{bz as De,cA as _t,ae as pe,ak as ne,by as Me,bB as fe,bo as ct,cB as Tt,p as Ct,bj as Oe,f as Ft,cC as W,c8 as Pt,cD as Et,a2 as Bt,cE as Wt,cF as He,cG as It,bi as Ot}from"./index-GOMVlF3t.js";import{i as Y,V as I,h as J,a5 as ut,k as Ae,M as Ge,d as Ht,l as Gt,m as Nt,U as Ut,S as $t,a as jt,aq as qt,L as Xt,a1 as Zt,aa as ue,n as Vt,G as Kt,q as mt,a0 as ge,I as Qt,r as Yt,g as Jt,j as dt}from"./three-DQ4dZCk9.js";const ea=`
+import{bz as De,cA as _t,ae as pe,ak as ne,by as Me,bB as fe,bo as ct,cB as Tt,p as Ct,bj as Oe,f as Ft,cC as W,c8 as Pt,cD as Et,a2 as Bt,cE as Wt,cF as He,cG as It,bi as Ot}from"./index-B9D2FRJa.js";import{i as Y,V as I,h as J,a5 as ut,k as Ae,M as Ge,d as Ht,l as Gt,m as Nt,U as Ut,S as $t,a as jt,aq as qt,L as Xt,a1 as Zt,aa as ue,n as Vt,G as Kt,q as mt,a0 as ge,I as Qt,r as Yt,g as Jt,j as dt}from"./three-DQ4dZCk9.js";const ea=`
 // value noise plus analytic derivatives. The .x channel intentionally matches
 // vnoise(p): same hash corners, same quintic interpolant, same mix order.
 vec3 vnoised2(vec2 p) {

@@ -3969,7 +3969,7 @@ const DICT = {
   "denoise clean pixelated nearest upscale ps1": "denoise clean pixelated nearest upscale ps1"
   "disjoint — result unreliable": "분리됨 — 결과 신뢰할 수 없음"
   "distance step-LOD": "거리 단계 LOD"
-  "dither pattern color levels strength scale": "dither pattern color levels strength scale"
+  "dither pattern color levels strength scale": "디더 패턴 색상 단계 강도 스케일"
   "during post-boot warmup": "부팅 후 워밍업 중"
   "elapsed ": "elapsed "
   "elapsed ${(performance.now() - startedAt).toFixed(0)}ms": "elapsed ${(performance.now() - startedAt).toFixed(0)}ms"
@@ -6434,6 +6434,20 @@ const DICT = {
   "Transformed ${((m=this.selectedShape)==null?void 0:m.name)??\"terrain shape\"}": "${((m=this.selectedShape)==null?void 0:m.name)??\"terrain shape\"} 변형됨",
   "Unsupported working color space, \"${i}\".": "지원되지 않는 작업 색상 공간, \"${i}\".",
   "Water baseline \"${e}\" requires ${t.worldMode} mode": "물 기준 \"${e}\"에는 ${t.worldMode} 모드가 필요합니다",
+
+  "© OpenStreetMap contributors (ODbL)": "© OpenStreetMap 기여자 (ODbL)",
+  "not supported, using": "지원되지 않음, 사용 중:",
+  "target.depthTexture not supported in Cube render targets": "Cube 렌더 타겟에서는 target.depthTexture가 지원되지 않습니다",
+  "has no shadow.": "그림자가 없습니다.",
+  "ms; elapsed ": "ms; 경과 ",
+  "merge fold distance quadtree aggressiveness near far block size threshold": "병합 접기 거리 쿼드트리 강도 근접 원거리 블록 크기 임계값",
+  "merge chunk group draw call batch far distant tile macro proxy combine": "병합 청크 그룹 드로우 콜 배치 원거리 타일 매크로 프록시 결합",
+  "GLTFExporter: Only RGBAFormat is supported.": "GLTFExporter: RGBAFormat만 지원됩니다.",
+  "THREE.WebGLRenderer: Texture has been resized from (": "THREE.WebGLRenderer: 텍스처 크기가 변경되었습니다 (",
+  "Delete “": "삭제 “",
+  "${n.label||n.type} has no “${a.targetHandle}” input.": "${n.label||n.type}에 “${a.targetHandle}” 입력이 없습니다.",
+  "All ": "전체 ",
+  ",`Unknown terrain node type “${t}”.`);return{id:s.id||(t===": "`알 수 없는 지형 노드 타입 “${t}”.`);return{id:s.id||(t===",
 
 };
 

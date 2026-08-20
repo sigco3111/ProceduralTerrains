@@ -166,7 +166,7 @@ export default function VisualsPanel({ ctx }) {
           />
             </>
           ), 'camera')}
-          {group('dithering', '디더링', 'dither pattern color levels strength scale', (
+          {group('dithering', '디더링', '디더 패턴 색상 단계 강도 스케일', (
             <>
           <ToggleRow
             label="디더링"

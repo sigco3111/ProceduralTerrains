@@ -1,7 +1,7 @@
 // OpenStreetMap building footprints for the real-world terrain pipeline.
 // The fetch/parse half stays THREE-free so it can be tested independently.
 
-export const BUILDING_SOURCE = '© OpenStreetMap contributors (ODbL)';
+export const BUILDING_SOURCE = '© OpenStreetMap 기여자 (ODbL)';
 export const BUILDING_SOURCE_URL = 'https://www.openstreetmap.org/copyright';
 
 // Rotate between public global instances. A single Overpass host can reject a
