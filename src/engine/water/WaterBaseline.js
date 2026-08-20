@@ -25,7 +25,7 @@ export const WATER_BASELINE_SCENES = [
   },
   {
     value: 'deep-ocean-sunset',
-    label: '2 · Deep Ocean — Sunset',
+    label: '2 · 깊은 바다 — 일몰',
     worldMode: 'studio',
     terrainPreset: 'archipelago',
     waterPreset: 'ocean',
@@ -41,7 +41,7 @@ export const WATER_BASELINE_SCENES = [
   },
   {
     value: 'shallow-tropical-coast',
-    label: '3 · Shallow Tropical Coast',
+    label: '3 · 얕은 열대 해안',
     worldMode: 'studio',
     terrainPreset: 'archipelago',
     waterPreset: 'tropical',
@@ -57,7 +57,7 @@ export const WATER_BASELINE_SCENES = [
   },
   {
     value: 'mountain-lake',
-    label: '4 · Mountain Lake',
+    label: '4 · 산 호수',
     worldMode: 'studio',
     terrainPreset: 'highlands',
     waterPreset: 'lake',
@@ -73,7 +73,7 @@ export const WATER_BASELINE_SCENES = [
   },
   {
     value: 'infinite-grazing',
-    label: '5 · Infinite World — Grazing',
+    label: '5 · 무한 월드 — Grazing',
     worldMode: 'infinite',
     terrainPreset: 'highlands',
     waterPreset: 'balanced',
@@ -89,7 +89,7 @@ export const WATER_BASELINE_SCENES = [
   },
   {
     value: 'surface-transition-above',
-    label: '6A · Surface Transition — Above',
+    label: '6A · 표면 전환 — 위',
     worldMode: 'studio',
     terrainPreset: 'archipelago',
     waterPreset: 'balanced',

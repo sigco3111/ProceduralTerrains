@@ -12,8 +12,8 @@ const TABS = [
   { id: 'users', label: '사용자', icon: UsersRound },
   { id: 'visits', label: '방문', icon: Eye },
   { id: 'terrains', label: '지형들', icon: FolderKanban },
-  { id: 'audit', label: 'Audit log', icon: FileClock },
-  { id: 'security', label: 'Security', icon: ShieldCheck },
+  { id: 'audit', label: '감사 로그', icon: FileClock },
+  { id: 'security', label: '보안', icon: ShieldCheck },
 ];
 
 const number = new Intl.NumberFormat();
@@ -38,7 +38,7 @@ function ErrorState({ message, onRetry }) {
     <div className="admin-error" role="alert">
       <ShieldAlert size={22} />
       <strong>Couldn&apos;t load this view</strong>
-      <span>{message || 'The administration service did not respond.'}</span>
+      <span>{message || '관리 서비스가 응답하지 않았습니다.'}</span>
       <button type="button" onClick={onRetry}><RefreshCw size={13} /> Try again</button>
     </div>
   );
@@ -99,12 +99,12 @@ function TrendChart({ data = [], valueKey = 'visits', days: requestedDays = 14, 
 }
 
 const REPORTING_RANGES = [
-  { value: 7, label: 'Weekly' },
+  { value: 7, label: '주간' },
   { value: 30, label: '월간' },
-  { value: 90, label: '90 days' },
+  { value: 90, label: '90일' },
 ];
 
-function RangeSelector({ value, onChange, label = 'Reporting period' }) {
+function RangeSelector({ value, onChange, label = '보고 기간' }) {
   return (
     <div className="admin-range-selector" role="group" aria-label={label}>
       {REPORTING_RANGES.map((range) => (
@@ -122,7 +122,7 @@ function Overview({ data, onNavigate, rangeDays, onRangeChange }) {
     { label: 'Total users', value: data.counts.users, meta: `${number.format(data.counts.activeUsers)} active`, icon: UsersRound, tone: 'blue' },
     { label: '오늘 방문', value: data.counts.visitsToday, meta: `${number.format(data.counts.uniqueToday)} unique`, icon: Activity, tone: 'green' },
     { label: '지형들', value: data.counts.terrains, meta: '모든 사용자', icon: FolderKanban, tone: 'violet' },
-    { label: 'Open sessions', value: data.counts.openSessions, meta: 'Unexpired sessions', icon: KeyRound, tone: 'amber' },
+    { label: '세션 열기', value: data.counts.openSessions, meta: 'Unexpired sessions', icon: KeyRound, tone: 'amber' },
   ];
   return (
     <div className="admin-overview">
@@ -140,13 +140,13 @@ function Overview({ data, onNavigate, rangeDays, onRangeChange }) {
           <div><span className="admin-eyebrow">Traffic</span><h2>Visits over the last {rangeDays} days</h2></div>
           <div className="admin-panel-actions"><RangeSelector value={rangeDays} onChange={onRangeChange} /><button type="button" className="admin-text-button" onClick={() => onNavigate('visits')}>View visit log <ChevronRight size={13} /></button></div>
         </header>
-        <TrendChart data={data.visitTrend} days={rangeDays} valueLabel="page visits" />
+        <TrendChart data={data.visitTrend} days={rangeDays} valueLabel="페이지 방문" />
         <div className="admin-chart-legend"><span><i className="blue" /> Page visits</span><span><i className="muted" /> Daily values · {rangeLabel}</span></div>
       </section>
 
       <div className="admin-overview-columns">
         <section className="admin-panel">
-          <header><div><span className="admin-eyebrow">Latest work</span><h2>Recent terrains</h2></div><button type="button" className="admin-icon-button" onClick={() => onNavigate('terrains')} aria-label="View all terrains"><ChevronRight size={15} /></button></header>
+          <header><div><span className="admin-eyebrow">Latest work</span><h2>Recent terrains</h2></div><button type="button" className="admin-icon-button" onClick={() => onNavigate('terrains')} aria-label="모든 지형 보기"><ChevronRight size={15} /></button></header>
           <div className="admin-compact-list">
             {data.recentTerrains.length === 0 && <p className="admin-empty">No cloud terrains yet.</p>}
             {data.recentTerrains.map((terrain) => (
@@ -201,12 +201,12 @@ function UsersPanel({ currentUser }) {
     const isSuspend = patch.status === 'suspended';
     const isDemote = patch.role === 'user';
     const confirmed = await showConfirm({
-      title: isSuspend ? 'Suspend this account?' : isDemote ? 'Remove administrator access?' : 'Confirm account change',
+      title: isSuspend ? '이 계정을 정지하시겠습니까?' : isDemote ? 'Remove administrator access?' : '계정 변경 확인',
       message: isSuspend
         ? `${target.username} will be signed out everywhere and unable to sign in until reactivated.`
         : isDemote ? `${target.username} will immediately lose access to administration data.`
           : `Apply this change to ${target.username}?`,
-      confirmLabel: isSuspend ? 'Suspend account' : 'Apply change',
+      confirmLabel: isSuspend ? '계정 정지' : '변경 사항 적용',
       danger: isSuspend || isDemote,
     });
     if (!confirmed) return;
@@ -214,9 +214,9 @@ function UsersPanel({ currentUser }) {
     try {
       const result = await adminApi.updateUser(target.id, patch);
       setData((current) => ({ ...current, users: current.users.map((user) => user.id === target.id ? result.user : user) }));
-      showPopup('The account was updated and the action was added to the audit log.', { type: 'success', title: 'User updated' });
+      showPopup('계정이 업데이트되었으며 작업이 감사 로그에 추가되었습니다.', { type: 'success', title: '사용자 업데이트됨' });
     } catch (nextError) {
-      showPopup(nextError.message, { type: 'error', title: 'Update blocked' });
+      showPopup(nextError.message, { type: 'error', title: '업데이트 차단됨' });
     } finally { setBusy(''); }
   };
 
@@ -232,9 +232,9 @@ function UsersPanel({ currentUser }) {
     try {
       const result = await adminApi.revokeSessions(target.id);
       setData((current) => ({ ...current, users: current.users.map((user) => user.id === target.id ? { ...user, activeSessions: 0 } : user) }));
-      showPopup(`${result.revoked} session${result.revoked === 1 ? '' : 's'} revoked.`, { type: 'success', title: 'Sessions closed' });
+      showPopup(`${result.revoked} session${result.revoked === 1 ? '' : 's'} revoked.`, { type: 'success', title: '세션 닫힘' });
     } catch (nextError) {
-      showPopup(nextError.message, { type: 'error', title: 'Could not revoke sessions' });
+      showPopup(nextError.message, { type: 'error', title: '세션을 폐기할 수 없습니다' });
     } finally { setBusy(''); }
   };
 
@@ -245,23 +245,23 @@ function UsersPanel({ currentUser }) {
         <button type="button" className="admin-refresh" onClick={load}><RefreshCw size={13} /> Refresh</button>
       </header>
       <form className="admin-filters users-filters" onSubmit={(event) => { event.preventDefault(); setPage(1); setQuery(search); }}>
-        <label className="admin-search"><Search size={14} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search name, username, or email" aria-label="Search users" /></label>
-        <select value={status} onChange={(event) => { setPage(1); setStatus(event.target.value); }} aria-label="Filter user status">
+        <label className="admin-search"><Search size={14} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search name, username, or email" aria-label="사용자 검색" /></label>
+        <select value={status} onChange={(event) => { setPage(1); setStatus(event.target.value); }} aria-label="사용자 상태 필터">
           <option value="">All statuses</option><option value="active">Active</option><option value="suspended">Suspended</option>
         </select>
-        <select value={role} onChange={(event) => { setPage(1); setRole(event.target.value); }} aria-label="Filter user role">
+        <select value={role} onChange={(event) => { setPage(1); setRole(event.target.value); }} aria-label="사용자 역할 필터링">
           <option value="">All roles</option><option value="admin">Administrators</option><option value="user">Members</option>
         </select>
-        <select value={verified} onChange={(event) => { setPage(1); setVerified(event.target.value); }} aria-label="Filter email verification">
+        <select value={verified} onChange={(event) => { setPage(1); setVerified(event.target.value); }} aria-label="이메일 인증 필터링">
           <option value="">All verification</option><option value="verified">Verified email</option><option value="unverified">Unverified email</option>
         </select>
-        <select value={terrains} onChange={(event) => { setPage(1); setTerrains(event.target.value); }} aria-label="Filter terrain ownership">
+        <select value={terrains} onChange={(event) => { setPage(1); setTerrains(event.target.value); }} aria-label="지형 소유권 필터링">
           <option value="">All terrain activity</option><option value="has">Has terrains</option><option value="none">No terrains</option>
         </select>
         <select value={activity} onChange={(event) => { setPage(1); setActivity(event.target.value); }} aria-label="Filter recent activity">
           <option value="">Any last seen</option><option value="7d">Seen in 7 days</option><option value="30d">Seen in 30 days</option><option value="never">Never seen</option>
         </select>
-        <select value={sessions} onChange={(event) => { setPage(1); setSessions(event.target.value); }} aria-label="Filter active sessions">
+        <select value={sessions} onChange={(event) => { setPage(1); setSessions(event.target.value); }} aria-label="활성 세션 필터링">
           <option value="">All sessions</option><option value="active">Has active sessions</option><option value="none">No active sessions</option>
         </select>
         <button type="submit">Search</button>
@@ -320,7 +320,7 @@ function VisitsPanel() {
   const DeviceIcon = ({ device }) => device === '모바일' ? <Smartphone size={13} /> : device === 'Tablet' ? <Tablet size={13} /> : <Laptop size={13} />;
   return (
     <div className="admin-stack">
-      {data && <section className="admin-panel admin-trend-panel"><header><div><span className="admin-eyebrow">Audience</span><h2>Visits and unique visitors</h2></div><RangeSelector value={days} onChange={(value) => { setPage(1); setDays(value); }} /></header><div className="admin-inline-metrics"><div><strong>{number.format(data.summary?.visits ?? data.total)}</strong><span>Total visits</span></div><div><strong>{number.format(data.summary?.uniqueVisitors ?? 0)}</strong><span>Unique visitors</span></div><div><strong>{number.format(data.summary?.averagePerDay ?? 0)}</strong><span>Average per day</span></div></div><TrendChart data={data.trend} days={days} valueLabel="page visits" /><div className="admin-chart-legend"><span><i className="blue" /> Page visits</span><span><i className="green" /> Hover a day for the exact count</span></div></section>}
+      {data && <section className="admin-panel admin-trend-panel"><header><div><span className="admin-eyebrow">Audience</span><h2>Visits and unique visitors</h2></div><RangeSelector value={days} onChange={(value) => { setPage(1); setDays(value); }} /></header><div className="admin-inline-metrics"><div><strong>{number.format(data.summary?.visits ?? data.total)}</strong><span>Total visits</span></div><div><strong>{number.format(data.summary?.uniqueVisitors ?? 0)}</strong><span>Unique visitors</span></div><div><strong>{number.format(data.summary?.averagePerDay ?? 0)}</strong><span>Average per day</span></div></div><TrendChart data={data.trend} days={days} valueLabel="페이지 방문" /><div className="admin-chart-legend"><span><i className="blue" /> Page visits</span><span><i className="green" /> Hover a day for the exact count</span></div></section>}
       <section className="admin-panel admin-data-panel">
         <header className="admin-data-head"><div><span className="admin-eyebrow">Recent traffic</span><h2>Visit log</h2><p>Raw network addresses are never shown or stored.</p></div><button type="button" className="admin-refresh" onClick={load}><RefreshCw size={13} /> Refresh</button></header>
         {!data && !error && <LoadingState />}{error && <ErrorState message={error} onRetry={load} />}
@@ -346,7 +346,7 @@ function TerrainsPanel() {
   return (
     <section className="admin-panel admin-data-panel">
       <header className="admin-data-head"><div><span className="admin-eyebrow">Cloud library</span><h2>Recent terrains</h2><p>Metadata only; private terrain content is not exposed here.</p></div><button type="button" className="admin-refresh" onClick={load}><RefreshCw size={13} /> Refresh</button></header>
-      <form className="admin-filters" onSubmit={(event) => { event.preventDefault(); setPage(1); setQuery(search); }}><label className="admin-search"><Search size={14} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search terrain or owner" aria-label="Search terrains" /></label><select value={visibility} onChange={(event) => { setPage(1); setVisibility(event.target.value); }} aria-label="Filter terrain visibility"><option value="">All visibility</option><option value="private">Private</option><option value="unlisted">Unlisted</option><option value="public">Public</option></select><button type="submit">Search</button></form>
+      <form className="admin-filters" onSubmit={(event) => { event.preventDefault(); setPage(1); setQuery(search); }}><label className="admin-search"><Search size={14} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search terrain or owner" aria-label="지형 검색" /></label><select value={visibility} onChange={(event) => { setPage(1); setVisibility(event.target.value); }} aria-label="지형 가시성 필터"><option value="">All visibility</option><option value="private">Private</option><option value="unlisted">Unlisted</option><option value="public">Public</option></select><button type="submit">Search</button></form>
       {!data && !error && <LoadingState />}{error && <ErrorState message={error} onRetry={load} />}
       {data && <><div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>Terrain</th><th>Owner</th><th>Visibility</th><th>Revision</th><th>Created</th><th>Last updated</th></tr></thead><tbody>{data.terrains.map((terrain) => <tr key={terrain.id}><td><span className="admin-terrain-cell"><span className="admin-list-icon"><FolderKanban size={14} /></span><span><strong>{terrain.name}</strong><small>{terrain.description || 'No description'}</small></span></span></td><td>@{terrain.owner.username}</td><td><span className={`admin-badge ${terrain.visibility}`}>{terrain.visibility}</span></td><td>v{terrain.contentRevision}</td><td><span className="admin-muted">{formatDate(terrain.createdAt)}</span></td><td><span className="admin-muted">{formatDate(terrain.updatedAt)}</span></td></tr>)}</tbody></table>{data.terrains.length === 0 && <p className="admin-empty">No terrains match these filters.</p>}</div><footer className="admin-results-footer"><span>{number.format(data.total)} terrains</span><Pagination page={data.page} pages={data.pages} onPage={setPage} /></footer></>}
     </section>
@@ -368,7 +368,7 @@ function AuditPanel() {
   return (
     <section className="admin-panel admin-data-panel">
       <header className="admin-data-head"><div><span className="admin-eyebrow">Accountability</span><h2>Administrator audit log</h2><p>Security-sensitive administrator actions are recorded with their actor and target.</p></div><button type="button" className="admin-refresh" onClick={load}><RefreshCw size={13} /> Refresh</button></header>
-      <form className="admin-filters compact" onSubmit={(event) => { event.preventDefault(); setPage(1); setQuery(search); }}><label className="admin-search"><Search size={14} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search action, actor, or target ID" aria-label="Search audit log" /></label><button type="submit">Search</button></form>
+      <form className="admin-filters compact" onSubmit={(event) => { event.preventDefault(); setPage(1); setQuery(search); }}><label className="admin-search"><Search size={14} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search action, actor, or target ID" aria-label="감사 로그 검색" /></label><button type="submit">Search</button></form>
       {!data && !error && <LoadingState />}{error && <ErrorState message={error} onRetry={load} />}
       {data && <><div className="admin-audit-list">{data.events.map((event) => <article key={event.id}><span className="admin-audit-mark"><FileClock size={14} /></span><div><header><strong>{actionLabel(event.action)}</strong><span>{formatDate(event.createdAt)}</span></header><p><b>{event.actor}</b> changed {event.targetType}{event.targetId ? ` ${event.targetId}` : ''}.</p>{event.metadata?.changes && <div className="admin-change-chips">{Object.entries(event.metadata.changes).map(([key, value]) => <span key={key}>{key}: <strong>{String(value)}</strong></span>)}</div>}</div></article>)}{data.events.length === 0 && <p className="admin-empty">No audit events match this search.</p>}</div><footer className="admin-results-footer"><span>{number.format(data.total)} audit events</span><Pagination page={data.page} pages={data.pages} onPage={setPage} /></footer></>}
     </section>
@@ -387,9 +387,9 @@ function SecurityPanel() {
   if (!data && !error) return <LoadingState />;
   if (error) return <ErrorState message={error} onRetry={load} />;
   const stats = [
-    { label: 'Failed sign-ins · 24h', value: data.summary.failedLogins, icon: ShieldAlert, danger: data.summary.failedLogins > 10 },
-    { label: 'Open sessions', value: data.summary.openSessions, icon: KeyRound },
-    { label: 'Suspended users', value: data.summary.suspendedUsers, icon: UserX },
+    { label: '로그인 실패 · 24시간', value: data.summary.failedLogins, icon: ShieldAlert, danger: data.summary.failedLogins > 10 },
+    { label: '세션 열기', value: data.summary.openSessions, icon: KeyRound },
+    { label: '정지된 사용자', value: data.summary.suspendedUsers, icon: UserX },
     { label: '활성 관리자', value: data.summary.admins, icon: ShieldCheck },
   ];
   return (

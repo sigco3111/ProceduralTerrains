@@ -2,8 +2,8 @@ import { Settings, X } from 'lucide-react';
 
 const MODE_DISPLAY_OPTIONS = [
   { id: 'both', label: 'Icons + names' },
-  { id: 'icons', label: 'Icons only' },
-  { id: 'labels', label: 'Names only' },
+  { id: 'icons', label: '아이콘만' },
+  { id: 'labels', label: '이름만' },
 ];
 
 /**
@@ -16,7 +16,7 @@ export default function UiSettingsPanel({ open, prefs, onChange, onClose }) {
 
   return (
     <div className="ui-settings-overlay" role="dialog" aria-modal="true" aria-label="UI settings">
-      <button type="button" className="ui-settings-backdrop" aria-label="Close settings" onClick={onClose} />
+      <button type="button" className="ui-settings-backdrop" aria-label="설정 닫기" onClick={onClose} />
       <div className="ui-settings-panel">
         <header className="ui-settings-header">
           <div className="ui-settings-heading">
@@ -26,7 +26,7 @@ export default function UiSettingsPanel({ open, prefs, onChange, onClose }) {
               <p className="ui-settings-desc">Interface appearance and chrome density.</p>
             </div>
           </div>
-          <button type="button" className="side-panel-close" onClick={onClose} aria-label="닫기" title="Close (Esc)">
+          <button type="button" className="side-panel-close" onClick={onClose} aria-label="닫기" title="닫기 (Esc)">
             <X size={15} strokeWidth={2} aria-hidden />
           </button>
         </header>

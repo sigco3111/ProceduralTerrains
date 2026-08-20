@@ -1,6 +1,6 @@
 export const GodotPreset = {
   id: 'godot', label: 'Godot Terrain3D',
-  description: 'Import-ready heightmap, texture layers, and navigation/water masks.',
+  description: '가져오기 가능한 높이맵, 텍스처 레이어, 항법/물 마스크.',
   defaults: {
     format: 'glb', meshRes: '512', texRes: '2048', includeMesh: true,
     bakeColor: true, bakeNormal: true, exportHeightmap: true, exportSplat: true,

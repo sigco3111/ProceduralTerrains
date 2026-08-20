@@ -21,7 +21,7 @@ export const PLANET_PRESETS = {
     },
   },
   desert: {
-    label: 'Desert Planet',
+    label: '사막 행성',
     palettePreset: 'desert',
     noisePreset: 'dunes',
     params: { moistBias: -0.75, tempBias: 0.65, snowLine: 1.0, seaLevel: 8 },
@@ -33,7 +33,7 @@ export const PLANET_PRESETS = {
     },
   },
   ice: {
-    label: 'Ice Planet',
+    label: '얼음 행성',
     palettePreset: 'ice',
     noisePreset: 'smooth',
     params: { tempBias: -0.75, snowLine: 0.35, moistBias: 0.2, seaLevel: 55 },
@@ -45,7 +45,7 @@ export const PLANET_PRESETS = {
     },
   },
   toxic: {
-    label: 'Toxic Alien Planet',
+    label: '독성 외계 행성',
     palettePreset: 'toxic',
     noisePreset: 'alien',
     params: { moistBias: 0.35, tempBias: 0.4, biomeScale: 1.5, seaLevel: 30 },
@@ -70,7 +70,7 @@ export const PLANET_PRESETS = {
     },
   },
   canyon: {
-    label: 'Red Canyon Planet',
+    label: '붉은 협곡 행성',
     palettePreset: 'canyon',
     noisePreset: 'eroded',
     params: { moistBias: -0.55, tempBias: 0.45, ridge: 0.55, warp: 2.4, seaLevel: 10 },
@@ -93,7 +93,7 @@ export const PLANET_PRESETS = {
     },
   },
   tropical: {
-    label: 'Tropical Ocean Planet',
+    label: '열대 바다 행성',
     palettePreset: 'tropical',
     noisePreset: 'smooth',
     params: { moistBias: 0.55, tempBias: 0.45, seaLevel: 65, falloff: 0.6 },
@@ -106,7 +106,7 @@ export const PLANET_PRESETS = {
   },
 
   cartoon: {
-    label: 'Cartoon World',
+    label: '만화 세계',
     palettePreset: 'cartoon',
     noisePreset: 'cartoon',
     params: {
@@ -144,7 +144,7 @@ export const PLANET_PRESETS = {
     },
   },
   neon: {
-    label: 'Neon Sci-Fi Planet',
+    label: '네온 사이파이 행성',
     palettePreset: 'neon',
     noisePreset: 'crystalline',
     params: { ridge: 0.72, warp: 1.6, biomeScale: 1.3 },
@@ -157,7 +157,7 @@ export const PLANET_PRESETS = {
     },
   },
   moon: {
-    label: 'Barren Moon',
+    label: '황무지 달',
     palettePreset: 'moon',
     noisePreset: 'flat',
     params: { moistBias: -0.9, tempBias: -0.5, snowLine: 0.55, seaLevel: 0, heightScale: 180 },
@@ -182,7 +182,7 @@ export const PLANET_PRESETS = {
     },
   },
   rust: {
-    label: 'Rust Planet',
+    label: '녹슨 행성',
     palettePreset: 'rust',
     noisePreset: 'fractured',
     params: { moistBias: -0.6, tempBias: 0.35, ridge: 0.6, warp: 2.0 },
@@ -194,7 +194,7 @@ export const PLANET_PRESETS = {
     },
   },
   pastel: {
-    label: 'Pastel Alien World',
+    label: '파스텔 외계 세계',
     palettePreset: 'pastel',
     noisePreset: 'smooth',
     params: { moistBias: 0.2, biomeScale: 0.8, heightScale: 280 },
@@ -220,7 +220,7 @@ export const PLANET_PRESETS = {
     },
   },
   biolum: {
-    label: 'Bioluminescent World',
+    label: '생물 발광 세계',
     palettePreset: 'biolum',
     noisePreset: 'alien',
     params: { moistBias: 0.45, tempBias: 0.1, biomeScale: 1.35, seaLevel: 35 },

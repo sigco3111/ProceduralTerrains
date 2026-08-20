@@ -21,7 +21,7 @@ const ENDPOINT = 'https://elevation-tiles-prod.s3.dualstack.us-east-1.amazonaws.
 const MAX_TILES_PER_AXIS = 6;          // safety cap: at most 6×6 = 36 tile fetches
 const SEA_FILL = 'rgb(128,0,0)';       // Terrarium encoding of 0 m (decodes to elevation 0)
 
-export const ELEVATION_SOURCE = 'Elevation: Terrain Tiles (Terrarium) via AWS Open Data — Mapzen, SRTM & others';
+export const ELEVATION_SOURCE = '표고: AWS Open Data의 지형 타일 (Terrarium) — Mapzen, SRTM 등';
 
 /** @typedef {'satellite' | 'opentopo'} ImageryStyleId */
 
@@ -38,7 +38,7 @@ export const IMAGERY_STYLES = {
     id: 'satellite',
     label: '위성',
     shortLabel: '위성',
-    attribution: 'Imagery: Esri World Imagery — Esri, Maxar, Earthstar Geographics & others',
+    attribution: '영상: Esri World Imagery — Esri, Maxar, Earthstar Geographics & others',
     missingFill: '#243028',
     tileUrl(z, x, y) {
       // ArcGIS tile services use {z}/{y}/{x} (row/col), not OSM {z}/{x}/{y}.
@@ -48,9 +48,9 @@ export const IMAGERY_STYLES = {
   },
   opentopo: {
     id: 'opentopo',
-    label: 'Topo Map',
+    label: '지형도',
     shortLabel: 'OpenTopoMap',
-    attribution: 'Map: © OpenTopoMap (CC-BY-SA) — © OpenStreetMap contributors, SRTM',
+    attribution: '지도: © OpenTopoMap (CC-BY-SA) — © OpenStreetMap 기여자, SRTM',
     missingFill: '#d8d8d8',
     tileUrl(z, x, y) {
       const wx = wrapTileX(x, z);
@@ -78,75 +78,75 @@ export function imageryAttributionFor(id) {
 
 // Curated, roughly-square bounding boxes around recognizable terrain.
 export const CURATED_LOCATIONS = [
-  { id: 'grand-canyon', name: 'Grand Canyon', blurb: 'Carved gorge, Arizona USA',
+  { id: 'grand-canyon', name: '그랜드 캐년', blurb: '미국 애리조나 깎인 협곡',
     bbox: { minLat: 35.95, maxLat: 36.35, minLon: -112.45, maxLon: -111.95 }, zoom: 11 },
-  { id: 'everest', name: '에베레스트 산', blurb: 'Himalaya, Nepal / Tibet',
+  { id: 'everest', name: '에베레스트 산', blurb: '히말라야, 네팔 / 티벳',
     bbox: { minLat: 27.80, maxLat: 28.18, minLon: 86.70, maxLon: 87.10 }, zoom: 11 },
-  { id: 'fuji', name: '후지 산', blurb: 'Stratovolcano, Japan',
+  { id: 'fuji', name: '후지 산', blurb: '성층 화산, 일본',
     bbox: { minLat: 35.21, maxLat: 35.55, minLon: 138.55, maxLon: 138.93 }, zoom: 11 },
-  { id: 'matterhorn', name: 'Matterhorn', blurb: 'Pennine Alps, Switzerland / Italy',
+  { id: 'matterhorn', name: '마터호른', blurb: '페닌 알프스, 스위스 / 이탈리아',
     bbox: { minLat: 45.83, maxLat: 46.13, minLon: 7.46, maxLon: 7.86 }, zoom: 11 },
-  { id: 'grand-teton', name: 'Grand Teton', blurb: 'Teton Range, Wyoming USA',
+  { id: 'grand-teton', name: '그랜드 테톤', blurb: '테톤 산맥, �이오밍 미국',
     bbox: { minLat: 43.58, maxLat: 43.92, minLon: -110.98, maxLon: -110.62 }, zoom: 11 },
   { id: 'crater-lake', name: '분화구 호수', blurb: '캘데라, 오리건 USA',
     bbox: { minLat: 42.83, maxLat: 43.07, minLon: -122.27, maxLon: -121.97 }, zoom: 11 },
-  { id: 'yosemite', name: 'Yosemite Valley', blurb: 'Sierra Nevada, California USA',
+  { id: 'yosemite', name: '요세미티 계곡', blurb: 'Sierra Nevada, California USA',
     bbox: { minLat: 37.62, maxLat: 37.88, minLon: -119.70, maxLon: -119.40 }, zoom: 11 },
-  { id: 'big-island', name: 'Hawaii (Big Island)', blurb: 'Mauna Loa & Mauna Kea',
+  { id: 'big-island', name: '하와이 (빅 아일랜드)', blurb: '마우나로아 & 마우나케아',
     bbox: { minLat: 19.30, maxLat: 19.90, minLon: -155.90, maxLon: -155.20 }, zoom: 10 },
-  { id: 'vatnajokull', name: 'Vatnajökull', blurb: 'Glacial highlands, Iceland',
+  { id: 'vatnajokull', name: 'Vatnajökull', blurb: '빙하 고지대, 아이슬란드',
     bbox: { minLat: 64.20, maxLat: 64.62, minLon: -17.25, maxLon: -16.45 }, zoom: 10 },
 
   // --- Swiss Alps (specific peaks) ---
-  { id: 'eiger', name: 'Eiger & Jungfrau', blurb: 'Bernese Alps north face, Switzerland',
+  { id: 'eiger', name: '아이거 & 융프라우', blurb: '베르니나 알프스 북쪽 면, 스위스',
     bbox: { minLat: 46.50, maxLat: 46.62, minLon: 7.93, maxLon: 8.07 }, zoom: 12 },
-  { id: 'monte-rosa', name: '몬테 로사', blurb: 'Highest Swiss massif, Pennine Alps',
+  { id: 'monte-rosa', name: '몬테 로사', blurb: '스위스 최고 산괴, 페닌 알프스',
     bbox: { minLat: 45.86, maxLat: 46.00, minLon: 7.80, maxLon: 7.94 }, zoom: 12 },
-  { id: 'piz-bernina', name: 'Piz Bernina', blurb: 'Bernina Range glaciers, Engadin',
+  { id: 'piz-bernina', name: '피츠 베르니나', blurb: '베르니나 산맥 빙하, 엥가딘',
     bbox: { minLat: 46.32, maxLat: 46.44, minLon: 9.84, maxLon: 9.98 }, zoom: 12 },
-  { id: 'mont-blanc', name: '몽블랑', blurb: 'Highest Alps summit, France / Italy',
+  { id: 'mont-blanc', name: '몽블랑', blurb: '알프스 최고봉, 프랑스 / 이탈리아',
     bbox: { minLat: 45.78, maxLat: 45.92, minLon: 6.79, maxLon: 6.95 }, zoom: 12 },
 
   // --- Iceland (more regions) ---
-  { id: 'landmannalaugar', name: 'Landmannalaugar', blurb: 'Rhyolite highlands, Iceland',
+  { id: 'landmannalaugar', name: '란드만날라우가르', blurb: '아이슬란드 유리질암 고지대',
     bbox: { minLat: 63.92, maxLat: 64.10, minLon: -19.20, maxLon: -18.95 }, zoom: 11 },
-  { id: 'askja', name: 'Askja', blurb: '캘데라 & 용암 사막, 아이슬란드 고원',
+  { id: 'askja', name: '아스캬', blurb: '캘데라 & 용암 사막, 아이슬란드 고원',
     bbox: { minLat: 65.00, maxLat: 65.12, minLon: -16.85, maxLon: -16.65 }, zoom: 11 },
   { id: 'snaefellsjokull', name: 'Snæfellsjökull', blurb: 'Glacier-capped volcano, W Iceland',
     bbox: { minLat: 64.74, maxLat: 64.86, minLon: -23.88, maxLon: -23.70 }, zoom: 11 },
 
   // --- New Zealand (geothermal & alpine) ---
-  { id: 'taupo-volcanic', name: 'Taupō Volcanic Zone', blurb: 'Geothermal field & craters, NZ',
+  { id: 'taupo-volcanic', name: '타우포 화산 지대', blurb: '뉴질랜드 지열 지대 & 분화구',
     bbox: { minLat: -39.30, maxLat: -39.06, minLon: 175.55, maxLon: 175.82 }, zoom: 11 },
-  { id: 'mount-cook', name: 'Aoraki / Mount Cook', blurb: 'Southern Alps, New Zealand',
+  { id: 'mount-cook', name: '아오라키 / 쿡 산', blurb: '남부 알프스, 뉴질랜드',
     bbox: { minLat: -43.66, maxLat: -43.52, minLon: 170.05, maxLon: 170.23 }, zoom: 11 },
-  { id: 'fiordland', name: 'Milford Sound', blurb: 'Fiordland glacial valleys, NZ',
+  { id: 'fiordland', name: '밀포드 사운드', blurb: '피오르드랜드 빙하 계곡, 뉴질랜드',
     bbox: { minLat: -44.72, maxLat: -44.54, minLon: 167.78, maxLon: 168.02 }, zoom: 11 },
 
   // --- Patagonia ---
-  { id: 'fitz-roy', name: '몬테 피츠로이', blurb: 'Granite spires, Patagonia, Argentina',
+  { id: 'fitz-roy', name: '몬테 피츠로이', blurb: '화강암 첨탑, 파타고니아, 아르헨티나',
     bbox: { minLat: -49.36, maxLat: -49.20, minLon: -73.10, maxLon: -72.92 }, zoom: 11 },
-  { id: 'torres-del-paine', name: 'Torres del Paine', blurb: 'Massif & lakes, Chilean Patagonia',
+  { id: 'torres-del-paine', name: '토레스 델 파이네', blurb: 'Massif & lakes, Chilean Patagonia',
     bbox: { minLat: -51.10, maxLat: -50.90, minLon: -73.10, maxLon: -72.80 }, zoom: 11 },
 
   // --- Other famous ranges & volcanoes ---
-  { id: 'denali', name: 'Denali', blurb: 'Highest peak in North America, Alaska USA',
+  { id: 'denali', name: '데날리', blurb: '북아메리카 최고봉, 알래스카 USA',
     bbox: { minLat: 63.00, maxLat: 63.20, minLon: -151.18, maxLon: -150.80 }, zoom: 11 },
-  { id: 'kilimanjaro', name: 'Kilimanjaro', blurb: 'Highest peak in Africa, Tanzania',
+  { id: 'kilimanjaro', name: '킬리만자로', blurb: '아프리카 최고봉, 탄자니아',
     bbox: { minLat: -3.15, maxLat: -2.97, minLon: 37.27, maxLon: 37.47 }, zoom: 11 },
-  { id: 'k2', name: 'K2', blurb: 'Karakoram, Pakistan / China',
+  { id: 'k2', name: 'K2', blurb: '카라코람, 파키스탄 / 중국',
     bbox: { minLat: 35.79, maxLat: 35.97, minLon: 76.41, maxLon: 76.61 }, zoom: 11 },
-  { id: 'aconcagua', name: '아콩카과', blurb: 'Highest peak in the Americas, Argentina',
+  { id: 'aconcagua', name: '아콩카과', blurb: '아메리카 대륙 최고봉, 아르헨티나',
     bbox: { minLat: -32.74, maxLat: -32.56, minLon: -70.10, maxLon: -69.90 }, zoom: 11 },
-  { id: 'annapurna', name: 'Annapurna', blurb: 'Deep Himalayan massif, Nepal',
+  { id: 'annapurna', name: '안나푸르나', blurb: '깊은 히말라야 산괴, 네팔',
     bbox: { minLat: 28.50, maxLat: 28.68, minLon: 83.74, maxLon: 83.94 }, zoom: 11 },
-  { id: 'zion', name: 'Zion Canyon', blurb: '사암 협곡, 유타 USA',
+  { id: 'zion', name: '자이언 캐년', blurb: '사암 협곡, 유타 USA',
     bbox: { minLat: 37.18, maxLat: 37.36, minLon: -113.10, maxLon: -112.90 }, zoom: 11 },
   { id: 'monument-valley', name: '모뉴먼트 밸리', blurb: '사암 메사, 애리조나 / 유타 USA',
     bbox: { minLat: 36.94, maxLat: 37.10, minLon: -110.20, maxLon: -110.00 }, zoom: 11 },
-  { id: 'dolomites', name: 'Dolomites', blurb: 'Limestone towers, Tre Cime, Italy',
+  { id: 'dolomites', name: '돌로미티', blurb: '트레 치메, 이탈리아의 석회암 타워',
     bbox: { minLat: 46.58, maxLat: 46.70, minLon: 12.25, maxLon: 12.40 }, zoom: 12 },
-  { id: 'mount-rainier', name: '레니어 산', blurb: 'Glaciated stratovolcano, Washington USA',
+  { id: 'mount-rainier', name: '레니어 산', blurb: '빙하 성층 화산, 워싱턴 USA',
     bbox: { minLat: 46.78, maxLat: 46.92, minLon: -121.83, maxLon: -121.65 }, zoom: 11 },
   { id: 'etna', name: '에트나 산', blurb: '활성 화산, 시칠리아, 이탈리아',
     bbox: { minLat: 37.68, maxLat: 37.82, minLon: 14.93, maxLon: 15.07 }, zoom: 11 },

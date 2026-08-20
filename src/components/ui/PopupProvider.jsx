@@ -21,7 +21,7 @@ function Notice({ notice, onDismiss }) {
         {notice.title && <strong>{notice.title}</strong>}
         <span>{notice.message}</span>
       </span>
-      <button type="button" onClick={() => onDismiss(notice.id)} aria-label="Dismiss notification">
+      <button type="button" onClick={() => onDismiss(notice.id)} aria-label="알림 닫기">
         <X size={14} aria-hidden />
       </button>
     </div>
@@ -63,7 +63,7 @@ function PopupDialog({ dialog, onClose }) {
             <h2 id="app-popup-title">{dialog.title}</h2>
             {dialog.message && <p>{dialog.message}</p>}
           </span>
-          <button type="button" className="app-popup-dialog-close" onClick={() => onClose(cancelValue)} aria-label="Close popup"><X size={15} aria-hidden /></button>
+          <button type="button" className="app-popup-dialog-close" onClick={() => onClose(cancelValue)} aria-label="팝업 닫기"><X size={15} aria-hidden /></button>
         </header>
         {dialog.kind === 'prompt' && (
           <label className="app-popup-dialog-field">
@@ -137,7 +137,7 @@ export function PopupProvider({ children }) {
 
   const showConfirm = useCallback((options) => {
     const config = typeof options === 'string' ? { message: options } : options;
-    return openDialog({ kind: 'confirm', title: 'Please confirm', ...config });
+    return openDialog({ kind: 'confirm', title: '확인해 주세요', ...config });
   }, [openDialog]);
 
   const showPrompt = useCallback((options) => {
@@ -147,7 +147,7 @@ export function PopupProvider({ children }) {
 
   const showChoice = useCallback((options) => {
     const config = typeof options === 'string' ? { title: options } : options;
-    return openDialog({ kind: 'choice', title: 'Choose an option', actions: [], ...config });
+    return openDialog({ kind: 'choice', title: '옵션을 선택하세요', actions: [], ...config });
   }, [openDialog]);
 
   const closeDialog = useCallback((result) => {

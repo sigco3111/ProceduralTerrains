@@ -14,12 +14,12 @@ import PerformanceStats from './ui/PerformancePanel.jsx';
 import { useLiveMetrics } from '../state/LiveMetricsStore.js';
 
 const PLAYER_STATE_LABELS = {
-  grounded: 'Grounded',
-  falling: 'Falling',
-  swimming: 'Swimming',
+  grounded: '접지',
+  falling: '낙하',
+  swimming: '수영',
   underwater: '수중',
-  flying: 'Flying',
-  stalling: 'Stalling',
+  flying: '비행',
+  stalling: '정체 중',
 };
 
 const DockBtn = ({ active, onClick, title, children }) => (
@@ -103,7 +103,7 @@ export default function InfiniteHUD({
               type="button"
               className={`fps-explore-option${exploreMode === 'walk' ? ' active' : ''}`}
               onClick={() => onExploreMode?.('walk')}
-              title="Walk on the terrain"
+              title="지형 위를 걷기"
             >
               <Compass aria-hidden size={12} strokeWidth={1.8} />
               Walk
@@ -112,7 +112,7 @@ export default function InfiniteHUD({
               type="button"
               className={`fps-explore-option${exploreMode === 'plane' ? ' active' : ''}`}
               onClick={() => onExploreMode?.('plane')}
-              title="Fly with throttle, lift, gravity, and stalls"
+              title="스로틀, 양력, 중력, 실속을 적용한 비행"
             >
               Plane
             </button>
@@ -121,7 +121,7 @@ export default function InfiniteHUD({
                 type="button"
                 className="fps-explore-option active"
                 onClick={() => onExploreMode?.('freecam')}
-                title="Exit no-clip free camera"
+                title="노클립 자유 카메라 종료"
               >
                 Free Cam
               </button>

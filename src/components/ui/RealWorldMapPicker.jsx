@@ -321,14 +321,14 @@ export default function RealWorldMapPicker({
               <p>Move the map or click a location to position the terrain.</p>
             </span>
           </div>
-          <button type="button" onClick={onClose} disabled={busy} aria-label="Close map picker">
+          <button type="button" onClick={onClose} disabled={busy} aria-label="지도 선택기 닫기">
             <X size={17} aria-hidden />
           </button>
         </header>
 
         <div className="realworld-map-layout">
           <div className="realworld-map-canvas-wrap">
-            <div ref={mapNodeRef} className="realworld-map-canvas" aria-label="Interactive world map" />
+            <div ref={mapNodeRef} className="realworld-map-canvas" aria-label="인터랙티브 세계 지도" />
             <div className="realworld-map-search">
               <form onSubmit={searchPlaces} role="search">
                 <Search size={15} aria-hidden />
@@ -341,16 +341,16 @@ export default function RealWorldMapPicker({
                     setSearchError('');
                   }}
                   placeholder="Search city or place…"
-                  aria-label="Search city or place"
+                  aria-label="도시 또는 장소 검색"
                   autoComplete="off"
                   spellCheck={false}
                 />
-                <button type="submit" disabled={searchBusy || searchQuery.trim().length < 2} aria-label="Search map">
+                <button type="submit" disabled={searchBusy || searchQuery.trim().length < 2} aria-label="맵 검색">
                   {searchBusy ? <LoaderCircle size={15} className="tb-spin" aria-hidden /> : '검색'}
                 </button>
               </form>
               {(searchResults.length > 0 || searchError) && (
-                <div className="realworld-map-search-results" role="listbox" aria-label="Place search results">
+                <div className="realworld-map-search-results" role="listbox" aria-label="검색 결과 배치">
                   {searchError && <p>{searchError}</p>}
                   {searchResults.map((place) => {
                     const [name, ...rest] = place.label.split(',');
@@ -383,7 +383,7 @@ export default function RealWorldMapPicker({
             <div className="realworld-map-world-settings" aria-labelledby="realworld-world-settings-title">
               <h3 id="realworld-world-settings-title">World settings</h3>
               <SelectField
-                label="3D world size"
+                label="3D 월드 크기"
                 value={chunkSize}
                 options={worldSizeOptions}
                 onChange={(nextChunkSize) => onChunkSizeChange?.(nextChunkSize)}

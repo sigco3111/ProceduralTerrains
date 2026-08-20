@@ -79,7 +79,7 @@ export default function CloudProjectsPanel({ localProjects, onOpen, refreshToken
       }
       await refresh();
     } catch (requestError) {
-      showPopup(requestError.message || 'Could not sync this project.', { type: 'error' });
+      showPopup(requestError.message || '이 프로젝트를 동기화할 수 없습니다.', { type: 'error' });
     } finally {
       setBusy('');
     }
@@ -149,7 +149,7 @@ export default function CloudProjectsPanel({ localProjects, onOpen, refreshToken
     const confirmed = await showConfirm({
       title: 'Delete cloud project?',
       message: `Delete “${cloudProject.name}” from your cloud projects? Your local copy is not affected.`,
-      confirmLabel: 'Delete project',
+      confirmLabel: '프로젝트 삭제',
       danger: true,
     });
     if (!confirmed) return;
@@ -176,7 +176,7 @@ export default function CloudProjectsPanel({ localProjects, onOpen, refreshToken
           {!localProjects.length && <option value="">No local projects</option>}
           {localProjects.map((project) => <option key={project.id} value={project.id}>{project.metadata.name}</option>)}
         </select>
-        <button type="button" className="lp-primary sm" onClick={sync} disabled={!selectedLocal || !!busy}><CloudUpload size={14} /> {selectedCloud ? 'Update cloud copy' : 'Sync to cloud'}</button>
+        <button type="button" className="lp-primary sm" onClick={sync} disabled={!selectedLocal || !!busy}><CloudUpload size={14} /> {selectedCloud ? 'Update cloud copy' : '클라우드에 동기화'}</button>
       </div>
 
       {loading ? <p className="cloud-loading">Loading cloud projects…</p> : projects.length === 0 ? <div className="cloud-empty"><Cloud size={20} /><span>No cloud projects yet. Sync one of your local terrains above.</span></div> : (

@@ -186,7 +186,7 @@ export default function TouchControls({ onInput, mode = 'none' }) {
           onPointerMove={onThrottleMove}
           onPointerUp={onThrottleUp}
           onPointerCancel={onThrottleUp}
-          aria-label="Plane throttle"
+          aria-label="평면 스로틀"
         >
           <div ref={throttleFillRef} className="touch-throttle-fill" style={{ height: `${stateRef.current.throttle * 100}%` }} />
           <span className="touch-throttle-label">Throttle</span>

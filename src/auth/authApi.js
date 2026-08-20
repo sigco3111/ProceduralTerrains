@@ -32,7 +32,7 @@ export async function apiRequest(path, { method = 'GET', body, signal } = {}) {
     });
   } catch (error) {
     if (error?.name === '중단 오류') throw error;
-    throw new AuthApiError('The account server is unavailable. Check the API URL or try again later.', {
+    throw new AuthApiError('계정 서버를 사용할 수 없습니다. API URL을 확인하거나 나중에 다시 시도하세요.', {
       code: 'API_UNAVAILABLE',
     });
   }

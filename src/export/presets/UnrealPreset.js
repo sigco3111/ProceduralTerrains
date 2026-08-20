@@ -1,6 +1,6 @@
 export const UnrealPreset = {
-  id: 'unreal', label: 'Unreal Landscape',
-  description: '16-bit landscape heightmap, weightmaps, and centimetre world scale.',
+  id: 'unreal', label: '언리얼 랜드스케이프',
+  description: '16비트 풍경 높이맵, 가중치맵, 센티미터 월드 스케일.',
   defaults: {
     format: 'glb', meshRes: '512', texRes: '2048', includeMesh: false,
     bakeColor: true, bakeNormal: true, exportHeightmap: true, exportSplat: true,

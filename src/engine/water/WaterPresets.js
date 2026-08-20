@@ -6,7 +6,7 @@ import { WATER_DEFAULT_PARAMS } from './WaterSettings.js';
 
 export const WATER_PRESETS = {
   legacy: {
-    label: 'Legacy Low',
+    label: '레거시 낮음',
     patch: {
       waterMode: 'legacy',
       waterQualityPreset: 'legacy',
@@ -15,7 +15,7 @@ export const WATER_PRESETS = {
     },
   },
   balanced: {
-    label: 'Balanced Realistic',
+    label: '밸런스 리얼리스틱',
     patch: {
       waterMode: 'realistic',
       waterQualityPreset: 'balanced',
@@ -41,7 +41,7 @@ export const WATER_PRESETS = {
     },
   },
   tropical: {
-    label: 'Clear Tropical',
+    label: '맑은 열대',
     patch: {
       waterMode: 'realistic',
       waterQualityPreset: 'tropical',
@@ -67,7 +67,7 @@ export const WATER_PRESETS = {
   },
 
   cartoon: {
-    label: 'Cartoon Water',
+    label: '만화 물',
     patch: {
       waterMode: 'legacy',
       waterQualityPreset: 'cartoon',
@@ -160,7 +160,7 @@ export const WATER_PRESETS = {
     },
   },
   swamp: {
-    label: 'Swamp Water',
+    label: '늪 물',
     patch: {
       waterMode: 'realistic',
       waterQualityPreset: 'swamp',
@@ -220,7 +220,7 @@ export const WATER_PRESETS = {
     },
   },
   cinematic: {
-    label: 'Cinematic Screenshot',
+    label: '시네마틱 스크린샷',
     patch: {
       waterMode: 'cinematic',
       waterQualityPreset: 'cinematic',

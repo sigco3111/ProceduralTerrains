@@ -428,10 +428,10 @@ export default function App() {
       });
     } catch (err) {
       if (cancelled) return;
-      console.error('WebGL initialization failed', err);
+      console.error('WebGL 초기화 실패', err);
       const message = err?.message || 'Could not create a WebGL context.';
       setWebglError(message);
-      setStatus({ text: 'WebGL unavailable', busy: false });
+      setStatus({ text: 'WebGL 사용 불가', busy: false });
       completeBootUi();
       return;
     }
@@ -543,7 +543,7 @@ export default function App() {
     if (!json) return showToast('Could not parse project file', 'error');
     const project = json.terrain ? normalizeProject(json) : null;
     const terrain = project?.terrain ?? normalizeProject({ terrain: json }).terrain;
-    const name = project?.metadata?.name ?? 'terrain project';
+    const name = project?.metadata?.name ?? '지형 프로젝트';
     if (terrain.editorMode === 'nodes' || terrain.manualTerrain?.baseSource === 'nodes') {
       loadNodeWorkspace().catch(() => {});
     }
@@ -575,16 +575,16 @@ export default function App() {
         }
         update({
           detail: terrain.realWorldSource
-            ? 'Downloading elevation and imagery…'
-            : 'Building terrain…',
+            ? '표고 및 영상 다운로드 중…'
+            : '지형 빌드 중…',
         });
         await engineRef.current?.loadSeedJSON(terrain, {
           onRealWorldProgress: terrain.realWorldSource
             ? (progress) => update({
               progress,
               detail: progress >= 1
-                ? 'Building geographic terrain…'
-                : 'Downloading elevation and imagery…',
+                ? '지리 지형 구축 중…'
+                : '표고 및 영상 다운로드 중…',
             })
             : undefined,
         });
@@ -1028,7 +1028,7 @@ export default function App() {
   // drops back to 0 so the user always sees what's happening.
   const modeLockRef = useRef(false);
   const [modeLocked, setModeLocked] = useState(false);
-  const BUILD_STEP = { studio: 'Building terrain board…', infinite: 'Streaming world chunks…', planet: 'Building spherical mesh…' };
+  const BUILD_STEP = { studio: '지형 보드 구축 중…', infinite: 'Streaming world chunks…', planet: '구형 메시 생성 중…' };
   // Returns a promise that resolves once the (heavy, async) mode switch has
   // finished compiling. `silent` suppresses the success/info toasts — used by
   // the undo/redo restore path so reverting across modes is quiet.
@@ -1041,7 +1041,7 @@ export default function App() {
 
     return loading.run('mode', { blocking: true, label: `Switching to ${label} mode…`, detail: '씬 준비 중…' }, async (update) => {
       blockingUpdateRef.current = update;
-      update({ detail: BUILD_STEP[next] ?? 'Building scene…' });
+      update({ detail: BUILD_STEP[next] ?? '씬 빌드 중…' });
       // yield so the overlay paints the build message before the sync build
       await new Promise((r) => setTimeout(r, 30));
       await engine().setWorldMode(next);      // sync build; kicks off async shader compile
@@ -1987,7 +1987,7 @@ export default function App() {
     const source = normalizeSurfaceTextureSource(params);
     if (!sourceUsesTextureAtlas(source) || !engineRef.current) return;
     applySurfaceTextures({ source }).catch((err) => {
-      console.warn('Could not bake terrain surface textures', err);
+      console.warn('지형 표면 텍스처를 베이크할 수 없습니다', err);
     });
   }, [params.surfaceTextureSource, params.surfaceTextureMode, applySurfaceTextures]);
 
@@ -1998,8 +1998,8 @@ export default function App() {
 
   const runGeographicLoad = (runner, opts = {}) => loading.run('real-world-load', {
     blocking: true,
-    label: 'Loading geographic terrain…',
-    detail: 'Downloading elevation and imagery…',
+    label: '지리 지형 로드 중…',
+    detail: '표고 및 영상 다운로드 중…',
   }, async (update) => {
     blockingUpdateRef.current = update;
     try {
@@ -2008,8 +2008,8 @@ export default function App() {
         update({
           progress,
           detail: progress >= 1
-            ? 'Building geographic terrain…'
-            : 'Downloading elevation and imagery…',
+            ? '지리 지형 구축 중…'
+            : '표고 및 영상 다운로드 중…',
         });
       });
     } finally {
@@ -2023,7 +2023,7 @@ export default function App() {
     return loading.run('real-world-imagery', {
       blocking: true,
       label: 'Loading map imagery…',
-      detail: 'Downloading the selected map style…',
+      detail: '선택한 지도 스타일 다운로드 중…',
     }, async (update) => {
       blockingUpdateRef.current = update;
       try {
@@ -2079,7 +2079,7 @@ export default function App() {
         setTimeOfDay(engine().timeOfDay);
       } catch (error) {
         console.error(error);
-        showToast(error?.message || 'Water baseline could not be loaded', 'error');
+        showToast(error?.message || '수면 베이스라인을 로드할 수 없습니다', 'error');
       }
     },
     onCaptureWaterBaseline: async (sceneId) => {
@@ -2087,7 +2087,7 @@ export default function App() {
         await engine().captureWaterBaseline(sceneId);
       } catch (error) {
         console.error(error);
-        showToast(error?.message || 'Water baseline capture failed', 'error');
+        showToast(error?.message || '물 기준선 캡처 실패', 'error');
       }
     },
     // bake / clear change the baked delta (a heavy, non-param edit) — record a

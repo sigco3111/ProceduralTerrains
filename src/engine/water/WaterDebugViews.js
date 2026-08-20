@@ -6,17 +6,17 @@ import { setWaterDebugMode } from './RealisticWaterMaterial.js';
 
 export const WATER_DEBUG_VIEWS = [
   { value: 'off', label: '꺼짐' },
-  { value: 'depth', label: 'Depth Map' },
-  { value: 'shoreline', label: 'Shoreline Mask' },
-  { value: 'foam', label: 'Foam Mask' },
+  { value: 'depth', label: '깊이 맵' },
+  { value: 'shoreline', label: '해안선 마스크' },
+  { value: 'foam', label: '거품 마스크' },
   { value: 'mask', label: 'Water Mask' },
   { value: 'normal', label: '표면 법선' },
-  { value: 'opticalDepth', label: 'Optical Depth' },
-  { value: 'transmittance', label: 'Transmittance' },
-  { value: 'fresnel', label: 'Fresnel' },
-  { value: 'reflection', label: 'Sky Reflection' },
-  { value: 'refraction', label: 'Transmission / Refraction' },
-  { value: 'opacity', label: 'Final Opacity' },
+  { value: 'opticalDepth', label: '광학 깊이' },
+  { value: 'transmittance', label: '투과율' },
+  { value: 'fresnel', label: '프레넬' },
+  { value: 'reflection', label: '하늘 반사' },
+  { value: 'refraction', label: '투과 / 굴절' },
+  { value: 'opacity', label: '최종 불투명도' },
 ];
 
 export function applyWaterDebugToMaterials(materials, debugView) {

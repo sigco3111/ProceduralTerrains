@@ -7,7 +7,7 @@ import {
   resolveNearestEdge,
 } from './toolsRailLayout.js';
 
-const SIDE_LABELS = { left: 'Snap left', right: 'Snap right' };
+const SIDE_LABELS = { left: '왼쪽에 스냅', right: '오른쪽에 스냅' };
 
 // Overlay drawer (does not resize the canvas). Desktop: drag header to snap L/R.
 export default function SideDrawer({
@@ -206,7 +206,7 @@ export default function SideDrawer({
           className="panel-snap-menu"
           style={{ left: menu.x, top: menu.y }}
           role="menu"
-          aria-label="Properties panel position"
+          aria-label="속성 패널 위치"
         >
           {DRAWER_EDGES.map((id) => (
             <button

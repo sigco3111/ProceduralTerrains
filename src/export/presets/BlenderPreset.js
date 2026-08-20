@@ -1,5 +1,5 @@
 export const BlenderPreset = {
-  id: 'blender', label: 'Blender Scene',
+  id: 'blender', label: '블렌더 씬',
   description: 'GLB terrain package with baked material maps and scene notes.',
   defaults: {
     format: 'glb', meshRes: '512', texRes: '2048', includeMesh: true,

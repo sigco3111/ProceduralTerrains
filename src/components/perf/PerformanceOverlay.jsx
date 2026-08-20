@@ -207,42 +207,42 @@ export default function PerformanceOverlay({
               <Row label="텍스처" value={render.textures} warn={render.textures > 120} />
               <Row label="Programs" value={render.programs} />
               <Row label="그림자" value={diag?.shadowsEnabled ? 'on' : 'off'} />
-              <Row label="Underwater pass" value={diag?.postProcessing?.underwater ? 'active' : 'inactive'} />
+              <Row label="수중 패스" value={diag?.postProcessing?.underwater ? 'active' : 'inactive'} />
             </>
           ) : <Row label="렌더러" value="collecting…" />}
         </Section>
 
-        <Section id="timing" title="Frame timing (CPU)" collapsed={collapsed.timing} onToggle={onToggleSection}>
+        <Section id="timing" title="프레임 타이밍 (CPU)" collapsed={collapsed.timing} onToggle={onToggleSection}>
           {sections && sections.length ? sections.map((s) => (
             <Row key={s.name} label={s.name} value={`${s.avg.toFixed(2)} ms (max ${s.max.toFixed(1)})`} warn={s.avg > 8} />
-          )) : <Row label="No section data yet" value="…" />}
+          )) : <Row label="섹션 데이터 없음" value="…" />}
         </Section>
 
-        <Section id="gpu" title="GPU / Renderer" collapsed={collapsed.gpu} onToggle={onToggleSection}>
+        <Section id="gpu" title="GPU / 렌더러" collapsed={collapsed.gpu} onToggle={onToggleSection}>
           <Row label="Renderer backend" value={diag?.renderer?.requestedBackendLabel || 'â€“'} />
           <Row label="활성 렌더러" value={diag?.renderer?.activeBackendLabel || 'â€“'} warn={diag?.renderer?.reloadRequired} />
           <Row label="GPU preference" value={diag?.renderer?.requestedGpuPreferenceLabel || 'â€“'} />
           <Row label="Applied preference" value={diag?.renderer?.activeGpuPreferenceLabel || 'â€“'} warn={diag?.renderer?.reloadRequired} />
-          <Row label="Detected GPU" value={diag?.renderer?.capabilities?.detectedGpu || diag?.gpuName || 'â€“'} warn={diag?.renderer?.capabilities?.gpuInfoAvailable === false} />
+          <Row label="감지된 GPU" value={diag?.renderer?.capabilities?.detectedGpu || diag?.gpuName || 'â€“'} warn={diag?.renderer?.capabilities?.gpuInfoAvailable === false} />
           <Row label="WebGPU support" value={diag?.renderer?.capabilities?.webgpu?.supported ? 'available' : 'unavailable'} />
           {gpu && gpu.supported ? (
             <>
-              <Row label="Frame GPU" value={fmtMs(gpu.frameMs)} />
+              <Row label="프레임 GPU" value={fmtMs(gpu.frameMs)} />
               <Row label="Per-pass" value="whole-frame only" />
-              {gpu.disjoint && <Row label="메모" value="disjoint — result unreliable" warn />}
+              {gpu.disjoint && <Row label="메모" value="분리됨 — 결과 신뢰할 수 없음" warn />}
             </>
-          ) : <Row label="GPU timing" value="unavailable on this browser/device" />}
-          {diag?.renderer?.reloadRequired && <Row label="Apply required" value="reload renderer" warn />}
+          ) : <Row label="GPU 타이밍" value="이 브라우저/디바이스에서 사용할 수 없음" />}
+          {diag?.renderer?.reloadRequired && <Row label="필수 적용" value="렌더러 새로 고침" warn />}
         </Section>
 
         <Section id="memory" title="메모리" collapsed={collapsed.memory} onToggle={onToggleSection}>
           {memory && memory.supported ? (
             <>
-              <Row label="JS heap used" value={mb(memory.usedJSHeap)} warn={memory.usedJSHeap / memory.jsHeapLimit > 0.85} />
+              <Row label="JS 힙 사용량" value={mb(memory.usedJSHeap)} warn={memory.usedJSHeap / memory.jsHeapLimit > 0.85} />
               <Row label="JS heap total" value={mb(memory.totalJSHeap)} />
-              <Row label="JS heap limit" value={mb(memory.jsHeapLimit)} />
+              <Row label="JS 힙 한도" value={mb(memory.jsHeapLimit)} />
             </>
-          ) : <Row label="Memory API" value="unavailable" />}
+          ) : <Row label="메모리 API" value="unavailable" />}
           <Row label="텍스처" value={render?.textures ?? '–'} />
           <Row label="지오메트리" value={render?.geometries ?? '–'} />
         </Section>
@@ -262,7 +262,7 @@ export default function PerformanceOverlay({
           {diag && renderTerrain(diag)}
         </Section>
 
-        <Section id="culling" title="Culling & LOD" collapsed={collapsed.culling} onToggle={onToggleSection}>
+        <Section id="culling" title="컬링 & LOD" collapsed={collapsed.culling} onToggle={onToggleSection}>
           <Row label="Total chunks" value={cull.total ?? '–'} />
           <Row label="표시됨" value={cull.visible ?? '–'} />
           <Row label="Culled" value={cull.culled ?? '–'} />
@@ -290,15 +290,15 @@ export default function PerformanceOverlay({
               <Row label="활성화됨" value={diag.clouds.enabled ? 'yes' : 'no'} />
               <Row label="최빈값" value={diag.clouds.mode} />
               <Row label="레이어" value={diag.clouds.layers} />
-              <Row label="Raymarch steps" value={diag.clouds.steps} warn={diag.clouds.steps > 64} />
+              <Row label="레이마칭 단계" value={diag.clouds.steps} warn={diag.clouds.steps > 64} />
               <Row label="Light steps" value={diag.clouds.lightSteps} />
               <Row label="옥타브" value={`${diag.clouds.octaves} + ${diag.clouds.detailOctaves} detail`} />
               <Row label="범위" value={fmtMaybe(diag.clouds.coverage)} />
               <Row label="밀도" value={fmtMaybe(diag.clouds.density)} />
-              <Row label="Wind / evolve" value={`${fmtMaybe(diag.clouds.windSpeed)} / ${fmtMaybe(diag.clouds.evolveSpeed)}`} />
-              <Row label="Culling" value={diag.clouds.cullingMode} />
+              <Row label="바람 / 진화" value={`${fmtMaybe(diag.clouds.windSpeed)} / ${fmtMaybe(diag.clouds.evolveSpeed)}`} />
+              <Row label="컬링" value={diag.clouds.cullingMode} />
               <Row label="LOD" value={diag.clouds.lod} />
-              <Row label="Update time" value={fmtMs(diag.clouds.time)} />
+              <Row label="업데이트 시간" value={fmtMs(diag.clouds.time)} />
             </>
           )}
         </Section>
@@ -333,22 +333,22 @@ export default function PerformanceOverlay({
                       label="표면 GPU"
                       value={gpu?.supported
                         ? `${fmtMs(gpu.frameMs)} whole frame`
-                        : 'whole-frame timer unavailable'}
+                        : '전체 프레임 타이머 사용 불가'}
                     />
                     <Row
-                      label="Opaque refraction"
+                      label="불투명 굴절"
                       value={`${fmtMs(refraction.captureMs)} · ${fmtPassResolution(refraction)}`}
                     />
                     <Row
-                      label="Planar reflection"
+                      label="평면 반사"
                       value={`${fmtMs(reflectionPass.captureMs)} · ${fmtPassResolution(reflectionPass)}`}
                     />
                     <Row
-                      label="Water target memory"
+                      label="물 타겟 메모리"
                       value={mb(cost.renderTargetMemoryBytes || 0)}
                     />
                     <Row
-                      label="Extra scene renders"
+                      label="추가 씬 렌더"
                       value={cost.additionalSceneRenders ?? 0}
                     />
                   </>
@@ -364,19 +364,19 @@ export default function PerformanceOverlay({
               <Row label="활성" value={diag.underwater.active ? 'yes' : 'no'} />
               <Row label="최빈값" value={diag.underwater.mode} />
               {diag.underwater.fellBackToLite && (
-                <Row label="Requested" value={`${diag.underwater.requestedMode} → lite`} />
+                <Row label="요청됨" value={`${diag.underwater.requestedMode} → lite`} />
               )}
               <Row label="혼합" value={fmtMaybe(diag.underwater.blend, 2)} />
-              <Row label="Depth below" value={fmtMaybe(diag.underwater.depth, 1)} />
+              <Row label="이하 깊이" value={fmtMaybe(diag.underwater.depth, 1)} />
               <Row label="반사광" value={diag.underwater.causticsEnabled ? 'on' : 'off'} />
-              <Row label="Light shafts" value={diag.underwater.lightShaftsEnabled ? 'on' : 'off'} />
+              <Row label="광선" value={diag.underwater.lightShaftsEnabled ? 'on' : 'off'} />
               <Row label="파티클" value={diag.underwater.particlesEnabled ? 'on' : 'off'} />
-              <Row label="Cost estimate" value={diag.underwater.costEstimate} />
+              <Row label="비용 추정" value={diag.underwater.costEstimate} />
               {diag.underwater.postProcessApplies === false && (
-                <Row label="Post-process" value="n/a (planet)" />
+                <Row label="Post-process" value="해당 없음 (행성)" />
               )}
               {diag.underwater.depthTextureAvailable === false && (
-                <Row label="Depth texture" value="unavailable" />
+                <Row label="깊이 텍스처" value="unavailable" />
               )}
             </>
           )}
@@ -389,7 +389,7 @@ export default function PerformanceOverlay({
                 <span className="perf-warn-level">{w.level}</span>
                 <span className="perf-warn-label">{w.label}</span>
               </div>
-            )) : <Row label="No warnings" value="all clear" />}
+            )) : <Row label="경고 없음" value="모두 정상" />}
           </Section>
         )}
 
@@ -431,8 +431,8 @@ function renderTerrain(diag) {
       <>
         <Row label="Planet radius" value={fmtMaybe(t.planetRadius)} />
         <Row label="Face grid" value={fmtMaybe(t.faceGrid)} />
-        <Row label="Baked height tex" value={t.bakedHeightTex ? 'yes' : 'no'} />
-        <Row label="Last rebuild" value={t.lastRebuildMs != null ? `${t.lastRebuildMs.toFixed(1)} ms` : '–'} />
+        <Row label="베이크된 높이 텍스처" value={t.bakedHeightTex ? 'yes' : 'no'} />
+        <Row label="마지막 재구축" value={t.lastRebuildMs != null ? `${t.lastRebuildMs.toFixed(1)} ms` : '–'} />
       </>
     );
   }
@@ -444,8 +444,8 @@ function renderTerrain(diag) {
       <Row label="Height scale" value={fmtMaybe(t.heightScale)} />
       <Row label="옥타브" value={fmtMaybe(t.octaves)} />
       <Row label="노이즈 레이어" value={fmtMaybe(t.noiseLayers)} />
-      <Row label="Baked height tex" value={t.bakedHeightTex ? 'yes' : 'no'} />
-      <Row label="Last bake" value={t.lastBakeMs != null ? `${t.lastBakeMs.toFixed(1)} ms` : '–'} />
+      <Row label="베이크된 높이 텍스처" value={t.bakedHeightTex ? 'yes' : 'no'} />
+      <Row label="마지막 베이크" value={t.lastBakeMs != null ? `${t.lastBakeMs.toFixed(1)} ms` : '–'} />
     </>
   );
 }

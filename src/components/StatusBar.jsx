@@ -6,12 +6,12 @@ function fmtTris(n) {
 }
 
 const PLAYER_STATE_LABELS = {
-  grounded: 'Grounded',
-  falling: 'Falling',
-  swimming: 'Swimming',
+  grounded: '접지',
+  falling: '낙하',
+  swimming: '수영',
   underwater: '수중',
-  flying: 'Flying',
-  stalling: 'Stalling',
+  flying: '비행',
+  stalling: '정체 중',
 };
 
 export default function StatusBar({
@@ -84,7 +84,7 @@ export default function StatusBar({
           type="button"
           className={`fps-badge fps-badge-btn${stats.fps > 0 && stats.fps < 30 ? ' low' : ''}${perfOpen ? ' is-open' : ''}`}
           onClick={onPerfToggle}
-          title="Performance details (Ctrl/Cmd+Shift+P)"
+          title="성능 세부정보 (Ctrl/Cmd+Shift+P)"
           aria-expanded={!!perfOpen}
           aria-label={`${stats.fps} FPS — open performance details`}
         >
@@ -96,8 +96,8 @@ export default function StatusBar({
           href={GITHUB_REPO_URL}
           target="_blank"
           rel="noopener noreferrer"
-          title="View source on GitHub"
-          aria-label="View source on GitHub"
+          title="GitHub에서 소스 보기"
+          aria-label="GitHub에서 소스 보기"
         >
           <svg viewBox="0 0 16 16" aria-hidden="true">
             <path

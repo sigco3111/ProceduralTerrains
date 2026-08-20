@@ -34,9 +34,9 @@ export default function SettingsSearchOverlay({
   const totalResults = flatResults.length;
   const hasResults = totalResults > 0;
   const hint = useMemo(() => {
-    if (!query.trim()) return 'Search terrain, water, biomes, lighting, performance...';
-    if (!hasResults) return 'No matching settings. Try a broader keyword.';
-    return 'Enter opens the selected item. Click a category to open its panel. Esc closes.';
+    if (!query.trim()) return '지형, 물, 생태계, 조명, 성능 검색...';
+    if (!hasResults) return '일치하는 설정이 없습니다. 더 넓은 키워드를 시도하세요.';
+    return 'Enter는 선택한 항목을 엽니다. 카테고리를 클릭하면 패널을 엽니다. Esc는 닫습니다.';
   }, [hasResults, query]);
 
   const handleKeyDown = (e) => {
@@ -63,14 +63,14 @@ export default function SettingsSearchOverlay({
         aria-label="Close settings search"
         onClick={onClose}
       />
-      <div className="settings-search-shell" role="dialog" aria-modal="false" aria-label="Search settings">
+      <div className="settings-search-shell" role="dialog" aria-modal="false" aria-label="설정 검색">
         <div className="settings-search-wrap settings-search-wrap-global">
           <SearchIcon />
           <input
             ref={inputRef}
             type="search"
             className="settings-search-input"
-            placeholder="Search settings..."
+            placeholder="설정 검색..."
             value={query}
             onChange={(e) => onChangeQuery(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -80,7 +80,7 @@ export default function SettingsSearchOverlay({
               type="button"
               className="settings-search-clear"
               onClick={() => onChangeQuery('')}
-              aria-label="Clear search"
+              aria-label="검색 지우기"
             >
               x
             </button>

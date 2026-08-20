@@ -18,7 +18,7 @@ export class SplineManager {
   constructor({ scene, camera, domElement, controls, uniforms, getBounds, getBaseHeight, picker, gpuTier, onChange, onStableAction, onToast }) {
     this.scene = scene; this.camera = camera; this.controls = controls; this.onChange = onChange; this.onStableAction = onStableAction; this.toast = onToast;
     this.splines = []; this.selectedId = null; this.draft = null; this.enabled = false;
-    this.group = new THREE.Group(); this.group.name = 'Spline overlays'; this.group.renderOrder = 20; scene.add(this.group);
+    this.group = new THREE.Group(); this.group.name = '스플라인 오버레이'; this.group.renderOrder = 20; scene.add(this.group);
     this.baker = new SplineMaskBaker({ uniforms, getBounds, getBaseHeight, resolution: gpuTier === 'low' ? 256 : gpuTier === 'medium' ? 384 : 512 });
     this.editor = new SplineEditor({ domElement, picker, manager: this, controls });
   }
@@ -37,11 +37,11 @@ export class SplineManager {
     const s = this._find(id); if (!s || s.locked) return;
     Object.assign(s, patch, { updatedAt: new Date().toISOString() }); this.bake({ preview }); if (!preview) this._scheduleStable(`Changed ${s.type}`);
   }
-  deleteSpline(id) { const i = this.splines.findIndex((s) => s.id === id); if (i < 0) return; this.splines.splice(i, 1); if (this.selectedId === id) this.selectedId = null; this.bake(); this._stable('Deleted spline'); }
-  duplicateSpline(id) { const s = this._find(id); if (!s) return; const clone = JSON.parse(JSON.stringify(s)); clone.id = uid('spline'); clone.name = `${s.name} copy`; clone.controlPoints.forEach((p) => { p.id = uid('point'); p.x += 10; p.z += 10; }); this.splines.push(clone); this.selectedId = clone.id; this.bake(); this._stable('Duplicated spline'); }
+  deleteSpline(id) { const i = this.splines.findIndex((s) => s.id === id); if (i < 0) return; this.splines.splice(i, 1); if (this.selectedId === id) this.selectedId = null; this.bake(); this._stable('스플라인 삭제됨'); }
+  duplicateSpline(id) { const s = this._find(id); if (!s) return; const clone = JSON.parse(JSON.stringify(s)); clone.id = uid('spline'); clone.name = `${s.name} copy`; clone.controlPoints.forEach((p) => { p.id = uid('point'); p.x += 10; p.z += 10; }); this.splines.push(clone); this.selectedId = clone.id; this.bake(); this._stable('중복된 스플라인'); }
   selectSpline(id) { this.selectedId = id; this._render(); this._emit(); }
   movePoint(splineId, pointId, hit, { preview = false } = {}) { const s = this._find(splineId); const p = s?.controlPoints.find((q) => q.id === pointId); if (!p || s.locked) return; p.x = hit.x; p.z = hit.z; if (p.lockedToTerrain) p.y = hit.y; s.updatedAt = new Date().toISOString(); this.bake({ preview }); }
-  finishPointMove(id) { this.bake(); this._stable('Moved spline point'); }
+  finishPointMove(id) { this.bake(); this._stable('스플라인 포인트 이동됨'); }
   deleteSelected() { const s = this._find(this.selectedId); if (s) this.deleteSpline(s.id); }
   findHandle(hit, radius) { const s = this._find(this.selectedId); if (!s) return null; for (const p of s.controlPoints) if (Math.hypot(p.x - hit.x, p.z - hit.z) <= radius) return { splineId: s.id, pointId: p.id }; return null; }
   findSpline(hit, radius) { let best = null; for (const s of this.splines) { const points = resampleSpline(s.controlPoints, { interpolation: s.interpolation, closed: s.closed, spacing: 8 }); if (points.length < 2) continue; const n = nearestSegment(points, hit.x, hit.z); if (n.distance < radius && (!best || n.distance < best.distance)) best = { id: s.id, distance: n.distance }; } return best; }

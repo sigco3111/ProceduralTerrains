@@ -46,7 +46,7 @@ export function computeWarnings(snap, T = WARN_THRESHOLDS) {
     const ratio = memory.usedJSHeap / memory.jsHeapLimit;
     if (ratio > T.heapRatio) add('critical', `JS heap usage high: ${(ratio * 100).toFixed(0)}%`);
   } else if (memory && !memory.supported) {
-    add('info', 'Memory API unavailable');
+    add('info', '메모리 API 사용 불가');
   }
 
   // --- gpu timing ---
@@ -69,14 +69,14 @@ export function computeWarnings(snap, T = WARN_THRESHOLDS) {
     if (caps.gpuInfoAvailable === false) {
       add('info', 'GPU name unavailable because browser blocked debug renderer info');
     }
-    if (renderer.reloadRequired) add('info', 'Renderer preference change requires reload');
+    if (renderer.reloadRequired) add('info', '렌더러 환경설정 변경은 재로드가 필요합니다');
 
     const total = diag.culling?.total ?? 0;
     if (total > T.chunks) add('warning', `Many chunks active: ${total}`);
 
     if (diag.clouds?.enabled) {
       if (diag.clouds.steps > T.cloudSteps) add('warning', `Cloud raymarch steps high: ${diag.clouds.steps}`);
-      if (diag.clouds.lod === 'none') add('info', 'Cloud LOD disabled');
+      if (diag.clouds.lod === 'none') add('info', '클라우드 LOD 비활성화');
       add('info', `Cloud culling: ${diag.clouds.cullingMode}`);
     }
 
@@ -86,12 +86,12 @@ export function computeWarnings(snap, T = WARN_THRESHOLDS) {
 
     const uw = diag.underwater;
     if (uw && uw.active) {
-      if (uw.mode === 'high') add('warning', 'High underwater mode active');
-      else add('info', 'Lite underwater mode active');
+      if (uw.mode === 'high') add('warning', '고급 수중 모드 활성');
+      else add('info', '라이트 수중 모드 활성');
       if (uw.fellBackToLite) add('info', 'High underwater requested — falling back to Lite (legacy water)');
-      if (uw.causticsEnabled) add('info', 'Underwater caustics enabled');
+      if (uw.causticsEnabled) add('info', '수중 굴절광 활성화');
       if (uw.lightShaftsEnabled) add('warning', 'Underwater light shafts enabled');
-      if (uw.particlesEnabled) add('info', 'Underwater particles enabled');
+      if (uw.particlesEnabled) add('info', '수중 파티클 활성화');
       if (uw.depthTextureAvailable === false) add('warning', 'Depth texture unavailable — simplified underwater fog');
     }
   }

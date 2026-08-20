@@ -369,7 +369,7 @@ export class UnderwaterEffect {
       // off). The pass still renders; depth-aware fog uses a constant estimate.
       depthTexture = null;
       this._depthSupported = false;
-      console.warn('Underwater: depth texture unavailable, using simplified fog', e);
+      console.warn('수중: 깊이 텍스처를 사용할 수 없어 단순화된 안개 사용', e);
     }
     // no MSAA: with samples > 0, three (r160) resolves depth into a
     // renderbuffer, leaving the sampled depth texture unpopulated. The

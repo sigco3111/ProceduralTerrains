@@ -20,8 +20,8 @@ export function labelRendererBackend(value) {
 export function labelGpuPreference(value) {
   return ({
     default: '기본',
-    'high-performance': 'High Performance',
-    'low-power': 'Low Power',
+    'high-performance': '고성능',
+    'low-power': '저전력',
   })[value] || '기본';
 }
 
@@ -30,7 +30,7 @@ export function getWebGpuSupport() {
     supported: typeof navigator !== 'undefined' && !!navigator.gpu,
     reason: typeof navigator !== 'undefined' && navigator.gpu
       ? ''
-      : 'WebGPU unavailable in this browser',
+      : '이 브라우저에서는 WebGPU를 사용할 수 없습니다',
   };
 }
 
@@ -89,11 +89,11 @@ export function detectRendererCapabilities(renderer = null) {
       caps.renderer = gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) || '';
       caps.detectedGpu = caps.renderer || caps.vendor || 'GPU info unavailable';
       caps.gpuInfoAvailable = !!(caps.vendor || caps.renderer);
-      caps.gpuInfoReason = caps.gpuInfoAvailable ? '' : 'Browser exposed debug info without a GPU string';
+      caps.gpuInfoReason = caps.gpuInfoAvailable ? '' : '브라우저가 GPU 문자열 없이 디버그 정보를 노출했습니다';
     }
   } catch {
     caps.detectedGpu = 'GPU info hidden by browser';
-    caps.gpuInfoReason = 'Browser blocked debug renderer info';
+    caps.gpuInfoReason = '브라우저가 디버그 렌더러 정보를 차단함';
   }
 
   if (ownsContext) {

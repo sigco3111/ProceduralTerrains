@@ -31,15 +31,15 @@ const DEFAULT_LAYOUT = {
 const GRAPH_EDGES = ['bottom', 'left', 'top', 'right'];
 const NEXT_NODE_SUGGESTIONS = {
   mountain: { type: 'shaper', reason: '풍화 전에 내구성 있는 매스 추가.' },
-  mountainRange: { type: 'shaper', reason: 'Give the range a broader, erosion-ready body.' },
-  canyon: { type: 'stratify', reason: 'Expose broken sedimentary layers on the canyon walls.' },
+  mountainRange: { type: 'shaper', reason: '범위에 침식 준비가 된 더 넓은 본체를 부여합니다.' },
+  canyon: { type: 'stratify', reason: '협곡 벽에 깨어진 퇴적층을 노출합니다.' },
   duneSea: { type: 'domainWarp', reason: 'Break up the dune field with a restrained wind-scale bend.' },
   shaper: { type: 'domainWarp', reason: 'Introduce broad organic displacement.' },
   domainWarp: { type: 'stratify', reason: '깨진 지질학 레이어 추가.' },
-  stratify: { type: 'thermalErosion', reason: 'Relax exposed slopes and form scree.' },
-  geologyDetail: { type: 'thermalErosion', reason: 'Redistribute loose rock on steep faces.' },
-  thermalErosion: { type: 'naturalErosion', reason: 'Carve drainage after slope relaxation.' },
-  riverCarve: { type: 'thermalErosion', reason: 'Settle freshly cut banks without breaking the river path.' },
+  stratify: { type: 'thermalErosion', reason: '노출된 경사면을 완화하고 사력을 형성합니다.' },
+  geologyDetail: { type: 'thermalErosion', reason: '가파른 면에 흩어진 바위를 재분배합니다.' },
+  thermalErosion: { type: 'naturalErosion', reason: '경사 완화 후 배수를 깎습니다.' },
+  riverCarve: { type: 'thermalErosion', reason: '강 경로를 깨지 않고 새로 깎인 둑을 안정시킵니다.' },
 };
 
 function loadLayout() {
@@ -84,13 +84,13 @@ function NodePalette({
 
   return (
     <aside className={`node-quick-palette${detached ? ` detached detached-${side}` : ''}`} style={style} aria-label={`${graphMode === 'terrain' ? 'Terrain' : 'Noise'} nodes`}>
-      <header className="node-palette-drag-header" onPointerDown={onHeaderPointerDown} title="Drag to attach the node list to the graph or dock it to either side">
-        <span>{graphMode === 'terrain' ? 'Terrain nodes' : 'Noise nodes'}</span>
+      <header className="node-palette-drag-header" onPointerDown={onHeaderPointerDown} title="노드 목록을 그래프에 붙이거나 양쪽에 도킹하려면 드래그하세요">
+        <span>{graphMode === 'terrain' ? '지형 노드' : '노이즈 노드'}</span>
         <small>{definitions.length}</small>
         <GripVertical className="node-palette-drag-cue" size={14} aria-hidden />
-        {!detached ? <button type="button" onClick={onCollapse} title="Collapse node list"><ChevronLeft size={14} /></button> : null}
+        {!detached ? <button type="button" onClick={onCollapse} title="노드 목록 접기"><ChevronLeft size={14} /></button> : null}
       </header>
-      <div className="node-mode-switch node-palette-mode-switch" role="tablist" aria-label="Node editor sub-mode">
+      <div className="node-mode-switch node-palette-mode-switch" role="tablist" aria-label="노드 에디터 서브 모드">
         <button type="button" role="tab" aria-selected={graphMode === 'noise'} className={graphMode === 'noise' ? 'active' : ''} onClick={() => onModeChange('noise')}>Noise nodes</button>
         <button type="button" role="tab" aria-selected={graphMode === 'terrain'} className={graphMode === 'terrain' ? 'active' : ''} onClick={() => onModeChange('terrain')}>Terrain nodes</button>
       </div>
@@ -143,7 +143,7 @@ function TerrainNode({ data, selected }) {
       <div className="terrain-flow-node__header">
         <span className="terrain-flow-node__icon"><NodeIcon size={12} aria-hidden /></span>
         <span className="terrain-flow-node__title">{node.label}</span>
-        {compiling ? <span className="terrain-flow-node__compile" role="status" aria-label={`${node.label} is compiling`} title="Compiling shader"><LoaderCircle size={12} aria-hidden /></span> : null}
+        {compiling ? <span className="terrain-flow-node__compile" role="status" aria-label={`${node.label} is compiling`} title="셰이더 컴파일 중"><LoaderCircle size={12} aria-hidden /></span> : null}
         {definition.permanent ? <span className="terrain-flow-node__output">OUT</span> : null}
       </div>
       <div className="terrain-flow-node__ports">
@@ -296,7 +296,7 @@ function NodeInspector({
   }) : null;
   useEffect(() => { setPropertyQuery(''); }, [node?.id, group?.id]);
   const inspectorSections = definition?.inspector?.reduce((sections, field) => {
-    const label = field.tier === 'essential' ? 'Essentials' : field.section || '매개변수';
+    const label = field.tier === 'essential' ? '필수' : field.section || '매개변수';
     const entry = sections.find((section) => section.label === label);
     if (entry) entry.fields.push(field); else sections.push({ label, fields: [field] });
     return sections;
@@ -309,7 +309,7 @@ function NodeInspector({
   const resultCount = visibleSections.reduce((sum, section) => sum + section.fields.length, 0);
   const suggestion = node ? NEXT_NODE_SUGGESTIONS[node.type] : null;
   const suggestedDefinition = suggestion ? getGraphNodeDefinition(suggestion.type) : null;
-  const title = group ? '그룹' : definition?.label || 'Nothing selected';
+  const title = group ? '그룹' : definition?.label || '선택된 항목 없음';
   return (
     <aside className="node-inspector" aria-label="Selected node properties">
       <header className="node-dock-header node-inspector__header node-dock-header--draggable" onPointerDown={onHeaderPointerDown}>
@@ -318,7 +318,7 @@ function NodeInspector({
           <strong>{title}</strong>
         </div>
         <GripVertical className="node-dock-drag-cue" size={15} aria-hidden />
-        {node && definition ? <button type="button" className="node-inspector-reset" onClick={onReset} title="Reset this node to its defaults"><RotateCcw size={14} /><span>Reset</span></button> : null}
+        {node && definition ? <button type="button" className="node-inspector-reset" onClick={onReset} title="이 노드를 기본값으로 초기화"><RotateCcw size={14} /><span>Reset</span></button> : null}
       </header>
       {group ? (
         <div className="node-inspector__body">
@@ -386,7 +386,7 @@ function NodeInspector({
             {normalizedPropertyQuery ? <div className="node-inspector-search-count">{resultCount} {resultCount === 1 ? 'setting' : 'settings'} found</div> : null}
             {visibleSections.map((section, index) => {
               const sectionKey = `${node.type}:${section.label}`;
-              const defaultOpen = section.label === 'Essentials' || index === 0 || section.fields.some((field) => field.defaultOpen);
+              const defaultOpen = section.label === '필수' || index === 0 || section.fields.some((field) => field.defaultOpen);
               const expanded = normalizedPropertyQuery ? true : (openSections[sectionKey] ?? defaultOpen);
               return (
                 <section className={`node-inspector-section${expanded ? ' expanded' : ' collapsed'}`} key={section.label}>
@@ -571,7 +571,7 @@ export default function NodeWorkspace({
       };
     }, { minX: Infinity, minY: Infinity, maxX: -Infinity, maxY: -Infinity });
     const result = groupGraphNodes(graphRef.current, nodes.map((node) => node.id), {
-      label: 'Terrain section', position: { x: bounds.minX - 28, y: bounds.minY - 48 },
+      label: '지형 섹션', position: { x: bounds.minX - 28, y: bounds.minY - 48 },
       width: bounds.maxX - bounds.minX + 56, height: bounds.maxY - bounds.minY + 76,
     });
     if (!result.groupId) return;
@@ -627,7 +627,7 @@ export default function NodeWorkspace({
         return;
       }
       if (key === 'g') { event.preventDefault(); if (event.shiftKey) ungroupSelection(); else createGroupFromSelection(); }
-      else if (event.key === 'Delete' || event.key === 'Backspace') { event.preventDefault(); deleteSelection(); }
+      else if (event.key === 'Delete' || event.key === '백스페이스') { event.preventDefault(); deleteSelection(); }
       else if (key === 'f') { event.preventDefault(); instance?.fitView({ padding: 0.18, duration: 280 }); }
     };
     window.addEventListener('keydown', onKey, true);
@@ -821,7 +821,7 @@ export default function NodeWorkspace({
   );
 
   return (
-    <section ref={rootRef} className={`nodes-workspace graph-edge-${layout.graphEdge} inspector-${layout.inspectorSide}${inspectorReplaced ? ' inspector-replaced' : ''}`} aria-label="Terrain Nodes workspace">
+    <section ref={rootRef} className={`nodes-workspace graph-edge-${layout.graphEdge} inspector-${layout.inspectorSide}${inspectorReplaced ? ' inspector-replaced' : ''}`} aria-label="지형 노드 작업 공간">
       {draggingDock ? (
         <div className={`panel-snap-layer node-panel-snap-layer${draggingDock === 'inspector' ? ' panel-snap-layer--drawer' : ''}`} aria-hidden>
           {(draggingDock === 'graph' ? GRAPH_EDGES : ['left', 'right']).map((edge) => <div key={edge} className={`panel-snap-zone panel-snap-zone--${edge}${snapHint === edge ? ' active' : ''}`} />)}
@@ -836,12 +836,12 @@ export default function NodeWorkspace({
       }}>
         <div className="node-graph-resizer" onPointerDown={beginGraphResize}><GripVertical size={14} /></div>
         <header className="node-dock-header node-graph-toolbar node-dock-header--draggable" onPointerDown={(event) => beginDockDrag('graph', event)}>
-          <div className="node-dock-heading"><span className="node-dock-kicker">Nodes</span><strong>{graphMode === 'terrain' ? 'Terrain Graph' : 'Procedural Noise'}</strong></div>
+          <div className="node-dock-heading"><span className="node-dock-kicker">Nodes</span><strong>{graphMode === 'terrain' ? '지형 그래프' : '프로시저럴 노이즈'}</strong></div>
           <div className="node-toolbar-actions">
             {graphMode === 'terrain' && onApplyTemplate ? (
-              <label className="node-template-picker" title="Replace the graph with an authored terrain recipe">
+              <label className="node-template-picker" title="작성된 지형 레시피로 그래프 교체">
                 <Sparkles size={13} aria-hidden />
-                <select value={applyingTemplateId} onChange={applyTemplate} disabled={!!applyingTemplateId} aria-label="Load terrain node recipe">
+                <select value={applyingTemplateId} onChange={applyTemplate} disabled={!!applyingTemplateId} aria-label="지형 노드 레시피 불러오기">
                   <option value="">Recipes</option>
                   {NODE_PROJECT_TEMPLATES.filter((template) => template.id !== 'nodes-blank').map((template) => (
                     <option key={template.id} value={template.id}>{template.name}</option>
@@ -857,15 +857,15 @@ export default function NodeWorkspace({
                   className="node-color-toggle"
                   aria-pressed={colorConfiguration.enabled}
                   onClick={toggleGraphColors}
-                  title={colorConfiguration.enabled ? 'Disable node colors and use the project palette' : 'Apply node colors to this terrain'}
+                  title={colorConfiguration.enabled ? '노드 색상 비활성화하고 프로젝트 팔레트 사용' : '이 지형에 노드 색상 적용'}
                 >
                   <Palette size={13} aria-hidden />
                   <span>Colors</span>
                   {colorConfiguration.enabled ? <Eye size={12} aria-hidden /> : <EyeOff size={12} aria-hidden />}
                 </button>
-                <label className="node-color-preset" title="Apply a terrain color preset and enable node colors">
+                <label className="node-color-preset" title="지형 색상 프리셋을 적용하고 노드 색상을 활성화">
                   <span className="node-color-preset-swatch" style={{ background: terrainGradientCss(colorConfiguration.preset) }} aria-hidden />
-                  <select value={colorConfiguration.preset} onChange={applyColorPreset} aria-label="Node terrain color preset">
+                  <select value={colorConfiguration.preset} onChange={applyColorPreset} aria-label="노드 지형 색상 프리셋">
                     {TERRAIN_GRADIENT_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
                   </select>
                   <ChevronDown size={11} aria-hidden />
@@ -873,10 +873,10 @@ export default function NodeWorkspace({
               </div>
             ) : null}
             <button type="button" className="node-toolbar-button" onClick={openSearch}><Plus size={14} /> Add</button>
-            <button type="button" className="node-toolbar-button" onClick={createGroupFromSelection} disabled={!selectedNodes.size} title="Group selected nodes (G)"><FolderPlus size={13} /> Group</button>
+            <button type="button" className="node-toolbar-button" onClick={createGroupFromSelection} disabled={!selectedNodes.size} title="선택한 노드 그룹화 (G)"><FolderPlus size={13} /> Group</button>
             <button type="button" className="node-icon-button" onClick={() => ungroupSelection()} disabled={!selectedGroups.size} title="Remove selected group frame (Shift+G)"><Ungroup size={13} /></button>
-            <button type="button" className="node-icon-button" onClick={() => instance?.fitView({ padding: 0.18, maxZoom: 1, duration: 280 })} title="Fit graph"><Maximize2 size={14} /></button>
-            <button type="button" className={`node-icon-button${layout.previewVisible ? ' active' : ''}`} onClick={() => updateLayout({ previewVisible: !layout.previewVisible })} title="Toggle 2D preview">{layout.previewVisible ? <Eye size={14} /> : <EyeOff size={14} />}</button>
+            <button type="button" className="node-icon-button" onClick={() => instance?.fitView({ padding: 0.18, maxZoom: 1, duration: 280 })} title="그래프 맞추기"><Maximize2 size={14} /></button>
+            <button type="button" className={`node-icon-button${layout.previewVisible ? ' active' : ''}`} onClick={() => updateLayout({ previewVisible: !layout.previewVisible })} title="2D 미리보기 토글">{layout.previewVisible ? <Eye size={14} /> : <EyeOff size={14} />}</button>
             <button type="button" className="node-toolbar-button subtle" onClick={() => onStartBlank?.(graphMode)}>Clear graph</button>
           </div>
         </header>
@@ -963,7 +963,7 @@ export default function NodeWorkspace({
 
         {searchState ? (
           <div className="node-search-popover" style={{ left: searchState.left, top: searchState.top }}>
-            <div className="node-search-input"><Search size={15} /><input value={searchQuery} placeholder="Search terrain nodes…" onChange={(event) => { setSearchQuery(event.target.value); setSearchIndex(0); }} onKeyDown={(event) => {
+            <div className="node-search-input"><Search size={15} /><input value={searchQuery} placeholder="지형 노드 검색…" onChange={(event) => { setSearchQuery(event.target.value); setSearchIndex(0); }} onKeyDown={(event) => {
               if (event.key === 'ArrowDown') { event.preventDefault(); setSearchIndex((index) => Math.min(searchResults.length - 1, index + 1)); }
               else if (event.key === 'ArrowUp') { event.preventDefault(); setSearchIndex((index) => Math.max(0, index - 1)); }
               else if (event.key === 'Enter' && searchResults[searchIndex]) { event.preventDefault(); addNodeAt(searchResults[searchIndex].id, searchState.flowPosition); }

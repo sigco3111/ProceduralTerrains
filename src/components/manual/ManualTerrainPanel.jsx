@@ -67,7 +67,7 @@ const TEXTURE_TOOLS = [
 
 const PROP_PAINT_TYPES = [
   { id: 'grass', label: '잔디', Icon: Sprout, color: '#65a30d' },
-  { id: 'flowers', label: 'Flowers', Icon: Flower2, color: '#f472b6' },
+  { id: 'flowers', label: '꽃', Icon: Flower2, color: '#f472b6' },
   { id: 'rocks', label: '바위', Icon: Mountain, color: '#a8a29e' },
   { id: 'trees', label: '나무', Icon: TreePine, color: '#15803d' },
 ];
@@ -297,7 +297,7 @@ export default function ManualTerrainPanel({
   useEffect(() => {
     setExpandedLayerId((current) => selected?.layers?.some((layer) => layer.id === current) ? current : null);
   }, [selected?.id, selected?.layers]);
-  const positionX = { label: 'Position X', min: -half, max: half, step: 1, digits: 0, unit: 'u' };
+  const positionX = { label: 'X 위치', min: -half, max: half, step: 1, digits: 0, unit: 'u' };
   const positionZ = { label: 'Position Z', min: -half, max: half, step: 1, digits: 0, unit: 'u' };
   const rotation = { label: '회전', min: -180, max: 180, step: 1, digits: 0, unit: 'deg' };
   const scaleX = { label: '스케일 X', min: 8, max: Math.max(1000, boardSize), step: 2, digits: 0, unit: 'u' };
@@ -306,21 +306,21 @@ export default function ManualTerrainPanel({
   const detail = { label: '디테일', min: 0, max: 1, step: 0.01, digits: 2 };
   const opacity = { label: '불투명도', min: 0, max: 1, step: 0.01, digits: 2 };
   const sharpness = { label: '선예도', min: 0.2, max: 4, step: 0.05, digits: 2 };
-  const terraces = { label: 'Terraces', min: 0, max: 16, step: 1, digits: 0 };
+  const terraces = { label: '테라스', min: 0, max: 16, step: 1, digits: 0 };
   const maskFeather = { label: 'Mask Feather', min: 0.02, max: 1, step: 0.01, digits: 2 };
   const maskStrength = { label: 'Mask Strength', min: 0, max: 1, step: 0.01, digits: 2 };
-  const brushSize = { label: 'Brush Size', min: 4, max: 900, step: 2, digits: 0, unit: 'u' };
+  const brushSize = { label: '브러시 크기', min: 4, max: 900, step: 2, digits: 0, unit: 'u' };
   const brushStrength = { label: '세기', min: 0.01, max: 1, step: 0.01, digits: 2 };
   const brushFalloff = { label: '감쇠', min: 0.02, max: 1, step: 0.01, digits: 2 };
-  const targetHeight = { label: 'Target Height', min: -1000, max: 1000, step: 2, digits: 0, unit: 'u' };
+  const targetHeight = { label: '타겟 높이', min: -1000, max: 1000, step: 2, digits: 0, unit: 'u' };
   const creaseWidth = { label: 'Profile Width', min: 0.04, max: 0.8, step: 0.01, digits: 2 };
-  const detailScale = { label: 'Detail Scale', min: 2, max: 240, step: 2, digits: 0, unit: 'u' };
+  const detailScale = { label: '디테일 스케일', min: 2, max: 240, step: 2, digits: 0, unit: 'u' };
   const detailRoughness = { label: '거칠기', min: 0, max: 1, step: 0.01, digits: 2 };
   const terraceStep = { label: 'Step Height', min: 1, max: 400, step: 1, digits: 0, unit: 'u' };
   const erosionIterations = { label: 'Iterations', min: 1, max: 10, step: 1, digits: 0 };
   const erosionDeposition = { label: 'Sediment Deposit', min: 0, max: 1, step: 0.01, digits: 2 };
   const erosionTalus = { label: 'Talus Threshold', min: 0, max: 20, step: 0.1, digits: 1 };
-  const textureBrushSize = { label: 'Brush Size', min: 4, max: 900, step: 2, digits: 0, unit: 'u' };
+  const textureBrushSize = { label: '브러시 크기', min: 4, max: 900, step: 2, digits: 0, unit: 'u' };
   const textureStrength = { label: '세기', min: 0.01, max: 1, step: 0.01, digits: 2 };
   const textureFalloff = { label: 'Edge Blend', min: 0.02, max: 1, step: 0.01, digits: 2 };
   const layerOpacity = { label: 'Layer Opacity', min: 0, max: 1, step: 0.01, digits: 2 };
@@ -339,8 +339,8 @@ export default function ManualTerrainPanel({
   };
 
   return (
-    <section ref={workspaceRef} className={`manual-terrain-workspace${inspectorReplaced ? ' inspector-replaced' : ''}`} aria-label="Manual Terrain workspace">
-      <div className="manual-viewport-tools" role="toolbar" aria-label="Shape transform tools">
+    <section ref={workspaceRef} className={`manual-terrain-workspace${inspectorReplaced ? ' inspector-replaced' : ''}`} aria-label="수동 지형 작업 공간">
+      <div className="manual-viewport-tools" role="toolbar" aria-label="셰이프 변환 도구">
         {TRANSFORMS.map(({ id, label, Icon, shortcut }) => (
           <button
             key={id}
@@ -359,10 +359,10 @@ export default function ManualTerrainPanel({
         <span className="manual-tool-separator" aria-hidden />
         <button
           type="button"
-          className={state?.sculpt?.enabled ? 'active sculpt-active' : ''}
+          className={state?.sculpt?.enabled ? '활성 조각-활성' : ''}
           onClick={() => onSculptEnabled(!state?.sculpt?.enabled)}
           title="Manual Sculpt (B)"
-          aria-label="Toggle Manual Sculpt (B)"
+          aria-label="수동 조각 토글 (B)"
           aria-pressed={!!state?.sculpt?.enabled}
         >
           <SlidersHorizontal size={18} aria-hidden />
@@ -374,7 +374,7 @@ export default function ManualTerrainPanel({
           className={state?.texturePaint?.enabled ? 'active texture-active' : ''}
           onClick={() => onTexturePaintEnabled(!state?.texturePaint?.enabled)}
           title="표면 & 소품 페인트 (T)"
-          aria-label="Toggle Surface & Props Paint (T)"
+          aria-label="표면 & 소품 페인트 토글 (T)"
           aria-pressed={!!state?.texturePaint?.enabled}
         >
           <Palette size={18} aria-hidden />
@@ -397,7 +397,7 @@ export default function ManualTerrainPanel({
           onPointerUp={finishLibraryResize}
           onPointerCancel={finishLibraryResize}
           onKeyDown={resizeLibraryWithKeyboard}
-          title="Drag to resize the Shape Library"
+          title="드래그하여 도형 라이브러리 크기 조절"
         />
         <header className="manual-dock-header">
           <div className="node-dock-heading">
@@ -440,7 +440,7 @@ export default function ManualTerrainPanel({
                       </span>
                     </button>
                     <div className="manual-layer-actions">
-                      <button type="button" onClick={() => onUpdate(shape.id, { enabled: shape.enabled === false })} title={shape.enabled === false ? 'Show layer' : 'Hide layer'} aria-label={shape.enabled === false ? `Show ${shape.name}` : `Hide ${shape.name}`}>
+                      <button type="button" onClick={() => onUpdate(shape.id, { enabled: shape.enabled === false })} title={shape.enabled === false ? '레이어 표시' : '레이어 숨기기'} aria-label={shape.enabled === false ? `Show ${shape.name}` : `Hide ${shape.name}`}>
                         {shape.enabled === false ? <EyeOff size={12} /> : <Eye size={12} />}
                       </button>
                       <button type="button" onClick={() => onReorder(shape.id, 1)} disabled={visibleIndex === 0} title="레이어 위로 이동" aria-label={`Move ${shape.name} up`}>
@@ -490,20 +490,20 @@ export default function ManualTerrainPanel({
       </div>
 
       {!inspectorReplaced ? (
-        <aside className="manual-inspector-dock" style={inspectorStyle} aria-label="Terrain shape inspector">
+        <aside className="manual-inspector-dock" style={inspectorStyle} aria-label="지형 모양 인스펙터">
           <header className="node-dock-header manual-inspector-header">
             <div className="node-dock-heading">
               <span className="node-dock-kicker">Manual terrain</span>
               <strong>{state?.texturePaint?.enabled
-                ? (state.texturePaint.mode === 'props' ? 'Prop Paint' : 'Texture Paint')
-                : state?.sculpt?.enabled ? 'Sculpt' : selected?.name || 'Shape Inspector'}</strong>
+                ? (state.texturePaint.mode === 'props' ? '프롭 페인트' : '텍스처 페인트')
+                : state?.sculpt?.enabled ? 'Sculpt' : selected?.name || '셰이프 인스펙터'}</strong>
             </div>
             {selected && !state?.sculpt?.enabled && !state?.texturePaint?.enabled ? (
               <div className="manual-shape-actions">
-                <button type="button" onClick={() => onDuplicate(selected.id)} title="Duplicate (Ctrl/Cmd+D)" aria-label="Duplicate selected shape">
+                <button type="button" onClick={() => onDuplicate(selected.id)} title="복제 (Ctrl/Cmd+D)" aria-label="Duplicate selected shape">
                   <Copy size={14} aria-hidden />
                 </button>
-                <button type="button" className="danger" onClick={() => onDelete(selected.id)} title="Delete" aria-label="Delete selected shape">
+                <button type="button" className="danger" onClick={() => onDelete(selected.id)} title="Delete" aria-label="선택한 셰이프 삭제">
                   <Trash2 size={14} aria-hidden />
                 </button>
               </div>
@@ -519,7 +519,7 @@ export default function ManualTerrainPanel({
               </p>
               <section className="manual-inspector-section">
                 <h3>Paint Layer</h3>
-                <div className="manual-sculpt-tool-grid manual-texture-tool-grid manual-paint-layer-grid" role="tablist" aria-label="Manual paint layer">
+                <div className="manual-sculpt-tool-grid manual-texture-tool-grid manual-paint-layer-grid" role="tablist" aria-label="수동 페인트 레이어">
                   <button
                     type="button"
                     className={state.texturePaint.mode === 'surface' ? 'active' : ''}
@@ -541,8 +541,8 @@ export default function ManualTerrainPanel({
                 </div>
               </section>
               <section className="manual-inspector-section">
-                <h3>{state.texturePaint.mode === 'props' ? 'Prop Tool' : 'Texture Tool'}</h3>
-                <div className="manual-sculpt-tool-grid manual-texture-tool-grid" role="toolbar" aria-label={state.texturePaint.mode === 'props' ? 'Prop paint tools' : 'Texture paint tools'}>
+                <h3>{state.texturePaint.mode === 'props' ? '프롭 도구' : '텍스처 도구'}</h3>
+                <div className="manual-sculpt-tool-grid manual-texture-tool-grid" role="toolbar" aria-label={state.texturePaint.mode === 'props' ? '프롭 페인트 도구' : '텍스처 페인트 도구'}>
                   {TEXTURE_TOOLS.filter(({ id }) => state.texturePaint.mode === 'surface' || id !== 'blend').map(({ id, label, Icon }) => (
                     <button
                       key={id}
@@ -560,16 +560,16 @@ export default function ManualTerrainPanel({
                   {state.texturePaint.tool === 'paint'
                     ? (state.texturePaint.mode === 'props'
                       ? 'Add the selected prop layer without removing other painted prop types.'
-                      : 'Crossfade the selected material over existing terrain textures.')
+                      : '선택한 머티리얼을 기존 지형 텍스처에 크로스페이드.')
                     : state.texturePaint.tool === 'blend'
                       ? 'Smooth neighboring material weights without flattening the terrain.'
-                      : 'Fade painted materials back to the original manual terrain surface.'}
+                      : '칠해진 머티리얼을 원래 수동 지형 표면으로 페이드합니다.'}
                 </p>
               </section>
               {state.texturePaint.tool === 'paint' && state.texturePaint.mode === 'surface' ? (
                 <section className="manual-inspector-section">
                   <h3>Material</h3>
-                  <div className="manual-material-grid" role="listbox" aria-label="Terrain material">
+                  <div className="manual-material-grid" role="listbox" aria-label="지형 머티리얼">
                     {MANUAL_SURFACE_MATERIALS.map((material) => (
                       <button
                         key={material.id}
@@ -588,7 +588,7 @@ export default function ManualTerrainPanel({
               ) : state.texturePaint.tool === 'paint' ? (
                 <section className="manual-inspector-section">
                   <h3>Prop Type</h3>
-                  <div className="manual-sculpt-tool-grid manual-texture-tool-grid manual-prop-type-grid" role="listbox" aria-label="Terrain prop type">
+                  <div className="manual-sculpt-tool-grid manual-texture-tool-grid manual-prop-type-grid" role="listbox" aria-label="지형 소품 유형">
                     {PROP_PAINT_TYPES.map(({ id, label, Icon, color }) => (
                       <button
                         key={id}
@@ -670,7 +670,7 @@ export default function ManualTerrainPanel({
               ) : null}
               {state.sculpt.tool === 'crease' || state.sculpt.tool === 'ridge' ? (
                 <section className="manual-inspector-section manual-inspector-controls">
-                  <h3>{state.sculpt.tool === 'crease' ? '주름 프로필' : 'Ridge Profile'}</h3>
+                  <h3>{state.sculpt.tool === 'crease' ? '주름 프로필' : '능선 프로필'}</h3>
                   <SliderCtl def={creaseWidth} value={state.sculpt.creaseWidth} onChange={(value) => onSculptSetting('creaseWidth', value)} />
                 </section>
               ) : null}
@@ -764,7 +764,7 @@ export default function ManualTerrainPanel({
                       value={selected.seed}
                       onChange={(event) => onUpdate(selected.id, { seed: Number(event.target.value) || 0 })}
                     />
-                    <button type="button" onClick={() => onUpdate(selected.id, { seed: Math.floor(Math.random() * 0x7fffffff) })} title="시드 무작위화" aria-label="Randomize shape seed">
+                    <button type="button" onClick={() => onUpdate(selected.id, { seed: Math.floor(Math.random() * 0x7fffffff) })} title="시드 무작위화" aria-label="셰이프 시드 무작위화">
                       <Dices size={14} aria-hidden />
                     </button>
                   </span>
@@ -809,13 +809,13 @@ export default function ManualTerrainPanel({
                               {expanded ? <ChevronUp size={12} aria-hidden /> : <ChevronDown size={12} aria-hidden />}
                             </button>
                             <div className="manual-shape-layer-actions">
-                              <button type="button" onClick={() => onUpdateShapeLayer?.(selected.id, layer.id, { enabled: layer.enabled === false })} title={layer.enabled === false ? 'Enable layer' : 'Disable layer'} aria-label={layer.enabled === false ? `Enable ${layer.name}` : `Disable ${layer.name}`}>
+                              <button type="button" onClick={() => onUpdateShapeLayer?.(selected.id, layer.id, { enabled: layer.enabled === false })} title={layer.enabled === false ? '레이어 활성화' : '레이어 비활성화'} aria-label={layer.enabled === false ? `Enable ${layer.name}` : `Disable ${layer.name}`}>
                                 {layer.enabled === false ? <EyeOff size={12} /> : <Eye size={12} />}
                               </button>
-                              <button type="button" onClick={() => onDuplicateShapeLayer?.(selected.id, layer.id)} disabled={selected.layers.length >= MAX_MANUAL_SHAPE_LAYERS} title="Duplicate layer" aria-label={`Duplicate ${layer.name}`}><Copy size={12} /></button>
+                              <button type="button" onClick={() => onDuplicateShapeLayer?.(selected.id, layer.id)} disabled={selected.layers.length >= MAX_MANUAL_SHAPE_LAYERS} title="레이어 복제" aria-label={`Duplicate ${layer.name}`}><Copy size={12} /></button>
                               <button type="button" onClick={() => onReorderShapeLayer?.(selected.id, layer.id, -1)} disabled={layerIndex === 0} title="레이어 위로 이동" aria-label={`Move ${layer.name} up`}><ChevronUp size={12} /></button>
                               <button type="button" onClick={() => onReorderShapeLayer?.(selected.id, layer.id, 1)} disabled={layerIndex === selected.layers.length - 1} title="레이어 아래로 이동" aria-label={`Move ${layer.name} down`}><ChevronDown size={12} /></button>
-                              <button type="button" className="danger" onClick={() => onDeleteShapeLayer?.(selected.id, layer.id)} title="Delete layer" aria-label={`Delete ${layer.name}`}><Trash2 size={12} /></button>
+                              <button type="button" className="danger" onClick={() => onDeleteShapeLayer?.(selected.id, layer.id)} title="레이어 삭제" aria-label={`Delete ${layer.name}`}><Trash2 size={12} /></button>
                             </div>
                           </div>
                           {expanded ? (

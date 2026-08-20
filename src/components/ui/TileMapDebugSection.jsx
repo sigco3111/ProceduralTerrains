@@ -4,16 +4,16 @@ import { ToggleRow, SelectRow } from '../controls.jsx';
 
 const DEBUG_VIEW_OPTIONS = [
   { value: 'off', label: '꺼짐' },
-  { value: 'noise', label: 'Noise Texture' },
+  { value: 'noise', label: '노이즈 텍스처' },
   { value: 'height', label: '하이맵' },
   { value: 'biome', label: 'Biome Map' },
 ];
 
 const BIOME_LEGEND = [
-  ['#d6b35a', 'Desert / sand'],
+  ['#d6b35a', '사막 / 모래'],
   ['#b05f32', '협곡 / 마른 바위'],
-  ['#2f9f67', 'Wetland / grass'],
-  ['#8b8f98', 'Mountains / snow'],
+  ['#2f9f67', '습지 / 풀'],
+  ['#8b8f98', '산맥 / 설산'],
 ];
 
 function BiomeLegend() {
@@ -34,7 +34,7 @@ export default function TileMapDebugSection({ tileDebug, onTileDebug }) {
 
   return (
     <CollapsibleGroup
-      title="Map Overlays"
+      title="맵 오버레이"
       icon={<Map size={15} strokeWidth={1.75} />}
       defaultOpen={dbg.view !== 'off'}
     >
@@ -42,7 +42,7 @@ export default function TileMapDebugSection({ tileDebug, onTileDebug }) {
         Preview internal terrain maps on the Tile surface without changing saved terrain data.
       </p>
       <SelectRow
-        label="Debug View"
+        label="디버그 보기"
         value={dbg.view}
         options={DEBUG_VIEW_OPTIONS}
         onChange={(v) => onTileDebug({ view: v })}

@@ -7,9 +7,9 @@ import {
 } from './toolsRailLayout.js';
 
 const EDGE_LABELS = {
-  left: 'Snap left',
-  right: 'Snap right',
-  top: 'Snap top',
+  left: '왼쪽에 스냅',
+  right: '오른쪽에 스냅',
+  top: '상단 스냅',
   bottom: 'Snap bottom',
 };
 
@@ -206,7 +206,7 @@ export default function LeftToolbar({
           className="panel-snap-menu"
           style={{ left: menu.x, top: menu.y }}
           role="menu"
-          aria-label="Tools panel position"
+          aria-label="도구 패널 위치"
         >
           {TOOLS_RAIL_EDGES.map((id) => (
             <button

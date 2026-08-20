@@ -8,25 +8,25 @@ import { CLOUD_DEFAULT_PARAMS } from '../../engine/sky/CloudSettings.js';
 
 const SHAPE_SLIDERS = [
   { key: 'cloudCoverage', label: '범위', min: 0, max: 1, step: 0.01, digits: 2, info: 'Fraction of the sky covered by clouds.' },
-  { key: 'cloudDensity', label: '밀도', min: 0.1, max: 3, step: 0.05, digits: 2, info: 'Overall opacity / optical thickness of the clouds.' },
-  { key: 'cloudSoftness', label: '부드러움', min: 0.01, max: 0.6, step: 0.01, digits: 2, info: 'Softness of the cloud edges where coverage cuts in.' },
+  { key: 'cloudDensity', label: '밀도', min: 0.1, max: 3, step: 0.05, digits: 2, info: '구름의 전체 불투명도 / 광학 두께.' },
+  { key: 'cloudSoftness', label: '부드러움', min: 0.01, max: 0.6, step: 0.01, digits: 2, info: '커버리지 컷인 위치의 구름 가장자리 부드러움.' },
 ];
 
 const SHELL_SLIDERS = [
   { key: 'cloudAltitude', label: '고도', min: 0, max: 1500, step: 5, info: 'Height of the cloud layer base. In studio this is an absolute height (0 = ground level), so clouds can sit right at the surface.' },
-  { key: 'cloudThickness', label: '두께', min: 80, max: 2500, step: 10, info: 'Vertical thickness of the cloud layer.' },
+  { key: 'cloudThickness', label: '두께', min: 80, max: 2500, step: 10, info: '구름 레이어의 수직 두께.' },
 ];
 
 const NOISE_SLIDERS = [
-  { key: 'cloudScale', label: 'Cloud Scale', min: 0.3, max: 8, step: 0.1, digits: 1, info: 'Size of the large cloud shapes (lower = bigger).' },
-  { key: 'cloudDetailScale', label: 'Detail Scale', min: 2, max: 24, step: 0.5, digits: 1, info: 'Frequency of the mid-scale billows.' },
-  { key: 'cloudDetailStrength', label: 'Detail Strength', min: 0, max: 1, step: 0.02, digits: 2, info: 'How strongly detail noise modulates the shapes.' },
-  { key: 'cloudErosionScale', label: 'Erosion Scale', min: 4, max: 40, step: 0.5, digits: 1, info: 'Frequency of the worley erosion that carves wispy edges.' },
-  { key: 'cloudErosionStrength', label: 'Erosion Strength', min: 0, max: 1, step: 0.02, digits: 2, info: '침식이 구름을 얼마나 공격적으로 파고드는지.' },
+  { key: 'cloudScale', label: '구름 스케일', min: 0.3, max: 8, step: 0.1, digits: 1, info: '큰 구름 모양의 크기 (값이 낮을수록 더 큼).' },
+  { key: 'cloudDetailScale', label: '디테일 스케일', min: 2, max: 24, step: 0.5, digits: 1, info: '중간 스케일 물결의 빈도.' },
+  { key: 'cloudDetailStrength', label: '디테일 세기', min: 0, max: 1, step: 0.02, digits: 2, info: '디테일 노이즈가 셰이프를 변조하는 강도.' },
+  { key: 'cloudErosionScale', label: '침식 스케일', min: 4, max: 40, step: 0.5, digits: 1, info: 'Frequency of the worley erosion that carves wispy edges.' },
+  { key: 'cloudErosionStrength', label: '침식 세기', min: 0, max: 1, step: 0.02, digits: 2, info: '침식이 구름을 얼마나 공격적으로 파고드는지.' },
 ];
 
 const MOTION_SLIDERS = [
-  { key: 'cloudWindDir', label: 'Wind Direction', min: 0, max: 360, step: 1, unit: '°', info: 'Heading the cloud field drifts toward.' },
+  { key: 'cloudWindDir', label: '바람 방향', min: 0, max: 360, step: 1, unit: '°', info: 'Heading the cloud field drifts toward.' },
   { key: 'cloudWindSpeed', label: 'Wind Speed', min: 0, max: 4, step: 0.05, digits: 2, info: 'Speed of the cloud drift.' },
   { key: 'cloudRotationSpeed', label: '회전', min: 0, max: 3, step: 0.05, digits: 2, info: 'Slow rotation of the cloud field around the planet axis.' },
   { key: 'cloudEvolveSpeed', label: 'Evolve', min: 0, max: 4, step: 0.05, digits: 2, info: 'How fast clouds form, morph and dissipate in place (0 = static shapes that only drift).' },
@@ -38,7 +38,7 @@ const LIGHT_SLIDERS = [
   { key: 'cloudScatteringStrength', label: '산란', min: 0, max: 2, step: 0.05, digits: 2, info: 'Brightness of light scattered toward the camera.' },
   { key: 'cloudAtmosphereInfluence', label: 'Sky Influence', min: 0, max: 1, step: 0.02, digits: 2, info: 'How strongly the active sky, sun and atmosphere color the clouds. Zero restores the legacy independent lighting.' },
   { key: 'cloudSunResponse', label: '태양 반응', min: 0, max: 2, step: 0.05, digits: 2, info: 'Strength of direct sunlight received by the clouds.' },
-  { key: 'cloudAmbientResponse', label: 'Ambient Response', min: 0, max: 2, step: 0.05, digits: 2, info: 'Strength of zenith, horizon and ground-bounce lighting.' },
+  { key: 'cloudAmbientResponse', label: '주변광 반응', min: 0, max: 2, step: 0.05, digits: 2, info: 'Strength of zenith, horizon and ground-bounce lighting.' },
   { key: 'cloudSilverLining', label: 'Silver Lining', min: 0, max: 1, step: 0.01, digits: 2, info: 'Directional glow when looking toward the sun through cloud edges.' },
 ];
 
@@ -63,7 +63,7 @@ const RENDER_SCALE_OPTIONS = [
 ];
 
 const COLOR_FIELDS = [
-  { key: 'cloudColor', label: 'Cloud Color', info: 'Cloud albedo multiplied by sunlight and sky lighting.', def: [1, 1, 1] },
+  { key: 'cloudColor', label: '구름 색상', info: 'Cloud albedo multiplied by sunlight and sky lighting.', def: [1, 1, 1] },
   { key: 'cloudShadowColor', label: 'Shadow Color', info: 'Artistic tint applied only to self-shadowed cloud regions.', def: [0.42, 0.47, 0.6] },
 ];
 
@@ -84,8 +84,8 @@ export default function CloudPanel({
   const flat = useContext(FlatPanelContext);
   const enabled = !!params.cloudsEnabled;
   const distInfo = worldMode === 'planet'
-    ? 'Hide clouds when the camera is farther than this many planet radii.'
-    : 'Hide clouds when the camera is farther than this many board widths.';
+    ? '카메라가 이만큼의 행성 반지름보다 멀 때 구름을 숨깁니다.'
+    : '카메라가 이만큼의 보드 너비보다 멀리 있을 때 구름을 숨깁니다.';
   const enableInfo = worldMode === 'planet'
     ? 'Show the volumetric cloud shell around the planet.'
     : (worldMode === 'infinite'
@@ -115,7 +115,7 @@ export default function CloudPanel({
   const content = (
     <>
       <ToggleRow
-        label="Enable Clouds"
+        label="구름 활성화"
         value={enabled}
         onChange={(v) => onParam('cloudsEnabled', v)}
         info={enableInfo}
@@ -138,10 +138,10 @@ export default function CloudPanel({
 
           <ControlSection
             id={`${id}-shell`}
-            title="Shell"
+            title="셸"
             defaultOpen={false}
             settingId="clouds.section.shell"
-            forceOpen={forceSection('clouds.section.shell', 'Shell', ['clouds.cloudAltitude', 'clouds.cloudThickness'])}
+            forceOpen={forceSection('clouds.section.shell', '셸', ['clouds.cloudAltitude', 'clouds.cloudThickness'])}
           >
             {SHELL_SLIDERS.map((def) => (
               <SliderCtl key={def.key} def={def} value={val(params, def.key)} onChange={(v) => onParam(def.key, v)} settingId={`clouds.${def.key}`} />
@@ -194,7 +194,7 @@ export default function CloudPanel({
               </div>
             ))}
             <ToggleRow
-              label="Self Shadowing"
+              label="자체 그림자"
               value={p.cloudSelfShadow !== false}
               onChange={(v) => onPerfSetting('cloudSelfShadow', v)}
               info="Secondary sun-direction march for soft self-shadowing (costlier). Shared with Performance settings."
@@ -218,7 +218,7 @@ export default function CloudPanel({
               settingId="performance.cloudSteps"
             />
             <SelectRow
-              label="Render Scale"
+              label="렌더 스케일"
               value={String(p.cloudRenderScale ?? 1)}
               options={RENDER_SCALE_OPTIONS}
               onChange={(v) => onPerfSetting('cloudRenderScale', parseFloat(v))}
@@ -235,7 +235,7 @@ export default function CloudPanel({
             />
             {worldMode !== 'infinite' && (
               <SliderCtl
-                def={{ key: 'cloudMaxDistance', label: 'Max Distance', min: 1.5, max: 12, step: 0.5, digits: 1, unit: '×', info: distInfo }}
+                def={{ key: 'cloudMaxDistance', label: '최대 거리', min: 1.5, max: 12, step: 0.5, digits: 1, unit: '×', info: distInfo }}
                 value={p.cloudMaxDistance ?? 6.0}
                 onChange={(v) => onPerfSetting('cloudMaxDistance', v)}
                 settingId="performance.cloudMaxDistance"

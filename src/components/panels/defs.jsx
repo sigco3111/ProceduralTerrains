@@ -5,12 +5,12 @@ import { ColorInput } from '../controls.jsx';
 
 export const TERRAIN_SLIDERS = [
   {
-    key: 'heightScale', label: 'Height Scale', min: 20, max: 1000, step: 5, unit: 'm',
+    key: 'heightScale', label: '높이 스케일', min: 20, max: 1000, step: 5, unit: 'm',
     info: 'Maximum amplitude of mountain heights in meters',
     icon: (<svg viewBox="0 0 16 16" fill="none"><path d="M8 2v12M5 5l3-3 3 3M5 11l3 3 3-3" stroke="currentColor" strokeWidth="1.2" /></svg>),
   },
   {
-    key: 'seaLevel', label: 'Sea Level', min: 0, max: 250, step: 1, unit: 'm',
+    key: 'seaLevel', label: '해수면', min: 0, max: 250, step: 1, unit: 'm',
     info: 'Depth offset for deep water and coastal biomes',
     icon: (<svg viewBox="0 0 16 16" fill="none"><path d="M1 9c1.5-1 2.5-1 4 0s2.5 1 4 0 2.5-1 4 0 2.5 1 3 0" stroke="currentColor" strokeWidth="1.2" /></svg>),
   },
@@ -23,12 +23,12 @@ export const TERRAIN_SLIDERS = [
 
 export const NOISE_SLIDERS = [
   {
-    key: 'noiseScale', label: 'Noise Scale', min: 8, max: 160, step: 0.5, digits: 1,
+    key: 'noiseScale', label: '노이즈 스케일', min: 8, max: 160, step: 0.5, digits: 1,
     info: 'Global frequency scaling of the terrain fractal noise (higher = larger features)',
     icon: (<svg viewBox="0 0 16 16" fill="none"><path d="M2 8h12M4 5l-2 3 2 3M12 5l2 3-2 3" stroke="currentColor" strokeWidth="1.2" /></svg>),
   },
   {
-    key: 'noiseStrength', label: 'Noise Strength', min: 0.1, max: 2, step: 0.01, digits: 2,
+    key: 'noiseStrength', label: '노이즈 세기', min: 0.1, max: 2, step: 0.01, digits: 2,
     info: 'Overall multiplier applied to the final height output',
     icon: (<svg viewBox="0 0 16 16" fill="none"><path d="M8 2v12M5 5l3-3 3 3" stroke="currentColor" strokeWidth="1.2" /></svg>),
   },
@@ -58,7 +58,7 @@ export const NOISE_SLIDERS = [
     icon: (<svg viewBox="0 0 16 16" fill="none"><path d="M1 13l4-8 3 5 4-7 3 10H1z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" /></svg>),
   },
   {
-    key: 'warp', label: 'Domain Warp', min: 0, max: 3, step: 0.05, digits: 2,
+    key: 'warp', label: '도메인 뒤틀림', min: 0, max: 3, step: 0.05, digits: 2,
     info: 'Domain warping intensity for twisting/layering folds on the terrain surface',
     icon: (<svg viewBox="0 0 16 16" fill="none"><path d="M2 8c2-4 4 4 6 0s4-4 6 0" stroke="currentColor" strokeWidth="1.2" /></svg>),
   },
@@ -114,7 +114,7 @@ export const BIOME_SLIDERS = [
 
 export const RENDER_SLIDERS = [
   {
-    key: 'normalStrength', label: 'Normal Strength', min: 0.2, max: 3, step: 0.05, digits: 2,
+    key: 'normalStrength', label: '노멀 강도', min: 0.2, max: 3, step: 0.05, digits: 2,
     info: 'Intensity factor of procedural surface detail normal mapping',
     icon: (<svg viewBox="0 0 16 16" fill="none"><path d="M8 2v12M8 2l-3 3M8 2l3 3" stroke="currentColor" strokeWidth="1.2" /></svg>),
   },

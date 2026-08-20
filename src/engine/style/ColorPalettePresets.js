@@ -85,7 +85,7 @@ export const COLOR_PALETTE_PRESETS = {
     palette: clonePalette(),
   },
   desert: {
-    label: 'Desert Planet',
+    label: '사막 행성',
     palette: {
       deep: [0.08, 0.05, 0.03], shallow: [0.35, 0.22, 0.12],
       sand: [0.82, 0.68, 0.38], dune: [0.90, 0.72, 0.40],
@@ -98,7 +98,7 @@ export const COLOR_PALETTE_PRESETS = {
     },
   },
   ice: {
-    label: 'Ice Planet',
+    label: '얼음 행성',
     palette: {
       deep: [0.02, 0.06, 0.14], shallow: [0.12, 0.35, 0.55],
       sand: [0.55, 0.62, 0.72], dune: [0.62, 0.70, 0.80],
@@ -111,7 +111,7 @@ export const COLOR_PALETTE_PRESETS = {
     },
   },
   toxic: {
-    label: 'Toxic Alien',
+    label: '독성 외계',
     palette: {
       deep: [0.02, 0.10, 0.05], shallow: [0.08, 0.45, 0.22],
       sand: [0.35, 0.55, 0.18], dune: [0.42, 0.62, 0.22],
@@ -124,7 +124,7 @@ export const COLOR_PALETTE_PRESETS = {
     },
   },
   fungal: {
-    label: 'Purple Fungal',
+    label: '보라 균류',
     palette: {
       deep: [0.06, 0.02, 0.12], shallow: [0.28, 0.12, 0.42],
       sand: [0.55, 0.35, 0.62], dune: [0.62, 0.42, 0.68],
@@ -137,7 +137,7 @@ export const COLOR_PALETTE_PRESETS = {
     },
   },
   canyon: {
-    label: 'Red Canyon',
+    label: '레드 캐년',
     palette: {
       deep: [0.08, 0.03, 0.02], shallow: [0.32, 0.12, 0.08],
       sand: [0.78, 0.45, 0.22], dune: [0.85, 0.52, 0.25],
@@ -163,7 +163,7 @@ export const COLOR_PALETTE_PRESETS = {
     },
   },
   tropical: {
-    label: 'Tropical Ocean',
+    label: '열대 해양',
     palette: {
       deep: [0.01, 0.08, 0.18], shallow: [0.05, 0.42, 0.48],
       sand: [0.88, 0.82, 0.62], dune: [0.92, 0.85, 0.65],
@@ -177,7 +177,7 @@ export const COLOR_PALETTE_PRESETS = {
   },
 
   cartoon: {
-    label: 'Cartoon Terrain',
+    label: '만화 지형',
     palette: {
       deep: [0.02, 0.18, 0.55], shallow: [0.02, 0.55, 0.85],
       sand: [1.00, 0.86, 0.32], dune: [1.00, 0.68, 0.24],
@@ -190,7 +190,7 @@ export const COLOR_PALETTE_PRESETS = {
     },
   },
   neon: {
-    label: 'Neon Sci-Fi',
+    label: '네온 사이파이',
     palette: {
       deep: [0.02, 0.00, 0.08], shallow: [0.10, 0.05, 0.45],
       sand: [0.55, 0.15, 0.65], dune: [0.62, 0.22, 0.72],
@@ -203,7 +203,7 @@ export const COLOR_PALETTE_PRESETS = {
     },
   },
   moon: {
-    label: 'Barren Moon',
+    label: '황무지 달',
     palette: {
       deep: [0.04, 0.04, 0.05], shallow: [0.12, 0.12, 0.14],
       sand: [0.52, 0.50, 0.48], dune: [0.58, 0.56, 0.54],
@@ -216,7 +216,7 @@ export const COLOR_PALETTE_PRESETS = {
     },
   },
   methane: {
-    label: 'Frozen Methane',
+    label: '얼어붙은 메탄',
     palette: {
       deep: [0.02, 0.05, 0.12], shallow: [0.08, 0.22, 0.42],
       sand: [0.35, 0.55, 0.72], dune: [0.42, 0.62, 0.78],
@@ -229,7 +229,7 @@ export const COLOR_PALETTE_PRESETS = {
     },
   },
   rust: {
-    label: 'Rust Planet',
+    label: '녹슨 행성',
     palette: {
       deep: [0.06, 0.02, 0.01], shallow: [0.28, 0.10, 0.05],
       sand: [0.72, 0.35, 0.15], dune: [0.78, 0.42, 0.18],
@@ -242,7 +242,7 @@ export const COLOR_PALETTE_PRESETS = {
     },
   },
   pastel: {
-    label: 'Pastel Alien',
+    label: '파스텔 외계',
     palette: {
       deep: [0.55, 0.62, 0.78], shallow: [0.68, 0.75, 0.88],
       sand: [0.92, 0.82, 0.75], dune: [0.95, 0.85, 0.78],
@@ -268,7 +268,7 @@ export const COLOR_PALETTE_PRESETS = {
     },
   },
   obsidian: {
-    label: 'Dark Obsidian',
+    label: '어둠의 흑요석',
     palette: {
       deep: [0.01, 0.01, 0.02], shallow: [0.05, 0.05, 0.08],
       sand: [0.12, 0.10, 0.12], dune: [0.15, 0.12, 0.15],
@@ -281,7 +281,7 @@ export const COLOR_PALETTE_PRESETS = {
     },
   },
   biolum: {
-    label: 'Bioluminescent',
+    label: '생물 발광',
     palette: {
       deep: [0.01, 0.03, 0.08], shallow: [0.05, 0.15, 0.35],
       sand: [0.15, 0.35, 0.42], dune: [0.18, 0.42, 0.48],

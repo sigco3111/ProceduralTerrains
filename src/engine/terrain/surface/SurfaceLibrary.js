@@ -13,7 +13,7 @@ export const SURFACE_LIBRARY_CHANGE_EVENT = 'terrain-surface-library-change';
 export const MAP_SLOT_LABELS = {
   diffuse: '확산',
   displacement: '변위',
-  normalDX: 'Normal DX',
+  normalDX: '법선 DX',
   roughness: '거칠기',
   ao: 'AO',
 };

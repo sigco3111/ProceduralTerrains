@@ -22,7 +22,7 @@ export default function SidePanel({ title, description, onClose, footer, childre
           <h2 className="side-panel-title">{title}</h2>
           {description && <p className="side-panel-desc">{description}</p>}
         </div>
-        <button type="button" className="side-panel-close" onClick={onClose} aria-label="Close panel" title="Close (Esc)">
+        <button type="button" className="side-panel-close" onClick={onClose} aria-label="패널 닫기" title="닫기 (Esc)">
           <X size={15} strokeWidth={2} aria-hidden />
         </button>
       </header>

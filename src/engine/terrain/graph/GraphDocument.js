@@ -238,7 +238,7 @@ export function topologicalSort(graph, { reachableOnly = false } = {}) {
       if (indegree.get(target) === 0) queue.push(target);
     }
   }
-  if (sorted.length !== allowed.size) throw new GraphValidationError('cycle', 'Terrain graphs cannot contain cycles.');
+  if (sorted.length !== allowed.size) throw new GraphValidationError('cycle', '지형 그래프는 순환을 포함할 수 없습니다.');
   return sorted;
 }
 
@@ -288,7 +288,7 @@ export function validateGraph(graph, { requireInputs = true, enforceCapacity = t
     const sourcePort = getGraphNodeDefinition(source.type)?.outputs.find((port) => port.id === edge.sourceHandle);
     const targetPort = getGraphNodeDefinition(target.type)?.inputs.find((port) => port.id === edge.targetHandle);
     if (!sourcePort || !targetPort || sourcePort.type !== targetPort.type || edge.type !== targetPort.type) {
-      diagnostics.push({ code: 'incompatible-port', edgeId: edge.id, message: 'These ports are not compatible.' });
+      diagnostics.push({ code: 'incompatible-port', edgeId: edge.id, message: '이 포트들은 호환되지 않습니다.' });
     }
     const inputKey = `${edge.target}:${edge.targetHandle}`;
     if (incoming.has(inputKey)) diagnostics.push({ code: 'multiple-input', edgeId: edge.id, message: 'An input accepts only one connection.' });
@@ -403,7 +403,7 @@ export function removeGraphNodes(graph, nodeIds) {
 export function resolveGraphConnection(graph, connection) {
   const sourceNode = graph.nodes.find((node) => node.id === connection?.source);
   const targetNode = graph.nodes.find((node) => node.id === connection?.target);
-  if (!sourceNode || !targetNode) throw new GraphValidationError('dangling-edge', 'Choose an existing source and target node.');
+  if (!sourceNode || !targetNode) throw new GraphValidationError('dangling-edge', '기존 소스와 타겟 노드를 선택하세요.');
   if (sourceNode.id === targetNode.id) throw new GraphValidationError('self-link', '노드는 자기 자신에게 연결할 수 없습니다.');
 
   const sourceDef = getGraphNodeDefinition(sourceNode.type);
@@ -430,8 +430,8 @@ export function resolveGraphConnection(graph, connection) {
     if (targetPort) { pair = { sourcePort, targetPort }; break; }
   }
   if (!pair) {
-    const sourceLabel = requestedSource?.label || 'this output';
-    const targetLabel = requestedTarget?.label || 'this input';
+    const sourceLabel = requestedSource?.label || '이 출력';
+    const targetLabel = requestedTarget?.label || '이 입력';
     throw new GraphValidationError('incompatible-port', `${sourceLabel} cannot connect to ${targetLabel}. Height and Color cables cannot be mixed.`);
   }
 

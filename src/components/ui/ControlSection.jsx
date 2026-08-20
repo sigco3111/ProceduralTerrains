@@ -75,7 +75,7 @@ const TITLE_ICONS = {
   advanced: Wrench,
   distribution: ChartNoAxesCombined,
   look: Eye,
-  'time of day': Clock3,
+  '시간대': Clock3,
   appearance: Sparkles,
   material: Paintbrush,
   depth: Gauge,

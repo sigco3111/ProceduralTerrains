@@ -30,7 +30,7 @@ export function createProductionFiles(options, context) {
     app: '절차적 지형', version: 1, preset: preset.id,
     generatedAt: new Date().toISOString(), seed: context.seed,
     worldSizeMeters: terrainSize, heightRangeMeters: Number(context.heightScale) || 0,
-    coordinateSystem: preset.id === 'unreal' ? 'Unreal centimeters (Z-up import)' : 'Y-up meters',
+    coordinateSystem: preset.id === 'unreal' ? '언리얼 센티미터 (Z-up 가져오기)' : 'Y-up meters',
     files: preset.layout.paths,
   };
   const readme = `${preset.label}\n\nImport the files in this folder using your engine's terrain import workflow.\nWorld size: ${terrainSize} m. Height range: ${metadata.heightRangeMeters} m.\n`;

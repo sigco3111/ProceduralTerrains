@@ -1,6 +1,6 @@
 export const ThreePreset = {
   id: 'three', label: 'Three.js Viewer Assets',
-  description: 'Web-ready GLB and texture package for a Three.js viewer.',
+  description: 'Three.js 뷰어용 웹 지원 GLB 및 텍스처 패키지.',
   defaults: {
     format: 'glb', meshRes: '256', texRes: '1024', includeMesh: true,
     bakeColor: true, bakeNormal: true, exportHeightmap: true, exportWater: true,

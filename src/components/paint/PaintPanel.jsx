@@ -6,23 +6,23 @@ import PaintToolbar, { PAINT_TOOLS } from './PaintToolbar.jsx';
 const BIOME_OPTIONS = [
   { value: 'desert', label: '사막' },
   { value: 'canyon', label: '협곡' },
-  { value: 'wetland', label: 'Wetland' },
+  { value: 'wetland', label: '습지' },
   { value: 'mountains', label: '산맥' },
 ];
 
 const BRUSH_SHAPE_OPTIONS = [
   { value: 'round', label: '라운드' },
-  { value: 'ellipse', label: 'Ellipse' },
-  { value: 'organic', label: 'Organic' },
-  { value: 'scatter', label: 'Scatter' },
-  { value: 'ribbon', label: 'Ribbon' },
+  { value: 'ellipse', label: '타원' },
+  { value: 'organic', label: '유기적' },
+  { value: 'scatter', label: '산포' },
+  { value: 'ribbon', label: '리본' },
 ];
 
 const PROP_OPTIONS = [
-  { value: 'mixed', label: 'Mixed Grass + Flowers' },
+  { value: 'mixed', label: '혼합 잔디 + 꽃' },
   { value: 'grass', label: '잔디' },
-  { value: 'flowers', label: 'Flowers' },
-  { value: 'eraseProps', label: 'Erase Props' },
+  { value: 'flowers', label: '꽃' },
+  { value: 'eraseProps', label: '소품 지우기' },
 ];
 
 const SCULPT_DIRECTION_OPTIONS = [
@@ -31,20 +31,20 @@ const SCULPT_DIRECTION_OPTIONS = [
 ];
 
 const BASE_MODE_OPTIONS = [
-  { value: 'generated', label: 'Generated Terrain' },
-  { value: 'flat', label: 'Flat (Empty Terrain)' },
+  { value: 'generated', label: '생성된 지형' },
+  { value: 'flat', label: '평지 (빈 지형)' },
 ];
 
 const defs = {
-  brushSize: { label: 'Brush Size', min: 4, max: 900, step: 1, digits: 0, unit: ' u' },
+  brushSize: { label: '브러시 크기', min: 4, max: 900, step: 1, digits: 0, unit: ' u' },
   strength: { label: '세기', min: 0.01, max: 1, step: 0.01, digits: 2 },
   falloff: { label: '감쇠', min: 0, max: 1, step: 0.01, digits: 2 },
-  brushRotation: { label: 'Brush Rotation', min: -180, max: 180, step: 1, digits: 0, unit: ' deg' },
-  brushScatter: { label: 'Scatter Amount', min: 0.05, max: 1, step: 0.01, digits: 2 },
-  brushSpacing: { label: 'Stroke Spacing', min: 0.08, max: 1, step: 0.01, digits: 2 },
-  targetHeight: { label: 'Target Height', min: -120, max: 900, step: 1, digits: 0, unit: ' u' },
+  brushRotation: { label: '브러시 회전', min: -180, max: 180, step: 1, digits: 0, unit: ' 도' },
+  brushScatter: { label: '산포 양', min: 0.05, max: 1, step: 0.01, digits: 2 },
+  brushSpacing: { label: '스트로크 간격', min: 0.08, max: 1, step: 0.01, digits: 2 },
+  targetHeight: { label: '타겟 높이', min: -120, max: 900, step: 1, digits: 0, unit: ' u' },
   riverDepth: { label: 'River Depth', min: 1, max: 220, step: 1, digits: 0, unit: ' u' },
-  riverBankSoftness: { label: 'Bank Softness', min: 0.05, max: 1, step: 0.01, digits: 2 },
+  riverBankSoftness: { label: '둑 부드러움', min: 0.05, max: 1, step: 0.01, digits: 2 },
   layerOpacity: { label: 'Layer Opacity', min: 0, max: 1, step: 0.01, digits: 2 },
 };
 

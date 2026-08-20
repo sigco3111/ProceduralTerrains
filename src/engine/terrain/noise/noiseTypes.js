@@ -193,12 +193,12 @@ const P_PERS = { key: 'persistence', label: '지속성', min: 0.15, max: 0.85, s
 const P_LAC = { key: 'lacunarity', label: '틈새도', min: 1.5, max: 3.5, step: 0.01, default: 2.0, digits: 2 };
 const P_SCALE = { key: 'scale', label: '스케일', min: 0.1, max: 20, step: 0.05, default: 1.0, digits: 2 };
 const P_EROSION = { key: 'erosion', label: '침식', min: 0, max: 1, step: 0.01, default: 0, digits: 2, settingId: 'noise.layer.erosion' };
-const P_SELF_WARP = { key: 'warp', label: 'Self Warp', min: 0, max: 1.5, step: 0.01, default: 0, digits: 2, settingId: 'noise.layer.selfWarp' };
+const P_SELF_WARP = { key: 'warp', label: '자체 뒤틀림', min: 0, max: 1.5, step: 0.01, default: 0, digits: 2, settingId: 'noise.layer.selfWarp' };
 
 export const NOISE_TYPES = [
   // ---------------------------------------------------------------- legacy
   {
-    id: 'legacy', label: 'Classic Terrain', category: 'height', badge: 'BASE',
+    id: 'legacy', label: '클래식 지형', category: 'height', badge: 'BASE',
     defaultBlend: 'replace', defaultStrength: 1.0,
     desc: 'The original biome-coupled terrain recipe. Driven by the global Terrain/Noise/Biome sliders.',
     scaleKey: null, paKeys: [], pbKeys: [], params: [],
@@ -210,7 +210,7 @@ export const NOISE_TYPES = [
 
   // ---------------------------------------------------------------- fbm
   {
-    id: 'fbm', label: 'FBM / Fractal', category: 'height',
+    id: 'fbm', label: 'FBM / 프랙탈', category: 'height',
     defaultBlend: 'add', defaultStrength: 0.4,
     desc: 'Layered value noise for general terrain variation, rolling hills, and natural detail.',
     scaleKey: 'scale', paKeys: ['persistence', 'lacunarity'], pbKeys: ['erosion', 'warp'],
@@ -225,7 +225,7 @@ export const NOISE_TYPES = [
   {
     id: 'ridged', label: '능선', category: 'height',
     defaultBlend: 'add', defaultStrength: 0.5,
-    desc: 'Sharp ridges and mountain chains, alpine terrain, canyon edges.',
+    desc: '날카로운 능선과 산맥, 알파인 지형, 캐년 가장자리.',
     scaleKey: 'scale', paKeys: ['persistence', 'lacunarity', 'sharpness'], pbKeys: ['erosion', 'warp'],
     params: [P_SCALE, P_OCT, P_PERS, P_LAC,
       { key: 'sharpness', label: 'Ridge Sharpness', min: 0.5, max: 4, step: 0.05, default: 2.0, digits: 2 },
@@ -256,7 +256,7 @@ export const NOISE_TYPES = [
     desc: 'Simple blocky base noise for broad masks, biome zones, and stylized variation.',
     scaleKey: 'scale', paKeys: [], pbKeys: [],
     params: [P_SCALE,
-      { key: 'interp', label: 'Interpolation', type: 'enum', structural: true, default: 2,
+      { key: 'interp', label: '보간', type: 'enum', structural: true, default: 2,
         options: [{ value: 0, label: '선형' }, { value: 1, label: '부드러움' }, { value: 2, label: 'Smoother' }] }],
     body2d: (l) => `val = valueNoise2(P, ${l.params.interp | 0});`,
     body3d: (l) => `val = valueNoise3(P, ${l.params.interp | 0});`,
@@ -266,7 +266,7 @@ export const NOISE_TYPES = [
 
   // ---------------------------------------------------------------- white
   {
-    id: 'white', label: 'White / Random', category: 'height',
+    id: 'white', label: '�색 / 랜덤', category: 'height',
     defaultBlend: 'add', defaultStrength: 0.06,
     desc: 'Fine random detail for micro variation, roughness, and mask breakup.',
     scaleKey: 'scale', paKeys: ['smoothing'], pbKeys: [],
@@ -286,7 +286,7 @@ export const NOISE_TYPES = [
 
   // ---------------------------------------------------------------- constant
   {
-    id: 'constant', label: 'Constant', category: 'height',
+    id: 'constant', label: '상수', category: 'height',
     defaultBlend: 'add', defaultStrength: 1.0,
     desc: 'A flat constant value to raise or lower the whole terrain, flatten the base, or test water.',
     scaleKey: null, paKeys: ['value'], pbKeys: [],
@@ -324,8 +324,8 @@ export const NOISE_TYPES = [
     params: [{ ...P_SCALE, default: 1.5 },
       { key: 'density', label: '밀도', min: 0, max: 1, step: 0.01, default: 0.55, digits: 2 },
       { key: 'depth', label: '깊이', min: 0, max: 1.5, step: 0.01, default: 0.6, digits: 2 },
-      { key: 'rim', label: 'Rim Height', min: 0, max: 1, step: 0.01, default: 0.3, digits: 2 },
-      { key: 'rimWidth', label: 'Rim Width', min: 0.05, max: 1, step: 0.01, default: 0.35, digits: 2 }],
+      { key: 'rim', label: '림 높이', min: 0, max: 1, step: 0.01, default: 0.3, digits: 2 },
+      { key: 'rimWidth', label: '림 너비', min: 0.05, max: 1, step: 0.01, default: 0.35, digits: 2 }],
     body2d: () => `val = crater2(P, pa.x, pa.y, pa.z, pa.w);`,
     body3d: () => `val = crater3(P, pa.x, pa.y, pa.z, pa.w);`,
     eval2d: (px, pz, l) => craterJs2(px, pz, l.params.density, l.params.depth, l.params.rim, l.params.rimWidth),
@@ -334,15 +334,15 @@ export const NOISE_TYPES = [
 
   // ---------------------------------------------------------------- dune
   {
-    id: 'dune', label: 'Dune', category: 'height',
+    id: 'dune', label: '사구', category: 'height',
     defaultBlend: 'add', defaultStrength: 0.35,
-    desc: 'Directional wind-shaped sand dunes for deserts and dry worlds.',
+    desc: '사막과 건조한 세계를 위한 방향성 바람 형태 모래언덕.',
     scaleKey: 'scale', paKeys: ['windDir', 'sharpness', 'rippleScale', 'rippleStrength'], pbKeys: [],
     params: [{ ...P_SCALE, default: 1.2 },
-      { key: 'windDir', label: 'Wind Direction', min: 0, max: 6.283, step: 0.01, default: 0.7, digits: 2 },
-      { key: 'sharpness', label: 'Dune Sharpness', min: 0.3, max: 4, step: 0.05, default: 1.4, digits: 2 },
-      { key: 'rippleScale', label: 'Ripple Scale', min: 0.5, max: 12, step: 0.1, default: 4.0, digits: 1 },
-      { key: 'rippleStrength', label: 'Ripple Strength', min: 0, max: 0.6, step: 0.01, default: 0.12, digits: 2 }],
+      { key: 'windDir', label: '바람 방향', min: 0, max: 6.283, step: 0.01, default: 0.7, digits: 2 },
+      { key: 'sharpness', label: '사구 선명도', min: 0.3, max: 4, step: 0.05, default: 1.4, digits: 2 },
+      { key: 'rippleScale', label: '잔물결 스케일', min: 0.5, max: 12, step: 0.1, default: 4.0, digits: 1 },
+      { key: 'rippleStrength', label: '잔물결 강도', min: 0, max: 0.6, step: 0.01, default: 0.12, digits: 2 }],
     body2d: () => `val = dune2(P, pa.x, pa.y, pa.z, pa.w);`,
     body3d: () => `val = dune3(P, pa.x, pa.y, pa.z, pa.w);`,
     eval2d: (px, pz, l) => duneJs(px, pz, l.params),
@@ -351,15 +351,15 @@ export const NOISE_TYPES = [
 
   // ---------------------------------------------------------------- flow
   {
-    id: 'flow', label: 'Flow / River', category: 'height',
+    id: 'flow', label: '흐름 / 강', category: 'height',
     defaultBlend: 'subtract', defaultStrength: 0.5,
-    desc: 'Directional flow channels for river valleys, erosion streaks, and lava flows.',
+    desc: '강 계곡, 침식 흔적 및 용암 흐름을 위한 방향성 흐름 채널.',
     scaleKey: 'scale', paKeys: ['flowDir', 'width', 'meander', 'meanderScale'], pbKeys: [],
     params: [{ ...P_SCALE, default: 1.0 },
-      { key: 'flowDir', label: 'Flow Direction', min: 0, max: 6.283, step: 0.01, default: 1.2, digits: 2 },
-      { key: 'width', label: 'Channel Width', min: 0.02, max: 1.5, step: 0.01, default: 0.3, digits: 2 },
-      { key: 'meander', label: 'Meander', min: 0, max: 4, step: 0.05, default: 1.2, digits: 2 },
-      { key: 'meanderScale', label: 'Meander Scale', min: 0.05, max: 3, step: 0.05, default: 0.6, digits: 2 }],
+      { key: 'flowDir', label: '흐름 방향', min: 0, max: 6.283, step: 0.01, default: 1.2, digits: 2 },
+      { key: 'width', label: '채널 너비', min: 0.02, max: 1.5, step: 0.01, default: 0.3, digits: 2 },
+      { key: 'meander', label: '만곡', min: 0, max: 4, step: 0.05, default: 1.2, digits: 2 },
+      { key: 'meanderScale', label: '만곡 스케일', min: 0.05, max: 3, step: 0.05, default: 0.6, digits: 2 }],
     body2d: () => `val = flow2(P, pa.x, pa.y, pa.z, pa.w);`,
     body3d: () => `val = flow3(P, pa.x, pa.y, pa.z, pa.w);`,
     eval2d: (px, pz, l) => flowJs(px, pz, l.params),
@@ -368,12 +368,12 @@ export const NOISE_TYPES = [
 
   // ---------------------------------------------------------------- domainWarp (modifier)
   {
-    id: 'domainWarp', label: 'Domain Warp', category: 'modifier', badge: 'MOD',
+    id: 'domainWarp', label: '도메인 뒤틀림', category: 'modifier', badge: 'MOD',
     defaultBlend: 'add', defaultStrength: 1.0,
     desc: 'Distorts the coordinates of the layers below to break artificial patterns and twist terrain.',
     modKind: 'domain',
     scaleKey: 'scale', paKeys: [], pbKeys: [],
-    params: [{ key: 'scale', label: 'Warp Scale', min: 0.1, max: 8, step: 0.05, default: 1.0, digits: 2 }, P_WARP_OCT],
+    params: [{ key: 'scale', label: '워프 스케일', min: 0.1, max: 8, step: 0.05, default: 1.0, digits: 2 }, P_WARP_OCT],
     mod2d: (l, coord = 'pw') => domainWarp2(clampWarpOct(l.params.octaves ?? 4), coord),
     mod3d: (l, coord = 'pw') => domainWarp3(clampWarpOct(l.params.octaves ?? 4), coord),
     modJs2: (state, l, eff) => {
@@ -401,7 +401,7 @@ export const NOISE_TYPES = [
     modKind: 'height',
     scaleKey: null, paKeys: ['count', 'smoothness'], pbKeys: [],
     params: [
-      { key: 'count', label: 'Terrace Count', min: 2, max: 40, step: 1, default: 12, digits: 0 },
+      { key: 'count', label: '계단 수', min: 2, max: 40, step: 1, default: 12, digits: 0 },
       { key: 'smoothness', label: '매끄러움', min: 0.02, max: 1, step: 0.01, default: 0.5, digits: 2 }],
     mod2d: (l, heightVar = 'h') => terraceMod(heightVar),
     mod3d: (l, heightVar = 'h') => terraceMod(heightVar),

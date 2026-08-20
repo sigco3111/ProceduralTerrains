@@ -5,18 +5,18 @@ import { SliderCtl, ToggleRow, SelectRow } from './controls.jsx';
 // Schema for the terrain controls — same definitions as the vanilla version.
 const CONTROL_SCHEMA = [
   { section: 'HEIGHT' },
-  { key: 'heightScale', label: 'Height Scale', min: 20, max: 1000, step: 5, unit: 'm' },
-  { key: 'seaLevel', label: 'Sea Level', min: 0, max: 250, step: 1, unit: 'm' },
+  { key: 'heightScale', label: '높이 스케일', min: 20, max: 1000, step: 5, unit: 'm' },
+  { key: 'seaLevel', label: '해수면', min: 0, max: 250, step: 1, unit: 'm' },
 
   { section: 'NOISE' },
-  { key: 'noiseScale', label: 'Noise Scale', min: 8, max: 160, step: 0.5, digits: 1 },
-  { key: 'noiseStrength', label: 'Noise Strength', min: 0.1, max: 2, step: 0.01, digits: 2 },
+  { key: 'noiseScale', label: '노이즈 스케일', min: 8, max: 160, step: 0.5, digits: 1 },
+  { key: 'noiseStrength', label: '노이즈 세기', min: 0.1, max: 2, step: 0.01, digits: 2 },
   { key: 'terrainSmoothing', label: 'Peak Smoothing', min: 0, max: 1, step: 0.01, digits: 2 },
   { key: 'octaves', label: '옥타브', min: 1, max: 9, step: 1 },
   { key: 'persistence', label: '지속성', min: 0.15, max: 0.85, step: 0.01, digits: 2 },
   { key: 'lacunarity', label: '틈새도', min: 1.5, max: 3.5, step: 0.01, digits: 2 },
   { key: 'ridge', label: 'Ridge Intensity', min: 0, max: 1, step: 0.01, digits: 2 },
-  { key: 'warp', label: 'Domain Warp', min: 0, max: 3, step: 0.05, digits: 2 },
+  { key: 'warp', label: '도메인 뒤틀림', min: 0, max: 3, step: 0.05, digits: 2 },
   { key: 'falloff', label: 'Edge Falloff Width', min: 0, max: 1, step: 0.01, digits: 2 },
 
   { section: 'BIOME' },
@@ -28,16 +28,16 @@ const CONTROL_SCHEMA = [
   { key: 'biomeDebug', label: 'Biome Debug', type: 'toggle' },
 
   { section: 'RENDER' },
-  { key: 'normalStrength', label: 'Normal Strength', min: 0.2, max: 3, step: 0.05, digits: 2 },
+  { key: 'normalStrength', label: '노멀 강도', min: 0.2, max: 3, step: 0.05, digits: 2 },
   { key: 'aoStrength', label: '주변 폐색', min: 0, max: 1, step: 0.05, digits: 2 },
   { key: 'chunkGrid', label: 'Chunk Grid', type: 'toggle' },
 
   { section: 'WORLD' },
-  { key: 'chunkCount', label: 'Chunk Count', type: 'select', options: [8, 12, 16, 20, 24], format: (v) => `${v} × ${v}` },
-  { key: 'chunkSize', label: 'Chunk Size', type: 'select', options: [64, 128, 192, 256] },
+  { key: 'chunkCount', label: '청크 수', type: 'select', options: [8, 12, 16, 20, 24], format: (v) => `${v} × ${v}` },
+  { key: 'chunkSize', label: '청크 크기', type: 'select', options: [64, 128, 192, 256] },
   { key: 'wireframe', label: '와이어프레임', type: 'toggle' },
   { key: 'lodDebug', label: 'LOD Debug', type: 'toggle' },
-  { key: 'autoUpdate', label: 'Auto Update', type: 'toggle' },
+  { key: 'autoUpdate', label: '자동 업데이트', type: 'toggle' },
 ];
 
 export default function LeftPanel({ params, onParam, onPreset, onRandomizeSeed, onRegenerate }) {

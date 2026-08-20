@@ -12,11 +12,11 @@ const STORAGE_KEY = 'terrain-studio-gpu-tier-v1';
 
 // Substrings (lowercased) that strongly indicate a weak / software renderer.
 const LOW_HINTS = [
-  'swiftshader', 'llvmpipe', 'software', 'basic render',  // CPU fallbacks
+  'swiftshader', 'llvmpipe', 'software', '기본 렌더',  // CPU fallbacks
   'microsoft basic', 'gdi generic',
   'mali', 'adreno 3', 'adreno 4', 'adreno 5',             // older mobile
   'powervr', 'videocore', 'tegra',
-  'intel hd graphics', 'intel(r) hd graphics',            // older Intel iGPUs
+  '인텔 HD 그래픽스', '인텔(R) HD 그래픽스',            // older Intel iGPUs
   'uhd graphics 6',                                        // entry UHD 6xx
 ];
 

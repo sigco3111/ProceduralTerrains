@@ -77,7 +77,7 @@ export function normalizeRealWorldSource(input) {
   return {
     version: REAL_WORLD_SOURCE_VERSION,
     id: boundedText(input.id, 80) || 'custom',
-    name: boundedText(input.name, 160) || 'Real-world terrain',
+    name: boundedText(input.name, 160) || '실제 지형',
     bbox,
     zoom,
     imageryStyle,

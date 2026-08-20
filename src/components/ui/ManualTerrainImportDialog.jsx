@@ -5,7 +5,7 @@ const projectMode = (project) => project?.terrain?.editorMode === 'nodes' ? 'nod
 
 const relativeTime = (value) => {
   const time = new Date(value).getTime();
-  if (!Number.isFinite(time)) return 'Unknown date';
+  if (!Number.isFinite(time)) return '알 수 없는 날짜';
   const seconds = Math.max(0, Math.floor((Date.now() - time) / 1000));
   if (seconds < 45) return '방금 전';
   if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
@@ -83,12 +83,12 @@ export default function ManualTerrainImportDialog({
             <h2 id="manual-import-title">Import terrain</h2>
             <p>Choose a Tile project to use as the editable base of this Manual terrain.</p>
           </span>
-          <button type="button" onClick={onClose} disabled={busy} aria-label="Close terrain importer">
+          <button type="button" onClick={onClose} disabled={busy} aria-label="지형 가져오기 닫기">
             <X size={16} aria-hidden />
           </button>
         </header>
 
-        <div className="manual-import-mode-tabs" role="tablist" aria-label="Terrain source type">
+        <div className="manual-import-mode-tabs" role="tablist" aria-label="지형 소스 종류">
           <button
             type="button"
             role="tab"
@@ -156,7 +156,7 @@ export default function ManualTerrainImportDialog({
         <footer>
           <button type="button" className="manual-import-cancel" onClick={onClose} disabled={busy}>Cancel</button>
           <button type="submit" className="manual-import-confirm" disabled={!selectedProject || loading || busy}>
-            {busy ? <><LoaderCircle className="spin" size={14} aria-hidden /> Importing…</> : 'Import selected terrain'}
+            {busy ? <><LoaderCircle className="spin" size={14} aria-hidden /> Importing…</> : '선택한 지형 가져오기'}
           </button>
         </footer>
       </form>

@@ -19,6 +19,6 @@ export class TerrainAnalysisManager {
 }
 
 export const ANALYSIS_LEGENDS = {
-  elevation: 'Low  ─────────  High', slope: 'Flat · Walkable · Steep · Cliff', normals: 'World-space normals', curvature: 'Valley  ─ Flat ─ Ridge',
+  elevation: '�음  ─────────  높음', slope: 'Flat · Walkable · Steep · Cliff', normals: '월드 공간 노멀', curvature: '계곡 ─ 평지 ─ 능선',
   waterDepth: 'Shallow  ─────────  Deep', biome: 'Biome distribution', contribution: 'Base · Paint · Splines',
 };
