@@ -426,7 +426,7 @@ const DICT = {
   "Glide": "활공",
 
   // === 단축키 (식별자 침투 위험 — 키 코드는 번역하지 않음) ===
-  // "Escape": "Escape", "Space": "우주", "Insert": "삽입", "Delete": "Delete",
+  // "Escape": "Escape", "Space": "우주", "Insert": "삽입", "Delete": "삭제",
   // "Home": "홈", "End": "끝", "Tab": "탭", "Enter": "Enter" — 모두 원본 유지
   "Press": "누르기",
   "Hold": "누르고 있기",
@@ -1325,7 +1325,7 @@ const DICT = {
 
   // === 자주 쓰이는 키 ===
   "Insert": "Insert",
-  "Delete": "Delete",
+  "Delete": "삭제",
   "Home": "Home",
   "End": "End",
   "Page Up": "Page Up",

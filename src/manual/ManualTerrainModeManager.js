@@ -1131,7 +1131,7 @@ export class ManualTerrainModeManager {
       this.selectShape(null);
       return;
     }
-    if ((event.key === 'Delete' || event.key === '백스페이스') && this.selectedId) {
+    if ((event.key === '삭제' || event.key === '백스페이스') && this.selectedId) {
       event.preventDefault();
       this.deleteShape();
       return;
