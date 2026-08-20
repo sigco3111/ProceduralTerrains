@@ -1,0 +1,295 @@
+import { normalizeManualTerrainDocument } from '../manual/ManualShapeCatalog.js';
+
+const DB_NAME = 'procedural-terrains-projects';
+const STORE_NAME = 'projects';
+const SYNC_STORE_NAME = 'project-sync';
+const DB_VERSION = 2;
+const FALLBACK_KEY = 'procedural-terrains-projects-v1';
+const SYNC_FALLBACK_KEY = 'procedural-terrains-project-sync-v1';
+const now = () => new Date().toISOString();
+const id = () => globalThis.crypto?.randomUUID?.() ?? `project-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+const COMMUNITY_ICON_BY_MODE = Object.freeze({ procedural: 'mountain', nodes: 'boxes', manual: 'hand' });
+const COMMUNITY_ICONS = new Set(['mountain', 'boxes', 'hand', 'waves', 'orbit', 'route']);
+
+function emitChange() {
+  window.dispatchEvent(new Event('terrain-projects:changed'));
+}
+
+function emitSyncChange() {
+  window.dispatchEvent(new Event('terrain-project-sync:changed'));
+}
+
+function openDatabase() {
+  if (!('indexedDB' in window)) return Promise.reject(new Error('IndexedDB is unavailable'));
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+    request.onupgradeneeded = () => {
+      const database = request.result;
+      if (!database.objectStoreNames.contains(STORE_NAME)) database.createObjectStore(STORE_NAME, { keyPath: 'id' });
+      if (!database.objectStoreNames.contains(SYNC_STORE_NAME)) database.createObjectStore(SYNC_STORE_NAME, { keyPath: 'localProjectId' });
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+async function withStore(storeName, mode, action) {
+  const db = await openDatabase();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(storeName, mode);
+    const request = action(tx.objectStore(storeName));
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+    tx.oncomplete = () => db.close();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+function fallbackRead() {
+  try { return JSON.parse(localStorage.getItem(FALLBACK_KEY) ?? '[]'); } catch { return []; }
+}
+function fallbackWrite(projects) { localStorage.setItem(FALLBACK_KEY, JSON.stringify(projects)); }
+
+function fallbackSyncRead() {
+  try { return JSON.parse(localStorage.getItem(SYNC_FALLBACK_KEY) ?? '[]'); } catch { return []; }
+}
+function fallbackSyncWrite(bindings) { localStorage.setItem(SYNC_FALLBACK_KEY, JSON.stringify(bindings)); }
+
+function normalizeSyncBinding(input = {}) {
+  const localProjectId = String(input.localProjectId ?? '').trim();
+  const cloudProjectId = String(input.cloudProjectId ?? '').trim();
+  const cloudContentRevision = Number(input.cloudContentRevision);
+  const lastSyncedLocalModified = String(input.lastSyncedLocalModified ?? '').trim();
+  if (!localProjectId || !cloudProjectId || !lastSyncedLocalModified || !Number.isInteger(cloudContentRevision) || cloudContentRevision < 1) return null;
+  return { localProjectId, cloudProjectId, lastSyncedLocalModified, cloudContentRevision };
+}
+
+export const projectSyncStore = {
+  async list() {
+    try {
+      const bindings = await withStore(SYNC_STORE_NAME, 'readonly', (store) => store.getAll());
+      return bindings.map(normalizeSyncBinding).filter(Boolean);
+    } catch {
+      return fallbackSyncRead().map(normalizeSyncBinding).filter(Boolean);
+    }
+  },
+
+  async save(binding) {
+    const normalized = normalizeSyncBinding(binding);
+    if (!normalized) throw new Error('완전한 클라우드 동기화 바인딩이 필요합니다.');
+    try { await withStore(SYNC_STORE_NAME, 'readwrite', (store) => store.put(normalized)); }
+    catch {
+      const bindings = fallbackSyncRead().filter((item) => item.localProjectId !== normalized.localProjectId);
+      bindings.push(normalized);
+      fallbackSyncWrite(bindings);
+    }
+    emitSyncChange();
+    return normalized;
+  },
+
+  async remove(localProjectId) {
+    const key = String(localProjectId ?? '').trim();
+    if (!key) return;
+    try { await withStore(SYNC_STORE_NAME, 'readwrite', (store) => store.delete(key)); }
+    catch { fallbackSyncWrite(fallbackSyncRead().filter((item) => item.localProjectId !== key)); }
+    emitSyncChange();
+  },
+};
+
+export function normalizeProject(input = {}) {
+  const legacyTerrain = input.terrain ?? input;
+  const editorMode = legacyTerrain?.editorMode === 'nodes'
+    ? 'nodes'
+    : legacyTerrain?.editorMode === 'manual'
+      ? 'manual'
+      : legacyTerrain?.editorMode === 'procedural'
+        ? 'procedural'
+        : legacyTerrain?.generationSource === 'graph' ? 'nodes' : 'procedural';
+  const manualBaseSource = editorMode === 'manual'
+    && (legacyTerrain?.manualTerrain?.baseSource === 'procedural'
+      || legacyTerrain?.manualTerrain?.baseSource === 'nodes')
+    ? legacyTerrain.manualTerrain.baseSource
+    : 'flat';
+  const terrain = {
+    ...legacyTerrain,
+    editorMode,
+    generationSource: editorMode === 'nodes' || (editorMode === 'manual' && manualBaseSource === 'nodes')
+      ? 'graph'
+      : 'classic',
+    graph: legacyTerrain?.graph ?? null,
+    graphView: legacyTerrain?.graphView && typeof legacyTerrain.graphView === 'object'
+      ? { x: Number(legacyTerrain.graphView.x) || 0, y: Number(legacyTerrain.graphView.y) || 0, zoom: Number(legacyTerrain.graphView.zoom) || 1 }
+      : { x: 0, y: 0, zoom: 1 },
+    ...(editorMode === 'manual'
+      ? { manualTerrain: normalizeManualTerrainDocument(legacyTerrain?.manualTerrain) }
+      : {}),
+  };
+  const metadata = input.metadata ?? {};
+  const created = metadata.created ?? input.created ?? now();
+  const fallbackCommunityIcon = COMMUNITY_ICON_BY_MODE[editorMode] ?? COMMUNITY_ICON_BY_MODE.procedural;
+  const communityIcon = COMMUNITY_ICONS.has(metadata.communityIcon) ? metadata.communityIcon : fallbackCommunityIcon;
+  return {
+    schemaVersion: 2,
+    id: input.id ?? id(),
+    metadata: {
+      name: String(metadata.name ?? input.name ?? '이름 없는 지형').trim() || '이름 없는 지형',
+      author: String(metadata.author ?? ''),
+      description: String(metadata.description ?? ''),
+      tags: Array.isArray(metadata.tags) ? metadata.tags.map(String).slice(0, 12) : [],
+      created,
+      modified: metadata.modified ?? input.modified ?? now(),
+      thumbnail: metadata.thumbnail ?? null,
+      communityIcon,
+      dependencies: Array.isArray(metadata.dependencies) ? metadata.dependencies : [],
+    },
+    terrain,
+    exportHistory: Array.isArray(input.exportHistory) ? input.exportHistory : [],
+  };
+}
+
+export function createManualProjectCopy(sourceProject, terrainPayload, baseSource) {
+  const source = sourceProject ? normalizeProject(sourceProject) : null;
+  const normalizedBase = baseSource === 'nodes' ? 'nodes' : 'procedural';
+  const sourceName = String(source?.metadata?.name ?? '이름 없는 지형').trim() || '이름 없는 지형';
+  const terrain = structuredClone(terrainPayload || source?.terrain || {});
+  delete terrain.workspacePreset;
+  return normalizeProject({
+    metadata: {
+      ...(source?.metadata || {}),
+      name: `${sourceName} (Manual)`,
+      tags: [...new Set([
+        ...(source?.metadata?.tags || []),
+        'manual',
+        `base-${normalizedBase}`,
+      ])].slice(0, 12),
+      created: undefined,
+      modified: undefined,
+    },
+    terrain: {
+      ...terrain,
+      editorMode: 'manual',
+      generationSource: normalizedBase === 'nodes' ? 'graph' : 'classic',
+      worldMode: 'studio',
+      manualTerrain: {
+        version: 5,
+        baseSource: normalizedBase,
+        shapes: [],
+        sculpt: null,
+        surfacePaint: null,
+      },
+    },
+    exportHistory: source?.exportHistory ?? [],
+  });
+}
+
+export function importTerrainIntoManualProject(manualProject, manualTerrainPayload, sourceProject) {
+  const current = normalizeProject(manualProject || { terrain: manualTerrainPayload });
+  const source = normalizeProject(sourceProject);
+  const sourceMode = source.terrain.editorMode === 'nodes'
+    ? 'nodes'
+    : source.terrain.editorMode === 'procedural'
+      ? 'procedural'
+      : null;
+  const sourceWorldMode = source.terrain.worldMode === 'infinite'
+    || source.terrain.worldMode === 'planet'
+    ? source.terrain.worldMode
+    : 'studio';
+  if (!sourceMode || sourceWorldMode !== 'studio'
+      || source.terrain.realWorldSource || source.terrain.workspacePreset === 'real-terrain') {
+    throw new Error('Only Procedural or Nodes projects in Tile mode can be imported.');
+  }
+
+  const currentTerrain = structuredClone(manualTerrainPayload || current.terrain || {});
+  const manualDocument = normalizeManualTerrainDocument(currentTerrain.manualTerrain);
+  const importedTerrain = structuredClone(source.terrain);
+  delete importedTerrain.workspacePreset;
+  delete importedTerrain.realWorldSource;
+
+  return normalizeProject({
+    id: current.id,
+    metadata: {
+      ...current.metadata,
+      tags: [...new Set([
+        ...(current.metadata.tags || []).filter((tag) => !String(tag).startsWith('base-')),
+        'manual',
+        `base-${sourceMode}`,
+      ])].slice(0, 12),
+    },
+    terrain: {
+      ...importedTerrain,
+      editorMode: 'manual',
+      generationSource: sourceMode === 'nodes' ? 'graph' : 'classic',
+      worldMode: 'studio',
+      manualTerrain: {
+        ...manualDocument,
+        version: 5,
+        baseSource: sourceMode,
+      },
+    },
+    exportHistory: current.exportHistory,
+  });
+}
+
+export const projectStore = {
+  async list() {
+    try {
+      const projects = await withStore(STORE_NAME, 'readonly', (store) => store.getAll());
+      return projects.map(normalizeProject).sort((a, b) => b.metadata.modified.localeCompare(a.metadata.modified));
+    } catch {
+      return fallbackRead().map(normalizeProject).sort((a, b) => b.metadata.modified.localeCompare(a.metadata.modified));
+    }
+  },
+
+  async save(project) {
+    const normalized = normalizeProject(project);
+    normalized.metadata.modified = now();
+    try { await withStore(STORE_NAME, 'readwrite', (store) => store.put(normalized)); }
+    catch {
+      const projects = fallbackRead();
+      const index = projects.findIndex((item) => item.id === normalized.id);
+      if (index >= 0) projects[index] = normalized;
+      else projects.push(normalized);
+      fallbackWrite(projects);
+    }
+    emitChange();
+    return normalized;
+  },
+
+  async remove(projectId) {
+    try { await withStore(STORE_NAME, 'readwrite', (store) => store.delete(projectId)); }
+    catch { fallbackWrite(fallbackRead().filter((project) => project.id !== projectId)); }
+    await projectSyncStore.remove(projectId);
+    emitChange();
+  },
+
+  async rename(project, name) {
+    const nextName = String(name ?? '').trim();
+    if (!nextName) throw new Error('프로젝트 이름이 필요합니다');
+    return this.save({ ...project, metadata: { ...project.metadata, name: nextName } });
+  },
+
+  async duplicate(project) {
+    const copy = normalizeProject({ ...project, id: id(), metadata: { ...project.metadata, name: `${project.metadata.name} copy`, created: now() } });
+    return this.save(copy);
+  },
+
+  async importCopy(project, { name } = {}) {
+    const imported = normalizeProject({
+      ...project,
+      id: id(),
+      metadata: {
+        ...project?.metadata,
+        name: String(name ?? project?.metadata?.name ?? 'Shared terrain'),
+        created: now(),
+      },
+    });
+    return this.save(imported);
+  },
+};
+
+export function projectStats(project) {
+  const params = project?.terrain?.params ?? {};
+  const tiles = project?.terrain?.tiles?.length ?? 1;
+  const worldSize = Number(params.chunkCount) * Number(params.chunkSize);
+  return { tiles, worldSize: Number.isFinite(worldSize) ? worldSize : 0, seed: params.seed };
+}
