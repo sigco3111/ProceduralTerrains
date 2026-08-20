@@ -443,10 +443,10 @@ export default function ManualTerrainPanel({
                       <button type="button" onClick={() => onUpdate(shape.id, { enabled: shape.enabled === false })} title={shape.enabled === false ? 'Show layer' : 'Hide layer'} aria-label={shape.enabled === false ? `Show ${shape.name}` : `Hide ${shape.name}`}>
                         {shape.enabled === false ? <EyeOff size={12} /> : <Eye size={12} />}
                       </button>
-                      <button type="button" onClick={() => onReorder(shape.id, 1)} disabled={visibleIndex === 0} title="Move layer up" aria-label={`Move ${shape.name} up`}>
+                      <button type="button" onClick={() => onReorder(shape.id, 1)} disabled={visibleIndex === 0} title="레이어 위로 이동" aria-label={`Move ${shape.name} up`}>
                         <ChevronUp size={12} />
                       </button>
-                      <button type="button" onClick={() => onReorder(shape.id, -1)} disabled={visibleIndex === shapes.length - 1} title="Move layer down" aria-label={`Move ${shape.name} down`}>
+                      <button type="button" onClick={() => onReorder(shape.id, -1)} disabled={visibleIndex === shapes.length - 1} title="레이어 아래로 이동" aria-label={`Move ${shape.name} down`}>
                         <ChevronDown size={12} />
                       </button>
                     </div>
@@ -813,8 +813,8 @@ export default function ManualTerrainPanel({
                                 {layer.enabled === false ? <EyeOff size={12} /> : <Eye size={12} />}
                               </button>
                               <button type="button" onClick={() => onDuplicateShapeLayer?.(selected.id, layer.id)} disabled={selected.layers.length >= MAX_MANUAL_SHAPE_LAYERS} title="Duplicate layer" aria-label={`Duplicate ${layer.name}`}><Copy size={12} /></button>
-                              <button type="button" onClick={() => onReorderShapeLayer?.(selected.id, layer.id, -1)} disabled={layerIndex === 0} title="Move layer up" aria-label={`Move ${layer.name} up`}><ChevronUp size={12} /></button>
-                              <button type="button" onClick={() => onReorderShapeLayer?.(selected.id, layer.id, 1)} disabled={layerIndex === selected.layers.length - 1} title="Move layer down" aria-label={`Move ${layer.name} down`}><ChevronDown size={12} /></button>
+                              <button type="button" onClick={() => onReorderShapeLayer?.(selected.id, layer.id, -1)} disabled={layerIndex === 0} title="레이어 위로 이동" aria-label={`Move ${layer.name} up`}><ChevronUp size={12} /></button>
+                              <button type="button" onClick={() => onReorderShapeLayer?.(selected.id, layer.id, 1)} disabled={layerIndex === selected.layers.length - 1} title="레이어 아래로 이동" aria-label={`Move ${layer.name} down`}><ChevronDown size={12} /></button>
                               <button type="button" className="danger" onClick={() => onDeleteShapeLayer?.(selected.id, layer.id)} title="Delete layer" aria-label={`Delete ${layer.name}`}><Trash2 size={12} /></button>
                             </div>
                           </div>
