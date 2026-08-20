@@ -19,7 +19,7 @@ export function validateExport(options = {}, context = {}) {
   else if (texRes >= 4096) add('warning', '4K 맵은 상당한 GPU 메모리를 필요로 할 수 있습니다.');
   if (meshRes > MAX_MESH_RESOLUTION) add('error', '메시 밀도가 지원되는 1024 한도를 초과합니다.');
   else if (options.includeMesh) add('success', `Mesh density ${meshRes} × ${meshRes}.`);
-  if (options.exportWater && !options.exportWaterMask) add('warning', 'Water is included without a water mask.');
+  if (options.exportWater && !options.exportWaterMask) add('warning', '물 마스크 없이 물이 포함되었습니다.');
   else if (options.exportWaterMask) add('success', '물 마스크 사용 가능.');
   if (options.exportSplat) add('success', '바이옴 스플랫 맵 사용 가능.');
   return checks;

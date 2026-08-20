@@ -3,7 +3,7 @@ import ControlSection from './ui/ControlSection.jsx';
 import { ToggleRow } from './controls.jsx';
 
 const LOD_LEVELS = [
-  { name: 'LOD 0 High', color: '#e5484d' },
+  { name: 'LOD 0 고해상도', color: '#e5484d' },
   { name: 'LOD 1 중간', color: '#f5a524' },
   { name: 'LOD 2 낮음', color: '#f5d90a' },
   { name: 'LOD 3 최저', color: '#3b82f6' },
@@ -53,7 +53,7 @@ export function CameraPanel({ camInfo, camMode, onMode, onFov, onFocusCenter, em
   const body = (
     <>
       <div className="row">
-        <div className="label-with-icon" data-tooltip="Camera movement style: Orbit around target or Top-down orthographic view">
+        <div className="label-with-icon" data-tooltip="카메라 이동 스타일: 타겟 주위 공전 또는 위에서 아래로 보는 직교 뷰">
           <span className="setting-icon">
             <svg viewBox="0 0 16 16" fill="none">
               <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="1.2" />
@@ -253,7 +253,7 @@ export function LodPanel({
     return (
       <ControlSection
         id="inspector-lod"
-        title="LOD INFORMATION"
+        title="LOD 정보"
         defaultOpen={false}
         icon={(
           <svg viewBox="0 0 16 16" fill="none">

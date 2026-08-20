@@ -50,7 +50,7 @@ export function computeWarnings(snap, T = WARN_THRESHOLDS) {
   }
 
   // --- gpu timing ---
-  if (gpu && !gpu.supported) add('info', 'GPU timing unavailable on this device');
+  if (gpu && !gpu.supported) add('info', '이 기기에서 GPU 타이밍을 사용할 수 없음');
 
   // --- scene / mode specific ---
   if (diag) {
@@ -62,12 +62,12 @@ export function computeWarnings(snap, T = WARN_THRESHOLDS) {
       add('info', `${renderer.requestedGpuPreferenceLabel || 'GPU'} preference requested; browser may ignore it`);
     }
     if (renderer.requestedBackend === 'webgpu' && caps.webgpu && !caps.webgpu.supported) {
-      add('warning', 'WebGPU selected but unavailable, falling back to WebGL');
+      add('warning', 'WebGPU가 선택되었지만 사용 불가, WebGL로 폴백');
     } else if (renderer.requestedBackend === 'webgpu' && renderer.activeBackend !== 'webgpu') {
-      add('info', 'WebGPU selected, but this build is using WebGL');
+      add('info', 'WebGPU가 선택되었지만 이 빌드는 WebGL을 사용 중입니다');
     }
     if (caps.gpuInfoAvailable === false) {
-      add('info', 'GPU name unavailable because browser blocked debug renderer info');
+      add('info', '브라우저가 디버그 렌더러 정보를 차단하여 GPU 이름을 사용할 수 없음');
     }
     if (renderer.reloadRequired) add('info', '렌더러 환경설정 변경은 재로드가 필요합니다');
 
@@ -88,11 +88,11 @@ export function computeWarnings(snap, T = WARN_THRESHOLDS) {
     if (uw && uw.active) {
       if (uw.mode === 'high') add('warning', '고급 수중 모드 활성');
       else add('info', '라이트 수중 모드 활성');
-      if (uw.fellBackToLite) add('info', 'High underwater requested — falling back to Lite (legacy water)');
+      if (uw.fellBackToLite) add('info', '고급 수중 효과가 요청됨 — Lite (레거시 물)로 폴백');
       if (uw.causticsEnabled) add('info', '수중 굴절광 활성화');
-      if (uw.lightShaftsEnabled) add('warning', 'Underwater light shafts enabled');
+      if (uw.lightShaftsEnabled) add('warning', '수중 빛 기둥 활성화');
       if (uw.particlesEnabled) add('info', '수중 파티클 활성화');
-      if (uw.depthTextureAvailable === false) add('warning', 'Depth texture unavailable — simplified underwater fog');
+      if (uw.depthTextureAvailable === false) add('warning', '깊이 텍스처 사용 불가 — 단순화된 수중 안개');
     }
   }
 

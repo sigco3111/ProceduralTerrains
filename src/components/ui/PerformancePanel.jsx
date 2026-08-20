@@ -20,7 +20,7 @@ export default function PerformancePanel({ stats, gpu }) {
         </svg>
       )}
     >
-      <div className="stat-row" data-tooltip="Frames per second (aim for 60 for smooth rendering)">
+      <div className="stat-row" data-tooltip="초당 프레임 (부드러운 렌더링을 위해 60 목표)">
         <div className="label-with-icon">
           <span className="setting-icon">
             <svg viewBox="0 0 16 16" fill="none">

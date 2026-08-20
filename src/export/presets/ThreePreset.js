@@ -1,5 +1,5 @@
 export const ThreePreset = {
-  id: 'three', label: 'Three.js Viewer Assets',
+  id: 'three', label: 'Three.js 뷰어 에셋',
   description: 'Three.js 뷰어용 웹 지원 GLB 및 텍스처 패키지.',
   defaults: {
     format: 'glb', meshRes: '256', texRes: '1024', includeMesh: true,

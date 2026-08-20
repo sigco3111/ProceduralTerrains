@@ -7,7 +7,7 @@ export const BlenderPreset = {
     exportHeightmap: true, exportWater: true, exportCollision: false,
   },
   layout: {
-    root: 'Blender', paths: {
+    root: '블렌더', paths: {
       'terrain.glb': 'Blender/terrain.glb', 'terrain.obj': 'Blender/terrain.obj',
       'textures/terrain_color.png': 'Blender/textures/terrain_color.png',
       'textures/terrain_normal.png': 'Blender/textures/terrain_normal.png',

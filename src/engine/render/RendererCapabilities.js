@@ -44,7 +44,7 @@ export function detectRendererCapabilities(renderer = null) {
     },
     gpuTiming: { supported: false },
     detectedRenderer: '사용 불가',
-    detectedGpu: 'GPU info hidden by browser',
+    detectedGpu: 'GPU 정보가 브라우저에 의해 숨겨짐',
     gpuInfoAvailable: false,
     gpuInfoReason: 'Browser did not expose GPU info',
     vendor: '',
@@ -92,7 +92,7 @@ export function detectRendererCapabilities(renderer = null) {
       caps.gpuInfoReason = caps.gpuInfoAvailable ? '' : '브라우저가 GPU 문자열 없이 디버그 정보를 노출했습니다';
     }
   } catch {
-    caps.detectedGpu = 'GPU info hidden by browser';
+    caps.detectedGpu = 'GPU 정보가 브라우저에 의해 숨겨짐';
     caps.gpuInfoReason = '브라우저가 디버그 렌더러 정보를 차단함';
   }
 

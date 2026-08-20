@@ -217,7 +217,7 @@ export class TerrainExporter {
     const seaLevel = engineParams.seaLevel;
 
     // --- 1. Bake maps via GPU ---
-    onToast('Baking shader parameters...');
+    onToast('셰이더 매개변수 베이크 중...');
     const quadScene = new THREE.Scene();
     const quadCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     const quadMesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), null);
@@ -335,7 +335,7 @@ export class TerrainExporter {
     exportGroup.name = multi ? 'Terrain_Assembly' : 'Terrain_Board';
 
     if (includeMesh) {
-      onToast(multi ? 'Generating tile geometry...' : '지형 지오메트리 생성 중...');
+      onToast(multi ? '타일 지오메트리 생성 중...' : '지형 지오메트리 생성 중...');
       const slabMaterial = new THREE.MeshStandardMaterial({
         name: 'Slab_Material', color: 0x231e19, roughness: 0.9, metalness: 0.05,
         side: THREE.DoubleSide,
@@ -469,7 +469,7 @@ export class TerrainExporter {
     let heightCanvas = null;
     let heightRaw16 = null;
     if (exportHeightmap) {
-      onToast('Baking grayscale heightmap...');
+      onToast('그레이스케일 높이맵 베이크 중...');
       const asset = bakeHeightAsset(unionCenter.x, unionCenter.z, unionSpanX, unionSpanZ);
       heightCanvas = asset.canvas;
       heightRaw16 = asset.raw16;

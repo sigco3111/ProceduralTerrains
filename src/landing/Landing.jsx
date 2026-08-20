@@ -47,7 +47,7 @@ function initialTemplateThumbs() {
 }
 
 const relTime = (value) => {
-  if (!value) return 'Not saved';
+  if (!value) return '저장되지 않음';
   const seconds = Math.max(0, (Date.now() - new Date(value).getTime()) / 1000);
   if (seconds < 60) return '방금 전';
   if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;

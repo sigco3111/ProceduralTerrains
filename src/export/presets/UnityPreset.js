@@ -1,7 +1,7 @@
 export const UnityPreset = {
   id: 'unity',
   label: 'Unity 지형',
-  description: '16-bit RAW heightmap, terrain masks, and Unity scale metadata.',
+  description: '16비트 RAW 높이맵, 지형 마스크, Unity 스케일 메타데이터.',
   defaults: {
     format: 'glb', meshRes: '512', texRes: '2048', includeMesh: false,
     bakeColor: true, bakeNormal: true, exportHeightmap: true, exportSplat: true,

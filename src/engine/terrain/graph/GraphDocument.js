@@ -291,7 +291,7 @@ export function validateGraph(graph, { requireInputs = true, enforceCapacity = t
       diagnostics.push({ code: 'incompatible-port', edgeId: edge.id, message: '이 포트들은 호환되지 않습니다.' });
     }
     const inputKey = `${edge.target}:${edge.targetHandle}`;
-    if (incoming.has(inputKey)) diagnostics.push({ code: 'multiple-input', edgeId: edge.id, message: 'An input accepts only one connection.' });
+    if (incoming.has(inputKey)) diagnostics.push({ code: 'multiple-input', edgeId: edge.id, message: '입력은 하나의 연결만 허용합니다.' });
     incoming.add(inputKey);
   }
   try { topologicalSort(graph); } catch (error) { diagnostics.push({ code: 'cycle', message: error.message }); }

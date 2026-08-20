@@ -12,7 +12,7 @@ export default function PlanetSummaryCard({ params }) {
   return (
     <ControlSection
       id="inspector-planet-summary"
-      title="PLANET SUMMARY"
+      title="행성 요약"
       defaultOpen={false}
       icon={(
         <svg viewBox="0 0 16 16" fill="none">

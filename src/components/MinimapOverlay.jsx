@@ -3,11 +3,11 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 const MAP_MODES = [
   ['color', '색상'],
   ['height', '하이맵'],
-  ['biome', 'Biome Map'],
+  ['biome', '바이옴 맵'],
   ['noise', '노이즈 맵'],
-  ['water', 'Water Mask'],
-  ['slope', 'Slope Map'],
-  ['props', 'Props Mask'],
+  ['water', '물 마스크'],
+  ['slope', '경사 맵'],
+  ['props', '소품 마스크'],
 ];
 
 const SHOW_HOVER_INFO = false;
@@ -177,7 +177,7 @@ export default function MinimapOverlay({
             className="minimap-wrap"
             onMouseMove={updateHover}
             onMouseLeave={clearHover}
-            data-tooltip="Interactive minimap with terrain overlays and hover inspection"
+            data-tooltip="지형 오버레이와 호버 검사가 있는 대화형 미니맵"
           >
             <canvas className="minimap-base" width="256" height="256" ref={baseRef} />
             <canvas className="minimap-overlay" width="256" height="256" ref={overlayRef} />

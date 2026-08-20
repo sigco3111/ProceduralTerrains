@@ -3,7 +3,7 @@ import { PANEL_ICONS } from '../icons/panelIcons.jsx';
 // Lightweight panel metadata lives separately from the panel implementations so
 // the startup bundle does not pull every settings panel into the landing page.
 export const PANEL_META = {
-  terrain: { label: '지형', title: '지형', desc: 'Shape and surface generation.', icon: PANEL_ICONS.terrain },
+  terrain: { label: '지형', title: '지형', desc: '모양과 표면 생성.', icon: PANEL_ICONS.terrain },
   noiseLayers: { label: '레이어', title: '노이즈 레이어', desc: '노이즈 레이어를 쌓아 지형 모양을 만듭니다.', icon: PANEL_ICONS.noiseLayers },
   world: { label: '세계', title: '세계', desc: '레이아웃, 타일, 청크, 그리드.', icon: PANEL_ICONS.world },
   planet: {

@@ -26,7 +26,7 @@ export default function PlanetPresetPanel({ planetPreset, onSelect, onRandomize 
           {planetPreset === 'custom' && <option value="custom">사용자 지정</option>}
         </select>
       </div>
-      <button type="button" className="action-btn" onClick={onRandomize} data-tooltip="Generate a completely randomized planet type, seed, and styling">
+      <button type="button" className="action-btn" onClick={onRandomize} data-tooltip="완전히 무작위화된 행성 유형, 시드, 스타일을 생성합니다">
         <svg viewBox="0 0 16 16" fill="none" className="bic">
           <rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" strokeWidth="1.2" />
           <circle cx="5.5" cy="5.5" r="1.1" fill="currentColor" />

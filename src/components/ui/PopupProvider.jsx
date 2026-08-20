@@ -142,7 +142,7 @@ export function PopupProvider({ children }) {
 
   const showPrompt = useCallback((options) => {
     const config = typeof options === 'string' ? { title: options } : options;
-    return openDialog({ kind: 'prompt', title: 'Enter a value', ...config });
+    return openDialog({ kind: 'prompt', title: '값 입력', ...config });
   }, [openDialog]);
 
   const showChoice = useCallback((options) => {

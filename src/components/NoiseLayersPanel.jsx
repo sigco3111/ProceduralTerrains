@@ -424,7 +424,7 @@ export default function NoiseLayersPanel({ ctx, children }) {
   return (
     <SidePanel title="노이즈 레이어" description="노이즈 레이어를 쌓아 지형 높이를 형성합니다." onClose={ctx.onClose}>
       {/* preset quick-select */}
-      <SelectRow label="Stack Preset" value="__custom" settingId="noise.stackPreset"
+      <SelectRow label="스택 프리셋" value="__custom" settingId="noise.stackPreset"
         options={[{ value: '__custom', label: '— 사용자 정의 스택 —' }, ...NOISE_STACK_PRESET_KEYS.map((k) => ({ value: k, label: NOISE_STACK_PRESETS[k].label }))]}
         onChange={(v) => { if (v !== '__custom') handlePreset(v); }}
         info="프리셋 노이즈 스택을 불러옵니다. 이후 자유롭게 편집할 수 있습니다." />
@@ -432,7 +432,7 @@ export default function NoiseLayersPanel({ ctx, children }) {
       <div className="nl-output-section" data-setting-id="noise.section.output">
         <div className="nl-output-title">출력</div>
         <ToggleRow
-          label="Normalize Output"
+          label="출력 정규화"
           value={normalizeOutput}
           onChange={(value) => handleStackOutput({ normalizeOutput: value })}
           settingId="noise.stackNormalize"

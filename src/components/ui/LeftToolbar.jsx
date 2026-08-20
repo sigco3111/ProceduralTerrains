@@ -10,7 +10,7 @@ const EDGE_LABELS = {
   left: '왼쪽에 스냅',
   right: '오른쪽에 스냅',
   top: '상단 스냅',
-  bottom: 'Snap bottom',
+  bottom: '하단 스냅',
 };
 
 /**

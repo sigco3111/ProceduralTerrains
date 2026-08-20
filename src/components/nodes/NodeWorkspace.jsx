@@ -33,8 +33,8 @@ const NEXT_NODE_SUGGESTIONS = {
   mountain: { type: 'shaper', reason: '풍화 전에 내구성 있는 매스 추가.' },
   mountainRange: { type: 'shaper', reason: '범위에 침식 준비가 된 더 넓은 본체를 부여합니다.' },
   canyon: { type: 'stratify', reason: '협곡 벽에 깨어진 퇴적층을 노출합니다.' },
-  duneSea: { type: 'domainWarp', reason: 'Break up the dune field with a restrained wind-scale bend.' },
-  shaper: { type: 'domainWarp', reason: 'Introduce broad organic displacement.' },
+  duneSea: { type: 'domainWarp', reason: '억제된 바람 스케일 굴곡으로 사구 지형에 변화를 줍니다.' },
+  shaper: { type: 'domainWarp', reason: '넓은 유기적 변위를 도입합니다.' },
   domainWarp: { type: 'stratify', reason: '깨진 지질학 레이어 추가.' },
   stratify: { type: 'thermalErosion', reason: '노출된 경사면을 완화하고 사력을 형성합니다.' },
   geologyDetail: { type: 'thermalErosion', reason: '가파른 면에 흩어진 바위를 재분배합니다.' },
@@ -311,7 +311,7 @@ function NodeInspector({
   const suggestedDefinition = suggestion ? getGraphNodeDefinition(suggestion.type) : null;
   const title = group ? '그룹' : definition?.label || '선택된 항목 없음';
   return (
-    <aside className="node-inspector" aria-label="Selected node properties">
+    <aside className="node-inspector" aria-label="선택한 노드 속성">
       <header className="node-dock-header node-inspector__header node-dock-header--draggable" onPointerDown={onHeaderPointerDown}>
         <div className="node-dock-heading">
           <span className="node-dock-kicker">속성</span>
@@ -874,7 +874,7 @@ export default function NodeWorkspace({
             ) : null}
             <button type="button" className="node-toolbar-button" onClick={openSearch}><Plus size={14} /> 추가</button>
             <button type="button" className="node-toolbar-button" onClick={createGroupFromSelection} disabled={!selectedNodes.size} title="선택한 노드 그룹화 (G)"><FolderPlus size={13} /> 그룹</button>
-            <button type="button" className="node-icon-button" onClick={() => ungroupSelection()} disabled={!selectedGroups.size} title="Remove selected group frame (Shift+G)"><Ungroup size={13} /></button>
+            <button type="button" className="node-icon-button" onClick={() => ungroupSelection()} disabled={!selectedGroups.size} title="선택한 그룹 프레임 제거 (Shift+G)"><Ungroup size={13} /></button>
             <button type="button" className="node-icon-button" onClick={() => instance?.fitView({ padding: 0.18, maxZoom: 1, duration: 280 })} title="그래프 맞추기"><Maximize2 size={14} /></button>
             <button type="button" className={`node-icon-button${layout.previewVisible ? ' active' : ''}`} onClick={() => updateLayout({ previewVisible: !layout.previewVisible })} title="2D 미리보기 토글">{layout.previewVisible ? <Eye size={14} /> : <EyeOff size={14} />}</button>
             <button type="button" className="node-toolbar-button subtle" onClick={() => onStartBlank?.(graphMode)}>그래프 지우기</button>
@@ -882,7 +882,7 @@ export default function NodeWorkspace({
         </header>
 
         {!layout.paletteDetached && !layout.paletteCollapsed ? palette : null}
-        {!layout.paletteDetached && layout.paletteCollapsed ? <button type="button" className="node-palette-expand" onClick={() => updateLayout({ paletteCollapsed: false })} title="Show quick nodes"><ChevronRight size={15} /></button> : null}
+        {!layout.paletteDetached && layout.paletteCollapsed ? <button type="button" className="node-palette-expand" onClick={() => updateLayout({ paletteCollapsed: false })} title="빠른 노드 표시"><ChevronRight size={15} /></button> : null}
 
         <div className="node-flow-frame" data-edge-count={flowEdges.length}>
         <ReactFlow

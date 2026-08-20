@@ -305,7 +305,7 @@ export default function ColorPalettePanel({
           </select>
         </div>
         <div className="seed-row">
-          <div className="label-with-icon" data-tooltip="Input seed value for unique procedural color generation variations">
+          <div className="label-with-icon" data-tooltip="고유한 프로시저럴 색상 생성을 위한 시드 값 입력">
             <span className="setting-icon">
               <svg viewBox="0 0 16 16" fill="none">
                 <rect x="3" y="3" width="10" height="10" rx="1" stroke="currentColor" strokeWidth="1.2" />
@@ -349,7 +349,7 @@ export default function ColorPalettePanel({
 
       {/* Preset selector */}
       <div className="row palette-preset-row" data-setting-id="planet.palettePreset">
-        <div className="label-with-icon" data-tooltip="Select from pre-defined artist-designed color schemes">
+        <div className="label-with-icon" data-tooltip="아티스트가 설계한 사전 정의된 색상 구성에서 선택">
           <span className="setting-icon">
             <svg viewBox="0 0 16 16" fill="none">
               <path d="M8 2a6 6 0 1 0 6 6c0-.8-.7-1.5-1.5-1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1A1.5 1.5 0 0 0 8 2z" stroke="currentColor" strokeWidth="1.2" />

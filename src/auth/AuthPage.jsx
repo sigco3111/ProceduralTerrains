@@ -43,7 +43,7 @@ export default function AuthPage({ mode, onBack, onSwitch, onSuccess }) {
       }
       onSuccess();
     } catch (error) {
-      showPopup(error.message || 'The request could not be completed.', { type: 'error', title: isRegister ? '계정이 생성되지 않았습니다' : '로그인 실패' });
+      showPopup(error.message || '요청을 완료할 수 없습니다.', { type: 'error', title: isRegister ? '계정이 생성되지 않았습니다' : '로그인 실패' });
       setFieldErrors(error.fields ?? {});
     } finally {
       setBusy(false);

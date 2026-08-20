@@ -19,7 +19,7 @@ const lim = (key, label, step, opts = {}) => ({
 
 const PERF_SLIDERS = {
   renderScale: lim('renderScale', '렌더 스케일', 0.05, { digits: 2, unit: '×' }),
-  resolutionScale: lim('resolutionScale', 'Terrain Resolution', 0.05, { digits: 2, unit: '×' }),
+  resolutionScale: lim('resolutionScale', '지형 해상도', 0.05, { digits: 2, unit: '×' }),
   lodDistanceScale: lim('lodDistanceScale', 'LOD 거리 스케일', 0.05, { digits: 2, unit: '×' }),
   viewRadius: lim('viewRadius', '청크 로드 반경', 1, { unit: 'chunks' }),
   maxCreatesPerFrame: lim('maxCreatesPerFrame', '청크 빌드 / 프레임', 1, {
@@ -29,20 +29,20 @@ const PERF_SLIDERS = {
   cullingAggressiveness: lim('cullingAggressiveness', '컬링 공격성', 0.1, { digits: 1 }),
   waterReflection: lim('waterReflection', '물 반사', 0.05, { digits: 2, unit: '×' }),
   waterDetail: lim('waterDetail', '물 디테일', 0.05, { digits: 2, unit: '×' }),
-  waterWaves: lim('waterWaves', 'Wave Complexity', 0.05, { digits: 2, unit: '×' }),
+  waterWaves: lim('waterWaves', '파도 복잡도', 0.05, { digits: 2, unit: '×' }),
   waterDistance: lim('waterDistance', '물 거리', 0.05, { digits: 2, unit: '×' }),
   fogDistance: lim('fogDistance', '안개 거리', 0.05, { digits: 2, unit: '×' }),
-  terrainDetailOpacity: lim('terrainDetailOpacity', 'Detail Opacity', 0.05, { digits: 2, unit: 'x' }),
+  terrainDetailOpacity: lim('terrainDetailOpacity', '디테일 불투명도', 0.05, { digits: 2, unit: 'x' }),
   terrainDetailScale: lim('terrainDetailScale', '디테일 텍스처 스케일', 0.01, { digits: 2, unit: 'x' }),
   terrainDetailStrength: lim('terrainDetailStrength', '디테일 세기', 0.05, { digits: 2, unit: 'x' }),
-  terrainDetailNormal: lim('terrainDetailNormal', 'Detail Normal Strength', 0.05, { digits: 2, unit: 'x' }),
+  terrainDetailNormal: lim('terrainDetailNormal', '디테일 노멀 강도', 0.05, { digits: 2, unit: 'x' }),
   terrainMicroDetail: lim('terrainMicroDetail', '미세 디테일', 0.05, { digits: 2, unit: 'x' }),
   terrainMacroVariation: lim('terrainMacroVariation', '매크로 변화', 0.05, { digits: 2, unit: 'x' }),
   terrainDetailNear: lim('terrainDetailNear', '전체 디테일 거리', 5, { unit: 'm' }),
   terrainDetailFar: lim('terrainDetailFar', '디테일 페이드 거리', 5, { unit: 'm' }),
   terrainRockSlope: lim('terrainRockSlope', '바위 경사 혼합', 0.01, { digits: 2 }),
   terrainRockSharpness: lim('terrainRockSharpness', '바위 혼합 너비', 0.01, { digits: 2 }),
-  terrainShoreRange: lim('terrainShoreRange', 'Shoreline Range', 1, { unit: 'm' }),
+  terrainShoreRange: lim('terrainShoreRange', '해안선 범위', 1, { unit: 'm' }),
   terrainShoreWetness: lim('terrainShoreWetness', '해안선 습윤도', 0.05, { digits: 2, unit: 'x' }),
   cloudSteps: lim('cloudSteps', '레이마칭 단계', 4),
   cloudLightSteps: lim('cloudLightSteps', '그림자 단계', 1),
@@ -185,7 +185,7 @@ function GpuRendererSection({ perf, rendererInfo, onPerfSetting }) {
   const reloadRequired = !!rendererInfo?.reloadRequired;
   const gpuInfo = caps.gpuInfoAvailable
     ? caps.detectedGpu
-    : (caps.gpuInfoReason || 'GPU info hidden by browser');
+    : (caps.gpuInfoReason || 'GPU 정보가 브라우저에 의해 숨겨짐');
 
   return (
     <ControlSection
@@ -208,7 +208,7 @@ function GpuRendererSection({ perf, rendererInfo, onPerfSetting }) {
           value={perf.gpuPreference}
           options={GPU_PREFERENCE_OPTIONS}
           onChange={(v) => onPerfSetting('gpuPreference', v)}
-          info="A browser hint only. The browser or OS may ignore this preference."
+          info="브라우저 힌트일 뿐입니다. 브라우저나 OS가 이 설정을 무시할 수 있습니다."
           settingId="performance.gpuPreference"
         />
         <ToggleRow
@@ -257,7 +257,7 @@ export function SurfacePropertiesSettings({ perf, onPerfSetting }) {
           <SelectRow label="Terrain Detail Quality" value={perf.terrainDetailQuality} options={TERRAIN_DETAIL_OPTIONS} onChange={(v) => onPerfSetting('terrainDetailQuality', parseInt(v, 10))} settingId="performance.terrainDetailQuality" />
         </SettingGroup>
 
-        <SettingGroup tab="terrain" label="Detail Opacity" keywords="terrain detail opacity master mix amount overall fade blend close" {...groupProps}>
+        <SettingGroup tab="terrain" label="디테일 불투명도" keywords="terrain detail opacity master mix amount overall fade blend close" {...groupProps}>
           <PerfSlider perf={perf} id="terrainDetailOpacity" onPerfSetting={onPerfSetting} settingId="performance.terrainDetailOpacity" />
         </SettingGroup>
 
@@ -269,7 +269,7 @@ export function SurfacePropertiesSettings({ perf, onPerfSetting }) {
           <PerfSlider perf={perf} id="terrainDetailStrength" onPerfSetting={onPerfSetting} settingId="performance.terrainDetailStrength" />
         </SettingGroup>
 
-        <SettingGroup tab="terrain" label="Detail Normal Strength" keywords="terrain normal material lighting bump close" {...groupProps}>
+        <SettingGroup tab="terrain" label="디테일 노멀 강도" keywords="terrain normal material lighting bump close" {...groupProps}>
           <PerfSlider perf={perf} id="terrainDetailNormal" onPerfSetting={onPerfSetting} settingId="performance.terrainDetailNormal" />
         </SettingGroup>
 
@@ -431,7 +431,7 @@ function renderSettings({
 
       <SettingNote tab="overview" text={`Worst-case visible triangles: ~${(estTris / 1e6).toFixed(2)}M`} {...groupProps} />
 
-      <SettingGroup tab="lod" label="Terrain Resolution" keywords="메시 디테일 세그먼트" {...groupProps}>
+      <SettingGroup tab="lod" label="지형 해상도" keywords="메시 디테일 세그먼트" {...groupProps}>
         <PerfSlider perf={perf} id="resolutionScale" onPerfSetting={onPerfSetting} settingId="performance.resolutionScale" />
       </SettingGroup>
 
@@ -472,7 +472,7 @@ function renderSettings({
 
       <SettingGroup tab="lod" label="병합 거리" keywords="merge fold distance quadtree aggressiveness near far block size threshold" {...groupProps}>
         <SliderCtl
-          def={{ label: '병합 거리', min: PERF_LIMITS.terrainMergeDistance.min, max: PERF_LIMITS.terrainMergeDistance.max, step: 0.5, digits: 1, unit: '× block' }}
+          def={{ label: '병합 거리', min: PERF_LIMITS.terrainMergeDistance.min, max: PERF_LIMITS.terrainMergeDistance.max, step: 0.5, digits: 1, unit: '× 차단' }}
           value={perf.terrainMergeDistance ?? 4}
           onChange={(v) => onPerfSetting('terrainMergeDistance', v)}
           settingId="performance.terrainMergeDistance"
@@ -523,8 +523,8 @@ function renderSettings({
         <PerfSlider perf={perf} id="cullingAggressiveness" onPerfSetting={onPerfSetting} settingId="performance.cullingAggressiveness" />
       </SettingGroup>
 
-      <SettingGroup tab="water" label="Water Quality" keywords="shader reflection detail waves" {...groupProps}>
-        <SelectRow label="Water Quality" value={perf.waterQuality} options={WATER_QUALITY_OPTIONS} onChange={(v) => onPerfSetting('waterQuality', parseInt(v, 10))} settingId="performance.waterQuality" />
+      <SettingGroup tab="water" label="물 품질" keywords="shader reflection detail waves" {...groupProps}>
+        <SelectRow label="물 품질" value={perf.waterQuality} options={WATER_QUALITY_OPTIONS} onChange={(v) => onPerfSetting('waterQuality', parseInt(v, 10))} settingId="performance.waterQuality" />
       </SettingGroup>
 
       <SettingGroup tab="water" label="물 반사" keywords="specular glint sun" {...groupProps}>
@@ -535,7 +535,7 @@ function renderSettings({
         <PerfSlider perf={perf} id="waterDetail" onPerfSetting={onPerfSetting} settingId="performance.waterDetail" />
       </SettingGroup>
 
-      <SettingGroup tab="water" label="Wave Complexity" keywords="waves animation ocean" {...groupProps}>
+      <SettingGroup tab="water" label="파도 복잡도" keywords="waves animation ocean" {...groupProps}>
         <PerfSlider perf={perf} id="waterWaves" onPerfSetting={onPerfSetting} settingId="performance.waterWaves" />
       </SettingGroup>
 

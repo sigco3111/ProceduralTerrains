@@ -160,7 +160,7 @@ export default function ProfilePage({ onBack }) {
           <form onSubmit={saveDetails} noValidate>
             <div className="profile-field-grid">
               {field('username', '사용자 이름', { type: 'text', autoComplete: 'username', minLength: 3, maxLength: 32, required: true })}
-              {field('displayName', '표시 이름', { type: 'text', autoComplete: 'name', maxLength: 80, placeholder: 'Terrain artist' })}
+              {field('displayName', '표시 이름', { type: 'text', autoComplete: 'name', maxLength: 80, placeholder: '지형 아티스트' })}
             </div>
             <label className="auth-field"><span>이메일</span><input value={user?.email ?? ''} type="email" readOnly aria-readonly="true" /><small className="profile-field-note">이메일 변경은 아직 사용할 수 없습니다.</small></label>
             {field('websiteUrl', '웹사이트', { type: 'url', autoComplete: 'url', maxLength: 2048, placeholder: 'https://example.com' })}

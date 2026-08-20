@@ -169,7 +169,7 @@ const lim = (key, label, step, opts = {}) => ({
 const LEGACY_SHADER_SLIDERS = [
   lim('waterReflection', '물 반사', 0.05, { digits: 2, unit: '×' }),
   lim('waterDetail', '물 디테일', 0.05, { digits: 2, unit: '×' }),
-  lim('waterWaves', 'Wave Complexity', 0.05, { digits: 2, unit: '×' }),
+  lim('waterWaves', '파도 복잡도', 0.05, { digits: 2, unit: '×' }),
 ];
 
 function PerfSlider({ perf, id, def, onPerfSetting, settingId }) {
@@ -307,15 +307,15 @@ export default function WaterPanelInner({
             value={!!val(params, 'waterAutoDowngradeInfinite')}
             onChange={(v) => onParam('waterAutoDowngradeInfinite', v)}
             settingId="water.waterAutoDowngradeInfinite"
-            info="Cap Volumetric/Cinematic to Realistic while exploring Infinite World."
+            info="무한 월드를 탐험하는 동안 볼류메트릭/시네마틱을 사실로 제한합니다."
           />
         )}
         <ToggleRow
-          label="Use Legacy on Low FPS"
+          label="낮은 FPS에서 레거시 사용"
           value={!!val(params, 'waterLegacyOnLowFps')}
           onChange={(v) => onParam('waterLegacyOnLowFps', v)}
           settingId="water.waterLegacyOnLowFps"
-          info="Temporarily reduce expensive water effects when FPS drops below the threshold."
+          info="FPS가 임계값 아래로 떨어지면 비싼 물 효과를 일시적으로 줄입니다."
         />
       </ControlSection>
 
@@ -328,12 +328,12 @@ export default function WaterPanelInner({
           forceOpen={forceSection('water.section.shader', '셰이더 품질', ['performance.water'])}
         >
           <SelectRow
-            label="Water Quality"
+            label="물 품질"
             value={String(p.waterQuality ?? 2)}
             options={WATER_QUALITY_OPTIONS}
             onChange={(v) => onPerfSetting?.('waterQuality', parseInt(v, 10))}
             settingId="performance.waterQuality"
-            info="Legacy shader quality tier — applies in Tile, Infinite World, and Planet."
+            info="레거시 셰이더 품질 등급 — 타일, 무한 월드, 행성에 적용됩니다."
           />
           {LEGACY_SHADER_SLIDERS.map((def) => (
             <PerfSlider
@@ -566,21 +566,21 @@ export default function WaterPanelInner({
             {uwEnabled && (
               <ControlSection
                 id={`${id}-high-extras`}
-                title="High Mode Extras"
+                title="고급 모드 추가 옵션"
                 nested
                 defaultOpen={false}
                 settingId="water.section.highExtras"
-                forceOpen={forceSection('water.section.highExtras', 'High Mode Extras', ['water.waterUnderwaterLight', 'water.waterUnderwaterParticles'])}
+                forceOpen={forceSection('water.section.highExtras', '고급 모드 추가 옵션', ['water.waterUnderwaterLight', 'water.waterUnderwaterParticles'])}
               >
                 <ToggleRow
                   label="광선"
                   value={!!val(params, 'waterUnderwaterLightShafts')}
                   onChange={(v) => onParam('waterUnderwaterLightShafts', v)}
                   settingId="water.waterUnderwaterLightShafts"
-                  info="Volumetric sun rays through the water. High mode only."
+                  info="물을 통과하는 볼류메트릭 빛줄기. 고급 모드에서만 사용 가능."
                 />
                 <ToggleRow
-                  label="Suspended Particles"
+                  label="부유 입자"
                   value={!!val(params, 'waterUnderwaterParticles')}
                   onChange={(v) => onParam('waterUnderwaterParticles', v)}
                   settingId="water.waterUnderwaterParticles"
@@ -738,7 +738,7 @@ export default function WaterPanelInner({
         <button type="button" className="action-btn" onClick={() => onExportWaterMasks?.({ exportShorelineMask: true, exportFoamMask: true })}>해안선 + 거품 마스크 내보내기</button>
       </ControlSection>
 
-      <PanelResetButton label="Reset Water Settings" onClick={onResetWaterSettings} settingId="water.reset" />
+      <PanelResetButton label="물 설정 초기화" onClick={onResetWaterSettings} settingId="water.reset" />
     </>
   );
 

@@ -47,7 +47,7 @@ const TRANSFORMS = [
 ];
 
 const SCULPT_TOOLS = [
-  { id: 'raise', label: 'Raise', Icon: Mountain, description: 'Build broad positive relief.' },
+  { id: 'raise', label: '올리기', Icon: Mountain, description: 'Build broad positive relief.' },
   { id: 'lower', label: '더 낮음', Icon: Minus, description: 'Carve broad depressions into the terrain.' },
   { id: 'smooth', label: '부드러움', Icon: Waves, description: 'Relax abrupt height changes without flattening the whole form.' },
   { id: 'flatten', label: '평탄화', Icon: SlidersHorizontal, description: 'Move the terrain toward an exact elevation.' },
@@ -55,7 +55,7 @@ const SCULPT_TOOLS = [
   { id: 'crease', label: '주름', Icon: Minus, description: 'Cut narrow gullies, cracks, and drainage lines.' },
   { id: 'ridge', label: '산등성이', Icon: Mountain, description: 'Pinch terrain upward into narrow ridges and spines.' },
   { id: 'detail', label: '디테일', Icon: Dices, description: 'Paint seeded multi-scale rocky relief over larger forms.' },
-  { id: 'terrace', label: 'Terrace', Icon: GripVertical, description: 'Quantize elevation into editable steps and shelves.' },
+  { id: 'terrace', label: '테라스', Icon: GripVertical, description: 'Quantize elevation into editable steps and shelves.' },
   { id: 'erase', label: '지우기', Icon: Eraser, description: 'Remove sculpted detail and reveal the procedural shapes.' },
 ];
 
@@ -323,7 +323,7 @@ export default function ManualTerrainPanel({
   const textureBrushSize = { label: '브러시 크기', min: 4, max: 900, step: 2, digits: 0, unit: 'u' };
   const textureStrength = { label: '세기', min: 0.01, max: 1, step: 0.01, digits: 2 };
   const textureFalloff = { label: 'Edge Blend', min: 0.02, max: 1, step: 0.01, digits: 2 };
-  const layerOpacity = { label: 'Layer Opacity', min: 0, max: 1, step: 0.01, digits: 2 };
+  const layerOpacity = { label: '레이어 불투명도', min: 0, max: 1, step: 0.01, digits: 2 };
 
   const libraryStyle = {
     left: sideToolOffset('left'),
@@ -386,7 +386,7 @@ export default function ManualTerrainPanel({
         <div
           className="manual-library-resizer"
           role="separator"
-          aria-label="Resize Shape Library"
+          aria-label="모양 라이브러리 크기 조정"
           aria-orientation="horizontal"
           aria-valuemin={MIN_LIBRARY_HEIGHT}
           aria-valuemax={MAX_LIBRARY_HEIGHT}
@@ -494,11 +494,11 @@ export default function ManualTerrainPanel({
               <span className="node-dock-kicker">수동 지형</span>
               <strong>{state?.texturePaint?.enabled
                 ? (state.texturePaint.mode === 'props' ? '프롭 페인트' : '텍스처 페인트')
-                : state?.sculpt?.enabled ? 'Sculpt' : selected?.name || '셰이프 인스펙터'}</strong>
+                : state?.sculpt?.enabled ? '스컬프트' : selected?.name || '셰이프 인스펙터'}</strong>
             </div>
             {selected && !state?.sculpt?.enabled && !state?.texturePaint?.enabled ? (
               <div className="manual-shape-actions">
-                <button type="button" onClick={() => onDuplicate(selected.id)} title="복제 (Ctrl/Cmd+D)" aria-label="Duplicate selected shape">
+                <button type="button" onClick={() => onDuplicate(selected.id)} title="복제 (Ctrl/Cmd+D)" aria-label="선택한 모양 복제">
                   <Copy size={14} aria-hidden />
                 </button>
                 <button type="button" className="danger" onClick={() => onDelete(selected.id)} title="Delete" aria-label="선택한 셰이프 삭제">
@@ -557,10 +557,10 @@ export default function ManualTerrainPanel({
                 <p className="manual-sculpt-tool-description">
                   {state.texturePaint.tool === 'paint'
                     ? (state.texturePaint.mode === 'props'
-                      ? 'Add the selected prop layer without removing other painted prop types.'
+                      ? '다른 페인트된 소품 유형을 제거하지 않고 선택한 소품 레이어를 추가합니다.'
                       : '선택한 머티리얼을 기존 지형 텍스처에 크로스페이드.')
                     : state.texturePaint.tool === 'blend'
-                      ? 'Smooth neighboring material weights without flattening the terrain.'
+                      ? '지형을 평평하게 만들지 않고 인접한 재질 가중치를 부드럽게 합니다.'
                       : '칠해진 머티리얼을 원래 수동 지형 표면으로 페이드합니다.'}
                 </p>
               </section>
@@ -630,7 +630,7 @@ export default function ManualTerrainPanel({
               <p className="manual-inspector-description">절차적 셰이프 스택 위에 비파괴적인 지형 디테일을 페인트하세요.</p>
               <section className="manual-inspector-section">
                 <h3>스컬프트 도구</h3>
-                <div className="manual-sculpt-tool-grid" role="toolbar" aria-label="Sculpt tools">
+                <div className="manual-sculpt-tool-grid" role="toolbar" aria-label="스컬프트 도구">
                   {SCULPT_TOOLS.map(({ id, label, Icon }) => (
                     <button
                       key={id}
@@ -687,7 +687,7 @@ export default function ManualTerrainPanel({
                         value={state.sculpt.detailSeed}
                         onChange={(event) => onSculptSetting('detailSeed', Number(event.target.value) || 0)}
                       />
-                      <button type="button" onClick={() => onSculptSetting('detailSeed', Math.floor(Math.random() * 0x7fffffff))} title="Randomize detail seed" aria-label="Randomize detail seed">
+                      <button type="button" onClick={() => onSculptSetting('detailSeed', Math.floor(Math.random() * 0x7fffffff))} title="디테일 시드 랜덤화" aria-label="디테일 시드 랜덤화">
                         <Dices size={14} aria-hidden />
                       </button>
                     </span>

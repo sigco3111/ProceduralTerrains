@@ -22,10 +22,10 @@ export const NOISE_STACK_PRESETS = {
     ]),
   },
   sharpMountains: {
-    label: 'Sharp Mountains',
+    label: '날카로운 산맥',
     build: () => makeStack([
       L('fbm', { name: '대륙', blendMode: 'add', strength: 0.45, params: { scale: 0.6, octaves: 4 } }),
-      L('domainWarp', { name: 'Breakup Warp', blendMode: 'add', strength: 0.6, params: { scale: 1.2 } }),
+      L('domainWarp', { name: '분리 왜곡', blendMode: 'add', strength: 0.6, params: { scale: 1.2 } }),
       L('ridged', { name: '산등성이', blendMode: 'add', strength: 0.9, params: { scale: 2.4, octaves: 5, sharpness: 2.5 } }),
       L('fbm', { name: '작은 디테일', blendMode: 'add', strength: 0.05, params: { scale: 8.0, octaves: 3 } }),
     ]),
@@ -34,7 +34,7 @@ export const NOISE_STACK_PRESETS = {
     label: '협곡 단구',
     build: () => makeStack([
       L('fbm', { name: '기본', blendMode: 'add', strength: 0.5, params: { scale: 0.8, octaves: 4 } }),
-      L('ridged', { name: 'Mesa Edges', blendMode: 'add', strength: 0.35, params: { scale: 2.0, octaves: 4, sharpness: 3.0 } }),
+      L('ridged', { name: '메사 가장자리', blendMode: 'add', strength: 0.35, params: { scale: 2.0, octaves: 4, sharpness: 3.0 } }),
       L('terrace', { name: '지층', blendMode: 'replace', strength: 0.9, params: { count: 14, smoothness: 0.35 } }),
     ]),
   },
@@ -42,7 +42,7 @@ export const NOISE_STACK_PRESETS = {
     label: '사막 모래언덕',
     build: () => makeStack([
       L('fbm', { name: '기본', blendMode: 'add', strength: 0.3, params: { scale: 0.6, octaves: 3 } }),
-      L('dune', { name: 'Dunes', blendMode: 'add', strength: 0.35, params: { scale: 1.4 } }),
+      L('dune', { name: '사구', blendMode: 'add', strength: 0.35, params: { scale: 1.4 } }),
       L('white', { name: '그레인', blendMode: 'add', strength: 0.02, params: { scale: 10.0 } }),
     ]),
   },
@@ -66,7 +66,7 @@ export const NOISE_STACK_PRESETS = {
     label: '섬 대륙',
     build: () => makeStack([
       L('fbm', { name: '대륙', blendMode: 'add', strength: 0.7, params: { scale: 0.4, octaves: 5 } }),
-      L('billow', { name: 'Coastal Hills', blendMode: 'add', strength: 0.15, params: { scale: 2.0, octaves: 3 } }),
+      L('billow', { name: '해안 구릉', blendMode: 'add', strength: 0.15, params: { scale: 2.0, octaves: 3 } }),
       L('fbm', { name: '디테일', blendMode: 'add', strength: 0.05, params: { scale: 7.0, octaves: 3 } }),
     ]),
   },
@@ -74,7 +74,7 @@ export const NOISE_STACK_PRESETS = {
     label: '침식된 계곡',
     build: () => makeStack([
       L('ridged', { name: '고지대', blendMode: 'add', strength: 0.7, params: { scale: 1.4, octaves: 5, sharpness: 1.8 } }),
-      L('flow', { name: 'River Carving', blendMode: 'subtract', strength: 0.4, params: { scale: 0.8 } }),
+      L('flow', { name: '강 깎기', blendMode: 'subtract', strength: 0.4, params: { scale: 0.8 } }),
       L('fbm', { name: '디테일', blendMode: 'add', strength: 0.06, params: { scale: 8.0, octaves: 3 } }),
     ]),
   },
@@ -105,7 +105,7 @@ export const NOISE_STACK_PRESETS = {
     },
     build: () => makeStack([
       // The Lab warps the shared domain before evaluating every height band.
-      L('domainWarp', { name: 'Geological Warp', blendMode: 'add', strength: 0.62,
+      L('domainWarp', { name: '지질학적 왜곡', blendMode: 'add', strength: 0.62,
         params: { scale: 0.58, octaves: 4 } }),
       // Low-frequency body. A small amount of derivative erosion and self-warp
       // keeps the mass organic without destroying the broad silhouette.

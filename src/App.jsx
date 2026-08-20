@@ -429,7 +429,7 @@ export default function App() {
     } catch (err) {
       if (cancelled) return;
       console.error('WebGL 초기화 실패', err);
-      const message = err?.message || 'Could not create a WebGL context.';
+      const message = err?.message || 'WebGL 컨텍스트를 생성할 수 없습니다.';
       setWebglError(message);
       setStatus({ text: 'WebGL 사용 불가', busy: false });
       completeBootUi();
@@ -1028,7 +1028,7 @@ export default function App() {
   // drops back to 0 so the user always sees what's happening.
   const modeLockRef = useRef(false);
   const [modeLocked, setModeLocked] = useState(false);
-  const BUILD_STEP = { studio: '지형 보드 구축 중…', infinite: 'Streaming world chunks…', planet: '구형 메시 생성 중…' };
+  const BUILD_STEP = { studio: '지형 보드 구축 중…', infinite: '월드 청크 스트리밍 중…', planet: '구형 메시 생성 중…' };
   // Returns a promise that resolves once the (heavy, async) mode switch has
   // finished compiling. `silent` suppresses the success/info toasts — used by
   // the undo/redo restore path so reverting across modes is quiet.
@@ -2022,7 +2022,7 @@ export default function App() {
     if (!eng.realWorldSource) return eng.setRealWorldImageryStyle(style);
     return loading.run('real-world-imagery', {
       blocking: true,
-      label: 'Loading map imagery…',
+      label: '지도 이미지 불러오는 중…',
       detail: '선택한 지도 스타일 다운로드 중…',
     }, async (update) => {
       blockingUpdateRef.current = update;

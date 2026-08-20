@@ -17,11 +17,11 @@ export const WATER_QUALITY_PRESETS = [
   { value: 'balanced', label: '밸런스 리얼리스틱' },
   { value: 'tropical', label: '맑은 열대' },
   { value: 'cartoon', label: '만화 물' },
-  { value: 'ocean', label: 'Deep Ocean' },
+  { value: 'ocean', label: '심해' },
   { value: 'lake', label: '산 속 호수' },
   { value: 'swamp', label: '늪 물' },
   { value: 'alien', label: '에일리언 물' },
-  { value: 'volumetric', label: 'High Volumetric' },
+  { value: 'volumetric', label: '고해상도 볼류메트릭' },
   { value: 'cinematic', label: '시네마틱 스크린샷' },
 ];
 

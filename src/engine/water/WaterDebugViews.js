@@ -9,7 +9,7 @@ export const WATER_DEBUG_VIEWS = [
   { value: 'depth', label: '깊이 맵' },
   { value: 'shoreline', label: '해안선 마스크' },
   { value: 'foam', label: '거품 마스크' },
-  { value: 'mask', label: 'Water Mask' },
+  { value: 'mask', label: '물 마스크' },
   { value: 'normal', label: '표면 법선' },
   { value: 'opticalDepth', label: '광학 깊이' },
   { value: 'transmittance', label: '투과율' },

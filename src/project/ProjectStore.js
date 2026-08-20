@@ -279,7 +279,7 @@ export const projectStore = {
       id: id(),
       metadata: {
         ...project?.metadata,
-        name: String(name ?? project?.metadata?.name ?? 'Shared terrain'),
+        name: String(name ?? project?.metadata?.name ?? '공유 지형'),
         created: now(),
       },
     });

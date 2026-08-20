@@ -37,7 +37,7 @@ const LAYER_STATUS_LABEL = {
   notBaked: '베이크되지 않음',
   ready: '준비',
   missingDiffuse: '디퓨즈 누락',
-  missingOptional: 'Missing Optional Maps',
+  missingOptional: '선택적 맵 누락',
 };
 
 function layerStatusClass(status) {
@@ -217,7 +217,7 @@ function VariantBlock({ role, variantIndex, mapSlots, atlasVariant, onMaterialCh
   const [importing, setImporting] = useState(false);
   const urls = previewUrlsFor(role, variantIndex);
   const layerStatus = atlasVariant?.status ?? 'notBaked';
-  const statusLabel = LAYER_STATUS_LABEL[layerStatus] ?? 'Not baked';
+  const statusLabel = LAYER_STATUS_LABEL[layerStatus] ?? '베이크되지 않음';
 
   const onBatchDrop = async (e) => {
     e.preventDefault();
@@ -325,7 +325,7 @@ function RoleCard({ role, mapSlots, targetId, atlasLayer, palette, onMaterialCha
   const [roleDragOver, setRoleDragOver] = useState(false);
   const paletteHex = colorToHex(palette?.[role.id] ?? [0.5, 0.5, 0.5]);
   const layerStatus = atlasLayer?.status ?? 'notBaked';
-  const statusLabel = LAYER_STATUS_LABEL[layerStatus] ?? 'Not baked';
+  const statusLabel = LAYER_STATUS_LABEL[layerStatus] ?? '베이크되지 않음';
 
   useEffect(() => {
     if (targetId?.startsWith(`surface.${role.id}.`)) {

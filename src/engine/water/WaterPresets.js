@@ -109,7 +109,7 @@ export const WATER_PRESETS = {
     },
   },
   ocean: {
-    label: 'Deep Ocean',
+    label: '심해',
     patch: {
       waterMode: 'realistic',
       waterQualityPreset: 'ocean',
@@ -197,7 +197,7 @@ export const WATER_PRESETS = {
     },
   },
   volumetric: {
-    label: 'High Volumetric',
+    label: '고해상도 볼류메트릭',
     patch: {
       waterMode: 'volumetric',
       waterQualityPreset: 'volumetric',

@@ -255,7 +255,7 @@ export default function PerformanceOverlay({
               value={`${t.status}${t.progress != null ? ` ${Math.round(t.progress * 100)}%` : ''}${t.elapsed ? ` · ${(t.elapsed / 1000).toFixed(1)}s` : ''}`}
               warn={t.status === 'failed'}
             />
-          )) : <Row label="No active tasks" value="idle" />}
+          )) : <Row label="활성 작업 없음" value="idle" />}
         </Section>
 
         <Section id="terrain" title="지형" collapsed={collapsed.terrain} onToggle={onToggleSection}>
@@ -263,7 +263,7 @@ export default function PerformanceOverlay({
         </Section>
 
         <Section id="culling" title="컬링 & LOD" collapsed={collapsed.culling} onToggle={onToggleSection}>
-          <Row label="Total chunks" value={cull.total ?? '–'} />
+          <Row label="전체 청크" value={cull.total ?? '–'} />
           <Row label="표시됨" value={cull.visible ?? '–'} />
           <Row label="Culled" value={cull.culled ?? '–'} />
           {lod.map((c, i) => <Row key={i} label={`LOD${i}`} value={c} />)}
@@ -291,7 +291,7 @@ export default function PerformanceOverlay({
               <Row label="최빈값" value={diag.clouds.mode} />
               <Row label="레이어" value={diag.clouds.layers} />
               <Row label="레이마칭 단계" value={diag.clouds.steps} warn={diag.clouds.steps > 64} />
-              <Row label="Light steps" value={diag.clouds.lightSteps} />
+              <Row label="라이트 단계" value={diag.clouds.lightSteps} />
               <Row label="옥타브" value={`${diag.clouds.octaves} + ${diag.clouds.detailOctaves} detail`} />
               <Row label="범위" value={fmtMaybe(diag.clouds.coverage)} />
               <Row label="밀도" value={fmtMaybe(diag.clouds.density)} />

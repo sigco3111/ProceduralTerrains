@@ -105,7 +105,7 @@ export default function CloudProjectsPanel({ localProjects, onOpen, refreshToken
       await refresh();
       showPopup(`${cloudProject.name} is now ${visibility}.`, { type: 'success' });
     } catch (requestError) {
-      showPopup(requestError.message || 'Could not change project visibility.', { type: 'error' });
+      showPopup(requestError.message || '프로젝트 공개 상태를 변경할 수 없습니다.', { type: 'error' });
     } finally {
       setBusy('');
     }

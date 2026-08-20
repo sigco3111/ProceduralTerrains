@@ -26,7 +26,7 @@ export default function WorldModeBar({
     <div
       className="viewport-mode-bar"
       role="group"
-      aria-label="World mode"
+      aria-label="월드 모드"
     >
       {MODES.map((m) => {
         const Icon = m.Icon;

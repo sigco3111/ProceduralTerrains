@@ -314,7 +314,7 @@ export default function TopBar({
           >
             <Clock3 size={14} strokeWidth={1.75} aria-hidden />
           </button>
-          <button className="tb-btn tb-icon-btn" onClick={onRedo} disabled={!canRedo} title="Redo (Ctrl+Y)" aria-label="다시 실행">
+          <button className="tb-btn tb-icon-btn" onClick={onRedo} disabled={!canRedo} title="다시 실행 (Ctrl+Y)" aria-label="다시 실행">
             <Redo2 size={14} strokeWidth={1.75} aria-hidden />
           </button>
         </div>

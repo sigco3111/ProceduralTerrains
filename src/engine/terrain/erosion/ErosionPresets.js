@@ -86,7 +86,7 @@ export const EROSION_PRESETS = {
     },
   },
   dryThermal: {
-    label: 'Dry Thermal',
+    label: '건조 열기류',
     params: {
       erosionStrength: 1.0, erosionDroplets: 15000, erosionRadius: 2,
       erosionDeposition: 0.4, erosionErosionRate: 0.15, erosionEvaporation: 0.04,

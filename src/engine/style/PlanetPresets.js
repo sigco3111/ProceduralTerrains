@@ -58,7 +58,7 @@ export const PLANET_PRESETS = {
     },
   },
   fungal: {
-    label: 'Purple Fungal Planet',
+    label: '보라색 균사 행성',
     palettePreset: 'fungal',
     noisePreset: 'eroded',
     params: { moistBias: 0.55, tempBias: 0.15, biomeScale: 1.2 },
@@ -170,7 +170,7 @@ export const PLANET_PRESETS = {
     },
   },
   methane: {
-    label: 'Frozen Methane World',
+    label: '얼어붙은 메탄 세계',
     palettePreset: 'methane',
     noisePreset: 'smooth',
     params: { tempBias: -0.85, snowLine: 0.25, moistBias: 0.1, seaLevel: 40 },
@@ -207,7 +207,7 @@ export const PLANET_PRESETS = {
     },
   },
   obsidian: {
-    label: 'Dark Obsidian Planet',
+    label: '어두운 흑요석 행성',
     palettePreset: 'obsidian',
     noisePreset: 'crystalline',
     params: { ridge: 0.82, moistBias: -0.5, tempBias: 0.2, heightScale: 500 },
