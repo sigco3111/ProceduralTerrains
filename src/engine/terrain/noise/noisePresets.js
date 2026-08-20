@@ -10,24 +10,24 @@ const L = (type, over) => makeLayer(type, over);
 
 export const NOISE_STACK_PRESETS = {
   classic: {
-    label: 'Classic Terrain',
-    build: () => makeStack([L('legacy', { name: 'Classic Terrain', blendMode: 'replace' })]),
+    label: '클래식 지형',
+    build: () => makeStack([L('legacy', { name: '클래식 지형', blendMode: 'replace' })]),
   },
   rollingHills: {
-    label: 'Rolling Hills',
+    label: '구르는 언덕',
     build: () => makeStack([
       L('fbm', { name: '기본', blendMode: 'add', strength: 0.5, params: { scale: 1.0, octaves: 4, persistence: 0.5 } }),
-      L('billow', { name: 'Soft Hills', blendMode: 'add', strength: 0.25, params: { scale: 2.2, octaves: 3 } }),
+      L('billow', { name: '부드러운 언덕', blendMode: 'add', strength: 0.25, params: { scale: 2.2, octaves: 3 } }),
       L('fbm', { name: '디테일', blendMode: 'add', strength: 0.06, params: { scale: 6.0, octaves: 3 } }),
     ]),
   },
   sharpMountains: {
     label: 'Sharp Mountains',
     build: () => makeStack([
-      L('fbm', { name: 'Continents', blendMode: 'add', strength: 0.45, params: { scale: 0.6, octaves: 4 } }),
+      L('fbm', { name: '대륙', blendMode: 'add', strength: 0.45, params: { scale: 0.6, octaves: 4 } }),
       L('domainWarp', { name: 'Breakup Warp', blendMode: 'add', strength: 0.6, params: { scale: 1.2 } }),
-      L('ridged', { name: 'Mountain Ridges', blendMode: 'add', strength: 0.9, params: { scale: 2.4, octaves: 5, sharpness: 2.5 } }),
-      L('fbm', { name: 'Small Details', blendMode: 'add', strength: 0.05, params: { scale: 8.0, octaves: 3 } }),
+      L('ridged', { name: '산등성이', blendMode: 'add', strength: 0.9, params: { scale: 2.4, octaves: 5, sharpness: 2.5 } }),
+      L('fbm', { name: '작은 디테일', blendMode: 'add', strength: 0.05, params: { scale: 8.0, octaves: 3 } }),
     ]),
   },
   canyonTerraces: {
@@ -39,41 +39,41 @@ export const NOISE_STACK_PRESETS = {
     ]),
   },
   desertDunes: {
-    label: 'Desert Dunes',
+    label: '사막 모래언덕',
     build: () => makeStack([
       L('fbm', { name: '기본', blendMode: 'add', strength: 0.3, params: { scale: 0.6, octaves: 3 } }),
       L('dune', { name: 'Dunes', blendMode: 'add', strength: 0.35, params: { scale: 1.4 } }),
-      L('white', { name: 'Grain', blendMode: 'add', strength: 0.02, params: { scale: 10.0 } }),
+      L('white', { name: '그레인', blendMode: 'add', strength: 0.02, params: { scale: 10.0 } }),
     ]),
   },
   moonCraters: {
     label: '달 분화구',
     build: () => makeStack([
-      L('fbm', { name: 'Regolith', blendMode: 'add', strength: 0.25, params: { scale: 1.2, octaves: 4 } }),
-      L('crater', { name: 'Large Craters', blendMode: 'add', strength: 0.7, params: { scale: 1.0, density: 0.5, depth: 0.7, rim: 0.35 } }),
-      L('crater', { name: 'Small Craters', blendMode: 'add', strength: 0.35, params: { scale: 3.5, density: 0.4, depth: 0.4, rim: 0.2 } }),
+      L('fbm', { name: '레골리스', blendMode: 'add', strength: 0.25, params: { scale: 1.2, octaves: 4 } }),
+      L('crater', { name: '큰 분화구', blendMode: 'add', strength: 0.7, params: { scale: 1.0, density: 0.5, depth: 0.7, rim: 0.35 } }),
+      L('crater', { name: '작은 분화구', blendMode: 'add', strength: 0.35, params: { scale: 3.5, density: 0.4, depth: 0.4, rim: 0.2 } }),
     ]),
   },
   alienCellular: {
     label: '에일리언 셀룰러',
     build: () => makeStack([
       L('fbm', { name: '기본', blendMode: 'add', strength: 0.3, params: { scale: 0.8, octaves: 3 } }),
-      L('voronoi', { name: 'Plates', blendMode: 'add', strength: 0.5, params: { scale: 1.8, jitter: 1.0, outputMode: 3 } }),
+      L('voronoi', { name: '플레이트', blendMode: 'add', strength: 0.5, params: { scale: 1.8, jitter: 1.0, outputMode: 3 } }),
       L('domainWarp', { name: '비틀기', blendMode: 'add', strength: 0.8, params: { scale: 1.5 } }),
     ]),
   },
   islandContinents: {
-    label: 'Island Continents',
+    label: '섬 대륙',
     build: () => makeStack([
-      L('fbm', { name: 'Continents', blendMode: 'add', strength: 0.7, params: { scale: 0.4, octaves: 5 } }),
+      L('fbm', { name: '대륙', blendMode: 'add', strength: 0.7, params: { scale: 0.4, octaves: 5 } }),
       L('billow', { name: 'Coastal Hills', blendMode: 'add', strength: 0.15, params: { scale: 2.0, octaves: 3 } }),
       L('fbm', { name: '디테일', blendMode: 'add', strength: 0.05, params: { scale: 7.0, octaves: 3 } }),
     ]),
   },
   erodedValleys: {
-    label: 'Eroded Valleys',
+    label: '침식된 계곡',
     build: () => makeStack([
-      L('ridged', { name: 'Highlands', blendMode: 'add', strength: 0.7, params: { scale: 1.4, octaves: 5, sharpness: 1.8 } }),
+      L('ridged', { name: '고지대', blendMode: 'add', strength: 0.7, params: { scale: 1.4, octaves: 5, sharpness: 1.8 } }),
       L('flow', { name: 'River Carving', blendMode: 'subtract', strength: 0.4, params: { scale: 0.8 } }),
       L('fbm', { name: '디테일', blendMode: 'add', strength: 0.06, params: { scale: 8.0, octaves: 3 } }),
     ]),
@@ -83,7 +83,7 @@ export const NOISE_STACK_PRESETS = {
   // (slope/noise masks confine detail layers where they belong; all values are
   // ordinary layer params, so users can keep editing the stack freely).
   geologicalHybrid: {
-    label: 'Geological Hybrid',
+    label: '지질 하이브리드',
     // These global controls complete the recipe. They are intentionally kept
     // beside the stack so applying the preset from the UI produces the tuned
     // landform rather than only replacing its layer list. Existing presets do
@@ -109,11 +109,11 @@ export const NOISE_STACK_PRESETS = {
         params: { scale: 0.58, octaves: 4 } }),
       // Low-frequency body. A small amount of derivative erosion and self-warp
       // keeps the mass organic without destroying the broad silhouette.
-      L('fbm', { name: 'Terraced Massif', blendMode: 'add', strength: 0.68,
+      L('fbm', { name: '테라스식 산괴', blendMode: 'add', strength: 0.68,
         params: { scale: 0.55, octaves: 6, persistence: 0.51, lacunarity: 2.03, erosion: 0.12, warp: 0.18 } }),
       // Partial seven-step terracing mirrors the Lab showcase: readable strata
       // with ramps instead of uniformly vertical staircase walls.
-      L('terrace', { name: 'Weathered Terraces', blendMode: 'replace', strength: 0.68,
+      L('terrace', { name: '풍화된 테라스', blendMode: 'replace', strength: 0.68,
         params: { count: 7, smoothness: 0.34 } }),
       // Main weathering band. The shader multiplies erosion by four, so 0.62 is
       // close to the Lab's derivative-weathering coefficient of 2.45.

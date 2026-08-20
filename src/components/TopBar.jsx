@@ -247,10 +247,10 @@ export default function TopBar({
           </button>
           <div className={`tb-menu tb-menu-with-shortcuts${editMenuOpen ? ' open' : ''}`} role="menu" aria-label="편집">
             <div className="tb-menu-section-label">Layout</div>
-            <button type="button" role="menuitem" disabled title="Preset options will be added next">
+            <button type="button" role="menuitem" disabled title="프리셋 옵션이 다음에 추가됩니다">
               <LayoutTemplate size={14} strokeWidth={1.75} aria-hidden /> Default layout
             </button>
-            <button type="button" role="menuitem" disabled title="Preset options will be added next">
+            <button type="button" role="menuitem" disabled title="프리셋 옵션이 다음에 추가됩니다">
               <LayoutTemplate size={14} strokeWidth={1.75} aria-hidden /> Modular layout
             </button>
             <div className="tb-menu-divider" role="separator" />
@@ -315,7 +315,7 @@ export default function TopBar({
         </div>
 
         <div className="tb-history" role="group" aria-label="기록">
-          <button className="tb-btn tb-icon-btn" onClick={onUndo} disabled={!canUndo} title="Undo (Ctrl+Z)" aria-label="실행 취소">
+          <button className="tb-btn tb-icon-btn" onClick={onUndo} disabled={!canUndo} title="실행 취소 (Ctrl+Z)" aria-label="실행 취소">
             <Undo2 size={14} strokeWidth={1.75} aria-hidden />
           </button>
           <button
@@ -343,7 +343,7 @@ export default function TopBar({
           </span>
         )}
         {projectMode === 'manual' && manualBaseSource ? (
-          <div className="tb-workspace-switch" role="tablist" aria-label="Manual Terrain workspace">
+          <div className="tb-workspace-switch" role="tablist" aria-label="수동 지형 작업 공간">
             <span><Mountain size={13} aria-hidden /> Manual · {manualBaseSource === 'nodes' ? '노드' : '절차적'}</span>
             <button type="button" role="tab" aria-selected={manualWorkspace === 'base'} className={manualWorkspace === 'base' ? 'active' : ''} onClick={() => onManualWorkspace?.('base')}>Base</button>
             <button type="button" role="tab" aria-selected={manualWorkspace === 'manual'} className={manualWorkspace === 'manual' ? 'active' : ''} onClick={() => onManualWorkspace?.('manual')}>Manual</button>

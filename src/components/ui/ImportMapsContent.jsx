@@ -12,7 +12,7 @@ const RealWorldMapPicker = lazy(() => import('./RealWorldMapPicker.jsx'));
 const IMPORT_MODE_OPTIONS = [
   { value: 'disabled', label: '비활성화됨' },
   { value: 'preview', label: 'Preview Only' },
-  { value: 'replace', label: 'Replace Procedural' },
+  { value: 'replace', label: '절차적 대체' },
   { value: 'blend', label: 'Blend With Procedural' },
 ];
 
@@ -22,7 +22,7 @@ const IMAGERY_STYLE_OPTIONS = Object.values(IMAGERY_STYLES).map((s) => ({
 }));
 
 const MAP_META = {
-  noise: { label: 'Noise Map', icon: <Waves size={15} strokeWidth={1.75} />, defaultOpen: false, filePick: true },
+  noise: { label: '노이즈 맵', icon: <Waves size={15} strokeWidth={1.75} />, defaultOpen: false, filePick: true },
   height: { label: '하이맵', icon: <Mountain size={15} strokeWidth={1.75} />, defaultOpen: true, filePick: true },
   biome: { label: 'Biome Map', icon: <Palette size={15} strokeWidth={1.75} />, defaultOpen: false, filePick: true },
   imagery: { label: 'Map Texture', icon: <Map size={15} strokeWidth={1.75} />, defaultOpen: true, filePick: false },
@@ -30,7 +30,7 @@ const MAP_META = {
 
 function FilePicker({ fileName, onPick }) {
   const inputRef = useRef(null);
-  const label = fileName ? 'Replace file' : '파일 선택';
+  const label = fileName ? '파일 교체' : '파일 선택';
 
   return (
     <div className="file-picker">
@@ -189,7 +189,7 @@ function RealWorldBrowser({ ctx }) {
 
   return (
     <CollapsibleGroup
-      title="Real-World Locations"
+      title="실제 지형 위치"
       icon={<Globe size={15} strokeWidth={1.75} />}
       defaultOpen={false}
     >
@@ -211,7 +211,7 @@ function RealWorldBrowser({ ctx }) {
             type="button"
             className="settings-search-clear"
             onClick={() => setSearch('')}
-            aria-label="Clear search"
+            aria-label="검색 지우기"
           >
             ✕
           </button>
@@ -344,7 +344,7 @@ function CustomAreaPicker({ ctx }) {
 
   return (
     <CollapsibleGroup
-      title="Custom Area"
+      title="사용자 지정 영역"
       icon={<Crosshair size={15} strokeWidth={1.75} />}
       defaultOpen={!!ctx.realTerrainMode}
       forceOpen={mapOpen}
@@ -371,7 +371,7 @@ function CustomAreaPicker({ ctx }) {
             }
           }}
           placeholder="46.07621°N, 6.96224°E"
-          aria-label="Latitude and longitude"
+          aria-label="위도 및 경도"
           spellCheck={false}
         />
       </div>
@@ -444,7 +444,7 @@ export default function ImportMapsContent({ ctx }) {
           : 'Tile Mode only. Imported height maps in Replace or Blend mode deform the real terrain mesh and GLB export.'}
       </p>
       <ToggleRow
-        label="Fetch Buildings"
+        label="건물 가져오기"
         value={ctx.realWorldBuildingsVisible === true}
         onChange={(visible) => ctx.onRealWorldBuildingsVisible?.(visible)}
         info="Fetch and show OpenStreetMap building volumes. Disabled by default to avoid public API rate limits."

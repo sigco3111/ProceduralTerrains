@@ -104,7 +104,7 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
   const importByCode = useCallback(async (code) => {
     const normalized = normalizeCode(code);
     if (normalized.length !== 10) {
-      showPopup('Search with a complete 10-character sharing code.', { type: 'error', title: 'Incomplete sharing code' });
+      showPopup('10자리 완전한 공유 코드로 검색하세요.', { type: 'error', title: '불완전한 공유 코드' });
       return;
     }
     setBusy(normalized);
@@ -123,7 +123,7 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
       if (ready) onOpen(imported);
       else pendingOpenRef.current = imported;
     } catch (requestError) {
-      showPopup(requestError.message || 'Could not open this shared project.', { type: 'error' });
+      showPopup(requestError.message || '이 공유 프로젝트를 열 수 없습니다.', { type: 'error' });
     } finally {
       setBusy('');
     }
@@ -152,7 +152,7 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
     try {
       await copyText(shareLinkFor(normalized));
       setCopiedCode(normalized);
-      showPopup('Opening link copied to your clipboard.', { type: 'success' });
+      showPopup('열기 링크가 클립보드에 복사되었습니다.', { type: 'success' });
       window.setTimeout(() => setCopiedCode((current) => current === normalized ? '' : current), 1800);
     } catch (copyError) {
       showPopup(copyError.message || 'Could not copy the opening link.', { type: 'error' });
@@ -195,7 +195,7 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
 
   const resultsTitle = activeQuery
     ? `Results for “${activeQuery}”`
-    : activeType ? `${typeLabel(activeType)} terrains` : 'Recently shared';
+    : activeType ? `${typeLabel(activeType)} terrains` : '최근 공유됨';
 
   return (
     <section className="community-page" aria-labelledby="community-title">
@@ -208,11 +208,11 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
 
       <form className="community-search" onSubmit={search}>
         <Search size={14} aria-hidden />
-        <input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search names, creators, or sharing codes" aria-label="Search community projects" />
+        <input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search names, creators, or sharing codes" aria-label="커뮤니티 프로젝트 검색" />
         <button type="submit" className="lp-secondary sm">Search</button>
       </form>
 
-      <div className="community-filters" role="tablist" aria-label="Filter community terrains by editor">
+      <div className="community-filters" role="tablist" aria-label="에디터별 커뮤니티 지형 필터">
         <button type="button" role="tab" aria-selected={!activeType} className={!activeType ? 'active' : ''} onClick={() => selectType('')}>All terrains</button>
         {COMMUNITY_TYPES.map((option) => (
           <button type="button" role="tab" key={option.id} aria-selected={activeType === option.id} className={activeType === option.id ? 'active' : ''} onClick={() => selectType(option.id)}>{option.label}</button>
@@ -256,7 +256,7 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
                   </div>
                   {isOwner && editingId === project.id && (
                     <div className="community-owner-panel">
-                      <div className="community-owner-panel-head"><strong>Manage terrain</strong><button type="button" onClick={() => setEditingId('')} aria-label="Close terrain settings"><X size={13} /></button></div>
+                      <div className="community-owner-panel-head"><strong>Manage terrain</strong><button type="button" onClick={() => setEditingId('')} aria-label="지형 설정 닫기"><X size={13} /></button></div>
                       <div className="community-owner-actions">
                         <button type="button" className="lp-secondary sm" onClick={() => rename(project)} disabled={disabled}><Pencil size={13} /> Rename</button>
                         <label className="community-visibility-select"><span>Visibility</span><span className="community-select-wrap">{project.visibility === 'public' ? <Globe2 size={12} /> : project.visibility === 'unlisted' ? <Eye size={12} /> : <Lock size={12} />}<select value={project.visibility} onChange={(event) => updateOwnerProject(project, { visibility: event.target.value }, `가시성을 ${event.target.value}(으)로 변경했습니다.`)} disabled={disabled} aria-label={`Visibility for ${project.name}`}><option value="private">Private</option><option value="unlisted">Unlisted</option><option value="public">Public</option></select></span></label>
@@ -271,7 +271,7 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
         </div>
       )}
 
-      {pages > 1 && <nav className="community-pagination" aria-label="Community pages">
+      {pages > 1 && <nav className="community-pagination" aria-label="커뮤니티 페이지">
         <button type="button" className="lp-secondary sm" onClick={() => setPage((value) => value - 1)} disabled={page <= 1 || loading}><ArrowLeft size={13} /> Previous</button>
         <span>Page {page} of {pages}</span>
         <button type="button" className="lp-secondary sm" onClick={() => setPage((value) => value + 1)} disabled={page >= pages || loading}>Next <ArrowRight size={13} /></button>

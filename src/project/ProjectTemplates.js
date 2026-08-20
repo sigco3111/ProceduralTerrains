@@ -1,10 +1,10 @@
 export const PROJECT_TEMPLATES = [
-  { id: 'blank', name: 'Blank terrain', description: '깔끔한 지형 캔버스.', preset: 'highlands' },
+  { id: 'blank', name: '빈 지형', description: '깔끔한 지형 캔버스.', preset: 'highlands' },
   { id: 'island', name: '섬', description: 'Ocean, beaches, and a dramatic core.', preset: 'archipelago' },
   { id: 'mountain', name: 'Mountain range', description: 'Sharp peaks, snow, and valleys.', preset: 'alpine' },
   {
     id: 'geological-hybrid',
-    name: 'Geological Hybrid',
+    name: '지질 하이브리드',
     description: 'Weathered terraces, warped massifs, rock ridges, and fine editable geological detail.',
     preset: 'alpine',
     noiseStackPreset: 'geologicalHybrid',

@@ -103,7 +103,7 @@ function NoiseLayerItem({
       {/* collapsed header */}
       <div className="nl-header" onClick={() => onToggleExpand(layer.id)}>
         <span className="nl-grip" onMouseDown={(e) => e.stopPropagation()}><GripIcon /></span>
-        <button type="button" className="nl-vis" title={layer.enabled ? 'Disable layer' : 'Enable layer'}
+        <button type="button" className="nl-vis" title={layer.enabled ? '레이어 비활성화' : '레이어 활성화'}
           onClick={(e) => { e.stopPropagation(); onUpdate(layer.id, { enabled: !layer.enabled }); }}>
           <EyeIcon on={layer.enabled} />
         </button>
@@ -131,7 +131,7 @@ function NoiseLayerItem({
           </div>
 
           {/* blend mode */}
-          <SelectRow label="Blend Mode" value={layer.blendMode} options={BLEND_OPTIONS}
+          <SelectRow label="혼합 모드" value={layer.blendMode} options={BLEND_OPTIONS}
             onChange={(v) => onUpdate(layer.id, { blendMode: v })} />
 
           {/* strength slider */}
@@ -234,7 +234,7 @@ function MaskItem({ mask, onRemove, onToggle, onInvert, onParam }) {
         </button>
         <span className="nl-mask-label">{label}</span>
         <ToggleRow label="반전" value={!!mask.invert} onChange={() => onInvert(mask.type)} />
-        <button type="button" className="nl-icon-btn danger" title="Remove mask" onClick={() => onRemove(mask.type)}>
+        <button type="button" className="nl-icon-btn danger" title="마스크 제거" onClick={() => onRemove(mask.type)}>
           <TrashIcon />
         </button>
       </div>
@@ -422,12 +422,12 @@ export default function NoiseLayersPanel({ ctx, children }) {
   const normalizeOutput = !!stack?.normalizeOutput;
 
   return (
-    <SidePanel title="Noise Layers" description="Stack noise layers to shape the terrain height." onClose={ctx.onClose}>
+    <SidePanel title="노이즈 레이어" description="노이즈 레이어를 쌓아 지형 높이를 형성합니다." onClose={ctx.onClose}>
       {/* preset quick-select */}
       <SelectRow label="Stack Preset" value="__custom" settingId="noise.stackPreset"
-        options={[{ value: '__custom', label: '— Custom Stack —' }, ...NOISE_STACK_PRESET_KEYS.map((k) => ({ value: k, label: NOISE_STACK_PRESETS[k].label }))]}
+        options={[{ value: '__custom', label: '— 사용자 정의 스택 —' }, ...NOISE_STACK_PRESET_KEYS.map((k) => ({ value: k, label: NOISE_STACK_PRESETS[k].label }))]}
         onChange={(v) => { if (v !== '__custom') handlePreset(v); }}
-        info="Load a preset noise stack. You can edit it freely afterwards." />
+        info="프리셋 노이즈 스택을 불러옵니다. 이후 자유롭게 편집할 수 있습니다." />
 
       <div className="nl-output-section" data-setting-id="noise.section.output">
         <div className="nl-output-title">Output</div>

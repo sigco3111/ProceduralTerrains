@@ -335,7 +335,7 @@ export class TerrainExporter {
     exportGroup.name = multi ? 'Terrain_Assembly' : 'Terrain_Board';
 
     if (includeMesh) {
-      onToast(multi ? 'Generating tile geometry...' : 'Generating terrain geometry...');
+      onToast(multi ? 'Generating tile geometry...' : '지형 지오메트리 생성 중...');
       const slabMaterial = new THREE.MeshStandardMaterial({
         name: 'Slab_Material', color: 0x231e19, roughness: 0.9, metalness: 0.05,
         side: THREE.DoubleSide,
@@ -478,7 +478,7 @@ export class TerrainExporter {
     // E. Union-wide splat / biome map
     let splatCanvas = null;
     if (exportHeightmap && options.exportSplat) {
-      onToast('Baking splat map...');
+      onToast('스플랫 맵 굽는 중...');
       splatCanvas = bakeRegionCanvas(3, unionCenter.x, unionCenter.z, unionSpanX, unionSpanZ, texRes);
     }
 
@@ -615,7 +615,7 @@ export class TerrainExporter {
     };
     let collisionModel = null;
     if (exportCollision && !separateTileExport) {
-      onToast('Generating collision geometry...');
+      onToast('충돌 지오메트리 생성 중...');
       collisionModel = buildCollisionModel(unionCenter.x, unionCenter.z, unionSpanX, unionSpanZ);
     }
 
@@ -742,7 +742,7 @@ export class TerrainExporter {
         if (tile.collisionModel) tile.collision = await serializeCollision(tile.collisionModel);
       }
     } else if (exportCollision && collisionModel) {
-      onToast('Packaging collision mesh...');
+      onToast('충돌 메시 패키징 중...');
       exportedCollision = await serializeCollision(collisionModel);
     }
 
@@ -840,11 +840,11 @@ export class TerrainExporter {
     }
 
     if (Object.keys(zipFiles).length > 0) {
-      onToast('Compressing export package (ZIP)...');
+      onToast('내보내기 패키지 압축 중 (ZIP)...');
       const zipped = zipSync(zipFiles);
       downloadBlob(new Blob([zipped]), `${options.exportPresetId && options.exportPresetId !== 'custom' ? `${options.exportPresetId}_` : ''}terrain_export-${engineParams.seed}.zip`);
     }
 
-    onToast('Export completed successfully!');
+    onToast('내보내기 완료!');
   }
 }

@@ -21,7 +21,7 @@ export default function PlanetSummaryCard({ params }) {
         </svg>
       )}
     >
-      <div className="stat-row" data-tooltip="Global styling configuration preset applied to the world">
+      <div className="stat-row" data-tooltip="월드에 전역 스타일링 구성 프리셋 적용">
         <div className="label-with-icon">
           <span className="setting-icon">
             <svg viewBox="0 0 16 16" fill="none">
@@ -33,7 +33,7 @@ export default function PlanetSummaryCard({ params }) {
         </div>
         <span className="stat-value">{planetLabel}</span>
       </div>
-      <div className="stat-row" data-tooltip="Color palette preset applied to height bands / biomes">
+      <div className="stat-row" data-tooltip="색상 팔레트 프리셋이 높이 대역 / 바이옴에 적용됨">
         <div className="label-with-icon">
           <span className="setting-icon">
             <svg viewBox="0 0 16 16" fill="none">
@@ -47,7 +47,7 @@ export default function PlanetSummaryCard({ params }) {
         </div>
         <span className="stat-value">{paletteLabel}</span>
       </div>
-      <div className="stat-row" data-tooltip="Base geological preset model shaping the terrain contours">
+      <div className="stat-row" data-tooltip="지형 윤곽을 형성하는 기본 지질 프리셋 모델">
         <div className="label-with-icon">
           <span className="setting-icon">
             <svg viewBox="0 0 16 16" fill="none">
@@ -58,7 +58,7 @@ export default function PlanetSummaryCard({ params }) {
         </div>
         <span className="stat-value">{terrainLabel}</span>
       </div>
-      <div className="stat-row" data-tooltip="Height scale offset at which deep and shallow water biomes render">
+      <div className="stat-row" data-tooltip="깊은 물과 얕은 물 바이옴이 렌더링되는 높이 스케일 오프셋">
         <div className="label-with-icon">
           <span className="setting-icon">
             <svg viewBox="0 0 16 16" fill="none">
@@ -69,7 +69,7 @@ export default function PlanetSummaryCard({ params }) {
         </div>
         <span className="stat-value stat-mono">{params.seaLevel} m</span>
       </div>
-      <div className="stat-row" data-tooltip="Procedural height generator detail noise pattern preset">
+      <div className="stat-row" data-tooltip="절차적 높이 생성기 디테일 노이즈 패턴 프리셋">
         <div className="label-with-icon">
           <span className="setting-icon">
             <svg viewBox="0 0 16 16" fill="none">

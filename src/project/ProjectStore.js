@@ -20,7 +20,7 @@ function emitSyncChange() {
 }
 
 function openDatabase() {
-  if (!('indexedDB' in window)) return Promise.reject(new Error('IndexedDB is unavailable'));
+  if (!('indexedDB' in window)) return Promise.reject(new Error('IndexedDB를 사용할 수 없습니다'));
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
     request.onupgradeneeded = () => {
@@ -196,7 +196,7 @@ export function importTerrainIntoManualProject(manualProject, manualTerrainPaylo
     : 'studio';
   if (!sourceMode || sourceWorldMode !== 'studio'
       || source.terrain.realWorldSource || source.terrain.workspacePreset === 'real-terrain') {
-    throw new Error('Only Procedural or Nodes projects in Tile mode can be imported.');
+    throw new Error('타일 모드의 프로시저럴 또는 노드 프로젝트만 가져올 수 있습니다.');
   }
 
   const currentTerrain = structuredClone(manualTerrainPayload || current.terrain || {});

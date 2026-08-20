@@ -301,7 +301,7 @@ export class PlanetCloudChunks {
     catch (e) { promise = Promise.reject(e); }
     const done = promise.then((result) => {
       if (result?.ready === false || result?.aborted === true) {
-        throw new Error('Planet cloud chunk shader did not become ready');
+        throw new Error('행성 구름 청크 셰이더가 준비되지 않았습니다');
       }
       return result;
     });

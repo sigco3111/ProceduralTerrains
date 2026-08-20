@@ -1165,7 +1165,7 @@ export class Engine {
     ctx.fillStyle = '#e8ecf3';
     ctx.font = '600 22px system-ui, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('Loading terrain…', w / 2, 32);
+    ctx.fillText('지형 불러오는 중…', w / 2, 32);
     const bx = 24, by = 46, bw = w - 48, bh = 12;
     ctx.fillStyle = 'rgba(255, 255, 255, 0.14)';
     ctx.beginPath(); ctx.roundRect(bx, by, bw, bh, 6); ctx.fill();
@@ -1513,7 +1513,7 @@ export class Engine {
 
   async _loadRealWorldHeightmap(loc, { onProgress, persistedSource = null, silent = false } = {}) {
     if (this.worldMode !== 'studio') {
-      this.cb.onToast('Real-world heightmaps load in Tile (Studio) mode.');
+      this.cb.onToast('실제 높이맵은 타일 (스튜디오) 모드에서 불러옵니다.');
       return false;
     }
     const restoredSource = normalizeRealWorldSource(persistedSource);
@@ -1528,7 +1528,7 @@ export class Engine {
       buildingsVisible: this.realWorldBuildingsVisible === true,
     });
     if (!source) {
-      this.cb.onToast('The geographic terrain settings are invalid.');
+      this.cb.onToast('지리 지형 설정이 잘못되었습니다.');
       return false;
     }
     // This descriptor intentionally outlives the fetched textures. Set it
@@ -1626,13 +1626,13 @@ export class Engine {
         const buildingCount = this._rebuildRealWorldBuildings({ force: true });
         if (!silent && buildingCount) this.cb.onToast(`Loaded ${buildingCount} buildings`);
         const skipped = Object.values(geoRef.buildingCells).some((patch) => patch?.skipped === 'area-too-large');
-        if (!silent && skipped) this.cb.onToast('3D buildings skipped: the selected area is too large for a public OSM query.');
+        if (!silent && skipped) this.cb.onToast('3D 건물 건너뜀: 선택한 영역이 공개 OSM 쿼리에 비해 너무 큽니다.');
       });
       return true;
     } catch (e) {
       console.error(e);
       const error = e?.name === '중단 오류'
-        ? 'Load cancelled.'
+        ? '불러오기 취소됨.'
         : 'Could not load elevation data (network or CORS blocked).';
       this._setImportState('height', { loading: false, error });
       this._setImportState('imagery', { loading: false });
@@ -2212,7 +2212,7 @@ export class Engine {
     if (key === 'planetRadius' || key === 'planetFaceGrid') {
       if (this.worldMode === 'planet') {
         void this._rebuildPlanetStackMaterialsAsync(this._stackGLSL, {
-          label: 'Rebuilding planet',
+          label: '행성 재구축 중',
           atomic: true,
           rebuildGeometry: true,
         });
@@ -2408,9 +2408,9 @@ export class Engine {
     this.controls.reset(this.boardSize);
     if (!silent) {
       const label = this.projectMode === 'nodes'
-        ? 'New Nodes terrain'
+        ? '새 노드 지형'
         : this.projectMode === 'manual'
-          ? 'New Manual Terrain'
+          ? '새 수동 지형'
           : 'New procedural terrain';
       this.cb.onToast(label);
     }
@@ -2632,7 +2632,7 @@ export class Engine {
 
   exportPlanetStyle() {
     downloadPlanetStyleJSON(this.planetStyle.getStyle());
-    this.cb.onToast('Planet style exported');
+    this.cb.onToast('행성 스타일 내보내기 완료');
   }
 
   importPlanetStyleJSON(json) {
@@ -2642,7 +2642,7 @@ export class Engine {
       return;
     }
     this._notifyPlanetStyle();
-    this.cb.onToast('Planet style imported');
+    this.cb.onToast('행성 스타일 가져오기 완료');
   }
 
   _markTerrainFieldDirty() {
@@ -2690,10 +2690,10 @@ export class Engine {
         updated = true;
       } else if (value > 0.05) {
         next.layers.unshift(makeLayer('domainWarp', {
-          name: 'Domain Warp (Auto)',
+          name: '도메인 워프 (자동)',
           strength: value,
         }));
-        toast = 'Domain Warp layer added to stack';
+        toast = '도메인 워프 레이어가 스택에 추가됨';
         updated = true;
       }
     } else if (key === 'ridge') {
@@ -2712,9 +2712,9 @@ export class Engine {
     } else {
       let layer = next.layers.find((entry) => entry.params && key in entry.params);
       if (!layer) {
-        layer = makeLayer('fbm', { name: 'FBM Detail (Auto)' });
+        layer = makeLayer('fbm', { name: 'FBM 디테일 (자동)' });
         next.layers.push(layer);
-        toast = 'FBM Detail layer added to stack';
+        toast = 'FBM 디테일 레이어가 스택에 추가됨';
       }
       layer.params[key] = value;
       updated = true;
@@ -2844,7 +2844,7 @@ export class Engine {
       const hasPending = !!this._pendingNoiseStack
         || Object.keys(this._pendingTerrainParams || {}).length > 0;
       this.cb.onStatus(
-        hasPending ? 'Pending changes — enable Auto Update to apply' : '준비',
+        hasPending ? '보류 중인 변경 사항 — 적용하려면 자동 업데이트 활성화' : '준비',
         hasPending,
       );
       return Promise.resolve({ pending: true, swapped: false });
@@ -2893,7 +2893,7 @@ export class Engine {
             this._syncNoiseStackSamplers(rollback);
             this._applyUniforms();
             this.cb.onParams(this._paramsSnapshot());
-            this.cb.onToast?.('Terrain change could not be compiled; previous settings restored');
+            this.cb.onToast?.('지형 변경을 컴파일할 수 없습니다; 이전 설정이 복원되었습니다');
           }
           return result;
         });
@@ -2928,7 +2928,7 @@ export class Engine {
           this._stackSig = rollbackGLSL.sig;
           this._syncNoiseStackSamplers(rollback);
           this.cb.onParams(this._paramsSnapshot());
-          this.cb.onToast?.('Terrain change could not be compiled; previous settings restored');
+          this.cb.onToast?.('지형 변경을 컴파일할 수 없습니다; 이전 설정이 복원되었습니다');
         }
         return result;
       });
@@ -2967,7 +2967,7 @@ export class Engine {
       const hasPending = !!this._pendingNoiseStack
         || Object.keys(this._pendingTerrainParams || {}).length > 0;
       this.cb.onStatus(
-        hasPending ? 'Pending changes — enable Auto Update to apply' : '준비',
+        hasPending ? '보류 중인 변경 사항 — 적용하려면 자동 업데이트 활성화' : '준비',
         hasPending,
       );
       return;
@@ -3043,7 +3043,7 @@ export class Engine {
         slotCount: this._graphProgram?.slotCount || 0,
         colorSlotCount: this._graphProgram?.colorSlotCount || 0,
       });
-      if (!silent) this.cb.onToast?.(this._graphDiagnostics[0]?.message || 'Terrain graph is invalid');
+      if (!silent) this.cb.onToast?.(this._graphDiagnostics[0]?.message || '지형 그래프가 잘못되었습니다');
       return { ok: false, diagnostics: this._graphDiagnostics, ready: Promise.resolve({ swapped: false }) };
     }
 
@@ -3075,7 +3075,7 @@ export class Engine {
           slotCount: compiled.program.slotCount, colorSlotCount: compiled.program.colorSlotCount,
         });
         ready = this._rebuildStackMaterialsAsync(compiled.program, {
-          label: 'Compiling terrain graph',
+          label: '지형 그래프 컴파일 중',
           atomic,
           terrainDirtyOnSwap: true,
         }).then((result) => {
@@ -3144,7 +3144,7 @@ export class Engine {
     if (this.worldMode === 'studio') {
       const candidate = this._activeHeightProgram();
       this._rebuildStackMaterialsAsync(candidate, {
-        label: next === 'graph' ? 'Compiling terrain graph' : 'Restoring Classic terrain',
+        label: next === 'graph' ? '지형 그래프 컴파일 중' : '클래식 지형 복원 중',
         terrainDirtyOnSwap: true,
       }).then((result) => {
         if (!result?.error || this.generationSource !== next) return;
@@ -3152,7 +3152,7 @@ export class Engine {
         this.cb.onGenerationSource?.(previousSource);
         this._graphDiagnostics = [{
           code: 'shader-compile',
-          message: 'Terrain source could not be compiled. The previous terrain remains active.',
+          message: '지형 소스를 컴파일할 수 없습니다. 이전 지형이 그대로 활성 상태입니다.',
         }];
         this._syncCpuHeightProgram();
         this._applyUniforms();
@@ -3170,7 +3170,7 @@ export class Engine {
       this._markTerrainFieldDirty();
       this._applyUniforms();
     }
-    if (!silent) this.cb.onToast?.(next === 'graph' ? 'Nodes now drive Tile terrain' : 'Classic Noise Stack restored');
+    if (!silent) this.cb.onToast?.(next === 'graph' ? '노드가 이제 타일 지형을 구동합니다' : 'Classic Noise Stack restored');
   }
 
   setGraphView(view) {
@@ -3183,7 +3183,7 @@ export class Engine {
   }
 
   rebuildActiveHeightProgram({
-    label = 'Compiling terrain',
+    label = '지형 컴파일 중',
     atomic = false,
     terrainDirtyOnSwap = false,
   } = {}) {
@@ -3817,7 +3817,7 @@ export class Engine {
       || p.chunkSize !== this.appliedChunkSize;
 
     if (rebuildNeeded) {
-      this.cb.onStatus('Rebuilding board…', true);
+      this.cb.onStatus('보드 재구축 중…', true);
       const maxHeight = this._maxHeight();
       this.board.build({
         chunkCount: p.chunkCount,
@@ -3879,7 +3879,7 @@ export class Engine {
 
   _terrainBuildStatusText() {
     const b = this.board;
-    if (!b?.targetChunkCount) return 'Loading terrain...';
+    if (!b?.targetChunkCount) return '지형 불러오는 중...';
     return `Loading terrain ${b.activeChunkCount}/${b.targetChunkCount} chunks`;
   }
 
@@ -4847,7 +4847,7 @@ export class Engine {
       return Promise.resolve(true);
     }
 
-    this.cb.onStatus('Compiling water shaders…', false);
+    this.cb.onStatus('물 셰이더 컴파일 중…', false);
 
     return new Promise((resolve) => {
       const run = async () => {
@@ -4869,9 +4869,9 @@ export class Engine {
             ready = states.every(Boolean);
           }
           if (ready && !this._disposed) onSwap?.();
-          else if (!ready) console.warn('Water shader did not become ready; material swap skipped');
+          else if (!ready) console.warn('물 셰이더가 준비되지 않았습니다; 머티리얼 교체 건너뜀');
         } catch (e) {
-          console.warn('Water shader compile failed', e);
+          console.warn('물 셰이더 컴파일 실패', e);
         } finally {
           if (!this._disposed) this.cb.onStatus('준비', false);
           resolve(ready);
@@ -4922,7 +4922,7 @@ export class Engine {
       );
       this.cb.onStatus('Loading terrain detail…', true);
     } catch (error) {
-      console.warn('Initial safety frame failed', error);
+      console.warn('초기 안전 프레임 실패', error);
     } finally {
       this._compiling--;
     }
@@ -4988,7 +4988,7 @@ export class Engine {
         renderTarget: targetSnapshot.renderTarget,
       });
     } catch (error) {
-      console.warn('Background first-frame shader warmup failed', error);
+      console.warn('배경 첫 프레임 셰이더 워밍업 실패', error);
     }
     if (this._disposed) return;
     const currentTarget = this._resolveCameraCompileTarget();
@@ -5007,7 +5007,7 @@ export class Engine {
       this._initialShaderRetryCount = 0;
       this._bgWorkEnd('boot-shader');
       this._needsRender = true;
-      this._completeBootIfInteractiveReady('final terrain shader ready');
+      this._completeBootIfInteractiveReady('최종 지형 셰이더 준비 완료');
       if (this.worldMode === 'studio') {
         this._schedulePostFirstPaintWarmups(150);
       }
@@ -5026,7 +5026,7 @@ export class Engine {
 
     // Terminal driver failure: remain interactive with a deliberately degraded
     // flat board instead of freezing forever or forcing an unfinished link.
-    console.warn('Initial graphics shaders unavailable; entering degraded safe mode');
+    console.warn('초기 그래픽 셰이더를 사용할 수 없음; 성능 저하 안전 모드로 진입');
     this._bootShaderPending = false;
     this._bgWorkEnd('boot-shader');
     this._bootDegradedMaterial = new THREE.MeshBasicMaterial({ color: 0x52634c });
@@ -5040,7 +5040,7 @@ export class Engine {
     this.proceduralSky?.setVisible(false);
     this.studioCloud?.setInScene(false);
     this._needsRender = true;
-    this.cb.onToast?.('Graphics initialization failed; running in safe mode');
+    this.cb.onToast?.('그래픽 초기화 실패; 안전 모드로 실행 중');
     this._completeBootIfInteractiveReady('degraded graphics mode');
   }
 
@@ -5092,11 +5092,11 @@ export class Engine {
       this._bootWatchdogTimer = null;
       if (this._disposed || !this._bootPending || !this._bootFallbackFrameReady) return;
       console.warn('[boot] interactive startup watchdog elapsed', this._bootReadinessSnapshot());
-      this.cb.onStatus?.('Still preparing full-quality terrain and water…', true);
+      this.cb.onStatus?.('전체 화질 지형 및 물을 여전히 준비 중…', true);
       // Keep the safety frame behind the overlay. Performance work may take
       // longer, but an unfinished or low-detail terrain is never a normal
       // editor frame. Terminal shader failure has its own explicit safe mode.
-      if (!this._completeBootIfInteractiveReady('startup watchdog')) {
+      if (!this._completeBootIfInteractiveReady('시작 워치독')) {
         this._startBootWatchdog();
       }
     }, delayMs);
@@ -5107,12 +5107,12 @@ export class Engine {
     this._qualityWatchdogTimer = setTimeout(() => {
       this._qualityWatchdogTimer = null;
       if (this._disposed || !this._qualityPending) return;
-      console.warn('[boot] optional quality work is still pending', this._bootReadinessSnapshot());
+      console.warn('[부팅] 선택적 품질 작업이 아직 보류 중', this._bootReadinessSnapshot());
       this._bgWorkEnd('boot-quality');
     }, 30000);
   }
 
-  _completeBootIfInteractiveReady(reason = 'interactive terrain ready', { alreadyRendered = false } = {}) {
+  _completeBootIfInteractiveReady(reason = '인터랙티브 지형 준비 완료', { alreadyRendered = false } = {}) {
     if (!this._bootPending || this._disposed || this._bootShaderPending) return false;
 
     const nodeMode = this.projectMode === 'nodes';
@@ -5135,7 +5135,7 @@ export class Engine {
         && this._waterDeferred
         && this.water?.visible !== true);
     if (!this._bootFallbackFrameReady || !terrainReady || !boardReady || !waterSafe) {
-      this._logBootGate('waiting for interactive frame');
+      this._logBootGate('인터랙티브 프레임 대기 중');
       return false;
     }
 
@@ -5144,15 +5144,15 @@ export class Engine {
       try {
         paintMs = this._renderInitialStudioFrame();
       } catch (error) {
-        console.warn('Interactive boot frame render failed', error);
+        console.warn('인터랙티브 부팅 프레임 렌더 실패', error);
       }
     }
     if (paintMs == null && !this._contextLost) {
-      this._logBootGate('waiting for interactive rendered frame');
+      this._logBootGate('인터랙티브 렌더링 프레임 대기 중');
       return false;
     }
     this._bootInteractiveReady = true;
-    console.info('[boot] interactive frame ' + (paintMs ?? 0).toFixed(0) + 'ms; '
+    console.info('[boot] 인터랙티브 프레임 ' + (paintMs ?? 0).toFixed(0) + 'ms; '
       + 'elapsed ' + (performance.now() - this._bootStart).toFixed(0) + 'ms');
     return this._releaseBootFallback(reason, { render: false });
   }
@@ -5187,7 +5187,7 @@ export class Engine {
     const sourceReady = this._terrainSourcePendingToken == null
       && !this._compiling;
     if (!terrainReady || !bakeReady || !waterReady || !boardReady || !sourceReady) {
-      if (this._qualityPending) this._logBootGate('waiting for quality upgrades');
+      if (this._qualityPending) this._logBootGate('품질 업그레이드 대기 중');
       return false;
     }
 
@@ -5196,11 +5196,11 @@ export class Engine {
       try {
         paintMs = this._renderInitialStudioFrame();
       } catch (error) {
-        console.warn('Final boot frame render failed', error);
+        console.warn('최종 부트 프레임 렌더 실패', error);
       }
     }
     if (paintMs == null && !this._contextLost) {
-      this._logBootGate('waiting for final rendered frame');
+      this._logBootGate('최종 렌더링 프레임 대기 중');
       return false;
     }
     this._qualityPending = false;
@@ -5231,10 +5231,10 @@ export class Engine {
     const startedAt = performance.now();
     while (!this._disposed) {
       if (this._contextLost) {
-        throw new Error('Graphics context was lost while loading terrain');
+        throw new Error('지형 로드 중 그래픽 컨텍스트가 손실되었습니다');
       }
       if (performance.now() - startedAt > timeoutMs) {
-        throw new Error('Terrain did not become ready before the loading timeout');
+        throw new Error('지형이 로딩 시간 초과 전에 준비되지 않았습니다');
       }
       const nodeMode = this.projectMode === 'nodes';
       const terrainReady = nodeMode
@@ -5262,13 +5262,13 @@ export class Engine {
       }
       await new Promise((resolve) => setTimeout(resolve, 32));
     }
-    throw new Error('Terrain engine was disposed while loading');
+    throw new Error('지형 엔진이 로드 중 해제되었습니다');
   }
 
   _releaseBootFallback(reason = 'fallback', { render = true } = {}) {
     if (!this._bootPending || this._disposed) return false;
 
-    const log = (reason === 'quality upgrades ready' || reason === 'interactive terrain ready')
+    const log = (reason === 'quality upgrades ready' || reason === '인터랙티브 지형 준비 완료')
       ? console.info
       : console.warn;
     log(`[boot] releasing fallback: ${reason}`);
@@ -5292,7 +5292,7 @@ export class Engine {
     }
     this.cb.onBootComplete?.();
     if (this._qualityPending) {
-      this._bgWorkStart('boot-quality', 'Improving terrain quality…');
+      this._bgWorkStart('boot-quality', '지형 품질 개선 중…');
       this._startQualityWatchdog();
     }
     this._scheduleErosionGPUWarmImport();
@@ -5868,7 +5868,7 @@ export class Engine {
         this._scheduleWaterWarmRetry(null, 3000);
       }
       if (!this._disposed) {
-        console.warn('Water material was not activated because its shader is not ready');
+        console.warn('셰이더가 준비되지 않아 물 머티리얼이 활성화되지 않았습니다');
         if (!this._bootPending) this.cb.onStatus('준비', false);
       }
       return false;
@@ -6156,7 +6156,7 @@ export class Engine {
       const rebuildJob = this._rebuildStackMaterialsAsync(
         this._activeHeightProgram(),
         {
-          label: 'Compiling shaders',
+          label: '셰이더 컴파일 중',
           terrainDirtyOnSwap: true,
         },
       );
@@ -6171,7 +6171,7 @@ export class Engine {
           this.cb.onParams(this._paramsSnapshot());
           this._applyUniforms();
           this.cb.onStatus('준비', false);
-          this.cb.onToast?.('Octave change could not be compiled; previous value restored');
+          this.cb.onToast?.('옥타브 변경을 컴파일할 수 없음; 이전 값 복원됨');
         }
         return result;
       });
@@ -6191,7 +6191,7 @@ export class Engine {
     }
     const liveOctaves = this.planetWorld?.materials?.[0]?.defines?.OCTAVES ?? oct;
     const rebuildJob = this._rebuildPlanetStackMaterialsAsync(this._stackGLSL, {
-      label: 'Compiling planet shaders',
+      label: '행성 셰이더 컴파일 중',
     });
     const job = rebuildJob.then((result) => {
       if (result?.error && !this._disposed
@@ -6200,7 +6200,7 @@ export class Engine {
         this.cb.onParams(this._paramsSnapshot());
         this._applyUniforms();
         this.cb.onStatus('행성', false);
-        this.cb.onToast?.('Octave change could not be compiled; previous value restored');
+        this.cb.onToast?.('옥타브 변경을 컴파일할 수 없음; 이전 값 복원됨');
       }
       return result;
     });
@@ -6369,7 +6369,7 @@ export class Engine {
       });
       try { document.activeElement?.blur?.(); } catch {}
       try { this.canvas.requestPointerLock?.(); } catch {}
-      this.cb.onToast?.('No-clip fly camera - ZQSD/WASD move · Space up · Shift down');
+      this.cb.onToast?.('노클립 비행 카메라 - ZQSD/WASD 이동 · Space 위 · Shift 아래');
       this._needsRender = true;
       return;
     }
@@ -6408,7 +6408,7 @@ export class Engine {
     }
     this.cb.onExploreMode?.(this.exploreMode);
     this.cb.onPlayerMode?.(this.playerMode);
-    this.cb.onToast?.('No-clip free cam off');
+    this.cb.onToast?.('노클립 프리캠 끄기');
     this._needsRender = true;
   }
 
@@ -6488,11 +6488,11 @@ export class Engine {
    */
   async bakeErosion({ onProgress } = {}) {
     if (this.worldMode !== 'studio') {
-      this.cb.onToast?.('Erosion is available in Tile mode.');
+      this.cb.onToast?.('침식은 타일 모드에서 사용할 수 있습니다.');
       return false;
     }
     if (this._erosionBaking) return false;
-    this.projectHistory?.createSnapshot('Before erosion', { automatic: true });
+    this.projectHistory?.createSnapshot('침식 전', { automatic: true });
     this._erosionBaking = true;
     try {
       const u = this.uniforms;
@@ -6547,7 +6547,7 @@ export class Engine {
       }
       this._onErosionChanged();
       onProgress?.(1, 'done');
-      this.cb.onToast?.(out.backend === 'webgpu' ? 'Erosion baked (WebGPU compute).' : 'Erosion baked.');
+      this.cb.onToast?.(out.backend === 'webgpu' ? 'Erosion baked (WebGPU compute).' : '침식 베이크됨.');
       return true;
     } catch (err) {
       this.cb.onToast?.(`Erosion failed: ${err?.message || err}`);
@@ -6598,7 +6598,7 @@ export class Engine {
           console.log(`[erosion] WebGPU compute backend: ${(performance.now() - t0).toFixed(0)}ms`);
           return { ...out, backend: 'webgpu' };
         } catch (err) {
-          console.warn('[erosion] WebGPU compute backend failed — falling back to CPU worker.', err);
+          console.warn('[침식] WebGPU 컴퓨트 백엔드 실패 — CPU 워커로 폴백.', err);
         }
       }
     }
@@ -6617,7 +6617,7 @@ export class Engine {
       })
       .catch((err) => {
         this._erosionGPUUnavailable = true;
-        const context = warm ? 'during post-boot warmup' : 'while starting erosion';
+        const context = warm ? '부팅 후 워밍업 중' : '침식 시작 중';
         console.warn(
           `[erosion] WebGPU module import failed ${context}; dev server may have restarted — hard-reload the tab. Falling back to CPU erosion, slower but same result.`,
           err,
@@ -6778,7 +6778,7 @@ export class Engine {
           terrainClearance: this.worldMode === 'planet' ? 12 : 4,
         },
       });
-      this.cb.onToast('Plane mode - click to lock mouse · W throttle · S brake · A/D bank');
+      this.cb.onToast('비행기 모드 - 클릭으로 마우스 잠금 · W 스로틀 · S 브레이크 · A/D 뱅크');
       return;
     }
 
@@ -6832,7 +6832,7 @@ export class Engine {
         sampler: this._getHeightSampler(),
         getWaterLevel: () => this._waterLevel(),
       });
-      this.cb.onToast('Player mode — click to lock mouse · Space jump · Shift run');
+      this.cb.onToast('플레이어 모드 — 마우스 잠그려면 클릭 · Space 점프 · Shift 달리기');
     } else {
       if (this.player) {
         this.player.dispose();
@@ -6899,7 +6899,7 @@ export class Engine {
   setPaintMode(enabled) {
     if (enabled && this.exploreMode !== 'none') this.setExploreMode('none');
     if (enabled && this.worldMode !== 'studio') {
-      this.cb.onToast('Paint Mode is currently available in Studio mode');
+      this.cb.onToast('페인트 모드는 현재 스튜디오 모드에서 사용 가능합니다');
       return;
     }
     if (enabled && !this.paintMode?.state.enabled) {
@@ -6937,7 +6937,7 @@ export class Engine {
 
   // Destructive "start fresh": flatten the base AND clear paint layers.
   startEmptyTerrain() {
-    this.projectHistory?.createSnapshot('Before empty terrain', { automatic: true });
+    this.projectHistory?.createSnapshot('빈 지형 전', { automatic: true });
     this.paintMode?.startEmpty();
     this._markTerrainFieldDirty();
   }
@@ -6978,7 +6978,7 @@ export class Engine {
   // ---------------------------------------------------------- creator tools
 
   setSplineEditingEnabled(enabled) {
-    if (enabled && this.worldMode !== 'studio') { this.cb.onToast('Splines are currently available in Tile mode'); return; }
+    if (enabled && this.worldMode !== 'studio') { this.cb.onToast('스플라인은 현재 타일 모드에서 사용 가능합니다'); return; }
     if (enabled && this.exploreMode !== 'none') this.setExploreMode('none');
     if (enabled && this.paintMode?.state.enabled) this.setPaintMode(false);
     this.splineManager?.setEditingEnabled(enabled);
@@ -7011,7 +7011,7 @@ export class Engine {
     this._worldModeToken = transitionToken;
     if (mode === this.worldMode) return;
     if (this.projectMode === 'manual' && mode !== 'studio') {
-      this.cb.onToast('Manual Terrain is currently available in Tile mode');
+      this.cb.onToast('수동 지형은 현재 타일 모드에서 사용할 수 있습니다');
       return;
     }
 
@@ -7021,8 +7021,8 @@ export class Engine {
         planetModules = await this._loadPlanetModules();
       } catch (error) {
         if (transitionToken === this._worldModeToken && !this._disposed) {
-          console.warn('Planet modules failed to load', error);
-          this.cb.onToast?.('Planet mode failed to load - please try again');
+          console.warn('행성 모듈 불러오기 실패', error);
+          this.cb.onToast?.('행성 모드 로드 실패 - 다시 시도해 주세요');
         }
         return;
       }
@@ -7031,7 +7031,7 @@ export class Engine {
     if (transitionToken !== this._worldModeToken || this._disposed) return;
     if (mode === this.worldMode) return;
     if (this.projectMode === 'manual' && mode !== 'studio') {
-      this.cb.onToast('Manual Terrain is currently available in Tile mode');
+      this.cb.onToast('수동 지형은 현재 타일 모드에서 사용할 수 있습니다');
       return;
     }
     if (this.paintMode?.state.enabled) this.setPaintMode(false);
@@ -7236,7 +7236,7 @@ export class Engine {
 
   async _warmupInfiniteShaders(_oct) {
     const gate = this._acquireWorldCompile('infinite');
-    this.cb.onStatus('Compiling world shadersâ€¦', true);
+    this.cb.onStatus('세계 셰이더 컴파일 중…', true);
     const isCurrent = () => this._worldCompileGate === gate
       && !this._disposed
       && this.worldMode === 'infinite';
@@ -7287,7 +7287,7 @@ export class Engine {
           void this._warmupInfiniteShaders(Math.round(this.params.octaves));
           return;
         }
-        this.cb.onToast?.('Infinite World graphics could not be prepared; returning to Studio');
+        this.cb.onToast?.('Infinite World 그래픽을 준비할 수 없습니다; 스튜디오로 돌아갑니다');
         void this.setWorldMode('studio');
         return;
       }
@@ -7809,7 +7809,7 @@ export class Engine {
     const activeCloud = this.planetCloudChunks || this.planetCloudLayer;
     const cloudWarmPromise = Promise.resolve()
       .then(() => activeCloud?.warmup?.())
-      .catch((e) => console.warn('Cloud shader warmup failed', e));
+      .catch((e) => console.warn('클라우드 셰이더 워밍업 실패', e));
 
     // open-space backdrop (procedural sky is added in a later pass)
     this.scene.background = new THREE.Color(0x05070d);
@@ -7856,7 +7856,7 @@ export class Engine {
         compile: (mats) => this._compileCameraTargetMaterials(mats),
         });
         this.planetCloudChunks.warmup()
-          .catch((e) => console.warn('Cloud shader warmup failed', e));
+          .catch((e) => console.warn('클라우드 셰이더 워밍업 실패', e));
       } else if (!wantChunks && !this.planetCloudLayer) {
         if (this.planetCloudChunks) {
           this.planetCloudChunks.dispose();
@@ -7868,7 +7868,7 @@ export class Engine {
           renderer: this.renderer,
         });
         this.planetCloudLayer.warmup()
-          .catch((e) => console.warn('Cloud shader warmup failed', e));
+          .catch((e) => console.warn('클라우드 셰이더 워밍업 실패', e));
       }
     }
 
@@ -8012,7 +8012,7 @@ export class Engine {
 
   async _warmupPlanetShaders(oct, cloudWarmPromise = null) {
     const gate = this._acquireWorldCompile('planet');
-    this.cb.onStatus('Compiling planet shadersâ€¦', true);
+    this.cb.onStatus('행성 셰이더 컴파일 중…', true);
     let minimal = false;
     let warm = [];
     let shouldUpgrade = false;
@@ -8046,7 +8046,7 @@ export class Engine {
       shouldUpgrade = minimal;
       success = true;
     } catch (error) {
-      console.warn('Planet shader warmup failed', error);
+      console.warn('행성 셰이더 워밍업 실패', error);
     } finally {
       this._queueWarmMaterials(warm);
       this._worldWarmRetryCount ||= { infinite: 0, planet: 0 };
@@ -8058,7 +8058,7 @@ export class Engine {
           void this._warmupPlanetShaders(Math.round(this.params.octaves), retryCloud);
           return;
         }
-        this.cb.onToast?.('Planet graphics could not be prepared; returning to Studio');
+        this.cb.onToast?.('행성 그래픽을 준비할 수 없음; 스튜디오로 돌아갑니다');
         void this.setWorldMode('studio');
         return;
       }
@@ -8086,7 +8086,7 @@ export class Engine {
     const programSig = program?.sig;
     const warm = planet.createPlanetMaterial(this.uniforms, oct, program);
     const targetSnapshot = this._resolveCameraCompileTarget();
-    this._bgWorkStart('planet-full', 'Loading full planet colors…');
+    this._bgWorkStart('planet-full', '전체 행성 색상 로드 중…');
     try {
       const result = await this._compileMaterialVariants(
         [warm],
@@ -8117,7 +8117,7 @@ export class Engine {
         console.warn(`[mode] planet material upgrade skipped (ready=${ready}, mode=${this.worldMode}, minimal=${this._planetMatMinimal})`);
       }
     } catch (e) {
-      console.warn('Planet terrain material upgrade failed', e);
+      console.warn('행성 지형 머티리얼 업그레이드 실패', e);
     } finally {
       this._bgWorkEnd('planet-full');
     }
@@ -8999,12 +8999,12 @@ export class Engine {
     }
     const ready = this.worldMode === 'planet'
       ? this._rebuildPlanetStackMaterialsAsync(this._stackGLSL, {
-        label: 'Loading terrain',
+        label: '지형 불러오는 중',
         atomic: true,
         rebuildGeometry: true,
       })
       : this.rebuildActiveHeightProgram({
-        label: 'Loading terrain',
+        label: '지형 불러오는 중',
         atomic: true,
         terrainDirtyOnSwap: true,
       });
@@ -9350,7 +9350,7 @@ export class Engine {
     this._syncPlanetStyleToParams();
     this.cb.onParams(this._paramsSnapshot());
     this._afterParamChange(false);
-    this.cb.onToast('Water settings reset');
+    this.cb.onToast('물 설정 초기화');
   }
 
   resetPanelSettings(panelId) {
@@ -10553,7 +10553,7 @@ export class Engine {
       lod: {},
       clouds: {
         enabled: cloudsActive,
-        mode: cloudsActive ? (this.worldMode === 'planet' ? 'volumetric shell' : 'planar slab') : 'off',
+        mode: cloudsActive ? (this.worldMode === 'planet' ? '볼류메트릭 셸' : '평면 슬랩') : 'off',
         layers: cloudsActive ? 1 : 0,
         steps: cloudLayer?._steps ?? perf.cloudSteps ?? 0,
         lightSteps: perf.cloudLightSteps ?? 0,
@@ -10567,9 +10567,9 @@ export class Engine {
         scale: p.cloudScale,
         windSpeed: p.cloudWindSpeed,
         evolveSpeed: p.cloudEvolveSpeed,
-        cullingMode: 'whole volume only',
-        chunked: 'not used by default',
-        lod: perf.cloudStepLOD ? 'distance step-LOD' : 'none',
+        cullingMode: '전체 볼륨만',
+        chunked: '기본적으로 사용되지 않음',
+        lod: perf.cloudStepLOD ? '거리 단계 LOD' : 'none',
         ready: cloudLayer ? (cloudLayer._ready !== false) : true,
         time: this.profiler.sections.get('clouds')?.stat.avg ?? null,
       },

@@ -20,7 +20,7 @@ export default function WorldPanel({ params, worldMode, onParam }) {
       {isPlanet ? (
         <>
           <SelectRow
-            label="Planet Radius"
+            label="행성 반지름"
             value={params.planetRadius}
             options={[8000, 12000, 16000, 24000, 32000].map((v) => ({ value: v, label: `${(v / 1000)}k` }))}
             onChange={(v) => onParam('planetRadius', parseFloat(v))}
@@ -51,7 +51,7 @@ export default function WorldPanel({ params, worldMode, onParam }) {
       ) : (
         <>
           <SelectRow
-            label="Chunk Count"
+            label="청크 수"
             value={params.chunkCount}
             options={[8, 12, 16, 20, 24].map((v) => ({ value: v, label: `${v} × ${v}` }))}
             onChange={(v) => onParam('chunkCount', parseFloat(v))}
@@ -65,7 +65,7 @@ export default function WorldPanel({ params, worldMode, onParam }) {
             )}
           />
           <SelectRow
-            label="Chunk Size"
+            label="청크 크기"
             value={params.chunkSize}
             options={[64, 128, 192, 256].map((v) => ({ value: v, label: String(v) }))}
             onChange={(v) => onParam('chunkSize', parseFloat(v))}

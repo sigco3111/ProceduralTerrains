@@ -21,7 +21,7 @@ function ArtificialHorizon({ pitch = 0, roll = 0, stall = false }) {
   const clipId = 'plane-ai-clip';
 
   return (
-    <div className={`plane-ai${stall ? ' plane-ai-stall' : ''}`} aria-label="Artificial horizon">
+    <div className={`plane-ai${stall ? ' plane-ai-stall' : ''}`} aria-label="인공 지평선">
       <svg viewBox="0 0 140 140" className="plane-ai-svg">
         <defs>
           <clipPath id={clipId}>

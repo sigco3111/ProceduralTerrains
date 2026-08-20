@@ -131,7 +131,7 @@ export const DEFAULT_PARAMS = {
 
 export const PRESETS = {
   highlands: {
-    label: 'Highlands',
+    label: '고지대',
     params: {},            // = defaults
   },
   archipelago: {
@@ -143,7 +143,7 @@ export const PRESETS = {
     },
   },
   alpine: {
-    label: 'Alpine Peaks',
+    label: '알파인 봉우리',
     params: {
       heightScale: 640, seaLevel: 24, ridge: 0.92, warp: 0.6,
       noiseScale: 38, persistence: 0.52, snowLine: 0.48, moistBias: -0.1,
@@ -151,7 +151,7 @@ export const PRESETS = {
     },
   },
   dunes: {
-    label: 'Desert Dunes',
+    label: '사막 모래언덕',
     params: {
       heightScale: 180, seaLevel: 4, ridge: 0.12, warp: 1.8,
       noiseScale: 55, persistence: 0.42, moistBias: -0.75, snowLine: 1.0,
@@ -159,7 +159,7 @@ export const PRESETS = {
     },
   },
   rolling: {
-    label: 'Rolling Hills',
+    label: '구르는 언덕',
     params: {
       heightScale: 220, seaLevel: 30, ridge: 0.22, warp: 1.1,
       noiseScale: 50, persistence: 0.46, moistBias: 0.3, snowLine: 1.0,
@@ -180,8 +180,8 @@ export const PRESETS = {
       moistBias: -0.5, snowLine: 1.0, falloff: 0.3, tempBias: 0.35,
     },
   },
-  // Unified cartoon look: soft low-relief shape + the matching "Cartoon Terrain"
-  // colour palette and "Simple Cartoon" noise style, all applied in one click.
+  // Unified cartoon look: soft low-relief shape + the matching "만화 지형"
+  // colour palette and "단순 만화" noise style, all applied in one click.
   // palettePreset / noisePreset are picked up by Engine.applyPresetByKey.
   cartoon: {
     label: '카툰',

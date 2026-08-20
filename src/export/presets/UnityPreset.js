@@ -1,6 +1,6 @@
 export const UnityPreset = {
   id: 'unity',
-  label: 'Unity Terrain',
+  label: 'Unity 지형',
   description: '16-bit RAW heightmap, terrain masks, and Unity scale metadata.',
   defaults: {
     format: 'glb', meshRes: '512', texRes: '2048', includeMesh: false,

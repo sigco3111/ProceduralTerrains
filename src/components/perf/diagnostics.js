@@ -58,7 +58,7 @@ export function buildDiagnosticsText(snap) {
       L.push(`  Detected GPU: ${o.rendererBackend.capabilities?.detectedGpu || 'unavailable'}`);
       L.push(`  WebGPU support: ${o.rendererBackend.capabilities?.webgpu?.supported ? 'available' : 'unavailable'}`);
     }
-    L.push(o.gpuTiming.supported ? `  Frame GPU: ${round(o.gpuTiming.frameMs)} ms` : '  GPU timing: unavailable');
+    L.push(o.gpuTiming.supported ? `  Frame GPU: ${round(o.gpuTiming.frameMs)} ms` : '  GPU 타이밍: 사용할 수 없음');
   }
   if (o.memory) {
     L.push('');

@@ -45,10 +45,10 @@ export default function ProfilePage({ onBack }) {
     setDetailsErrors({});
     try {
       await updateProfile(details);
-      showPopup('Profile settings saved.', { type: 'success' });
+      showPopup('프로필 설정이 저장되었습니다.', { type: 'success' });
     } catch (error) {
       setDetailsErrors(error.fields ?? {});
-      showPopup(error.message || 'Could not save your profile.', { type: 'error', title: 'Profile not saved' });
+      showPopup(error.message || '프로필을 저장할 수 없습니다.', { type: 'error', title: '프로필 저장 안 됨' });
     } finally {
       setBusy('');
     }
@@ -57,7 +57,7 @@ export default function ProfilePage({ onBack }) {
   const savePassword = async (event) => {
     event.preventDefault();
     const errors = {};
-    if (passwords.newPassword !== passwords.confirmPassword) errors.confirmPassword = 'Passwords do not match.';
+    if (passwords.newPassword !== passwords.confirmPassword) errors.confirmPassword = '비밀번호가 일치하지 않습니다.';
     if (errors.confirmPassword) {
       setPasswordErrors(errors);
       return;
@@ -146,7 +146,7 @@ export default function ProfilePage({ onBack }) {
         <section className="profile-card profile-avatar-card">
           <header><Camera size={16} /><div><h2>Profile picture</h2><p>PNG, JPEG or WebP, up to 1 MB.</p></div></header>
           <div className="profile-avatar-row">
-            <span className="profile-avatar">{picture ? <img src={picture} alt="Your profile" /> : initials}</span>
+            <span className="profile-avatar">{picture ? <img src={picture} alt="내 프로필" /> : initials}</span>
             <div className="profile-avatar-actions">
               <button type="button" className="lp-primary sm" onClick={() => fileRef.current?.click()} disabled={busy === 'avatar'}><Camera size={13} /> {picture ? '대체' : '업로드'}</button>
               {picture && <button type="button" className="profile-danger-button" onClick={deleteAvatar} disabled={busy === 'avatar'}><Trash2 size={13} /> Remove</button>}
@@ -163,7 +163,7 @@ export default function ProfilePage({ onBack }) {
               {field('displayName', '표시 이름', { type: 'text', autoComplete: 'name', maxLength: 80, placeholder: 'Terrain artist' })}
             </div>
             <label className="auth-field"><span>Email</span><input value={user?.email ?? ''} type="email" readOnly aria-readonly="true" /><small className="profile-field-note">Email changes are not available yet.</small></label>
-            {field('websiteUrl', 'Website', { type: 'url', autoComplete: 'url', maxLength: 2048, placeholder: 'https://example.com' })}
+            {field('websiteUrl', '웹사이트', { type: 'url', autoComplete: 'url', maxLength: 2048, placeholder: 'https://example.com' })}
             <fieldset className={`profile-visibility${detailsErrors.defaultProjectVisibility ? ' has-error' : ''}`}>
               <legend>Default project visibility</legend>
               <div className="profile-visibility-options">
@@ -180,12 +180,12 @@ export default function ProfilePage({ onBack }) {
         <section className="profile-card profile-security-card">
           <header><KeyRound size={16} /><div><h2>Password</h2><p>Changing it signs out your other active sessions.</p></div></header>
           <form onSubmit={savePassword} noValidate>
-            {passwordField('currentPassword', 'Current password', 'current-password')}
+            {passwordField('currentPassword', '현재 비밀번호', 'current-password')}
             <div className="profile-field-grid">
-              {passwordField('newPassword', 'New password', 'new-password')}
-              {passwordField('confirmPassword', 'Confirm new password', 'new-password')}
+              {passwordField('newPassword', '새 비밀번호', 'new-password')}
+              {passwordField('confirmPassword', '새 비밀번호 확인', 'new-password')}
             </div>
-            <button type="submit" className="lp-secondary profile-save" disabled={busy === 'password'}><KeyRound size={14} /> {busy === 'password' ? 'Changing...' : 'Change password'}</button>
+            <button type="submit" className="lp-secondary profile-save" disabled={busy === 'password'}><KeyRound size={14} /> {busy === 'password' ? 'Changing...' : '비밀번호 변경'}</button>
           </form>
         </section>
       </div>

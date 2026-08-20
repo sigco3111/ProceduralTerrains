@@ -222,7 +222,7 @@ async function requestOverpass(bbox, { signal } = {}) {
           if (payload?.remark) throw new Error(`Overpass query failed: ${payload.remark}`);
           return payload;
         } catch (error) {
-          if (timedOut && !signal?.aborted) throw new Error('Overpass request timed out');
+          if (timedOut && !signal?.aborted) throw new Error('Overpass 요청 시간 초과');
           throw error;
         } finally {
           clearTimeout(timer);
@@ -236,7 +236,7 @@ async function requestOverpass(bbox, { signal } = {}) {
       await waitForRetry(350 * Math.pow(2, attempt), signal);
     }
   }
-  throw lastError ?? new Error('Overpass request failed');
+  throw lastError ?? new Error('오버패스 요청 실패');
 }
 
 function mergeBuildings(groups) {

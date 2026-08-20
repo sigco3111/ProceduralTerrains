@@ -32,7 +32,7 @@ export class SplineEditor {
     if (!this.enabled || /INPUT|TEXTAREA/.test(e.target?.tagName || '')) return;
     if (e.key === 'Enter') { this.manager.finishDraft(); this.creatingType = null; this.manager._emit(); }
     else if (e.key === 'Escape') this.cancel();
-    else if (e.key === 'Backspace' && this.creatingType) this.manager.removeDraftPoint();
+    else if (e.key === '백스페이스' && this.creatingType) this.manager.removeDraftPoint();
     else if (e.key === 'Delete') this.manager.deleteSelected();
   }
   dispose() { this._unlockControls(); this.domElement.removeEventListener('pointerdown', this._down, true); this.domElement.removeEventListener('pointermove', this._move, true); window.removeEventListener('pointerup', this._up, true); window.removeEventListener('keydown', this._key); }

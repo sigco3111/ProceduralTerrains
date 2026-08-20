@@ -112,7 +112,7 @@ export const MANUAL_SHAPE_LAYER_CATALOG = Object.freeze([
   },
   {
     id: 'ridges',
-    name: 'Rock Ridges',
+    name: '바위 능선',
     description: 'Breaks the silhouette into deterministic radial rock spines.',
     params: { strength: 0.24, frequency: 7, sharpness: 2.1 },
     controls: [
@@ -123,7 +123,7 @@ export const MANUAL_SHAPE_LAYER_CATALOG = Object.freeze([
   },
   {
     id: 'terraces',
-    name: 'Terraces',
+    name: '테라스',
     description: 'Quantizes the current profile into shelves while preserving later detail layers.',
     params: { strength: 0.8, steps: 7, softness: 0.16 },
     controls: [
@@ -139,7 +139,7 @@ export const MANUAL_SHAPE_LAYER_CATALOG = Object.freeze([
     params: { strength: 0.34, scale: 4, channels: 0.58 },
     controls: [
       { id: 'strength', label: '세기', min: 0, max: 1, step: 0.01, digits: 2 },
-      { id: 'scale', label: 'Feature Scale', min: 1, max: 14, step: 0.25, digits: 2 },
+      { id: 'scale', label: '피처 스케일', min: 1, max: 14, step: 0.25, digits: 2 },
       { id: 'channels', label: 'Channels', min: 0, max: 1, step: 0.01, digits: 2 },
     ],
   },

@@ -4,7 +4,7 @@ const MAP_MODES = [
   ['color', '색상'],
   ['height', '하이맵'],
   ['biome', 'Biome Map'],
-  ['noise', 'Noise Map'],
+  ['noise', '노이즈 맵'],
   ['water', 'Water Mask'],
   ['slope', 'Slope Map'],
   ['props', 'Props Mask'],
@@ -107,8 +107,8 @@ export default function MinimapOverlay({
         type="button"
         className="minimap-fab"
         onClick={() => setCollapsed(false)}
-        title="Show minimap"
-        aria-label="Show minimap"
+        title="미니맵 표시"
+        aria-label="미니맵 표시"
         aria-expanded={!collapsed}
       >
         <MapIcon />
@@ -165,8 +165,8 @@ export default function MinimapOverlay({
               type="button"
               className={`tb-btn minimap-chip minimap-icon-chip${showChunkGrid ? ' active' : ''}`}
               onClick={() => setShowChunkGrid((value) => !value)}
-              title="Chunk grid"
-              aria-label="Chunk grid"
+              title="청크 그리드"
+              aria-label="청크 그리드"
             >
               <svg viewBox="0 0 16 16" fill="none" aria-hidden><path d="M2 2h12v12H2zM2 6h12M6 2v12M10 2v12M2 10h12" stroke="currentColor" strokeWidth="1.05" /></svg>
             </button>

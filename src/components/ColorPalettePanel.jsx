@@ -41,8 +41,8 @@ const COLOR_LABELS = {
   deep: 'Deep Water',
   shallow: 'Shallow',
   sand: '모래',
-  dune: 'Dune',
-  dryGrass: 'Dry Grass',
+  dune: '사구',
+  dryGrass: '마른 풀',
   grass: '잔디',
   forest: '숲',
   jungle: '정글',
@@ -369,7 +369,7 @@ export default function ColorPalettePanel({
           </span>
         </div>
         <select value={palettePreset} onChange={(e) => onPalettePreset(e.target.value)}>
-          <optgroup label="Terrain palettes">
+          <optgroup label="지형 팔레트">
             {TERRAIN_COLOR_PALETTE_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
@@ -421,7 +421,7 @@ export default function ColorPalettePanel({
           </svg>
           Export
         </button>
-        <button type="button" className="action-btn" onClick={handleImport} data-tooltip="Load a planet styling configuration from a JSON file">
+        <button type="button" className="action-btn" onClick={handleImport} data-tooltip="JSON 파일에서 행성 스타일링 구성 불러오기">
           <svg viewBox="0 0 16 16" fill="none">
             <path d="M8 14V6M5 9l3-3 3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
             <path d="M3 3h10" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />

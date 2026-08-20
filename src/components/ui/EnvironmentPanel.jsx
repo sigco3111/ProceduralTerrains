@@ -8,12 +8,12 @@ import { WATER_DEFAULT_PARAMS } from '../../engine/water/WaterSettings.js';
 
 const FOG_SLIDER = {
   key: 'fogDensity',
-  label: 'Fog Density',
+  label: '안개 밀도',
   min: 0,
   max: 2,
   step: 0.05,
   digits: 2,
-  info: 'Density of the atmospheric dust and fog',
+  info: '대기 먼지와 안개의 밀도',
   icon: (
     <svg viewBox="0 0 16 16" fill="none">
       <path d="M3 10.5a2.5 2.5 0 0 1 2-4.4 3.5 3.5 0 0 1 6.8 1.1 2.5 2.5 0 0 1-.8 4.8H3z" stroke="currentColor" strokeWidth="1.2" />
@@ -28,7 +28,7 @@ const SUN_INTENSITY = {
   max: 3,
   step: 0.05,
   digits: 2,
-  info: 'Brightness of the direct sunlight',
+  info: '직사광선의 밝기',
   icon: (
     <svg viewBox="0 0 16 16" fill="none">
       <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="1.2" />
@@ -49,7 +49,7 @@ const CLOUD_SHADOW_OPACITY = {
 
 const GOD_RAYS = {
   key: 'visualsSunRaysStrength',
-  label: 'God Rays',
+  label: '신의 광선',
   min: 0,
   max: 0.8,
   step: 0.02,
@@ -78,7 +78,7 @@ const WATER_LIGHTING_SLIDERS = [
   },
   {
     key: 'waterAmbientResponse',
-    label: 'Ambient Response',
+    label: '주변광 반응',
     min: 0,
     max: 2,
     step: 0.05,
@@ -99,7 +99,7 @@ const WATER_LIGHTING_SLIDERS = [
 const ATMOSPHERE_COLORS = [
   {
     key: 'skyAmbient',
-    label: 'Sky Ambient',
+    label: '하늘 주변광',
     info: 'Color of ambient scattered sky light reflecting onto the terrain',
     icon: (
       <svg viewBox="0 0 16 16" fill="none">
@@ -109,7 +109,7 @@ const ATMOSPHERE_COLORS = [
   },
   {
     key: 'groundBounce',
-    label: 'Ground Bounce',
+    label: '지면 반사',
     info: 'Color of light bouncing from the ground back up into shadowed areas',
     icon: (
       <svg viewBox="0 0 16 16" fill="none">
@@ -136,7 +136,7 @@ export default function EnvironmentPanel({ params, planetStyle, onParam, onTunin
         forceOpen={forceSection('lighting.section.sun', '태양', ['lighting.sun'])}
       >
         <div className="color-field" data-setting-id="lighting.sunColor">
-          <div className="label-with-icon" data-tooltip="Color tint of the direct sunlight">
+          <div className="label-with-icon" data-tooltip="직사광선의 색상 틴트">
             <span className="setting-icon">
               <svg viewBox="0 0 16 16" fill="none">
                 <path d="M8 2c-2.5 4-5 5-5 8a5 5 0 0 0 10 0c0-3-2.5-4-5-8z" stroke="currentColor" strokeWidth="1.2" />
@@ -165,20 +165,20 @@ export default function EnvironmentPanel({ params, planetStyle, onParam, onTunin
 
       <ControlSection
         id="inspector-environment-cloud-light"
-        title="Clouds & Rays"
+        title="구름 & 광선"
         defaultOpen={false}
         settingId="lighting.section.clouds"
         forceOpen={forceSection(
           'lighting.section.clouds',
-          'Clouds & Rays',
+          '구름 & 광선',
           ['lighting.cloudShadows', 'lighting.cloudShadowOpacity', 'lighting.godRays']
         )}
       >
         <ToggleRow
-          label="Cloud Shadows"
+          label="구름 그림자"
           value={!!params.cloudShadowsEnabled}
           onChange={(v) => onParam('cloudShadowsEnabled', v)}
-          info="Project the animated cloud field onto the terrain in real time. Tile mode only."
+          info="애니메이션 클라우드 필드를 실시간으로 지형 위에 투영합니다. 타일 모드 전용."
           settingId="lighting.cloudShadowsEnabled"
         />
         {params.cloudShadowsEnabled && (
@@ -234,12 +234,12 @@ export default function EnvironmentPanel({ params, planetStyle, onParam, onTunin
 
       <ControlSection
         id="inspector-environment-water-lighting"
-        title="Water Lighting"
+        title="물 조명"
         defaultOpen={false}
         settingId="lighting.section.waterLighting"
         forceOpen={forceSection(
           'lighting.section.waterLighting',
-          'Water Lighting',
+          '물 조명',
           ['lighting.water']
         )}
       >

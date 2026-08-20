@@ -30,13 +30,13 @@ const ZIP_EXT_RE = /\.zip$/i;
 const STATUS_LABEL = {
   checking: '...',
   custom: '사용자 지정',
-  missing: 'Missing',
+  missing: '누락',
 };
 
 const LAYER_STATUS_LABEL = {
-  notBaked: 'Not Baked',
+  notBaked: '베이크되지 않음',
   ready: '준비',
-  missingDiffuse: 'Missing Diffuse',
+  missingDiffuse: '디퓨즈 누락',
   missingOptional: 'Missing Optional Maps',
 };
 
@@ -47,7 +47,7 @@ function layerStatusClass(status) {
 }
 
 function coverageText(coverage) {
-  if (!coverage) return 'Custom atlas not baked';
+  if (!coverage) return '커스텀 아틀라스 베이크되지 않음';
   return `${coverage.diffuseReady}/${coverage.total} custom roles ready`;
 }
 
@@ -256,7 +256,7 @@ function VariantBlock({ role, variantIndex, mapSlots, atlasVariant, onMaterialCh
     >
       <div className="surface-variant-head">
         <span className="surface-variant-title">Variant {variantIndex + 1}</span>
-        <span className="surface-variant-drop-chip">{importing ? 'Importing' : 'Drop ZIP / maps'}</span>
+        <span className="surface-variant-drop-chip">{importing ? '가져오는 중' : 'ZIP / 맵 드롭'}</span>
         <span className={`surface-layer-status surface-slot-status-${layerStatusClass(layerStatus)}`}>
           {statusLabel}
         </span>
@@ -408,7 +408,7 @@ function RoleCard({ role, mapSlots, targetId, atlasLayer, palette, onMaterialCha
                     onClick={() => setActiveVariant(variantIndex)}
                   >
                     <span>V{variantIndex + 1}</span>
-                    <small>{ready ? '준비' : 'Empty'}</small>
+                    <small>{ready ? '준비' : '비어있음'}</small>
                   </button>
                 );
               })}
@@ -431,10 +431,10 @@ function RoleCard({ role, mapSlots, targetId, atlasLayer, palette, onMaterialCha
 const slider = (key, label, min, max, step, opts = {}) => ({ key, label, min, max, step, ...opts });
 const SURFACE_MODE_SLIDERS = [
   slider('surfaceTextureScale', '스케일', 0.25, 4, 0.05, { digits: 2, fallback: 1 }),
-  slider('surfaceTextureBreakup', 'Break Tiling', 0, 1, 0.02, { digits: 2, fallback: 0.5 }),
-  slider('surfaceTextureBlend', 'Blend Textures', 0, 1, 0.02, { digits: 2, fallback: 0.35 }),
-  slider('surfaceTexturePaletteInfluence', 'Palette Influence', 0, 1, 0.02, { digits: 2, fallback: 0.6 }),
-  slider('surfaceTextureNormal', 'Normal Strength', 0, 2, 0.05, { digits: 2, fallback: 1 }),
+  slider('surfaceTextureBreakup', '타일링 깨기', 0, 1, 0.02, { digits: 2, fallback: 0.5 }),
+  slider('surfaceTextureBlend', '텍스처 혼합', 0, 1, 0.02, { digits: 2, fallback: 0.35 }),
+  slider('surfaceTexturePaletteInfluence', '팔레트 영향', 0, 1, 0.02, { digits: 2, fallback: 0.6 }),
+  slider('surfaceTextureNormal', '노멀 강도', 0, 2, 0.05, { digits: 2, fallback: 1 }),
 ];
 
 function SurfaceModeControls({ ctx, source, onBake, applying, status }) {
@@ -465,10 +465,10 @@ function SurfaceModeControls({ ctx, source, onBake, applying, status }) {
           <div className="surface-apply-row">
             <button type="button" className="action-btn primary" onClick={() => onBake({ source, force: true })} disabled={applying}>
               <RefreshCw size={13} strokeWidth={1.8} aria-hidden />
-              {applying ? 'Baking...' : 'Bake Custom Materials'}
+              {applying ? 'Baking...' : '커스텀 머티리얼 베이크'}
             </button>
             <span className={`surface-apply-status ${coverageClass}`}>
-              {applying ? 'Building atlas' : coverageText(coverage)}
+              {applying ? '아틀라스 구축 중' : coverageText(coverage)}
             </span>
           </div>
           {SURFACE_MODE_SLIDERS.map((def) => (
@@ -481,7 +481,7 @@ function SurfaceModeControls({ ctx, source, onBake, applying, status }) {
             />
           ))}
           <ToggleRow
-            label="Triplanar Projection"
+            label="트리플래너 투영"
             value={params.surfaceTextureTriplanar !== false}
             onChange={(v) => onParam('surfaceTextureTriplanar', v)}
             settingId="surface.surfaceTextureTriplanar"

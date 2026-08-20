@@ -13,9 +13,9 @@ const visibilityIcons = { private: Lock, unlisted: Eye, public: Globe2 };
 
 function relativeTime(value) {
   const timestamp = new Date(value).getTime();
-  if (!Number.isFinite(timestamp)) return 'unknown time';
+  if (!Number.isFinite(timestamp)) return '알 수 없는 시간';
   const seconds = Math.max(0, Math.floor((Date.now() - timestamp) / 1000));
-  if (seconds < 45) return 'just now';
+  if (seconds < 45) return '방금 전';
   if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
   if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
   if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
@@ -143,7 +143,7 @@ export default function ProjectLibrary({
       else showPopup(`${remote.name} downloaded from the cloud.`, { type: 'success' });
       return localProject;
     } catch (error) {
-      showPopup(error.message || 'Could not download this project.', { type: 'error' });
+      showPopup(error.message || '이 프로젝트를 다운로드할 수 없습니다.', { type: 'error' });
       return null;
     } finally {
       setBusyId('');
@@ -180,9 +180,9 @@ export default function ProjectLibrary({
     } catch (error) {
       if (error.code === 'PROJECT_SYNC_CONFLICT') {
         await refreshCloud();
-        showPopup('The cloud copy changed while syncing. Choose a version to continue.', { type: 'info' });
+        showPopup('동기화하는 동안 클라우드 사본이 변경되었습니다. 계속할 버전을 선택하세요.', { type: 'info' });
       } else {
-        showPopup(error.message || 'Could not sync this project.', { type: 'error' });
+        showPopup(error.message || '이 프로젝트를 동기화할 수 없습니다.', { type: 'error' });
       }
     } finally {
       setBusyId('');
@@ -197,11 +197,11 @@ export default function ProjectLibrary({
     }
     if (entry.state === 'conflict' || entry.state === 'needs-review') {
       const choice = await showChoice({
-        title: entry.state === 'conflict' ? 'Resolve sync conflict' : 'Review cloud copy',
+        title: entry.state === 'conflict' ? '동기화 충돌 해결' : '클라우드 사본 검토',
         message: `${projectName(entry)} has versions on this device and in the cloud. Choose the version to keep.`,
         actions: [
-          { value: 'local', label: 'Keep local and upload' },
-          { value: 'cloud', label: 'Keep cloud and download' },
+          { value: 'local', label: '로컬 유지 및 업로드' },
+          { value: 'cloud', label: '클라우드 유지 및 다운로드' },
         ],
       });
       if (choice === 'local') await upload(entry);
@@ -270,7 +270,7 @@ export default function ProjectLibrary({
       <div className="project-library-head">
         <div className="lp-search project-library-search">
           <Search size={14} aria-hidden />
-          <input type="search" placeholder="Search projects…" value={query} onChange={(event) => setQuery(event.target.value)} aria-label="Search projects" />
+          <input type="search" placeholder="프로젝트 검색…" value={query} onChange={(event) => setQuery(event.target.value)} aria-label="프로젝트 검색" />
         </div>
         <div className="lp-head-actions">
           <button type="button" className="lp-secondary sm" onClick={() => fileInputRef.current?.click()} disabled={!bootReady || exiting}><Upload size={13} /> Import</button>
@@ -281,12 +281,12 @@ export default function ProjectLibrary({
       {!user && authStatus !== 'loading' && (
         <div className="project-cloud-note">
           <Cloud size={16} aria-hidden />
-          <span>{authStatus === 'unavailable' ? 'Cloud sync is unavailable right now. Your local projects are safe on this device.' : 'Sign in to sync projects, download cloud copies, and manage sharing visibility.'}</span>
+          <span>{authStatus === 'unavailable' ? 'Cloud sync is unavailable right now. Your local projects are safe on this device.' : '로그인하여 프로젝트를 동기화하고 클라우드 사본을 다운로드하며 공유 가시성을 관리하세요.'}</span>
           {authStatus !== 'unavailable' && <button type="button" onClick={onSignIn}>Sign in</button>}
         </div>
       )}
-      {user && cloudStatus === 'loading' && <div className="project-cloud-note checking"><RefreshCw size={15} className="spin" aria-hidden /><span>Checking your cloud projects…</span></div>}
-      {user && cloudStatus === 'error' && <div className="project-cloud-note error"><AlertTriangle size={16} aria-hidden /><span>Cloud projects could not be checked. Local projects remain available.</span><button type="button" onClick={refreshCloud}>Try again</button></div>}
+      {user && cloudStatus === 'loading' && <div className="프로젝트 클라우드 노트 확인 중"><RefreshCw size={15} className="spin" aria-hidden /><span>Checking your cloud projects…</span></div>}
+      {user && cloudStatus === 'error' && <div className="프로젝트 클라우드 노트 오류"><AlertTriangle size={16} aria-hidden /><span>Cloud projects could not be checked. Local projects remain available.</span><button type="button" onClick={refreshCloud}>Try again</button></div>}
 
       {empty ? (
         query.trim() ? <p className="lp-no-results">No project matches “{query.trim()}”.</p> : (
@@ -304,7 +304,7 @@ export default function ProjectLibrary({
             const cloudProject = entry.cloudProject;
             const VisibilityIcon = visibilityIcons[cloudProject?.visibility] || Lock;
             const isBusy = busyId === entry.id;
-            const statusLabel = user && cloudStatus === 'error' && entry.state !== 'cloud-only' ? 'Cloud unavailable' : entry.label;
+            const statusLabel = user && cloudStatus === 'error' && entry.state !== 'cloud-only' ? '클라우드 사용 불가' : entry.label;
             const name = projectName(entry);
             const modified = localProject?.metadata.modified ?? cloudProject?.updatedAt;
             const isConflict = entry.state === 'conflict' || entry.state === 'needs-review';

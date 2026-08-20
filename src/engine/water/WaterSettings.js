@@ -6,23 +6,23 @@
 
 export const WATER_MODES = [
   { value: 'off', label: '꺼짐' },
-  { value: 'legacy', label: 'Legacy / Low' },
-  { value: 'realistic', label: 'Realistic / Medium' },
+  { value: 'legacy', label: '레거시 / 낮음' },
+  { value: 'realistic', label: '사실적 / 중간' },
   { value: 'volumetric', label: '볼류메트릭 / 높음' },
-  { value: 'cinematic', label: 'Cinematic / Ultra' },
+  { value: 'cinematic', label: '시네마틱 / 울트라' },
 ];
 
 export const WATER_QUALITY_PRESETS = [
-  { value: 'legacy', label: 'Legacy Low' },
-  { value: 'balanced', label: 'Balanced Realistic' },
-  { value: 'tropical', label: 'Clear Tropical' },
-  { value: 'cartoon', label: 'Cartoon Water' },
+  { value: 'legacy', label: '레거시 낮음' },
+  { value: 'balanced', label: '밸런스 리얼리스틱' },
+  { value: 'tropical', label: '맑은 열대' },
+  { value: 'cartoon', label: '만화 물' },
   { value: 'ocean', label: 'Deep Ocean' },
   { value: 'lake', label: '산 속 호수' },
-  { value: 'swamp', label: 'Swamp Water' },
+  { value: 'swamp', label: '늪 물' },
   { value: 'alien', label: '에일리언 물' },
   { value: 'volumetric', label: 'High Volumetric' },
-  { value: 'cinematic', label: 'Cinematic Screenshot' },
+  { value: 'cinematic', label: '시네마틱 스크린샷' },
 ];
 
 /** Map water mode string → shader quality tier (0 = legacy handled separately). */

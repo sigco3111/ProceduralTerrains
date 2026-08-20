@@ -17,7 +17,7 @@ export default function ConfidentialityPage({ onBack }) {
         </div>
       </header>
 
-      <section className="confidentiality-summary" aria-label="Privacy summary">
+      <section className="confidentiality-summary" aria-label="개인정보 요약">
         <div><LockKeyhole size={17} /><strong>Private by default</strong><span>Your terrains stay private unless you choose otherwise.</span></div>
         <div><Fingerprint size={17} /><strong>No raw IP storage</strong><span>Network addresses are converted to rotating one-way identifiers.</span></div>
         <div><Eye size={17} /><strong>Limited access</strong><span>Administrative data is available only to authorized administrators.</span></div>

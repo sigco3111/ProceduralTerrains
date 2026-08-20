@@ -77,7 +77,7 @@ export const EROSION_PRESETS = {
     },
   },
   heavyRain: {
-    label: 'Heavy Rain',
+    label: '폭우',
     params: {
       erosionStrength: 1.0, erosionDroplets: 150000, erosionRadius: 3,
       erosionDeposition: 0.3, erosionErosionRate: 0.45, erosionEvaporation: 0.008,

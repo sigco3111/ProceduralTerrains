@@ -18,37 +18,37 @@ const lim = (key, label, step, opts = {}) => ({
 });
 
 const PERF_SLIDERS = {
-  renderScale: lim('renderScale', 'Render Scale', 0.05, { digits: 2, unit: '×' }),
+  renderScale: lim('renderScale', '렌더 스케일', 0.05, { digits: 2, unit: '×' }),
   resolutionScale: lim('resolutionScale', 'Terrain Resolution', 0.05, { digits: 2, unit: '×' }),
-  lodDistanceScale: lim('lodDistanceScale', 'LOD Distance Scale', 0.05, { digits: 2, unit: '×' }),
-  viewRadius: lim('viewRadius', 'Chunk Load Radius', 1, { unit: 'chunks' }),
-  maxCreatesPerFrame: lim('maxCreatesPerFrame', 'Chunk Builds / Frame', 1, {
+  lodDistanceScale: lim('lodDistanceScale', 'LOD 거리 스케일', 0.05, { digits: 2, unit: '×' }),
+  viewRadius: lim('viewRadius', '청크 로드 반경', 1, { unit: 'chunks' }),
+  maxCreatesPerFrame: lim('maxCreatesPerFrame', '청크 빌드 / 프레임', 1, {
     unit: 'chunks',
     info: 'Caps how many chunks are created per frame for Infinite World streaming and new Tile cells. Set to 0 to build all pending chunks instantly.',
   }),
-  cullingAggressiveness: lim('cullingAggressiveness', 'Culling Aggressiveness', 0.1, { digits: 1 }),
-  waterReflection: lim('waterReflection', 'Water Reflection', 0.05, { digits: 2, unit: '×' }),
-  waterDetail: lim('waterDetail', 'Water Detail', 0.05, { digits: 2, unit: '×' }),
+  cullingAggressiveness: lim('cullingAggressiveness', '컬링 공격성', 0.1, { digits: 1 }),
+  waterReflection: lim('waterReflection', '물 반사', 0.05, { digits: 2, unit: '×' }),
+  waterDetail: lim('waterDetail', '물 디테일', 0.05, { digits: 2, unit: '×' }),
   waterWaves: lim('waterWaves', 'Wave Complexity', 0.05, { digits: 2, unit: '×' }),
-  waterDistance: lim('waterDistance', 'Water Distance', 0.05, { digits: 2, unit: '×' }),
-  fogDistance: lim('fogDistance', 'Fog Distance', 0.05, { digits: 2, unit: '×' }),
+  waterDistance: lim('waterDistance', '물 거리', 0.05, { digits: 2, unit: '×' }),
+  fogDistance: lim('fogDistance', '안개 거리', 0.05, { digits: 2, unit: '×' }),
   terrainDetailOpacity: lim('terrainDetailOpacity', 'Detail Opacity', 0.05, { digits: 2, unit: 'x' }),
-  terrainDetailScale: lim('terrainDetailScale', 'Detail Texture Scale', 0.01, { digits: 2, unit: 'x' }),
-  terrainDetailStrength: lim('terrainDetailStrength', 'Detail Strength', 0.05, { digits: 2, unit: 'x' }),
+  terrainDetailScale: lim('terrainDetailScale', '디테일 텍스처 스케일', 0.01, { digits: 2, unit: 'x' }),
+  terrainDetailStrength: lim('terrainDetailStrength', '디테일 세기', 0.05, { digits: 2, unit: 'x' }),
   terrainDetailNormal: lim('terrainDetailNormal', 'Detail Normal Strength', 0.05, { digits: 2, unit: 'x' }),
-  terrainMicroDetail: lim('terrainMicroDetail', 'Micro Detail', 0.05, { digits: 2, unit: 'x' }),
-  terrainMacroVariation: lim('terrainMacroVariation', 'Macro Variation', 0.05, { digits: 2, unit: 'x' }),
-  terrainDetailNear: lim('terrainDetailNear', 'Full Detail Distance', 5, { unit: 'm' }),
-  terrainDetailFar: lim('terrainDetailFar', 'Detail Fade Distance', 5, { unit: 'm' }),
-  terrainRockSlope: lim('terrainRockSlope', 'Rock Slope Blend', 0.01, { digits: 2 }),
-  terrainRockSharpness: lim('terrainRockSharpness', 'Rock Blend Width', 0.01, { digits: 2 }),
+  terrainMicroDetail: lim('terrainMicroDetail', '미세 디테일', 0.05, { digits: 2, unit: 'x' }),
+  terrainMacroVariation: lim('terrainMacroVariation', '매크로 변화', 0.05, { digits: 2, unit: 'x' }),
+  terrainDetailNear: lim('terrainDetailNear', '전체 디테일 거리', 5, { unit: 'm' }),
+  terrainDetailFar: lim('terrainDetailFar', '디테일 페이드 거리', 5, { unit: 'm' }),
+  terrainRockSlope: lim('terrainRockSlope', '바위 경사 혼합', 0.01, { digits: 2 }),
+  terrainRockSharpness: lim('terrainRockSharpness', '바위 혼합 너비', 0.01, { digits: 2 }),
   terrainShoreRange: lim('terrainShoreRange', 'Shoreline Range', 1, { unit: 'm' }),
-  terrainShoreWetness: lim('terrainShoreWetness', 'Shoreline Wetness', 0.05, { digits: 2, unit: 'x' }),
-  cloudSteps: lim('cloudSteps', 'Raymarch Steps', 4),
-  cloudLightSteps: lim('cloudLightSteps', 'Shadow Steps', 1),
-  cloudOctaves: lim('cloudOctaves', 'Base Noise Octaves', 1),
-  cloudDetailOctaves: lim('cloudDetailOctaves', 'Detail Noise Octaves', 1),
-  cloudMaxDistance: lim('cloudMaxDistance', 'Max Distance', 0.5, { digits: 1, unit: '×' }),
+  terrainShoreWetness: lim('terrainShoreWetness', '해안선 습윤도', 0.05, { digits: 2, unit: 'x' }),
+  cloudSteps: lim('cloudSteps', '레이마칭 단계', 4),
+  cloudLightSteps: lim('cloudLightSteps', '그림자 단계', 1),
+  cloudOctaves: lim('cloudOctaves', '기본 노이즈 옥타브', 1),
+  cloudDetailOctaves: lim('cloudDetailOctaves', '디테일 노이즈 옥타브', 1),
+  cloudMaxDistance: lim('cloudMaxDistance', '최대 거리', 0.5, { digits: 1, unit: '×' }),
 };
 
 const WATER_QUALITY_OPTIONS = [
@@ -66,13 +66,13 @@ const TERRAIN_DETAIL_OPTIONS = [
 
 const GPU_PREFERENCE_OPTIONS = [
   { value: 'default', label: '기본' },
-  { value: 'high-performance', label: 'High Performance' },
-  { value: 'low-power', label: 'Low Power' },
+  { value: 'high-performance', label: '고성능' },
+  { value: 'low-power', label: '저전력' },
 ];
 
 const RESOLUTION_DENOISE_OPTIONS = [
-  { value: 'clean', label: 'Clean Denoise' },
-  { value: 'pixelated', label: 'Pixelated Denoise' },
+  { value: 'clean', label: '깨끗한 디노이즈' },
+  { value: 'pixelated', label: '픽셀화 디노이즈' },
 ];
 
 const TABS = [
@@ -177,7 +177,7 @@ function GpuRendererSection({ perf, rendererInfo, onPerfSetting }) {
     { value: 'webgl', label: 'WebGL' },
     {
       value: 'webgpu',
-      label: webgpuSupported ? 'WebGPU' : 'WebGPU unavailable',
+      label: webgpuSupported ? 'WebGPU' : 'WebGPU 사용 불가',
       disabled: !webgpuSupported,
     },
   ];
@@ -190,13 +190,13 @@ function GpuRendererSection({ perf, rendererInfo, onPerfSetting }) {
   return (
     <ControlSection
       id="perf-gpu-renderer"
-      title="GPU / Renderer"
+      title="GPU / 렌더러"
       defaultOpen
       settingId="performance.section.gpu"
     >
       <div className="gpu-renderer-section">
         <SelectRow
-          label="Renderer Backend"
+          label="렌더러 백엔드"
           value={perf.rendererBackend}
           options={backendOptions}
           onChange={(v) => onPerfSetting('rendererBackend', v)}
@@ -204,7 +204,7 @@ function GpuRendererSection({ perf, rendererInfo, onPerfSetting }) {
           settingId="performance.rendererBackend"
         />
         <SelectRow
-          label="GPU Preference"
+          label="GPU 선호"
           value={perf.gpuPreference}
           options={GPU_PREFERENCE_OPTIONS}
           onChange={(v) => onPerfSetting('gpuPreference', v)}
@@ -212,18 +212,18 @@ function GpuRendererSection({ perf, rendererInfo, onPerfSetting }) {
           settingId="performance.gpuPreference"
         />
         <ToggleRow
-          label="Worker Renderer"
+          label="워커 렌더러"
           value={!!perf.useWorker}
           onChange={(v) => onPerfSetting('useWorker', v)}
           info="Experimental seam for moving rendering to OffscreenCanvas later. This build keeps the in-thread renderer active."
           settingId="performance.useWorker"
         />
         <div className="gpu-cap-list">
-          <CapabilityRow label="Detected Renderer" value={rendererInfo?.activeBackendLabel || caps.detectedRenderer} />
-          <CapabilityRow label="Detected GPU" value={gpuInfo} title={caps.detectedGpu} />
+          <CapabilityRow label="감지된 렌더러" value={rendererInfo?.activeBackendLabel || caps.detectedRenderer} />
+          <CapabilityRow label="감지된 GPU" value={gpuInfo} title={caps.detectedGpu} />
           <CapabilityRow label="GPU Timing" value={caps.gpuTiming?.supported ? '사용 가능' : '사용 불가'} />
-          <CapabilityRow label="Power Preference" value={labelGpuPreference(activeGpuPreference)} />
-          <CapabilityRow label="Worker Renderer" value={rendererInfo?.workerActive ? '활성' : '비활성'} />
+          <CapabilityRow label="전력 환경설정" value={labelGpuPreference(activeGpuPreference)} />
+          <CapabilityRow label="워커 렌더러" value={rendererInfo?.workerActive ? '활성' : '비활성'} />
           {perf.rendererBackend === 'webgpu' && !webgpuSupported && (
             <CapabilityRow label="WebGPU" value={caps.webgpu?.reason || '사용 불가'} />
           )}
@@ -261,11 +261,11 @@ export function SurfacePropertiesSettings({ perf, onPerfSetting }) {
           <PerfSlider perf={perf} id="terrainDetailOpacity" onPerfSetting={onPerfSetting} settingId="performance.terrainDetailOpacity" />
         </SettingGroup>
 
-        <SettingGroup tab="terrain" label="Detail Texture Scale" keywords="terrain close texture scale grain noise world space" {...groupProps}>
+        <SettingGroup tab="terrain" label="디테일 텍스처 스케일" keywords="terrain close texture scale grain noise world space" {...groupProps}>
           <PerfSlider perf={perf} id="terrainDetailScale" onPerfSetting={onPerfSetting} settingId="performance.terrainDetailScale" />
         </SettingGroup>
 
-        <SettingGroup tab="terrain" label="Detail Strength" keywords="terrain albedo biome detail close strength" {...groupProps}>
+        <SettingGroup tab="terrain" label="디테일 세기" keywords="terrain albedo biome detail close strength" {...groupProps}>
           <PerfSlider perf={perf} id="terrainDetailStrength" onPerfSetting={onPerfSetting} settingId="performance.terrainDetailStrength" />
         </SettingGroup>
 
@@ -278,7 +278,7 @@ export function SurfacePropertiesSettings({ perf, onPerfSetting }) {
           <PerfSlider perf={perf} id="terrainMacroVariation" onPerfSetting={onPerfSetting} settingId="performance.terrainMacroVariation" />
         </SettingGroup>
 
-        <SettingGroup tab="terrain" label="Distance Detail Fade" keywords="terrain detail fade near far walk distance shimmer" {...groupProps}>
+        <SettingGroup tab="terrain" label="거리 디테일 페이드" keywords="terrain detail fade near far walk distance shimmer" {...groupProps}>
           <PerfSlider perf={perf} id="terrainDetailNear" onPerfSetting={onPerfSetting} settingId="performance.terrainDetailNear" />
           <PerfSlider perf={perf} id="terrainDetailFar" onPerfSetting={onPerfSetting} settingId="performance.terrainDetailFar" />
         </SettingGroup>
@@ -292,7 +292,7 @@ export function SurfacePropertiesSettings({ perf, onPerfSetting }) {
           <ToggleRow label="Triplanar Detail" value={perf.terrainTriplanar !== false} onChange={(v) => onPerfSetting('terrainTriplanar', v)} settingId="performance.terrainTriplanar" />
         </SettingGroup>
 
-        <SettingGroup tab="terrain" label="Shoreline Detail" keywords="terrain shoreline shore wet sand mud coast water edge" {...groupProps}>
+        <SettingGroup tab="terrain" label="해안선 디테일" keywords="terrain shoreline shore wet sand mud coast water edge" {...groupProps}>
           <PerfSlider perf={perf} id="terrainShoreRange" onPerfSetting={onPerfSetting} settingId="performance.terrainShoreRange" />
           <PerfSlider perf={perf} id="terrainShoreWetness" onPerfSetting={onPerfSetting} settingId="performance.terrainShoreWetness" />
         </SettingGroup>
@@ -359,7 +359,7 @@ export default function PerfSettings({ perf, rendererInfo, onPerfPreset, onPerfS
           onChange={(e) => setSearch(e.target.value)}
         />
         {search && (
-          <button type="button" className="settings-search-clear" onClick={() => setSearch('')} aria-label="Clear search">✕</button>
+          <button type="button" className="settings-search-clear" onClick={() => setSearch('')} aria-label="검색 지우기">✕</button>
         )}
       </div>
 
@@ -394,32 +394,32 @@ function renderSettings({
 }) {
   return (
     <>
-      <SettingGroup tab="overview" label="Performance Preset" keywords="preset quality profile" {...groupProps}>
+      <SettingGroup tab="overview" label="성능 프리셋" keywords="프리셋 품질 프로필" {...groupProps}>
         <SelectRow label="프리셋" value={perf.preset} options={presetOptions} onChange={onPerfPreset} settingId="performance.preset" />
       </SettingGroup>
 
-      <SettingGroup tab="overview" label="GPU Renderer" keywords="gpu renderer backend webgl webgpu power preference dedicated low power timing" {...groupProps}>
+      <SettingGroup tab="overview" label="GPU 렌더러" keywords="gpu 렌더러 백엔드 webgl webgpu 전력 환경 전용 저전력 타이밍" {...groupProps}>
         <GpuRendererSection perf={perf} rendererInfo={rendererInfo} onPerfSetting={onPerfSetting} />
       </SettingGroup>
 
-      <SettingGroup tab="overview" label="Auto Performance Mode" keywords="automatic dynamic fps" {...groupProps}>
-        <ToggleRow label="Auto Performance Mode" value={perf.autoPerf} onChange={(v) => onPerfSetting('autoPerf', v)} settingId="performance.autoPerf" />
+      <SettingGroup tab="overview" label="자동 성능 모드" keywords="자동 동적 fps" {...groupProps}>
+        <ToggleRow label="자동 성능 모드" value={perf.autoPerf} onChange={(v) => onPerfSetting('autoPerf', v)} settingId="performance.autoPerf" />
       </SettingGroup>
 
-      <SettingGroup tab="overview" label="Pause When Idle" keywords="on demand static studio redraw idle battery heat power" {...groupProps}>
-        <ToggleRow label="Pause When Idle" value={perf.onDemandStudio} onChange={(v) => onPerfSetting('onDemandStudio', v)} settingId="performance.onDemandStudio" />
+      <SettingGroup tab="overview" label="유휴 시 일시 정지" keywords="온디맨드 정적 스튜디오 다시 그리기 유휴 배터리 열 전력" {...groupProps}>
+        <ToggleRow label="유휴 시 일시 정지" value={perf.onDemandStudio} onChange={(v) => onPerfSetting('onDemandStudio', v)} settingId="performance.onDemandStudio" />
       </SettingGroup>
 
       <SettingNote tab="overview" text="Pause When Idle stops redrawing the studio board when nothing moves — big GPU/battery/heat saving on weak machines." {...groupProps} />
 
 
-      <SettingGroup tab="overview" label="Render Scale" keywords="resolution pixel dpr scale" {...groupProps}>
+      <SettingGroup tab="overview" label="렌더 스케일" keywords="resolution pixel dpr scale" {...groupProps}>
         <PerfSlider perf={perf} id="renderScale" onPerfSetting={onPerfSetting} settingId="performance.renderScale" />
       </SettingGroup>
 
-      <SettingGroup tab="overview" label="Resolution Reconstruction" keywords="resolution upscale denoise clean pixelated nearest ps1" {...groupProps}>
+      <SettingGroup tab="overview" label="해상도 재구성" keywords="해상도 업스케일 디노이즈 클린 픽셀화 최근접 ps1" {...groupProps}>
         <SelectRow
-          label="Resolution Reconstruction"
+          label="해상도 재구성"
           value={perf.resolutionDenoiseMode || 'clean'}
           options={RESOLUTION_DENOISE_OPTIONS}
           onChange={(v) => onPerfSetting('resolutionDenoiseMode', v)}
@@ -431,15 +431,15 @@ function renderSettings({
 
       <SettingNote tab="overview" text={`Worst-case visible triangles: ~${(estTris / 1e6).toFixed(2)}M`} {...groupProps} />
 
-      <SettingGroup tab="lod" label="Terrain Resolution" keywords="mesh detail segments" {...groupProps}>
+      <SettingGroup tab="lod" label="Terrain Resolution" keywords="메시 디테일 세그먼트" {...groupProps}>
         <PerfSlider perf={perf} id="resolutionScale" onPerfSetting={onPerfSetting} settingId="performance.resolutionScale" />
       </SettingGroup>
 
-      <SettingGroup tab="lod" label="LOD Distance Scale" keywords="level detail distance" {...groupProps}>
+      <SettingGroup tab="lod" label="LOD 거리 스케일" keywords="레벨 디테일 거리" {...groupProps}>
         <PerfSlider perf={perf} id="lodDistanceScale" onPerfSetting={onPerfSetting} settingId="performance.lodDistanceScale" />
       </SettingGroup>
 
-      <SettingGroup tab="lod" label="LOD Resolutions" keywords="segments mesh lod0 lod1 lod2 lod3" {...groupProps}>
+      <SettingGroup tab="lod" label="LOD 해상도" keywords="세그먼트 메시 lod0 lod1 lod2 lod3" {...groupProps}>
         <div data-setting-id="performance.lodSegments">
           <LodMultiSlider segments={perf.lodSegments} onChange={(next) => onPerfSetting('lodSegments', next)} />
         </div>
@@ -450,7 +450,7 @@ function renderSettings({
       {perf.lodDistances.map((d, i) => (
         <SettingGroup key={`lod-dist-${i}`} tab="lod" label={`LOD ${i} → ${i + 1} Distance`} keywords={`lod distance threshold chunk level ${i}`} {...groupProps}>
           <SliderCtl
-            def={{ label: `LOD${i}→${i + 1} Distance`, min: PERF_LIMITS.lodDistance.min, max: PERF_LIMITS.lodDistance.max, step: 0.5, digits: 1, unit: '× chunk' }}
+            def={{ label: `LOD${i}→${i + 1} Distance`, min: PERF_LIMITS.lodDistance.min, max: PERF_LIMITS.lodDistance.max, step: 0.5, digits: 1, unit: '× 청크' }}
             value={d}
             onChange={(v) => setLodDistance(i, v)}
             settingId={`performance.lodDistance.${i}`}
@@ -460,9 +460,9 @@ function renderSettings({
 
       <SettingNote tab="lod" text={`Effective distances: ${distances.map((d) => d.toFixed(1)).join(' / ')} × chunk size`} {...groupProps} />
 
-      <SettingGroup tab="lod" label="Chunk Merging" keywords="merge chunk group draw call batch far distant tile macro proxy combine" {...groupProps}>
+      <SettingGroup tab="lod" label="청크 병합" keywords="merge chunk group draw call batch far distant tile macro proxy combine" {...groupProps}>
         <ToggleRow
-          label="Chunk Merging"
+          label="청크 병합"
           value={perf.terrainMerge !== false}
           onChange={(v) => onPerfSetting('terrainMerge', v)}
           info="Collapses far Tile-mode chunks into fewer larger meshes once they pass the lowest LOD band. Cuts draw calls / CPU with no change to the silhouette."
@@ -470,9 +470,9 @@ function renderSettings({
         />
       </SettingGroup>
 
-      <SettingGroup tab="lod" label="Merge Distance" keywords="merge fold distance quadtree aggressiveness near far block size threshold" {...groupProps}>
+      <SettingGroup tab="lod" label="병합 거리" keywords="merge fold distance quadtree aggressiveness near far block size threshold" {...groupProps}>
         <SliderCtl
-          def={{ label: 'Merge Distance', min: PERF_LIMITS.terrainMergeDistance.min, max: PERF_LIMITS.terrainMergeDistance.max, step: 0.5, digits: 1, unit: '× block' }}
+          def={{ label: '병합 거리', min: PERF_LIMITS.terrainMergeDistance.min, max: PERF_LIMITS.terrainMergeDistance.max, step: 0.5, digits: 1, unit: '× block' }}
           value={perf.terrainMergeDistance ?? 4}
           onChange={(v) => onPerfSetting('terrainMergeDistance', v)}
           settingId="performance.terrainMergeDistance"
@@ -481,9 +481,9 @@ function renderSettings({
 
       <SettingNote tab="lod" text="A quadtree block folds into one mesh once the camera is farther than its width × this. Higher = keep detail (split) longer; lower = fold sooner for more savings." {...groupProps} />
 
-      <SettingGroup tab="lod" label="Merge Density" keywords="merge density resolution quads detail far mesh quality" {...groupProps}>
+      <SettingGroup tab="lod" label="병합 밀도" keywords="merge density resolution quads detail far mesh quality" {...groupProps}>
         <SliderCtl
-          def={{ label: 'Merge Density', min: PERF_LIMITS.terrainMergeQuads.min, max: PERF_LIMITS.terrainMergeQuads.max, step: 1, unit: 'quads/chunk' }}
+          def={{ label: '병합 밀도', min: PERF_LIMITS.terrainMergeQuads.min, max: PERF_LIMITS.terrainMergeQuads.max, step: 1, unit: 'quads/chunk' }}
           value={perf.terrainMergeQuads ?? 8}
           onChange={(v) => onPerfSetting('terrainMergeQuads', Math.round(v))}
           settingId="performance.terrainMergeQuads"
@@ -502,7 +502,7 @@ function renderSettings({
         />
       </SettingGroup>
 
-      <SettingGroup tab="streaming" label="Chunk Load Radius" keywords="view radius streaming load" {...groupProps}>
+      <SettingGroup tab="streaming" label="청크 로드 반경" keywords="view radius streaming load" {...groupProps}>
         <PerfSlider perf={perf} id="viewRadius" onPerfSetting={onPerfSetting} settingId="performance.viewRadius" />
       </SettingGroup>
 
@@ -510,16 +510,16 @@ function renderSettings({
         <PerfSlider perf={perf} id="maxCreatesPerFrame" onPerfSetting={onPerfSetting} settingId="performance.maxCreatesPerFrame" />
       </SettingGroup>
 
-      <SettingGroup tab="streaming" label="Triangle Budget" keywords="triangles limit budget mesh" {...groupProps}>
+      <SettingGroup tab="streaming" label="삼각형 예산" keywords="triangles limit budget mesh" {...groupProps}>
         <SliderCtl
-          def={{ label: 'Triangle Budget', min: 0.1, max: 3, step: 0.1, digits: 1, unit: 'M' }}
+          def={{ label: '삼각형 예산', min: 0.1, max: 3, step: 0.1, digits: 1, unit: 'M' }}
           value={perf.triangleBudget / 1e6}
           onChange={(v) => onPerfSetting('triangleBudget', Math.round(v * 1e6))}
           settingId="performance.triangleBudget"
         />
       </SettingGroup>
 
-      <SettingGroup tab="streaming" label="Culling Aggressiveness" keywords="frustum behind camera cull" {...groupProps}>
+      <SettingGroup tab="streaming" label="컬링 공격성" keywords="frustum behind camera cull" {...groupProps}>
         <PerfSlider perf={perf} id="cullingAggressiveness" onPerfSetting={onPerfSetting} settingId="performance.cullingAggressiveness" />
       </SettingGroup>
 
@@ -527,11 +527,11 @@ function renderSettings({
         <SelectRow label="Water Quality" value={perf.waterQuality} options={WATER_QUALITY_OPTIONS} onChange={(v) => onPerfSetting('waterQuality', parseInt(v, 10))} settingId="performance.waterQuality" />
       </SettingGroup>
 
-      <SettingGroup tab="water" label="Water Reflection" keywords="specular glint sun" {...groupProps}>
+      <SettingGroup tab="water" label="물 반사" keywords="specular glint sun" {...groupProps}>
         <PerfSlider perf={perf} id="waterReflection" onPerfSetting={onPerfSetting} settingId="performance.waterReflection" />
       </SettingGroup>
 
-      <SettingGroup tab="water" label="Water Detail" keywords="ripple octave shader" {...groupProps}>
+      <SettingGroup tab="water" label="물 디테일" keywords="ripple octave shader" {...groupProps}>
         <PerfSlider perf={perf} id="waterDetail" onPerfSetting={onPerfSetting} settingId="performance.waterDetail" />
       </SettingGroup>
 
@@ -543,11 +543,11 @@ function renderSettings({
         <ToggleRow label="수중 효과" value={perf.underwaterEffect !== false} onChange={(v) => onPerfSetting('underwaterEffect', v)} settingId="performance.underwaterEffect" />
       </SettingGroup>
 
-      <SettingGroup tab="water" label="Water Distance" keywords="extent range fade" {...groupProps}>
+      <SettingGroup tab="water" label="물 거리" keywords="extent range fade" {...groupProps}>
         <PerfSlider perf={perf} id="waterDistance" onPerfSetting={onPerfSetting} settingId="performance.waterDistance" />
       </SettingGroup>
 
-      <SettingGroup tab="fog" label="Fog Distance" keywords="horizon haze atmosphere visibility" {...groupProps}>
+      <SettingGroup tab="fog" label="안개 거리" keywords="horizon haze atmosphere visibility" {...groupProps}>
         <PerfSlider perf={perf} id="fogDistance" onPerfSetting={onPerfSetting} settingId="performance.fogDistance" />
       </SettingGroup>
 
@@ -555,7 +555,7 @@ function renderSettings({
         <SelectRow label="Fallback Mode" value={perf.cloudFallback} options={[{ value: 'none', label: '전체' }, { value: 'lite', label: 'Lite (weak GPU)' }, { value: 'off', label: '꺼짐' }]} onChange={(v) => onPerfSetting('cloudFallback', v)} settingId="performance.cloudFallback" />
       </SettingGroup>
 
-      <SettingGroup tab="clouds" label="Raymarch Steps" keywords="clouds step raymarch resolution quality steps" {...groupProps}>
+      <SettingGroup tab="clouds" label="레이마칭 단계" keywords="clouds step raymarch resolution quality steps" {...groupProps}>
         <PerfSlider perf={perf} id="cloudSteps" onPerfSetting={onPerfSetting} settingId="performance.cloudSteps" />
       </SettingGroup>
 
@@ -569,22 +569,22 @@ function renderSettings({
 
       <SettingNote tab="clouds" text="Fast Shadows replaces the secondary shadow march with a cheap 2-tap approximation — big win when Self-Shadowing is on, near-identical look." {...groupProps} />
 
-      <SettingGroup tab="clouds" label="Shadow Steps" keywords="clouds shadow lighting steps" {...groupProps}>
+      <SettingGroup tab="clouds" label="그림자 단계" keywords="clouds shadow lighting steps" {...groupProps}>
         <PerfSlider perf={perf} id="cloudLightSteps" onPerfSetting={onPerfSetting} settingId="performance.cloudLightSteps" />
       </SettingGroup>
 
-      <SettingGroup tab="clouds" label="Distance Step LOD" keywords="clouds distance lod steps raymarch performance far" {...groupProps}>
-        <ToggleRow label="Distance Step LOD" value={!!perf.cloudStepLOD} onChange={(v) => onPerfSetting('cloudStepLOD', v)} settingId="performance.cloudStepLOD" />
+      <SettingGroup tab="clouds" label="거리 단계 LOD" keywords="clouds distance lod steps raymarch performance far" {...groupProps}>
+        <ToggleRow label="거리 단계 LOD" value={!!perf.cloudStepLOD} onChange={(v) => onPerfSetting('cloudStepLOD', v)} settingId="performance.cloudStepLOD" />
       </SettingGroup>
 
       <SettingNote tab="clouds" text="Distance Step LOD marches fewer samples as the camera pulls away from the surface." {...groupProps} />
 
 
-      <SettingGroup tab="clouds" label="Base Noise Octaves" keywords="clouds octaves noise fbm base" {...groupProps}>
+      <SettingGroup tab="clouds" label="기본 노이즈 옥타브" keywords="clouds octaves noise fbm base" {...groupProps}>
         <PerfSlider perf={perf} id="cloudOctaves" onPerfSetting={onPerfSetting} settingId="performance.cloudOctaves" />
       </SettingGroup>
 
-      <SettingGroup tab="clouds" label="Detail Noise Octaves" keywords="clouds octaves detail noise fbm" {...groupProps}>
+      <SettingGroup tab="clouds" label="디테일 노이즈 옥타브" keywords="clouds octaves detail noise fbm" {...groupProps}>
         <PerfSlider perf={perf} id="cloudDetailOctaves" onPerfSetting={onPerfSetting} settingId="performance.cloudDetailOctaves" />
       </SettingGroup>
 
@@ -592,7 +592,7 @@ function renderSettings({
         <ToggleRow label="Erosion (Worley Noise)" value={perf.cloudUseErosion !== false} onChange={(v) => onPerfSetting('cloudUseErosion', v)} settingId="performance.cloudUseErosion" />
       </SettingGroup>
 
-      <SettingGroup tab="clouds" label="Max Distance" keywords="clouds max distance visibility culling" {...groupProps}>
+      <SettingGroup tab="clouds" label="최대 거리" keywords="clouds max distance visibility culling" {...groupProps}>
         <PerfSlider perf={perf} id="cloudMaxDistance" onPerfSetting={onPerfSetting} settingId="performance.cloudMaxDistance" />
       </SettingGroup>
     </>

@@ -10,7 +10,7 @@ export function probeWebGL() {
     const gl = canvas.getContext('webgl2', { failIfMajorPerformanceCaveat: false })
       || canvas.getContext('webgl', { failIfMajorPerformanceCaveat: false })
       || canvas.getContext('experimental-webgl');
-    if (!gl) return { ok: false, reason: 'WebGL is not supported in this browser.' };
+    if (!gl) return { ok: false, reason: '이 브라우저에서는 WebGL이 지원되지 않습니다.' };
     const dbg = gl.getExtension('WEBGL_debug_renderer_info');
     const vendor = dbg ? gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL) : '';
     const renderer = dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : '';
@@ -62,7 +62,7 @@ function buildRendererAttempts(gpuPreference = 'default') {
  * @returns {THREE.WebGLRenderer}
  */
 export function createRendererForCanvas(canvas, settings = {}) {
-  if (!canvas) throw new Error('No canvas element was provided for WebGL initialization.');
+  if (!canvas) throw new Error('WebGL 초기화를 위한 캔버스 요소가 제공되지 않았습니다.');
 
   const probe = probeWebGL();
   if (!probe.ok) throw new Error(probe.reason);

@@ -26,7 +26,7 @@ export default function AuthPage({ mode, onBack, onSwitch, onSuccess }) {
     if (busy) return;
     const clientErrors = {};
     if (isRegister && fields.password !== fields.confirmPassword) {
-      clientErrors.confirmPassword = 'Passwords do not match.';
+      clientErrors.confirmPassword = '비밀번호가 일치하지 않습니다.';
     }
     if (Object.keys(clientErrors).length) {
       setFieldErrors(clientErrors);
@@ -43,7 +43,7 @@ export default function AuthPage({ mode, onBack, onSwitch, onSuccess }) {
       }
       onSuccess();
     } catch (error) {
-      showPopup(error.message || 'The request could not be completed.', { type: 'error', title: isRegister ? '계정이 생성되지 않았습니다' : 'Sign-in failed' });
+      showPopup(error.message || 'The request could not be completed.', { type: 'error', title: isRegister ? '계정이 생성되지 않았습니다' : '로그인 실패' });
       setFieldErrors(error.fields ?? {});
     } finally {
       setBusy(false);
@@ -74,8 +74,8 @@ export default function AuthPage({ mode, onBack, onSwitch, onSuccess }) {
           <span className="auth-mark"><Logo size={25} /></span>
           <div>
             <small>{APP_NAME}</small>
-            <h1 id="auth-title">{isRegister ? '계정을 만드세요' : 'Welcome back'}</h1>
-            <p>{isRegister ? 'Keep your identity ready for cloud projects and sharing.' : 'Sign in to access your account. Local projects remain on this device.'}</p>
+            <h1 id="auth-title">{isRegister ? '계정을 만드세요' : '다시 오신 것을 환영합니다'}</h1>
+            <p>{isRegister ? 'Keep your identity ready for cloud projects and sharing.' : '계정에 액세스하려면 로그인하세요. 로컬 프로젝트는 이 기기에 남아 있습니다.'}</p>
           </div>
         </header>
 
@@ -86,24 +86,24 @@ export default function AuthPage({ mode, onBack, onSwitch, onSuccess }) {
           })}
           {isRegister
             ? input('email', '이메일', { type: 'email', autoComplete: 'email', maxLength: 320, placeholder: 'you@example.com', required: true })
-            : input('identifier', 'Email or username', { type: 'text', autoComplete: 'username', maxLength: 320, placeholder: 'you@example.com', required: true })}
+            : input('identifier', '이메일 또는 사용자 이름', { type: 'text', autoComplete: 'username', maxLength: 320, placeholder: 'you@example.com', required: true })}
           {input('password', '비밀번호', {
             type: 'password', autoComplete: isRegister ? 'new-password' : 'current-password',
             minLength: isRegister ? 10 : undefined, maxLength: 128, placeholder: '••••••••••', required: true,
           })}
-          {isRegister && input('confirmPassword', 'Confirm password', {
+          {isRegister && input('confirmPassword', '비밀번호 확인', {
             type: 'password', autoComplete: 'new-password', minLength: 10, maxLength: 128,
             placeholder: '••••••••••', required: true,
           })}
 
           <button type="submit" className="lp-primary auth-submit" disabled={busy}>
             {isRegister ? <UserPlus size={15} /> : <LogIn size={15} />}
-            {busy ? 'Please wait…' : isRegister ? '계정 만들기' : '로그인'}
+            {busy ? '잠시만 기다려 주세요…' : isRegister ? '계정 만들기' : '로그인'}
           </button>
         </form>
 
         <footer>
-          <span>{isRegister ? 'Already have an account?' : 'New to Procedural Terrains?'}</span>
+          <span>{isRegister ? '이미 계정이 있으신가요?' : '프로시저럴 지형이 처음이신가요?'}</span>
           <button type="button" className="lp-link" onClick={() => onSwitch(isRegister ? 'login' : 'register')}>
             {isRegister ? '로그인' : '계정 만들기'}
           </button>

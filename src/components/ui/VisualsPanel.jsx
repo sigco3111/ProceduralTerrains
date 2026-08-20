@@ -15,48 +15,48 @@ const POST_SLIDERS = [
   slider('visualsContrast', '대비', 0.75, 1.45, 0.02, { digits: 2 }),
   slider('visualsSaturation', '채도', 0.4, 1.6, 0.02, { digits: 2 }),
   slider('visualsVignette', '비네트', 0, 0.65, 0.01, { digits: 2 }),
-  slider('visualsBloomStrength', 'Bloom Strength', 0, 0.9, 0.02, { digits: 2 }),
-  slider('visualsBloomThreshold', 'Bloom Threshold', 0.35, 1.2, 0.02, { digits: 2 }),
+  slider('visualsBloomStrength', '블룸 세기', 0, 0.9, 0.02, { digits: 2 }),
+  slider('visualsBloomThreshold', '블룸 임계값', 0.35, 1.2, 0.02, { digits: 2 }),
 ];
 
 const SKY_SLIDERS = [
   slider('visualsSkyIntensity', 'HDR Sky Intensity', 0.4, 2.2, 0.02, { digits: 2 }),
-  slider('visualsSunGlow', 'Sun Glow', 0, 2.2, 0.02, { digits: 2 }),
-  slider('visualsHorizonGlow', 'Horizon Glow', 0, 1.4, 0.02, { digits: 2 }),
+  slider('visualsSunGlow', '태양 발광', 0, 2.2, 0.02, { digits: 2 }),
+  slider('visualsHorizonGlow', '지평선 글로우', 0, 1.4, 0.02, { digits: 2 }),
 ];
 
 const TERRAIN_SLIDERS = [
-  slider('visualsTerrainColorVariation', 'Color Variation', 0, 1, 0.02, { digits: 2 }),
-  slider('visualsTerrainHeightDetail', 'Detail Height', 0, 1, 0.02, { digits: 2 }),
-  slider('visualsWetShoreStrength', 'Wet Shore Strength', 0, 1.2, 0.02, { digits: 2 }),
-  slider('visualsRockDetail', 'Rock Detail', 0, 1, 0.02, { digits: 2 }),
-  slider('visualsSoilDetail', 'Soil Detail', 0, 1, 0.02, { digits: 2 }),
+  slider('visualsTerrainColorVariation', '색상 변화', 0, 1, 0.02, { digits: 2 }),
+  slider('visualsTerrainHeightDetail', '디테일 높이', 0, 1, 0.02, { digits: 2 }),
+  slider('visualsWetShoreStrength', '젖은 해안 세기', 0, 1.2, 0.02, { digits: 2 }),
+  slider('visualsRockDetail', '바위 디테일', 0, 1, 0.02, { digits: 2 }),
+  slider('visualsSoilDetail', '토양 디테일', 0, 1, 0.02, { digits: 2 }),
   slider('visualsSandDetail', '모래 디테일', 0, 1, 0.02, { digits: 2 }),
 ];
 
 const SHORE_SLIDERS = [
-  slider('visualsFoamBreakup', 'Foam Breakup', 0, 1, 0.02, { digits: 2 }),
+  slider('visualsFoamBreakup', '거품 해체', 0, 1, 0.02, { digits: 2 }),
   slider('visualsWetSandRange', 'Wet Sand Range', 2, 48, 1, { unit: 'u' }),
-  slider('visualsShallowWaterSoftness', 'Shallow Water Softness', 0, 1, 0.02, { digits: 2 }),
+  slider('visualsShallowWaterSoftness', '얕은 물 부드러움', 0, 1, 0.02, { digits: 2 }),
 ];
 
 const VISUALS_TABS = [
   { id: 'post', label: 'Post FX' },
-  { id: 'sky', label: 'HDR Sky' },
+  { id: 'sky', label: 'HDR 하늘' },
   { id: 'terrain', label: 'Terrain Surface' },
-  { id: 'shoreline', label: 'Shoreline' },
+  { id: 'shoreline', label: '해안선' },
   { id: 'camera', label: '카메라 셰이더' },
 ];
 
 const CAMERA_SLIDERS = {
   pixelResolution: slider('visualsPixelResolution', '가상 해상도', 120, 720, 8, { unit: 'p' }),
-  ditheringStrength: slider('visualsDitheringStrength', 'Dithering Strength', 0, 1, 0.02, { digits: 2 }),
-  ditheringLevels: slider('visualsDitheringLevels', 'Color Levels', 2, 32, 1),
-  ditheringScale: slider('visualsDitheringScale', 'Pattern Scale', 1, 6, 1, { unit: ' px' }),
+  ditheringStrength: slider('visualsDitheringStrength', '디더링 세기', 0, 1, 0.02, { digits: 2 }),
+  ditheringLevels: slider('visualsDitheringLevels', '색상 레벨', 2, 32, 1),
+  ditheringScale: slider('visualsDitheringScale', '패턴 스케일', 1, 6, 1, { unit: ' px' }),
   crtStrength: slider('visualsCrtStrength', 'CRT 강도', 0, 1, 0.02, { digits: 2 }),
   crtLensBend: slider('visualsCrtLensBend', 'Lens Bend', 0, 1, 0.02, { digits: 2 }),
   crtLineWidth: slider('visualsCrtLineWidth', '스캔라인 너비', 1, 6, 0.25, { digits: 2, unit: ' px' }),
-  chromaticStrength: slider('visualsChromaticAberrationStrength', 'Chromatic Offset', 0, 8, 0.1, { digits: 1, unit: ' px' }),
+  chromaticStrength: slider('visualsChromaticAberrationStrength', '색수차 오프셋', 0, 8, 0.1, { digits: 1, unit: ' px' }),
 };
 
 function val(params, key) {
@@ -107,16 +107,16 @@ export default function VisualsPanel({ ctx }) {
     <>
       <div className="visuals-search-wrap">
         <Search size={14} aria-hidden />
-        <input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search visual settings…" aria-label="Search visual settings" />
+        <input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="시각 설정 검색…" aria-label="시각 설정 검색" />
         {query && <button type="button" onClick={() => setQuery('')} aria-label="Clear visual settings search"><X size={13} /></button>}
       </div>
 
       <PanelTabs active={tab} onChange={setTab} tabs={VISUALS_TABS} />
 
-      {group('post', 'Post Processing', 'post fx exposure contrast saturation vignette bloom rays', (
+      {group('post', '포스트 프로세싱', 'post fx exposure contrast saturation vignette bloom rays', (
         <>
           <ToggleRow
-            label="Post Processing"
+            label="포스트 프로세싱"
             value={val(params, 'visualsPostEnabled') !== false}
             onChange={(v) => onParam('visualsPostEnabled', v)}
             settingId="visuals.visualsPostEnabled"
@@ -126,11 +126,11 @@ export default function VisualsPanel({ ctx }) {
         </>
       ))}
 
-      {group('sky', 'HDR Sky', 'sky hdr intensity glow horizon atmosphere tint', (
+      {group('sky', 'HDR 하늘', '하늘 hdr 강도 광황 지평선 대기 틴트', (
         <>
           <SliderList items={SKY_SLIDERS} params={params} onParam={onParam} disabled={enabled.sky === false} query={query} />
           <div className="color-field" data-setting-id="visuals.visualsAtmosphereTint">
-            <div className="label-with-icon" data-tooltip="Tint applied to the procedural sky environment.">
+            <div className="label-with-icon" data-tooltip="절차적 하늘 환경에 적용되는 틴트.">
               <span className="setting-label">Atmosphere Tint</span>
             </div>
             <ColorInput
@@ -141,7 +141,7 @@ export default function VisualsPanel({ ctx }) {
         </>
       ))}
 
-      {group('terrain', 'Terrain Surface', 'terrain surface color variation height detail rock soil sand render', (
+      {group('terrain', 'Terrain Surface', '지형 표면 색상 변화 높이 디테일 바위 토양 모래 렌더', (
         <>
           <SliderList items={TERRAIN_SLIDERS} params={params} onParam={onParam} disabled={enabled.terrain === false} query={query} />
           {RENDER_SLIDERS.map((def) => (
@@ -150,13 +150,13 @@ export default function VisualsPanel({ ctx }) {
         </>
       ))}
 
-      {group('shoreline', 'Shoreline', 'shore foam wet sand shallow water', (
+      {group('shoreline', '해안선', '해안 거품 젖은 모래 얕은 물', (
         <SliderList items={SHORE_SLIDERS} params={params} onParam={onParam} disabled={enabled.shoreline === false} query={query} />
       ))}
 
       {tab === 'camera' && (
         <>
-          {group('pixelated', 'Pixelated', 'pixel resolution virtual resolution', (
+          {group('pixelated', '픽셀화', 'pixel resolution virtual resolution', (
             <>
           <SliderCtl
             def={CAMERA_SLIDERS.pixelResolution}
@@ -166,10 +166,10 @@ export default function VisualsPanel({ ctx }) {
           />
             </>
           ), 'camera')}
-          {group('dithering', 'Dithering', 'dither pattern color levels strength scale', (
+          {group('dithering', '디더링', 'dither pattern color levels strength scale', (
             <>
           <ToggleRow
-            label="Dithering"
+            label="디더링"
             value={!!val(params, 'visualsDitheringEnabled')}
             onChange={(v) => onParam('visualsDitheringEnabled', v)}
             settingId="visuals.visualsDitheringEnabled"
@@ -195,7 +195,7 @@ export default function VisualsPanel({ ctx }) {
           />
             </>
           ), 'camera')}
-          {group('crt', 'CRT', 'crt scanline lens bend analog noise', (
+          {group('crt', 'CRT', 'crt 스캔라인 렌즈 벤드 아날로그 노이즈', (
             <>
           <ToggleRow
             label="CRT"
@@ -224,10 +224,10 @@ export default function VisualsPanel({ ctx }) {
           />
             </>
           ), 'camera')}
-          {group('chromatic', 'Chromatic Aberration', 'chromatic offset rgb channels lens edges', (
+          {group('chromatic', '색수차', '색수차 오프셋 rgb 채널 렌즈 가장자리', (
             <>
           <ToggleRow
-            label="Chromatic Aberration"
+            label="색수차"
             value={!!val(params, 'visualsChromaticAberrationEnabled')}
             onChange={(v) => onParam('visualsChromaticAberrationEnabled', v)}
             settingId="visuals.visualsChromaticAberrationEnabled"

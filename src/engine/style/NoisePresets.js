@@ -9,14 +9,14 @@ export const NOISE_PRESETS = {
     params: {},
   },
   smooth: {
-    label: 'Smooth Rolling',
+    label: '부드러운 롤링',
     params: {
       terrainSmoothing: 0.45, ridge: 0.18, warp: 0.6, persistence: 0.42, lacunarity: 2.0,
       noiseStrength: 0.85, falloff: 0.4,
     },
   },
   rugged: {
-    label: 'Rugged Mountains',
+    label: '울퉁불퉁한 산맥',
     params: {
       ridge: 0.92, warp: 0.5, persistence: 0.55, lacunarity: 2.2,
       noiseStrength: 1.15, heightScale: 680,
@@ -30,21 +30,21 @@ export const NOISE_PRESETS = {
     },
   },
   dunes: {
-    label: 'Dune Fields',
+    label: '사구 지대',
     params: {
       ridge: 0.08, warp: 1.9, persistence: 0.38, noiseScale: 58,
       moistBias: -0.8, tempBias: 0.55, heightScale: 160,
     },
   },
   crystalline: {
-    label: 'Crystalline Spires',
+    label: '수정 첨탑',
     params: {
       ridge: 0.78, warp: 1.4, persistence: 0.62, lacunarity: 2.8,
       noiseStrength: 1.2, octaves: 8,
     },
   },
   fractured: {
-    label: 'Fractured Plates',
+    label: '균열된 플레이트',
     params: {
       ridge: 0.65, warp: 2.8, persistence: 0.52, lacunarity: 2.6,
       noiseScale: 35, falloff: 0.25,
@@ -59,7 +59,7 @@ export const NOISE_PRESETS = {
   },
 
   cartoon: {
-    label: 'Simple Cartoon',
+    label: '단순 만화',
     params: {
       terrainSmoothing: 0.28, ridge: 0.16, warp: 0.28, persistence: 0.36, lacunarity: 1.85,
       noiseStrength: 0.72, noiseScale: 72, octaves: 4, heightScale: 260,
@@ -68,7 +68,7 @@ export const NOISE_PRESETS = {
     },
   },
   flat: {
-    label: 'Low Relief',
+    label: '낮은 relief',
     params: {
       terrainSmoothing: 0.35, ridge: 0.05, warp: 0.3, persistence: 0.35, noiseStrength: 0.6,
       heightScale: 120, falloff: 0.2,

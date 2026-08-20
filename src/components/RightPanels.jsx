@@ -4,9 +4,9 @@ import { ToggleRow } from './controls.jsx';
 
 const LOD_LEVELS = [
   { name: 'LOD 0 High', color: '#e5484d' },
-  { name: 'LOD 1 Medium', color: '#f5a524' },
-  { name: 'LOD 2 Low', color: '#f5d90a' },
-  { name: 'LOD 3 Lowest', color: '#3b82f6' },
+  { name: 'LOD 1 중간', color: '#f5a524' },
+  { name: 'LOD 2 낮음', color: '#f5d90a' },
+  { name: 'LOD 3 최저', color: '#3b82f6' },
 ];
 
 function lodLabel(count) {
@@ -74,7 +74,7 @@ export function CameraPanel({ camInfo, camMode, onMode, onFov, onFocusCenter, em
         </select>
       </div>
       <div className="row">
-        <div className="label-with-icon" data-tooltip="Field of view angle of the perspective camera (20-90°)">
+        <div className="label-with-icon" data-tooltip="투시 카메라의 시야각 (20-90°)">
           <span className="setting-icon">
             <svg viewBox="0 0 16 16" fill="none">
               <path d="M2 14l6-6-6-6M14 2v12" stroke="currentColor" strokeWidth="1.2" />
@@ -100,7 +100,7 @@ export function CameraPanel({ camInfo, camMode, onMode, onFov, onFocusCenter, em
         />
       </div>
       <div className="row">
-        <div className="label-with-icon" data-tooltip="Current camera orbit tilt angle">
+        <div className="label-with-icon" data-tooltip="현재 카메라 궤도 기울기 각도">
           <span className="setting-icon">
             <svg viewBox="0 0 16 16" fill="none">
               <path d="M14 8A6 6 0 0 0 2 8" stroke="currentColor" strokeWidth="1.2" />
@@ -118,7 +118,7 @@ export function CameraPanel({ camInfo, camMode, onMode, onFov, onFocusCenter, em
         <input type="text" readOnly value={camInfo.angle} />
       </div>
       <div className="row">
-        <div className="label-with-icon" data-tooltip="Current distance from the camera focus center">
+        <div className="label-with-icon" data-tooltip="카메라 초점 중심으로부터의 현재 거리">
           <span className="setting-icon">
             <svg viewBox="0 0 16 16" fill="none">
               <path d="M1 8h14M3 5l-2 3 2 3M13 5l2 3-2 3" stroke="currentColor" strokeWidth="1.2" />
@@ -134,7 +134,7 @@ export function CameraPanel({ camInfo, camMode, onMode, onFov, onFocusCenter, em
         </div>
         <input type="text" readOnly value={camInfo.distance} />
       </div>
-      <button type="button" className="action-btn" onClick={onFocusCenter} data-tooltip="Snap camera target back to the world coordinate origin">
+      <button type="button" className="action-btn" onClick={onFocusCenter} data-tooltip="카메라 타겟을 월드 좌표 원점으로 다시 스�">
         <svg viewBox="0 0 16 16" className="bic">
           <circle cx="8" cy="8" r="2" fill="currentColor" />
           <path d="M8 1.5v2.6M8 11.9v2.6M1.5 8h2.6M11.9 8h2.6" stroke="currentColor" strokeWidth="1.2" />
@@ -192,7 +192,7 @@ export function LodPanel({
           <span className="lod-count">{lodLabel(lodCounts[i])}</span>
         </div>
       ))}
-      <div className="stat-row" data-tooltip="Number of chunks currently visible inside the camera view">
+      <div className="stat-row" data-tooltip="현재 카메라 뷰 내부에 보이는 청크 수">
         <div className="label-with-icon">
           <span className="setting-icon">
             <svg viewBox="0 0 16 16" fill="none">
@@ -215,7 +215,7 @@ export function LodPanel({
         </div>
         <span className={`stat-value stat-mono${culledChunks > 0 ? ' fps-info-culled' : ''}`}>{culledChunks}</span>
       </div>
-      <div className="stat-row" data-tooltip="Current size of the rendered chunk grid">
+      <div className="stat-row" data-tooltip="렌더링된 청크 그리드의 현재 크기">
         <div className="label-with-icon">
           <span className="setting-icon">
             <svg viewBox="0 0 16 16" fill="none">
@@ -228,7 +228,7 @@ export function LodPanel({
       </div>
       <div className="lod-summary">
         <LodDonut counts={lodCounts} />
-        <div className="lod-total" data-tooltip="Total number of chunks loaded in memory">
+        <div className="lod-total" data-tooltip="메모리에 로드된 총 청크 수">
           <div className="lod-total-num">{total}</div>
           <div className="lod-total-label">
             Total Chunks

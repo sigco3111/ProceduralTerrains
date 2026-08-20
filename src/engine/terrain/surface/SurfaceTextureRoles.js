@@ -6,14 +6,14 @@ export const SURFACE_TEXTURE_ROLE_GROUPS = [
     label: '해변',
     roles: [
       { id: 'sand', label: '모래', tiling: 18 },
-      { id: 'dune', label: 'Dune', tiling: 20 },
+      { id: 'dune', label: '사구', tiling: 20 },
     ],
   },
   {
     id: 'vegetation',
     label: '식생',
     roles: [
-      { id: 'dryGrass', label: 'Dry Grass', tiling: 14 },
+      { id: 'dryGrass', label: '마른 풀', tiling: 14 },
       { id: 'grass', label: '잔디', tiling: 12 },
       { id: 'forest', label: '숲', tiling: 11 },
       { id: 'jungle', label: '정글', tiling: 10 },

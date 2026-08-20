@@ -224,7 +224,7 @@ export function migrateStack(raw) {
 
 /** The default stack: a single Classic Terrain layer == today's exact recipe. */
 export function defaultLegacyStack() {
-  return makeStack([makeLayer('legacy', { name: 'Classic Terrain', blendMode: 'replace' })]);
+  return makeStack([makeLayer('legacy', { name: '클래식 지형', blendMode: 'replace' })]);
 }
 
 export { NOISE_TYPES };

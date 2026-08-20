@@ -384,7 +384,7 @@ export class ManualTerrainModeManager {
     this._emit({ inspectorRequested: next });
     if (!silent) {
       this.onToast?.(next
-        ? 'Manual Sculpt — left drag sculpts · Alt + left drag pans · right drag orbits'
+        ? '수동 조각 — 왼쪽 드래그 조각하기 · Alt + 왼쪽 드래그 팬 · 오른쪽 드래그 궤도 회전'
         : 'Exited Manual Sculpt');
     }
   }
@@ -470,8 +470,8 @@ export class ManualTerrainModeManager {
     if (!this.propField.clear()) return false;
     this._surfaceRevision++;
     this.cursor.setVisible(false);
-    this._emit({ documentChanged: true, surfaceChanged: true, propsChanged: true, label: 'Cleared terrain props' });
-    this.onStableAction?.('Cleared terrain props');
+    this._emit({ documentChanged: true, surfaceChanged: true, propsChanged: true, label: '지형 프롭 지워짐' });
+    this.onStableAction?.('지형 프롭 지워짐');
     return true;
   }
 
@@ -479,8 +479,8 @@ export class ManualTerrainModeManager {
     if (this.field.isSculptEmpty()) return false;
     this.field.clearSculpt();
     this.cursor.setVisible(false);
-    this._emit({ terrainChanged: true, documentChanged: true, sculptChanged: true, label: 'Cleared sculpt layer' });
-    this.onStableAction?.('Cleared sculpt layer');
+    this._emit({ terrainChanged: true, documentChanged: true, sculptChanged: true, label: '조각 레이어 지움' });
+    this.onStableAction?.('조각 레이어 지움');
     return true;
   }
 
@@ -682,7 +682,7 @@ export class ManualTerrainModeManager {
     this._surfaceRevision++;
     this._rebuildTerrain();
     this._syncVisuals();
-    if (emit) this._emit({ terrainChanged: true, label: 'Cleared manual terrain' });
+    if (emit) this._emit({ terrainChanged: true, label: '수동 지형 지워짐' });
   }
 
   serialize({ includeSculpt = true, includeSurface = true } = {}) {
@@ -948,7 +948,7 @@ export class ManualTerrainModeManager {
       this._surfaceRevision++;
       const paintingProps = this.texturePaint.mode === 'props';
       const label = paintingProps
-        ? `Painted terrain props (${this.texturePaint.tool})`
+        ? `페인팅된 지형 소품 (${this.texturePaint.tool})`
         : `Painted terrain texture (${this.texturePaint.tool})`;
       this._emit({
         documentChanged: true,
@@ -967,9 +967,9 @@ export class ManualTerrainModeManager {
       terrainChanged: true,
       documentChanged: true,
       sculptChanged: true,
-      label: `Sculpted terrain (${this.sculpt.tool})`,
+      label: `조각된 지형 (${this.sculpt.tool})`,
     });
-    this.onStableAction?.(`Sculpted terrain (${this.sculpt.tool})`);
+    this.onStableAction?.(`조각된 지형 (${this.sculpt.tool})`);
   }
 
   _handleWheel(event) {
@@ -1131,7 +1131,7 @@ export class ManualTerrainModeManager {
       this.selectShape(null);
       return;
     }
-    if ((event.key === 'Delete' || event.key === 'Backspace') && this.selectedId) {
+    if ((event.key === 'Delete' || event.key === '백스페이스') && this.selectedId) {
       event.preventDefault();
       this.deleteShape();
       return;

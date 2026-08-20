@@ -47,7 +47,7 @@ function SeedRow({ seed, onParam, onRandomizeSeed }) {
   };
   return (
     <div className="seed-row">
-      <div className="label-with-icon" data-tooltip="Base integer for the procedural height generator" style={{ marginBottom: '5px' }}>
+      <div className="label-with-icon" data-tooltip="절차적 높이 생성기의 기본 정수" style={{ marginBottom: '5px' }}>
         <span className="setting-label">Seed</span><InfoDot />
       </div>
       <div className="seed-input-wrap">
@@ -259,7 +259,7 @@ function ErosionTabFooter({ erosion }) {
   return (
     <div className="side-panel-quick" style={{ width: '100%' }}>
       <button type="button" className="action-btn primary" onClick={bake} disabled={busy} style={{ flex: 2 }}>
-        {busy ? `${EROSION_PHASE_LABEL[phase] || 'Baking…'} ${pct}%` : (baked ? 'Re-bake Erosion' : 'Bake Erosion')}
+        {busy ? `${EROSION_PHASE_LABEL[phase] || 'Baking…'} ${pct}%` : (baked ? 'Re-bake Erosion' : '침식 베이크')}
       </button>
       <button type="button" className="action-btn" onClick={reset} disabled={busy || !baked} style={{ flex: 1 }}>
         Reset
@@ -283,7 +283,7 @@ function ErosionTabContent({ ctx, erosion }) {
 
   return (
     <>
-      <ToggleRow label="Enable Erosion" value={!!params.erosionEnabled} onChange={(v) => onParam('erosionEnabled', v)}
+      <ToggleRow label="침식 활성화" value={!!params.erosionEnabled} onChange={(v) => onParam('erosionEnabled', v)}
         settingId="erosion.erosionEnabled"
         info="Apply the baked erosion to the terrain. Toggle to compare Before / After. Disabled until you bake." />
       {!baked && (
@@ -315,7 +315,7 @@ function ErosionTabContent({ ctx, erosion }) {
 function BiomesPanel({ ctx }) {
   const { params, onParam } = ctx;
   return (
-      <SidePanel title="생태계들" description="Climate distribution and masks." onClose={ctx.onClose}>
+      <SidePanel title="생태계들" description="기후 분포 및 마스크." onClose={ctx.onClose}>
       {BIOME_SLIDERS.map((def) => (
         <SliderCtl key={def.key} def={def} value={params[def.key]} onChange={(v) => onParam(def.key, v)} settingId={`biomes.${def.key}`} />
       ))}
@@ -351,19 +351,19 @@ function WaterPanel({ ctx }) {
 }
 
 const PROP_SLIDERS = {
-  propsDensity: { label: 'Master Density', min: 0, max: 2, step: 0.05, digits: 2 },
-  propsGrassDensity: { label: 'Grass Density', min: 0, max: 2, step: 0.05, digits: 2 },
-  propsGrass: { label: 'Grass Height', min: 0.05, max: 2, step: 0.05, digits: 2 },
-  propsRocks: { label: 'Rock Density', min: 0, max: 2, step: 0.05, digits: 2 },
-  propsRockScale: { label: 'Rock Scale', min: 0.05, max: 2.5, step: 0.05, digits: 2 },
+  propsDensity: { label: '마스터 밀도', min: 0, max: 2, step: 0.05, digits: 2 },
+  propsGrassDensity: { label: '풀 밀도', min: 0, max: 2, step: 0.05, digits: 2 },
+  propsGrass: { label: '풀 높이', min: 0.05, max: 2, step: 0.05, digits: 2 },
+  propsRocks: { label: '바위 밀도', min: 0, max: 2, step: 0.05, digits: 2 },
+  propsRockScale: { label: '바위 스케일', min: 0.05, max: 2.5, step: 0.05, digits: 2 },
   propsTreeDensity: { label: 'Tree Density', min: 0, max: 2, step: 0.05, digits: 2 },
-  propsTreeScale: { label: 'Tree Scale', min: 0.25, max: 2.5, step: 0.05, digits: 2 },
+  propsTreeScale: { label: '나무 스케일', min: 0.25, max: 2.5, step: 0.05, digits: 2 },
   propsWind: { label: '바람', min: 0, max: 1.5, step: 0.05, digits: 2 },
-  propsWindSpeed: { label: 'Animation Speed', min: 0, max: 4, step: 0.05, digits: 2 },
+  propsWindSpeed: { label: '애니메이션 속도', min: 0, max: 4, step: 0.05, digits: 2 },
   propsGust: { label: 'Gust Motion', min: 0, max: 1.5, step: 0.05, digits: 2 },
-  propsFlowers: { label: 'Flower Density', min: 0, max: 1, step: 0.01, digits: 2 },
-  propsCullDistance: { label: 'Cull Distance', min: 120, max: 1800, step: 20, digits: 0, unit: ' u' },
-  propsLodDistance: { label: 'LOD Distance', min: 60, max: 900, step: 10, digits: 0, unit: ' u' },
+  propsFlowers: { label: '꽃 밀도', min: 0, max: 1, step: 0.01, digits: 2 },
+  propsCullDistance: { label: '컬링 거리', min: 120, max: 1800, step: 20, digits: 0, unit: ' u' },
+  propsLodDistance: { label: 'LOD 거리', min: 60, max: 900, step: 10, digits: 0, unit: ' u' },
 };
 
 function PropsPanel({ ctx }) {
@@ -376,12 +376,12 @@ function PropsPanel({ ctx }) {
     setSubTab(settingId === 'props.assetLibrary' ? 'assets' : 'settings');
   }, [ctx.settingsTarget]);
   return (
-    <SidePanel title="소품" description="Manage, preview and scatter optimized 3D terrain assets." onClose={ctx.onClose}>
-      <ToggleRow label="Procedural Props" value={enabled} onChange={(v) => onParam('propsEnabled', v)}
+    <SidePanel title="소품" description="최적화된 3D 지형 에셋을 관리하고 미리 보고 분산 배치하세요." onClose={ctx.onClose}>
+      <ToggleRow label="절차적 소품" value={enabled} onChange={(v) => onParam('propsEnabled', v)}
         info="Scatter optimized grass, flowers, terrain-matched boulders, broadleaf trees and conifers in every world mode." />
       <PanelTabs active={subTab} onChange={setSubTab} tabs={[
         { id: 'assets', label: '자산 라이브러리' },
-        { id: 'settings', label: 'Scatter Settings' },
+        { id: 'settings', label: '분산 설정' },
       ]} />
       {subTab === 'assets' && (
         <PropsAssetLibrary value={params.propsAssets} onChange={(assets) => onParam('propsAssets', assets)} />
@@ -406,7 +406,7 @@ function PropsPanel({ ctx }) {
           </ControlSection>
 
           <ControlSection id="props-performance" title="성능 우선" defaultOpen settingId="props.section.performance">
-            <SelectRow label="Prop Quality" value={perf?.propQuality ?? 2} options={[
+            <SelectRow label="소품 품질" value={perf?.propQuality ?? 2} options={[
               { value: 0, label: '성능 우선' },
               { value: 1, label: '균형' },
               { value: 2, label: '높음' },
@@ -416,8 +416,8 @@ function PropsPanel({ ctx }) {
             <SliderCtl def={PROP_SLIDERS.propsLodDistance} value={params.propsLodDistance} onChange={(v) => onParam('propsLodDistance', v)} />
             <p className="section-hint">
               {worldMode === 'studio'
-                ? 'Studio also reads the props mask painted in Paint Mode.'
-                : 'This mode uses deterministic procedural scattering from the current seed.'}
+                ? '스튜디오는 페인트 모드에서 페인트된 프롭 마스크도 읽습니다.'
+                : '이 모드는 현재 시드에서 결정론적 절차적 분산을 사용합니다.'}
             </p>
           </ControlSection>
         </>
@@ -468,9 +468,9 @@ function TimeOfDayControl({ timeOfDay, onTimeOfDay, settingId }) {
 }
 
 const SKYBOX_SLIDERS = {
-  skyboxBrightness: { key: 'skyboxBrightness', label: 'Sky Brightness', min: 0.2, max: 2.5, step: 0.05, digits: 2, info: 'Overall brightness of the sky dome and sun glow.' },
-  skyboxHaze: { key: 'skyboxHaze', label: 'Horizon Haze', min: 0, max: 1.2, step: 0.05, digits: 2, info: 'Strength of the atmospheric haze band blended around the horizon.' },
-  skyboxCycleSpeed: { key: 'skyboxCycleSpeed', label: 'Cycle Speed', min: 0.05, max: 12, step: 0.05, digits: 2, unit: 'x', info: 'Day/night animation speed. 1x is one full cycle in about two minutes.' },
+  skyboxBrightness: { key: 'skyboxBrightness', label: '하늘 밝기', min: 0.2, max: 2.5, step: 0.05, digits: 2, info: 'Overall brightness of the sky dome and sun glow.' },
+  skyboxHaze: { key: 'skyboxHaze', label: '지평선 연무', min: 0, max: 1.2, step: 0.05, digits: 2, info: 'Strength of the atmospheric haze band blended around the horizon.' },
+  skyboxCycleSpeed: { key: 'skyboxCycleSpeed', label: '주기 속도', min: 0.05, max: 12, step: 0.05, digits: 2, unit: 'x', info: 'Day/night animation speed. 1x is one full cycle in about two minutes.' },
 };
 
 function SkyboxPanel({ ctx }) {
@@ -499,7 +499,7 @@ function SkyboxPanel({ ctx }) {
             onChange={(v) => onParam('skyboxBrightness', v)} settingId="skybox.skyboxBrightness" />
           <SliderCtl def={SKYBOX_SLIDERS.skyboxHaze} value={params.skyboxHaze ?? 0.55}
             onChange={(v) => onParam('skyboxHaze', v)} settingId="skybox.skyboxHaze" />
-          <ToggleRow label="Night Stars" value={params.skyboxStars !== false}
+          <ToggleRow label="밤 별" value={params.skyboxStars !== false}
             onChange={(v) => onParam('skyboxStars', v)}
             settingId="skybox.skyboxStars"
             info="Show the procedural star field when the sun is below the horizon." />
@@ -542,7 +542,7 @@ function PerformancePanel({ ctx }) {
         onPerfSetting={ctx.onPerfSetting} onPerfReset={ctx.onPerfReset}
         settingsTarget={ctx.settingsTarget}
         onSettingsTargetHandled={ctx.onSettingsTargetHandled} />
-      <PanelResetButton label="Reset Performance Settings" onClick={() => ctx.onResetPanel?.('performance')} settingId="performance.reset" />
+      <PanelResetButton label="성능 설정 초기화" onClick={() => ctx.onResetPanel?.('performance')} settingId="performance.reset" />
     </SidePanel>
   );
 }
@@ -558,13 +558,13 @@ function DebugPanel({ ctx }) {
   }, [ctx.settingsTarget?.tabId, tab]);
 
   return (
-    <SidePanel title="디버그" description="Live stats and diagnostics." onClose={ctx.onClose}>
+    <SidePanel title="디버그" description="실시간 통계 및 진단." onClose={ctx.onClose}>
       <PanelTabs
         active={tab}
         onChange={setTab}
         tabs={[
           { id: 'monitor', label: '모니터' },
-          { id: 'viewport', label: 'Viewport' },
+          { id: 'viewport', label: '뷰포트' },
           ...(isStudio ? [{ id: 'analysis', label: '분석' }] : []),
           { id: 'engine', label: '엔진' },
         ]}
@@ -613,7 +613,7 @@ function DebugPanel({ ctx }) {
       {tab === 'engine' && <EngineDebugOptions ctx={ctx} />}
       {tab === 'analysis' && isStudio && <AnalysisContent ctx={ctx} />}
 
-      <PanelResetButton label="Reset Debug Settings" onClick={() => ctx.onResetPanel?.('debug')} settingId="debug.reset" />
+      <PanelResetButton label="디버그 설정 초기화" onClick={() => ctx.onResetPanel?.('debug')} settingId="debug.reset" />
     </SidePanel>
   );
 }
@@ -641,7 +641,7 @@ function SessionInfo({ ctx }) {
           <div className="stat-row">
             <span className="stat-label">Height Bake</span>
             <span className="stat-value">
-              {ctx.debugFlags?.disableHeightBake ? 'Off (live field)' : '활성'}
+              {ctx.debugFlags?.disableHeightBake ? '끔 (라이브 필드)' : '활성'}
             </span>
           </div>
         )}
@@ -661,7 +661,7 @@ function TerrainOverlayOptions({ ctx }) {
     { value: 'off', label: '꺼짐' },
     { value: 'slope', label: 'Slope Mask' },
     { value: 'rock', label: 'Rock Mask' },
-    { value: 'shoreline', label: 'Shoreline Mask' },
+    { value: 'shoreline', label: '해안선 마스크' },
     { value: 'detailFade', label: 'Close Detail Fade' },
     { value: 'detail', label: 'Detail Noise' },
     { value: 'albedo', label: 'Final Albedo' },
@@ -695,7 +695,7 @@ function TerrainOverlayOptions({ ctx }) {
         />
       )}
       <ToggleRow
-        label="Show Chunk Merging"
+        label="청크 병합 표시"
         value={!!ctx.debugFlags?.mergeDebug}
         onChange={(v) => ctx.onDebugFlag?.('mergeDebug', v)}
         info="Tint folded terrain by merge level (green = small 2×2 fold → magenta = whole region). Works in Tile, Infinite and Planet modes. Watch blocks colour in as terrain folds at distance."
@@ -708,7 +708,7 @@ function TerrainOverlayOptions({ ctx }) {
         info="Color-code biomes directly on the terrain surface for inspection."
       />
       <SelectRow
-        label="Terrain Material Debug"
+        label="지형 재질 디버그"
         value={ctx.debugFlags?.terrainDetailDebug ?? 'off'}
         options={detailDebugOptions}
         onChange={(v) => ctx.onDebugFlag?.('terrainDetailDebug', v)}
@@ -728,12 +728,12 @@ function EngineDebugOptions({ ctx }) {
   return (
     <>
       <CollapsibleGroup
-        title="Generation"
+        title="세대"
         icon={<RefreshCw size={15} strokeWidth={1.75} />}
         defaultOpen
       >
         <ToggleRow
-          label="Auto Update"
+          label="자동 업데이트"
           value={params.autoUpdate}
           onChange={(v) => onParam('autoUpdate', v)}
           info="Rebuild the terrain live as shape settings change. When off, edits stay pending until Auto Update is turned back on."
@@ -742,35 +742,35 @@ function EngineDebugOptions({ ctx }) {
       </CollapsibleGroup>
 
       <CollapsibleGroup
-        title="Diagnostics"
+        title="진단"
         icon={<Cog size={15} strokeWidth={1.75} />}
         defaultOpen={isStudio || worldMode === 'planet'}
       >
         {isStudio || worldMode === 'planet' ? (
           <>
             <ToggleRow
-              label="Freeze Culling"
+              label="컬링 정지"
               value={!!flags.freezeCulling}
               onChange={(v) => setFlag('freezeCulling', v)}
               info="Stop recomputing chunk visibility. Freeze, then orbit out to inspect the culling frustum from outside."
               settingId="debug.freezeCulling"
             />
             <ToggleRow
-              label="Freeze LOD"
+              label="LOD 정지"
               value={!!flags.freezeLod}
               onChange={(v) => setFlag('freezeLod', v)}
               info="Stop recomputing per-chunk level of detail — hold the current LOD layout while you move."
               settingId="debug.freezeLod"
             />
             <ToggleRow
-              label="Force Render"
+              label="강제 렌더링"
               value={!!flags.forceRender}
               onChange={(v) => setFlag('forceRender', v)}
               info="Bypass on-demand rendering and draw every frame (use to read true sustained FPS)."
               settingId="debug.forceRender"
             />
             <ToggleRow
-              label="Disable Height Bake"
+              label="높이 베이크 비활성화"
               value={!!flags.disableHeightBake}
               onChange={(v) => setFlag('disableHeightBake', v)}
               info={isStudio
@@ -779,7 +779,7 @@ function EngineDebugOptions({ ctx }) {
               settingId="debug.disableHeightBake"
             />
             <ToggleRow
-              label="Free Cam No-Clip"
+              label="프리캠 노클립"
               value={!!flags.freeCamNoClip}
               onChange={(v) => setFlag('freeCamNoClip', v)}
               info="Temporarily switch to a collision-free FPS debug camera, then restore the previous explore/camera mode when disabled."
@@ -789,7 +789,7 @@ function EngineDebugOptions({ ctx }) {
         ) : (
           <>
             <ToggleRow
-              label="Free Cam No-Clip"
+              label="프리캠 노클립"
               value={!!flags.freeCamNoClip}
               onChange={(v) => setFlag('freeCamNoClip', v)}
               info="Temporarily switch to a collision-free FPS debug camera, then restore the previous explore/camera mode when disabled."
@@ -854,11 +854,11 @@ function ExportPanel({ ctx }) {
   };
 
   return (
-    <SidePanel title="내보내기" description="Export meshes and textures."
+    <SidePanel title="내보내기" description="메시와 텍스처 내보내기."
       onClose={ctx.onClose}
       footer={(
         <button type="button" className="action-btn primary" onClick={doExport} disabled={busy || exportBlocked}>
-          {busy ? 'Exporting…' : `Export ${ctx.worldMode === 'planet' ? 'Planet' : 'Terrain'}`}
+          {busy ? '내보내는 중…' : `Export ${ctx.worldMode === 'planet' ? 'Planet' : 'Terrain'}`}
         </button>
       )}>
       <div className="side-panel-quick">
@@ -866,12 +866,12 @@ function ExportPanel({ ctx }) {
         <button type="button" className="action-btn" onClick={ctx.onExportHeightmap} disabled={busy}>Heightmap</button>
       </div>
 
-      <ControlSection id="export-production-preset" title="Production Preset" defaultOpen settingId="export.section.productionPreset">
+      <ControlSection id="export-production-preset" title="프로덕션 프리셋" defaultOpen settingId="export.section.productionPreset">
         <SelectRow label="대상" value={opt.exportPresetId} options={EXPORT_PRESET_OPTIONS} onChange={applyPreset} />
         <div className="settings-hint">
-          {selectedPreset ? selectedPreset.description : 'Choose files, maps, and geometry manually.'}
+          {selectedPreset ? selectedPreset.description : '파일, 지도, 지오메트리를 수동으로 선택하세요.'}
         </div>
-        <div className="export-validation" role="status" aria-label="Production check">
+        <div className="export-validation" role="status" aria-label="프로덕션 점검">
           <strong>Production Check</strong>
           {productionChecks.map((check, index) => (
             <div className={`export-validation-row ${check.status}`} key={`${check.status}-${index}`}>
@@ -968,7 +968,7 @@ function TilesContent({ ctx }) {
   const atGridEdge = tiles.length >= maxCells;
   return (
     <ControlSection id="inspector-tiles" title="타일" defaultOpen settingId="world.section.tiles" icon={PANEL_ICONS.tiles}>
-      <ControlSection id="inspector-tiles-assembly" title="Assembly" nested defaultOpen settingId="world.section.tilesAssembly">
+      <ControlSection id="inspector-tiles-assembly" title="조립" nested defaultOpen settingId="world.section.tilesAssembly">
         <div className="settings-hint" style={{ marginBottom: 8 }}>
           {shape === 'square'
             ? `Hover near a board edge and click the highlighted square to add a tile. Placement is limited to a ${grid}×${grid} grid centred on the origin.`
@@ -978,7 +978,7 @@ function TilesContent({ ctx }) {
           {' '}Tiles share the same noise field and export together.
         </div>
         <SelectRow label="형태" value={shape}
-          options={[{ value: 'square', label: '사각형' }, { value: 'circle', label: 'Circle' }]}
+          options={[{ value: 'square', label: '사각형' }, { value: 'circle', label: '원' }]}
           onChange={ctx.onTileAssemblyShape} settingId="world.tileAssemblyShape"
           info="Square supports hover-to-add tiles. Circle crops the current square chunk assembly to a disk." />
         <div className="kv-row"><span>Tiles</span><span>{tiles.length} / {maxCells}</span></div>
@@ -989,7 +989,7 @@ function TilesContent({ ctx }) {
       </ControlSection>
 
       {shape === 'square' && tiles.length > 1 && (
-        <ControlSection id="inspector-tiles-remove" title="Remove a Tile" nested defaultOpen={false} settingId="world.section.tilesRemove">
+        <ControlSection id="inspector-tiles-remove" title="타일 제거" nested defaultOpen={false} settingId="world.section.tilesRemove">
           <div className="tile-chip-grid">
             {tiles.map((t) => (
               <button

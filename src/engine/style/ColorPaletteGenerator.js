@@ -10,9 +10,9 @@ export const PLANET_GEN_TYPES = [
   { key: 'alien', label: '에일리언' },
   { key: 'desert', label: '사막' },
   { key: 'ice', label: 'Ice' },
-  { key: 'toxic', label: 'Toxic' },
+  { key: 'toxic', label: '유독성' },
   { key: 'volcanic', label: '화산성' },
-  { key: 'fungal', label: 'Fungal' },
+  { key: 'fungal', label: '균사체' },
 ];
 
 function mulberry32(a) {

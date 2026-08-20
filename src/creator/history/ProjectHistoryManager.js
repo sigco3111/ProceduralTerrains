@@ -21,7 +21,7 @@ export class ProjectHistoryManager {
       return true;
     } catch (error) {
       this.cursor = previousCursor;
-      console.warn('Creator history restore failed', error);
+      console.warn('크리에이터 기록 복원 실패', error);
       return false;
     } finally {
       this._restoring = false;
@@ -36,7 +36,7 @@ export class ProjectHistoryManager {
     return this._restore(this.actions[index].after, index);
   }
   async createSnapshot(name, { description = '', automatic = false, tags = [] } = {}) {
-    const snap = { id: crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`, name: name || 'Untitled snapshot', description, timestamp: Date.now(), appVersion: APP_VERSION, thumbnail: await this.getThumbnail?.(), projectState: clone(this.getState()), tags, automatic };
+    const snap = { id: crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`, name: name || '이름 없는 스냅샷', description, timestamp: Date.now(), appVersion: APP_VERSION, thumbnail: await this.getThumbnail?.(), projectState: clone(this.getState()), tags, automatic };
     this.snapshots.push(snap); if (automatic) { const autos = this.snapshots.filter((s) => s.automatic); while (autos.length > 5) { const old = autos.shift(); this.snapshots = this.snapshots.filter((s) => s.id !== old.id); } }
     await this._put(snap); this._emit(); return snap;
   }

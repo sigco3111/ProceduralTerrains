@@ -111,7 +111,7 @@ export class PaintModeManager {
     this.layers.clear();
     this._layersActive = false;
     this._syncUniforms();
-    if (!silent) this.onToast?.('Paint layers cleared');
+    if (!silent) this.onToast?.('페인트 레이어 지움');
   }
 
   // Non-destructive: swap which procedural base the paint layers sit on top
@@ -132,7 +132,7 @@ export class PaintModeManager {
     this.layers.clear();
     this._layersActive = false;
     this._syncUniforms();
-    this.onToast?.('Empty Terrain — flat board, paint layers cleared');
+    this.onToast?.('빈 지형 — 평평한 보드, 페인트 레이어 지움');
   }
 
   serialize() { return this.layers.serialize(); }

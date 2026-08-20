@@ -25,7 +25,7 @@ const ICONS = {
 
 function formatAge(timestamp) {
   const seconds = Math.max(0, Math.floor((Date.now() - timestamp) / 1000));
-  if (seconds < 10) return 'just now';
+  if (seconds < 10) return '방금 전';
   if (seconds < 60) return `${seconds}s ago`;
   const minutes = Math.floor(seconds / 60);
   if (minutes < 60) return `${minutes}m ago`;
@@ -60,7 +60,7 @@ export default function NotificationCenter({ recent = [], notificationsIgnored =
         type="button"
         className={`tb-btn tb-icon-btn tb-notification-btn${open ? ' active' : ''}`}
         onClick={() => setOpen((value) => !value)}
-        title="Recent activity"
+        title="최근 활동"
         aria-label={`Recent activity${count ? ` (${count})` : ''}`}
         aria-haspopup="dialog"
         aria-expanded={open}
@@ -70,7 +70,7 @@ export default function NotificationCenter({ recent = [], notificationsIgnored =
       </button>
 
       {open && (
-        <div className="tb-notification-popover" role="dialog" aria-label="Recent activity">
+        <div className="tb-notification-popover" role="dialog" aria-label="최근 활동">
           <div className="tb-notification-heading">
             <span>Recent activity</span>
             <button type="button" className="tb-notification-close" onClick={() => setOpen(false)} aria-label="Close recent activity">
@@ -105,7 +105,7 @@ export default function NotificationCenter({ recent = [], notificationsIgnored =
               onClick={onToggleIgnore}
               aria-pressed={notificationsIgnored}
             >
-              {notificationsIgnored ? 'Enable logging' : '무시'}
+              {notificationsIgnored ? '로깅 활성화' : '무시'}
             </button>
           </div>
         </div>

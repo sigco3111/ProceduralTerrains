@@ -32,7 +32,7 @@ export default function PerformancePanel({ stats, gpu }) {
         </div>
         <span className={`stat-value stat-fps${fpsLow ? ' low' : ''}`}>{stats.fps}</span>
       </div>
-      <div className="stat-row" data-tooltip="Graphics card model used for hardware rendering">
+      <div className="stat-row" data-tooltip="하드웨어 렌더링에 사용되는 그래픽 카드 모델">
         <div className="label-with-icon">
           <span className="setting-icon">
             <svg viewBox="0 0 16 16" fill="none">
@@ -44,7 +44,7 @@ export default function PerformancePanel({ stats, gpu }) {
         </div>
         <span className="stat-value stat-mono stat-truncate" title={gpu}>{gpu || '알 수 없음'}</span>
       </div>
-      <div className="stat-row" data-tooltip="Total number of 3D triangles rendered in this frame">
+      <div className="stat-row" data-tooltip="이 프레임에서 렌더링된 3D 삼각형의 총 개수">
         <div className="label-with-icon">
           <span className="setting-icon">
             <svg viewBox="0 0 16 16" fill="none">
@@ -55,7 +55,7 @@ export default function PerformancePanel({ stats, gpu }) {
         </div>
         <span className="stat-value stat-mono">{fmtTris(stats.triangles)}</span>
       </div>
-      <div className="stat-row" data-tooltip="Number of active mesh rendering calls in this frame">
+      <div className="stat-row" data-tooltip="이 프레임의 활성 메시 렌더링 호출 수">
         <div className="label-with-icon">
           <span className="setting-icon">
             <svg viewBox="0 0 16 16" fill="none">
