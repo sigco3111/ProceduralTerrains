@@ -627,7 +627,7 @@ export default function NodeWorkspace({
         return;
       }
       if (key === 'g') { event.preventDefault(); if (event.shiftKey) ungroupSelection(); else createGroupFromSelection(); }
-      else if (event.key === 'Delete' || event.key === '백스페이스') { event.preventDefault(); deleteSelection(); }
+      else if (event.key === '삭제' || event.key === '백스페이스') { event.preventDefault(); deleteSelection(); }
       else if (key === 'f') { event.preventDefault(); instance?.fitView({ padding: 0.18, duration: 280 }); }
     };
     window.addEventListener('keydown', onKey, true);

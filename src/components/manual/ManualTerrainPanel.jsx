@@ -501,7 +501,7 @@ export default function ManualTerrainPanel({
                 <button type="button" onClick={() => onDuplicate(selected.id)} title="복제 (Ctrl/Cmd+D)" aria-label="선택한 모양 복제">
                   <Copy size={14} aria-hidden />
                 </button>
-                <button type="button" className="danger" onClick={() => onDelete(selected.id)} title="Delete" aria-label="선택한 셰이프 삭제">
+                <button type="button" className="danger" onClick={() => onDelete(selected.id)} title="삭제" aria-label="선택한 셰이프 삭제">
                   <Trash2 size={14} aria-hidden />
                 </button>
               </div>
