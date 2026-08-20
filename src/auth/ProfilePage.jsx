@@ -137,39 +137,39 @@ export default function ProfilePage({ onBack }) {
 
   return (
     <section className="profile-page" aria-labelledby="profile-title">
-      <button type="button" className="auth-back" onClick={onBack}><ArrowLeft size={14} /> Back to projects</button>
+      <button type="button" className="auth-back" onClick={onBack}><ArrowLeft size={14} /> 프로젝트로 돌아가기</button>
       <header className="profile-heading">
-        <div><span>Account settings</span><h1 id="profile-title">Your profile</h1><p>Manage how you appear and set defaults for projects you create.</p></div>
+        <div><span>계정 설정</span><h1 id="profile-title">내 프로필</h1><p>표시되는 모습과 만드는 프로젝트의 기본값을 관리하세요.</p></div>
       </header>
 
       <div className="profile-grid">
         <section className="profile-card profile-avatar-card">
-          <header><Camera size={16} /><div><h2>Profile picture</h2><p>PNG, JPEG or WebP, up to 1 MB.</p></div></header>
+          <header><Camera size={16} /><div><h2>프로필 사진</h2><p>PNG, JPEG 또는 WebP, 최대 1MB.</p></div></header>
           <div className="profile-avatar-row">
             <span className="profile-avatar">{picture ? <img src={picture} alt="내 프로필" /> : initials}</span>
             <div className="profile-avatar-actions">
               <button type="button" className="lp-primary sm" onClick={() => fileRef.current?.click()} disabled={busy === 'avatar'}><Camera size={13} /> {picture ? '대체' : '업로드'}</button>
-              {picture && <button type="button" className="profile-danger-button" onClick={deleteAvatar} disabled={busy === 'avatar'}><Trash2 size={13} /> Remove</button>}
+              {picture && <button type="button" className="profile-danger-button" onClick={deleteAvatar} disabled={busy === 'avatar'}><Trash2 size={13} />제거</button>}
             </div>
             <input ref={fileRef} className="profile-file-input" type="file" accept="image/png,image/jpeg,image/webp" onChange={chooseAvatar} />
           </div>
         </section>
 
         <section className="profile-card profile-details-card">
-          <header><UserRound size={16} /><div><h2>Profile information</h2><p>Your public identity and project defaults.</p></div></header>
+          <header><UserRound size={16} /><div><h2>프로필 정보</h2><p>공개 정체성과 프로젝트 기본값.</p></div></header>
           <form onSubmit={saveDetails} noValidate>
             <div className="profile-field-grid">
               {field('username', '사용자 이름', { type: 'text', autoComplete: 'username', minLength: 3, maxLength: 32, required: true })}
               {field('displayName', '표시 이름', { type: 'text', autoComplete: 'name', maxLength: 80, placeholder: 'Terrain artist' })}
             </div>
-            <label className="auth-field"><span>Email</span><input value={user?.email ?? ''} type="email" readOnly aria-readonly="true" /><small className="profile-field-note">Email changes are not available yet.</small></label>
+            <label className="auth-field"><span>이메일</span><input value={user?.email ?? ''} type="email" readOnly aria-readonly="true" /><small className="profile-field-note">이메일 변경은 아직 사용할 수 없습니다.</small></label>
             {field('websiteUrl', '웹사이트', { type: 'url', autoComplete: 'url', maxLength: 2048, placeholder: 'https://example.com' })}
             <fieldset className={`profile-visibility${detailsErrors.defaultProjectVisibility ? ' has-error' : ''}`}>
-              <legend>Default project visibility</legend>
+              <legend>기본 프로젝트 가시성</legend>
               <div className="profile-visibility-options">
-                <label><input type="radio" name="defaultProjectVisibility" value="private" checked={details.defaultProjectVisibility === 'private'} onChange={changeDetails} disabled={busy === 'details'} /><Lock size={14} /><span><strong>Private</strong><small>Only you can access it.</small></span></label>
-                <label><input type="radio" name="defaultProjectVisibility" value="unlisted" checked={details.defaultProjectVisibility === 'unlisted'} onChange={changeDetails} disabled={busy === 'details'} /><Eye size={14} /><span><strong>Unlisted</strong><small>Anyone with its link can open it.</small></span></label>
-                <label><input type="radio" name="defaultProjectVisibility" value="public" checked={details.defaultProjectVisibility === 'public'} onChange={changeDetails} disabled={busy === 'details'} /><Globe2 size={14} /><span><strong>Public</strong><small>Visible to everyone.</small></span></label>
+                <label><input type="radio" name="defaultProjectVisibility" value="private" checked={details.defaultProjectVisibility === 'private'} onChange={changeDetails} disabled={busy === 'details'} /><Lock size={14} /><span><strong>비공개</strong><small>본인만 접근할 수 있습니다.</small></span></label>
+                <label><input type="radio" name="defaultProjectVisibility" value="unlisted" checked={details.defaultProjectVisibility === 'unlisted'} onChange={changeDetails} disabled={busy === 'details'} /><Eye size={14} /><span><strong>비공개(링크 보유자만)</strong><small>링크가 있는 사람은 누구나 열 수 있습니다.</small></span></label>
+                <label><input type="radio" name="defaultProjectVisibility" value="public" checked={details.defaultProjectVisibility === 'public'} onChange={changeDetails} disabled={busy === 'details'} /><Globe2 size={14} /><span><strong>공개</strong><small>모두에게 공개됩니다.</small></span></label>
               </div>
               {detailsErrors.defaultProjectVisibility && <small>{detailsErrors.defaultProjectVisibility}</small>}
             </fieldset>
@@ -178,7 +178,7 @@ export default function ProfilePage({ onBack }) {
         </section>
 
         <section className="profile-card profile-security-card">
-          <header><KeyRound size={16} /><div><h2>Password</h2><p>Changing it signs out your other active sessions.</p></div></header>
+          <header><KeyRound size={16} /><div><h2>비밀번호</h2><p>변경하면 다른 활성 세션에서 로그아웃됩니다.</p></div></header>
           <form onSubmit={savePassword} noValidate>
             {passwordField('currentPassword', '현재 비밀번호', 'current-password')}
             <div className="profile-field-grid">

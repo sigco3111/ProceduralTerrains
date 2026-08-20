@@ -72,7 +72,7 @@ export default function NotificationCenter({ recent = [], notificationsIgnored =
       {open && (
         <div className="tb-notification-popover" role="dialog" aria-label="최근 활동">
           <div className="tb-notification-heading">
-            <span>Recent activity</span>
+            <span>최근 활동</span>
             <button type="button" className="tb-notification-close" onClick={() => setOpen(false)} aria-label="Close recent activity">
               <X size={13} strokeWidth={1.8} aria-hidden />
             </button>
@@ -93,12 +93,10 @@ export default function NotificationCenter({ recent = [], notificationsIgnored =
               })}
             </div>
           ) : (
-            <div className="tb-notification-empty">No recent activity</div>
+            <div className="tb-notification-empty">최근 활동 없음</div>
           )}
           <div className="tb-notification-footer">
-            <button type="button" className="tb-notification-action" onClick={onClear} disabled={recent.length === 0}>
-              Clear
-            </button>
+            <button type="button" className="tb-notification-action" onClick={onClear} disabled={recent.length === 0}>지우기</button>
             <button
               type="button"
               className={`tb-notification-action${notificationsIgnored ? ' active' : ''}`}

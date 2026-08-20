@@ -125,7 +125,7 @@ function NoiseLayerItem({
 
           {/* name */}
           <div className="nl-field">
-            <label className="nl-label">Name</label>
+            <label className="nl-label">이름</label>
             <input className="nl-input" type="text" value={layer.name}
               onChange={(e) => onUpdate(layer.id, { name: e.target.value })} />
           </div>
@@ -143,7 +143,7 @@ function NoiseLayerItem({
 
           {/* seed offset */}
           <SliderCtl
-            def={{ key: '_seed', label: 'Seed Offset', min: 0, max: 20, step: 1, digits: 0 }}
+            def={{ key: '_seed', label: '시드 오프셋', min: 0, max: 20, step: 1, digits: 0 }}
             value={layer.seedOffset}
             onChange={(v) => onUpdate(layer.id, { seedOffset: v })}
           />
@@ -207,7 +207,7 @@ function MaskSection({ layer, onUpdate }) {
   return (
     <div className="nl-masks">
       <div className="nl-masks-header">
-        <span className="nl-label">Masks</span>
+        <span className="nl-label">마스크</span>
         {available.length > 0 && (
           <select className="nl-mask-add" value="" onChange={(e) => { if (e.target.value) addMask(e.target.value); e.target.value = ''; }}>
             <option value="">+ Add…</option>
@@ -430,7 +430,7 @@ export default function NoiseLayersPanel({ ctx, children }) {
         info="프리셋 노이즈 스택을 불러옵니다. 이후 자유롭게 편집할 수 있습니다." />
 
       <div className="nl-output-section" data-setting-id="noise.section.output">
-        <div className="nl-output-title">Output</div>
+        <div className="nl-output-title">출력</div>
         <ToggleRow
           label="Normalize Output"
           value={normalizeOutput}
@@ -455,7 +455,7 @@ export default function NoiseLayersPanel({ ctx, children }) {
       {/* layer list */}
       <div className="nl-stack">
         {layers.length === 0 && (
-          <div className="nl-empty">No noise layers — terrain will be flat.</div>
+          <div className="nl-empty">노이즈 레이어 없음 — 지형이 평평해집니다.</div>
         )}
         {layers.map((layer, i) => (
           <NoiseLayerItem

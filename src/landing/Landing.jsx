@@ -347,10 +347,10 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
       ><EllipsisVertical size={15} /></button>
       {menuFor === project.id && (
         <div className="lp-card-menu" role="menu" onPointerDown={(e) => e.stopPropagation()}>
-          <button type="button" role="menuitem" onClick={() => { setMenuFor(null); open(project); }} disabled={!menuReady || exiting}><FolderOpen size={13} /> Open</button>
-          <button type="button" role="menuitem" onClick={() => { setMenuFor(null); renameProject(project); }} disabled={projectActionBusy}><Pencil size={13} /> Rename</button>
-          <button type="button" role="menuitem" onClick={() => { setMenuFor(null); duplicateProject(project); }} disabled={projectActionBusy}><Copy size={13} /> Duplicate</button>
-          <button type="button" role="menuitem" className="danger" onClick={() => { setMenuFor(null); setDeleteTarget(project); }} disabled={projectActionBusy}><Trash2 size={13} /> Delete</button>
+          <button type="button" role="menuitem" onClick={() => { setMenuFor(null); open(project); }} disabled={!menuReady || exiting}><FolderOpen size={13} /> 열기</button>
+          <button type="button" role="menuitem" onClick={() => { setMenuFor(null); renameProject(project); }} disabled={projectActionBusy}><Pencil size={13} /> 이름 변경</button>
+          <button type="button" role="menuitem" onClick={() => { setMenuFor(null); duplicateProject(project); }} disabled={projectActionBusy}><Copy size={13} /> 복제</button>
+          <button type="button" role="menuitem" className="danger" onClick={() => { setMenuFor(null); setDeleteTarget(project); }} disabled={projectActionBusy}><Trash2 size={13} /> 삭제</button>
         </div>
       )}
     </article>
@@ -360,9 +360,9 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
   const emptyProjects = (
     <div className="lp-empty">
       <FolderOpen size={24} />
-      <strong>No projects yet</strong>
-      <span>Create a terrain from a template or drop a project file anywhere on this page.</span>
-      <button type="button" className="lp-primary" onClick={() => setCreateOpen(true)} disabled={!menuReady || exiting}><Plus size={15} /> Create terrain</button>
+      <strong>아직 프로젝트가 없습니다</strong>
+      <span>템플릿에서 지형을 만들거나 이 페이지 어디든 프로젝트 파일을 놓으세요.</span>
+      <button type="button" className="lp-primary" onClick={() => setCreateOpen(true)} disabled={!menuReady || exiting}><Plus size={15} /> 지형 만들기</button>
     </div>
   );
 
@@ -379,7 +379,7 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
         <div className="file-drop-overlay" role="presentation">
           <div className="file-drop-card">
             <Upload size={28} aria-hidden />
-            <span>Drop terrain file to add it to your projects</span>
+            <span>프로젝트에 추가할 지형 파일을 놓으세요</span>
           </div>
         </div>
       )}
@@ -387,26 +387,26 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
       <header className="lp-nav">
         <button type="button" className="lp-brand" onClick={goHome} title="Return to home"><Logo size={24} /><strong>{APP_NAME}</strong></button>
         <nav className="lp-nav-links" aria-label="Main navigation">
-          <button type="button" className={view === 'projects' ? 'active' : ''} onClick={() => showView('projects')}>Projects</button>
-          <button type="button" className={view === 'templates' ? 'active' : ''} onClick={() => openTemplates()}>Templates</button>
-          <button type="button" className={view === 'community' ? 'active' : ''} onClick={() => showView('community')}>Community</button>
-          <a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer">Docs</a>
+          <button type="button" className={view === 'projects' ? 'active' : ''} onClick={() => showView('projects')}>프로젝트</button>
+          <button type="button" className={view === 'templates' ? 'active' : ''} onClick={() => openTemplates()}>템플릿</button>
+          <button type="button" className={view === 'community' ? 'active' : ''} onClick={() => showView('community')}>커뮤니티</button>
+          <a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer">문서</a>
         </nav>
         <div className="lp-nav-actions">
           <button type="button" className="lp-nav-credits" onClick={() => setCreditsOpen(true)} aria-label="Open credits and links" title="Credits and links"><CircleHelp size={17} /></button>
           {user ? <>
-            {user.role === 'admin' && <button type="button" className={`lp-admin-chip${view === 'admin' ? ' active' : ''}`} title="Open administration" onClick={() => showView('admin')}><ShieldCheck size={14} /><span>Admin</span></button>}
+            {user.role === 'admin' && <button type="button" className={`lp-admin-chip${view === 'admin' ? ' active' : ''}`} title="Open administration" onClick={() => showView('admin')}><ShieldCheck size={14} /><span>관리자</span></button>}
             <button type="button" className={`lp-account-chip${view === 'profile' ? ' active' : ''}`} title="Open your profile" onClick={() => showView('profile')}>
               {avatarUrl(user) ? <img src={avatarUrl(user)} alt="" /> : <UserRound size={14} />}
               <span>{user.username}</span>
             </button>
-            <button type="button" className="lp-secondary sm lp-auth-logout" onClick={async () => { await logout(); goHome(); }}><LogOut size={13} /> <span>Logout</span></button>
+            <button type="button" className="lp-secondary sm lp-auth-logout" onClick={async () => { await logout(); goHome(); }}><LogOut size={13} /> <span>로그아웃</span></button>
           </> : <>
-            <button type="button" className="lp-secondary sm lp-auth-login" onClick={() => showView('login')} disabled={authStatus === 'loading'}><LogIn size={13} /> <span>Sign in</span></button>
-            <button type="button" className="lp-primary sm lp-auth-register" onClick={() => showView('register')} disabled={authStatus === 'loading'}><UserPlus size={13} /> <span>Create account</span></button>
+            <button type="button" className="lp-secondary sm lp-auth-login" onClick={() => showView('login')} disabled={authStatus === 'loading'}><LogIn size={13} /> <span>로그인</span></button>
+            <button type="button" className="lp-primary sm lp-auth-register" onClick={() => showView('register')} disabled={authStatus === 'loading'}><UserPlus size={13} /> <span>계정 만들기</span></button>
           </>}
 
-          {/* <button type="button" className="lp-secondary sm" onClick={openApp} disabled={!bootReady || exiting}><SquareArrowOutUpRight size={14} /> Open App</button> */}
+          {/* <button type="button" className="lp-secondary sm" onClick={openApp} disabled={!bootReady || exiting}><SquareArrowOutUpRight size={14} />앱 열기</button> */}
         </div>
       </header>
 
@@ -429,18 +429,18 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
           {view === 'home' && <>
             <section className="lp-hero">
               <div className="lp-version-pill">v{APP_VERSION}</div>
-              <h1>Craft <em>stunning worlds</em> with procedural power</h1>
+              <h1>제작<em>멋진 세계</em>절차적 파워로</h1>
               <p>{APP_NAME} helps you generate, shape, and texture terrain for your projects.</p>
               <div className="lp-hero-actions">
-                <button type="button" className="lp-primary" onClick={() => setCreateOpen(true)} disabled={!menuReady || exiting}><Plus size={15} /> Create terrain</button>
-                <button type="button" className="lp-secondary" onClick={() => openTemplates()}><LayoutTemplate size={14} /> Browse templates</button>
+                <button type="button" className="lp-primary" onClick={() => setCreateOpen(true)} disabled={!menuReady || exiting}><Plus size={15} /> 지형 만들기</button>
+                <button type="button" className="lp-secondary" onClick={() => openTemplates()}><LayoutTemplate size={14} />템플릿 둘러보기</button>
               </div>
             </section>
 
             <section className="lp-section">
               <div className="lp-section-head">
-                <h2>Recent projects</h2>
-                {projects.length > 0 && <button type="button" className="lp-link" onClick={() => showView('projects')}>View all projects <ArrowRight size={12} aria-hidden /></button>}
+                <h2>최근 프로젝트</h2>
+                {projects.length > 0 && <button type="button" className="lp-link" onClick={() => showView('projects')}>모든 프로젝트 보기<ArrowRight size={12} aria-hidden /></button>}
               </div>
               {projects.length ? <div className="lp-card-grid">{projects.slice(0, 8).map(renderProjectCard)}</div> : emptyProjects}
             </section>
@@ -452,22 +452,22 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
             return (
               <section className="lp-section lp-view">
                 <div className="lp-section-head">
-                  <h2>Projects</h2>
+                  <h2>프로젝트</h2>
                   {projectsTab === 'local' && (
                     <div className="lp-head-actions">
-                      <button type="button" className="lp-secondary sm" onClick={() => fileRef.current?.click()} disabled={!bootReady || exiting}><Upload size={13} /> Import</button>
-                      <button type="button" className="lp-primary sm" onClick={() => setCreateOpen(true)} disabled={!bootReady || exiting}><Plus size={14} /> New terrain</button>
+                      <button type="button" className="lp-secondary sm" onClick={() => fileRef.current?.click()} disabled={!bootReady || exiting}><Upload size={13} /> 가져오기</button>
+                      <button type="button" className="lp-primary sm" onClick={() => setCreateOpen(true)} disabled={!bootReady || exiting}><Plus size={14} />새 지형</button>
                     </div>
                   )}
                   {projectsTab === 'cloud' && user && (
                     <div className="lp-head-actions">
-                      <button type="button" className="lp-secondary sm" onClick={() => setCloudRefreshToken((current) => current + 1)}><RefreshCw size={13} /> Refresh</button>
+                      <button type="button" className="lp-secondary sm" onClick={() => setCloudRefreshToken((current) => current + 1)}><RefreshCw size={13} />새로 고침</button>
                     </div>
                   )}
                 </div>
                 <div className="lp-project-tabs" role="tablist" aria-label="Project storage">
-                  <button type="button" role="tab" aria-selected={projectsTab === 'local'} aria-controls="local-projects-panel" className={projectsTab === 'local' ? 'active' : ''} onClick={() => setProjectsTab('local')}>Local Projects</button>
-                  <button type="button" role="tab" aria-selected={projectsTab === 'cloud'} aria-controls="cloud-projects-panel" className={projectsTab === 'cloud' ? 'active' : ''} onClick={() => setProjectsTab('cloud')}>Cloud Projects</button>
+                  <button type="button" role="tab" aria-selected={projectsTab === 'local'} aria-controls="local-projects-panel" className={projectsTab === 'local' ? 'active' : ''} onClick={() => setProjectsTab('local')}>로컬 프로젝트</button>
+                  <button type="button" role="tab" aria-selected={projectsTab === 'cloud'} aria-controls="cloud-projects-panel" className={projectsTab === 'cloud' ? 'active' : ''} onClick={() => setProjectsTab('cloud')}>클라우드 프로젝트</button>
                 </div>
                 {projectsTab === 'local' ? (
                   <div key="local-projects" id="local-projects-panel" className="lp-project-tab-panel" role="tabpanel">
@@ -491,7 +491,7 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
 
           {view === 'projects' && (
             <section className="lp-section lp-view">
-              <div className="lp-section-head"><h2>Projects</h2></div>
+              <div className="lp-section-head"><h2>프로젝트</h2></div>
               <ProjectLibrary
                 localProjects={projects}
                 bootReady={menuReady}
@@ -515,10 +515,10 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
             return (
             <section className="lp-section lp-view">
               <div className="lp-section-head lp-template-section-head">
-                <div><h2>Terrain templates</h2><p>Choose one authoring workflow. Procedural selections preview live; Nodes opens straight into the editor.</p></div>
+                <div><h2>지형 템플릿</h2><p>Choose one authoring workflow. Procedural selections preview live; Nodes opens straight into the editor.</p></div>
                 <div className="lp-template-kind-switch" role="tablist" aria-label="Template type">
-                  <button type="button" role="tab" aria-selected={templateKind === 'procedural'} className={templateKind === 'procedural' ? 'active' : ''} onClick={() => openTemplates('procedural')}><SlidersHorizontal size={13} /> Procedural</button>
-                  <button type="button" role="tab" aria-selected={templateKind === 'nodes'} className={templateKind === 'nodes' ? 'active' : ''} onClick={() => openTemplates('nodes')}><Boxes size={13} /> Nodes</button>
+                  <button type="button" role="tab" aria-selected={templateKind === 'procedural'} className={templateKind === 'procedural' ? 'active' : ''} onClick={() => openTemplates('procedural')}><SlidersHorizontal size={13} />절차적</button>
+                  <button type="button" role="tab" aria-selected={templateKind === 'nodes'} className={templateKind === 'nodes' ? 'active' : ''} onClick={() => openTemplates('nodes')}><Boxes size={13} />노드</button>
                 </div>
               </div>
               <div className="lp-search">
@@ -544,7 +544,7 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
                 <section className={`lp-node-color-options${nodeColorsEnabled ? ' enabled' : ''}`} aria-label="Node template color options">
                   <div className="lp-node-color-copy">
                     <span className="lp-node-color-icon"><Palette size={16} aria-hidden /></span>
-                    <span><strong>Node Colors</strong><small>Apply a terrain color graph when this template opens.</small></span>
+                    <span><strong>노드 색상</strong><small>이 템플릿이 열릴 때 지형 색상 그래프를 적용합니다.</small></span>
                   </div>
                   <button
                     type="button"
@@ -557,7 +557,7 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
                     {nodeColorsEnabled ? 'Applied' : 'Project palette'}
                   </button>
                   <label className="lp-node-color-preset">
-                    <span>Color preset</span>
+                    <span>색상 프리셋</span>
                     <span className="lp-node-color-select">
                       <i style={{ background: terrainGradientCss(nodeColorPreset) }} aria-hidden />
                       <select value={nodeColorPreset} onChange={(event) => { setNodeColorPreset(event.target.value); setNodeColorsEnabled(true); }} aria-label="Template color preset">
@@ -577,7 +577,7 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
 
           <footer className="lp-footer">
             <div className="lp-footer-socials">
-              <a className="lp-footer-donation" href="https://ko-fi.com/zyfod" target="_blank" rel="noopener noreferrer" aria-label="Donate on Ko-fi" title="Donate on Ko-fi"><SiKofi size={15} aria-hidden="true" /><span>Donation</span></a>
+              <a className="lp-footer-donation" href="https://ko-fi.com/zyfod" target="_blank" rel="noopener noreferrer" aria-label="Donate on Ko-fi" title="Donate on Ko-fi"><SiKofi size={15} aria-hidden="true" /><span>기부</span></a>
               <a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository" title="GitHub"><FaGithub size={17} /></a>
               <a href={AUTHOR_X_URL} target="_blank" rel="noopener noreferrer" aria-label="Open X profile" title="X"><FaXTwitter size={15} /></a>
               <a href={AUTHOR_PORTFOLIO_URL} target="_blank" rel="noopener noreferrer" aria-label="Open portfolio" title="Portfolio"><Globe2 size={16} /></a>
@@ -585,7 +585,7 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
             </div>
             <div className="lp-footer-meta">
               <span>© {new Date().getFullYear()} {APP_NAME}.</span>
-              <button type="button" className="lp-link" onClick={() => showView('confidentiality')}>Confidentiality</button>
+              <button type="button" className="lp-link" onClick={() => showView('confidentiality')}>개인정보 처리방침</button>
             </div>
           </footer>
         </main>
@@ -603,45 +603,45 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
       {createOpen && <div className="landing-credits-backdrop landing-create-backdrop" role="presentation" onMouseDown={() => setCreateOpen(false)}>
         <section className="landing-create-dialog" role="dialog" aria-modal="true" aria-labelledby="create-terrain-title" onMouseDown={(event) => event.stopPropagation()}>
           <header>
-            <div><span>New project</span><h2 id="create-terrain-title">Choose how to build your terrain</h2><p>Each project uses one authoring workflow. All four can be saved and exported.</p></div>
+            <div><span>새 프로젝트</span><h2 id="create-terrain-title">지형을 만드는 방법을 선택하세요</h2><p>각 프로젝트는 하나의 작성 워크플로를 사용합니다. 네 가지 모두 저장 및 내보내기가 가능합니다.</p></div>
             <button type="button" onClick={() => setCreateOpen(false)} aria-label="Close"><X size={16} /></button>
           </header>
           <div className="landing-create-options">
             <button type="button" onClick={() => chooseTemplateWorkflow('procedural')} disabled={!menuReady || exiting}>
               <span className="landing-create-icon"><SlidersHorizontal size={22} /></span>
-              <strong>Procedural</strong>
-              <small>The current Tile, Infinite World, and Planet workflow with direct controls and Noise Layers.</small>
-              <span className="landing-create-action">Choose a procedural template <ArrowRight size={13} /></span>
+              <strong>절차적</strong>
+              <small>직접 제어와 노이즈 레이어를 사용하는 현재 타일, 무한 세계, 행성 워크플로.</small>
+              <span className="landing-create-action">절차적 템플릿 선택 <ArrowRight size={13} /></span>
             </button>
             <button type="button" onClick={() => chooseTemplateWorkflow('nodes')} disabled={!menuReady || exiting}>
               <span className="landing-create-icon nodes"><Boxes size={22} /></span>
-              <strong>Nodes</strong>
-              <small>A dedicated analytical graph workspace starting from a clean, flat slab. Desktop first.</small>
-              <span className="landing-create-action">Choose a Nodes recipe <ArrowRight size={13} /></span>
+              <strong>노드</strong>
+              <small>깔끔한 평면 슬랩에서 시작하는 전용 분석 그래프 작업 공간. 데스크탑 우선.</small>
+              <span className="landing-create-action">노드 레시피 선택 <ArrowRight size={13} /></span>
             </button>
             <button type="button" onClick={() => create('manual-blank', 'manual')} disabled={!menuReady || exiting}>
               <span className="landing-create-icon manual"><Mountain size={22} /></span>
-              <strong>Manual Terrain</strong>
-              <small>Drag mountains, valleys, ridges, plateaus, and craters onto a clean terrain and transform them directly.</small>
-              <span className="landing-create-action">Create Manual Terrain <ArrowRight size={13} /></span>
+              <strong>수동 지형</strong>
+              <small>산, 계곡, 능선, 고원, 분화구를 깨끗한 지형으로 끌어다 놓고 직접 변환하세요.</small>
+              <span className="landing-create-action">수동 지형 만들기 <ArrowRight size={13} /></span>
             </button>
             <button type="button" onClick={() => create('blank', 'real')} disabled={!menuReady || exiting}>
               <span className="landing-create-icon real"><Earth size={22} /></span>
-              <strong>Real Terrain</strong>
-              <small>Choose any real-world location and work in a focused import workspace with geographic elevation, imagery, and buildings.</small>
-              <span className="landing-create-action">Select a location <ArrowRight size={13} /></span>
+              <strong>실제 지형</strong>
+              <small>실제 세계의 위치를 선택하고 지리적 고도, 이미지, 건물이 있는 전용 가져오기 작업 공간에서 작업하세요.</small>
+              <span className="landing-create-action">위치 선택<ArrowRight size={13} /></span>
             </button>
           </div>
         </section>
       </div>}
-      {creditsOpen && <div className="landing-credits-backdrop" role="presentation" onMouseDown={() => setCreditsOpen(false)}><section className="landing-credits-dialog" role="dialog" aria-modal="true" aria-labelledby="credits-title" onMouseDown={(event) => event.stopPropagation()}><div><span>Credits</span><h2 id="credits-title">Sources &amp; credits</h2></div><p>The editor cursor set is based on the Windows 11 Light Theme cursor pack by <strong>{CURSOR_PACK_AUTHOR}</strong>.</p><a href={CURSOR_PACK_URL} target="_blank" rel="noopener noreferrer">View cursor pack</a><p>Real-world 3D building data: <a href={BUILDING_SOURCE_URL} target="_blank" rel="noopener noreferrer">{BUILDING_SOURCE}</a>.</p><div className="landing-credits-socials"><a href={AUTHOR_X_URL} target="_blank" rel="noopener noreferrer"><FaXTwitter size={14} /> X / Twitter</a><a href={AUTHOR_PORTFOLIO_URL} target="_blank" rel="noopener noreferrer"><Globe2 size={14} /> Portfolio</a></div><button type="button" onClick={() => setCreditsOpen(false)}>Close</button></section></div>}
+      {creditsOpen && <div className="landing-credits-backdrop" role="presentation" onMouseDown={() => setCreditsOpen(false)}><section className="landing-credits-dialog" role="dialog" aria-modal="true" aria-labelledby="credits-title" onMouseDown={(event) => event.stopPropagation()}><div><span>크레딧</span><h2 id="credits-title">Sources &amp; credits</h2></div><p>편집기 커서 세트는 다음 작성자의 Windows 11 Light Theme 커서 팩을 기반으로 합니다:<strong>{CURSOR_PACK_AUTHOR}</strong>.</p><a href={CURSOR_PACK_URL} target="_blank" rel="noopener noreferrer">커서 팩 보기</a><p>실제 3D 건물 데이터:<a href={BUILDING_SOURCE_URL} target="_blank" rel="noopener noreferrer">{BUILDING_SOURCE}</a>.</p><div className="landing-credits-socials"><a href={AUTHOR_X_URL} target="_blank" rel="noopener noreferrer"><FaXTwitter size={14} /> X / Twitter</a><a href={AUTHOR_PORTFOLIO_URL} target="_blank" rel="noopener noreferrer"><Globe2 size={14} />포트폴리오</a></div><button type="button" onClick={() => setCreditsOpen(false)}>닫기</button></section></div>}
       {deleteTarget && <div className="landing-credits-backdrop" role="presentation" onMouseDown={() => !projectActionBusy && setDeleteTarget(null)}>
         <section className="landing-credits-dialog landing-confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="delete-project-title" onMouseDown={(event) => event.stopPropagation()}>
-          <div><span>Delete project</span><h2 id="delete-project-title">Delete &ldquo;{deleteTarget.metadata.name}&rdquo;?</h2></div>
-          <p>This cannot be undone.</p>
+          <div><span>프로젝트 삭제</span><h2 id="delete-project-title">Delete &ldquo;{deleteTarget.metadata.name}&rdquo;?</h2></div>
+          <p>이 작업은 되돌릴 수 없습니다.</p>
           <div className="landing-confirm-actions">
-            <button type="button" onClick={() => setDeleteTarget(null)} disabled={projectActionBusy}>Cancel</button>
-            <button type="button" className="danger" onClick={confirmDeleteProject} disabled={projectActionBusy}><Trash2 size={14} /> Delete</button>
+            <button type="button" onClick={() => setDeleteTarget(null)} disabled={projectActionBusy}>취소</button>
+            <button type="button" className="danger" onClick={confirmDeleteProject} disabled={projectActionBusy}><Trash2 size={14} /> 삭제</button>
           </div>
         </section>
       </div>}

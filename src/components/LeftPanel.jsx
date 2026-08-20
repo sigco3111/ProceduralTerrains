@@ -57,14 +57,14 @@ export default function LeftPanel({ params, onParam, onPreset, onRandomizeSeed, 
   return (
     <aside id="left-panel" className="panel">
       <div className="panel-header">
-        <span>TERRAIN CONTROLS</span>
+        <span>지형 컨트롤</span>
         <button className="collapse-btn" onClick={() => setOpen(!open)}>{open ? '‹' : '›'}</button>
       </div>
       <div className={`panel-body${open ? '' : ' collapsed'}`} id="left-panel-body">
         <div className="section-title">GENERATE</div>
 
         <div className="row">
-          <label>Preset</label>
+          <label>프리셋</label>
           <select value={params.preset} onChange={(e) => onPreset(e.target.value)}>
             {Object.entries(PRESETS).map(([key, preset]) => (
               <option key={key} value={key}>{preset.label}</option>
@@ -88,9 +88,7 @@ export default function LeftPanel({ params, onParam, onPreset, onRandomizeSeed, 
           <svg viewBox="0 0 16 16">
             <path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9" stroke="currentColor" fill="none" strokeWidth="1.3" />
             <path d="M13.7 1.8v2.8h-2.8" stroke="currentColor" fill="none" strokeWidth="1.3" />
-          </svg>
-          Regenerate
-        </button>
+          </svg>재생성</button>
 
         {CONTROL_SCHEMA.map((def, i) => {
           if (def.section) {
@@ -115,7 +113,7 @@ export default function LeftPanel({ params, onParam, onPreset, onRandomizeSeed, 
                       <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" fill="none" />
                       <path d="M8 11V8M8 5.5v.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                     </svg>
-                    <span>Global parameters (Warp, Ridge, FBM) will automatically add or update layers in your custom Noise Stack.</span>
+                    <span>전역 매개변수(Warp, Ridge, FBM)가 사용자 지정 노이즈 스택의 레이어를 자동으로 추가하거나 업데이트합니다.</span>
                   </div>
                 )}
               </div>

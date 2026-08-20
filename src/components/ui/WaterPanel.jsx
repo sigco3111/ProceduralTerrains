@@ -426,9 +426,7 @@ export default function WaterPanelInner({
           />
         ))}
         {legacy && enabled && (
-          <p className="section-hint">
-            Legacy shader uses the colors above plus Shader Quality settings. Switch to Realistic for depth, foam, and volumetric controls.
-          </p>
+          <p className="section-hint">레거시 셰이더는 위의 색상과 셰이더 품질 설정을 사용합니다. 깊이, 거품, 볼류메트릭 제어를 위해 사실 모드로 전환하세요.</p>
         )}
       </ControlSection>
 
@@ -589,7 +587,7 @@ export default function WaterPanelInner({
                   info="몰입감을 위한 희박한 부유 입자. High 모드 전용."
                 />
                 {uwResolved !== 'high' && (val(params, 'waterUnderwaterLightShafts') || val(params, 'waterUnderwaterParticles')) && (
-                  <p className="section-hint">Light shafts and particles only render in High mode.</p>
+                  <p className="section-hint">광선과 파티클은 고품질 모드에서만 렌더링됩니다.</p>
                 )}
               </ControlSection>
             )}
@@ -714,7 +712,7 @@ export default function WaterPanelInner({
         />
         {!!val(params, 'waterShowPerfCost') && waterCost && (
           <div className="section-hint">
-            <strong>Live water cost</strong><br />
+            <strong>라이브 워터 비용</strong><br />
             Surface CPU submission: {fmtWaterCostMs(waterCost.surface?.surfaceSubmitAvgMs)}<br />
             Surface GPU: individual timing unavailable · whole frame {gpu?.supported ? fmtWaterCostMs(gpu.frameMs) : 'unavailable'}<br />
             Geometry: {waterCost.surface?.vertices ?? 0} vertices · {waterCost.surface?.triangles ?? 0} triangles<br />
@@ -724,7 +722,7 @@ export default function WaterPanelInner({
           </div>
         )}
         {!effectiveRealistic && (
-          <p className="section-hint">Shader debug views need an effective Realistic (or higher) mode.</p>
+          <p className="section-hint">셰이더 디버그 보기는 사실(또는 그 이상) 모드가 필요합니다.</p>
         )}
       </ControlSection>
 
@@ -736,12 +734,8 @@ export default function WaterPanelInner({
               ? 'Mask export samples the current procedural height field at the board scale.'
               : 'Mask export uses planet height sampling where available; GLB export includes the ocean shell.'}
         </p>
-        <button type="button" className="action-btn" onClick={() => onExportWaterMasks?.({ exportWaterMask: true, exportDepthMap: true })}>
-          Export Water + Depth Masks
-        </button>
-        <button type="button" className="action-btn" onClick={() => onExportWaterMasks?.({ exportShorelineMask: true, exportFoamMask: true })}>
-          Export Shoreline + Foam Masks
-        </button>
+        <button type="button" className="action-btn" onClick={() => onExportWaterMasks?.({ exportWaterMask: true, exportDepthMap: true })}>물 + 깊이 마스크 내보내기</button>
+        <button type="button" className="action-btn" onClick={() => onExportWaterMasks?.({ exportShorelineMask: true, exportFoamMask: true })}>해안선 + 거품 마스크 내보내기</button>
       </ControlSection>
 
       <PanelResetButton label="Reset Water Settings" onClick={onResetWaterSettings} settingId="water.reset" />

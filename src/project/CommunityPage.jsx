@@ -199,21 +199,21 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
 
   return (
     <section className="community-page" aria-labelledby="community-title">
-      <button type="button" className="auth-back" onClick={onBack}><ArrowLeft size={14} /> Back to projects</button>
+      <button type="button" className="auth-back" onClick={onBack}><ArrowLeft size={14} /> 프로젝트로 돌아가기</button>
       <header className="community-heading">
-        <span><Compass size={14} /> Explore</span>
-        <h1 id="community-title">Community terrains</h1>
-        <p>Discover public projects, copy an opening link, and find terrains by name, creator, or sharing code.</p>
+        <span><Compass size={14} /> 탐색</span>
+        <h1 id="community-title">커뮤니티 지형</h1>
+        <p>공개 프로젝트를 탐색하고, 열기 링크를 복사하고, 이름, 제작자, 공유 코드로 지형을 찾아보세요.</p>
       </header>
 
       <form className="community-search" onSubmit={search}>
         <Search size={14} aria-hidden />
         <input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search names, creators, or sharing codes" aria-label="커뮤니티 프로젝트 검색" />
-        <button type="submit" className="lp-secondary sm">Search</button>
+        <button type="submit" className="lp-secondary sm">검색</button>
       </form>
 
       <div className="community-filters" role="tablist" aria-label="에디터별 커뮤니티 지형 필터">
-        <button type="button" role="tab" aria-selected={!activeType} className={!activeType ? 'active' : ''} onClick={() => selectType('')}>All terrains</button>
+        <button type="button" role="tab" aria-selected={!activeType} className={!activeType ? 'active' : ''} onClick={() => selectType('')}>모든 지형</button>
         {COMMUNITY_TYPES.map((option) => (
           <button type="button" role="tab" key={option.id} aria-selected={activeType === option.id} className={activeType === option.id ? 'active' : ''} onClick={() => selectType(option.id)}>{option.label}</button>
         ))}
@@ -221,11 +221,11 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
 
       <div className="community-results-head">
         <div><h2>{resultsTitle}</h2><span>{total} public project{total === 1 ? '' : 's'}</span></div>
-        {activeQuery && <button type="button" className="community-clear-search" onClick={() => { setQuery(''); setActiveQuery(''); setPage(1); }}><X size={12} /> Clear search</button>}
+        {activeQuery && <button type="button" className="community-clear-search" onClick={() => { setQuery(''); setActiveQuery(''); setPage(1); }}><X size={12} />검색 지우기</button>}
       </div>
 
       {loading ? <div className="community-state"><Compass size={22} /><span>Loading community projects…</span></div> : projects.length === 0 ? (
-        <div className="community-state"><Globe2 size={24} /><strong>No terrains match these filters</strong><span>Try another search or browse all public terrains.</span></div>
+        <div className="community-state"><Globe2 size={24} /><strong>이 필터와 일치하는 지형이 없습니다</strong><span>다른 검색을 시도하거나 모든 공개 지형을 탐색하세요.</span></div>
       ) : (
         <div className="community-grid">
           {projects.map((project) => {
@@ -243,7 +243,7 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
                   </button>
                 </div>
                 <div className="community-card-body">
-                  <div className="community-card-title-row"><h3>{project.name}</h3>{isOwner && <span className="community-owner-badge">Your terrain</span>}</div>
+                  <div className="community-card-title-row"><h3>{project.name}</h3>{isOwner && <span className="community-owner-badge">내 지형</span>}</div>
                   <p>{project.description || `공유된 ${typeLabel(project.editorMode)} 지형 프로젝트.`}</p>
                   <div className="community-author">
                     <span>{avatarUrl(project.author) ? <img src={avatarUrl(project.author)} alt="" /> : <UserRound size={13} />}</span>
@@ -251,17 +251,17 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
                     <small>@{project.author.username}</small>
                   </div>
                   <div className="community-card-actions">
-                    <button type="button" className="lp-primary sm" onClick={() => importByCode(project.shareCode)} disabled={disabled || !ready}><FolderDown size={14} /> Import and open</button>
-                    {isOwner && <button type="button" className={`lp-secondary sm community-edit-button${editingId === project.id ? ' active' : ''}`} onClick={() => setEditingId((current) => current === project.id ? '' : project.id)} disabled={disabled}><Settings2 size={13} /> Edit</button>}
+                    <button type="button" className="lp-primary sm" onClick={() => importByCode(project.shareCode)} disabled={disabled || !ready}><FolderDown size={14} />가져오기 및 열기</button>
+                    {isOwner && <button type="button" className={`lp-secondary sm community-edit-button${editingId === project.id ? ' active' : ''}`} onClick={() => setEditingId((current) => current === project.id ? '' : project.id)} disabled={disabled}><Settings2 size={13} />편집</button>}
                   </div>
                   {isOwner && editingId === project.id && (
                     <div className="community-owner-panel">
-                      <div className="community-owner-panel-head"><strong>Manage terrain</strong><button type="button" onClick={() => setEditingId('')} aria-label="지형 설정 닫기"><X size={13} /></button></div>
+                      <div className="community-owner-panel-head"><strong>지형 관리</strong><button type="button" onClick={() => setEditingId('')} aria-label="지형 설정 닫기"><X size={13} /></button></div>
                       <div className="community-owner-actions">
-                        <button type="button" className="lp-secondary sm" onClick={() => rename(project)} disabled={disabled}><Pencil size={13} /> Rename</button>
-                        <label className="community-visibility-select"><span>Visibility</span><span className="community-select-wrap">{project.visibility === 'public' ? <Globe2 size={12} /> : project.visibility === 'unlisted' ? <Eye size={12} /> : <Lock size={12} />}<select value={project.visibility} onChange={(event) => updateOwnerProject(project, { visibility: event.target.value }, `가시성을 ${event.target.value}(으)로 변경했습니다.`)} disabled={disabled} aria-label={`Visibility for ${project.name}`}><option value="private">Private</option><option value="unlisted">Unlisted</option><option value="public">Public</option></select></span></label>
+                        <button type="button" className="lp-secondary sm" onClick={() => rename(project)} disabled={disabled}><Pencil size={13} /> 이름 변경</button>
+                        <label className="community-visibility-select"><span>가시성</span><span className="community-select-wrap">{project.visibility === 'public' ? <Globe2 size={12} /> : project.visibility === 'unlisted' ? <Eye size={12} /> : <Lock size={12} />}<select value={project.visibility} onChange={(event) => updateOwnerProject(project, { visibility: event.target.value }, `가시성을 ${event.target.value}(으)로 변경했습니다.`)} disabled={disabled} aria-label={`Visibility for ${project.name}`}><option value="private">비공개</option><option value="unlisted">비공개(링크 보유자만)</option><option value="public">공개</option></select></span></label>
                       </div>
-                      <div className="community-icon-picker"><span>Card icon</span><div>{COMMUNITY_ICONS.map((option) => { const OptionIcon = option.Icon; return <button type="button" key={option.id} className={selectedCommunityIcon === option.id ? 'active' : ''} onClick={() => updateOwnerProject(project, { communityIcon: option.id }, `${option.label} icon selected.`)} disabled={disabled} title={option.label} aria-label={`Use ${option.label} icon`}><OptionIcon size={14} /></button>; })}</div></div>
+                      <div className="community-icon-picker"><span>카드 아이콘</span><div>{COMMUNITY_ICONS.map((option) => { const OptionIcon = option.Icon; return <button type="button" key={option.id} className={selectedCommunityIcon === option.id ? 'active' : ''} onClick={() => updateOwnerProject(project, { communityIcon: option.id }, `${option.label} icon selected.`)} disabled={disabled} title={option.label} aria-label={`Use ${option.label} icon`}><OptionIcon size={14} /></button>; })}</div></div>
                     </div>
                   )}
                 </div>
@@ -272,9 +272,9 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
       )}
 
       {pages > 1 && <nav className="community-pagination" aria-label="커뮤니티 페이지">
-        <button type="button" className="lp-secondary sm" onClick={() => setPage((value) => value - 1)} disabled={page <= 1 || loading}><ArrowLeft size={13} /> Previous</button>
+        <button type="button" className="lp-secondary sm" onClick={() => setPage((value) => value - 1)} disabled={page <= 1 || loading}><ArrowLeft size={13} /> 이전</button>
         <span>Page {page} of {pages}</span>
-        <button type="button" className="lp-secondary sm" onClick={() => setPage((value) => value + 1)} disabled={page >= pages || loading}>Next <ArrowRight size={13} /></button>
+        <button type="button" className="lp-secondary sm" onClick={() => setPage((value) => value + 1)} disabled={page >= pages || loading}>다음<ArrowRight size={13} /></button>
       </nav>}
     </section>
   );

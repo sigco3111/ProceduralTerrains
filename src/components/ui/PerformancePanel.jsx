@@ -51,7 +51,7 @@ export default function PerformancePanel({ stats, gpu }) {
               <path d="M8 2l6 11H2L8 2z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
             </svg>
           </span>
-          <span className="setting-label">Triangles</span>
+          <span className="setting-label">삼각형</span>
         </div>
         <span className="stat-value stat-mono">{fmtTris(stats.triangles)}</span>
       </div>
@@ -63,7 +63,7 @@ export default function PerformancePanel({ stats, gpu }) {
               <path d="M5 8h6M5 5h6M5 11h4" stroke="currentColor" strokeWidth="1.2" />
             </svg>
           </span>
-          <span className="setting-label">Draw Calls</span>
+          <span className="setting-label">드로우 콜</span>
         </div>
         <span className="stat-value stat-mono">{stats.drawCalls}</span>
       </div>

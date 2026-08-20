@@ -115,7 +115,7 @@ function LodMultiSlider({ segments, onChange }) {
   return (
     <div className="ctl">
       <div className="ctl-top">
-        <label>LOD Resolutions</label>
+        <label>LOD 해상도</label>
         <span className="ctl-val lod-multi-val">{segments.join(' / ')}</span>
       </div>
       <div className="lod-multi-track" ref={trackRef}>
@@ -230,13 +230,13 @@ function GpuRendererSection({ perf, rendererInfo, onPerfSetting }) {
         </div>
         {reloadRequired ? (
           <div className="gpu-apply-row">
-            <span>Reload required to apply GPU changes</span>
+            <span>GPU 변경 사항을 적용하려면 새로고침 필요</span>
             <button type="button" className="action-btn gpu-apply-btn" onClick={() => window.location.reload()}>
               Reload &amp; Apply
             </button>
           </div>
         ) : (
-          <p className="gpu-footnote">Browser may ignore GPU preference hints.</p>
+          <p className="gpu-footnote">브라우저가 GPU 기본 설정 힌트를 무시할 수 있습니다.</p>
         )}
       </div>
     </ControlSection>
@@ -381,7 +381,7 @@ export default function PerfSettings({ perf, rendererInfo, onPerfPreset, onPerfS
       )}
 
       <div className="perf-settings-body">
-        {isSearching && <p className="settings-search-hint">Search results</p>}
+        {isSearching && <p className="settings-search-hint">검색 결과</p>}
         {body}
       </div>
     </div>

@@ -118,15 +118,15 @@ export default function MinimapOverlay({
         <div className="minimap-overlay-header">
           <span className="minimap-title">
             <MapIcon />
-            <span className="minimap-title-text">Mini Map</span>
+            <span className="minimap-title-text">미니맵</span>
           </span>
           <div className="minimap-header-actions">
             {!docked && <button
               type="button"
               className="minimap-toggle-btn"
               onClick={() => setCollapsed((value) => !value)}
-              title={collapsed ? '미니맵 확장' : 'Collapse minimap'}
-              aria-label={collapsed ? '미니맵 확장' : 'Collapse minimap'}
+              title={collapsed ? '미니맵 확장' : '미니맵 접기'}
+              aria-label={collapsed ? '미니맵 확장' : '미니맵 접기'}
             >
               {collapsed ? (
                 <svg viewBox="0 0 16 16" width="10" height="10" fill="none" aria-hidden>

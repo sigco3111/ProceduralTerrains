@@ -142,23 +142,21 @@ export default function PaintPanel({ paintState, onSetting, onClear, onSetBaseMo
             <>
               <div className="paint-section">
                 <SliderCtl def={defs.strength} value={state.strength ?? 0.35} onChange={set('strength')} />
-                <button className="wide-btn danger" type="button" onClick={onClear}>Clear Painted Layers</button>
+                <button className="wide-btn danger" type="button" onClick={onClear}>페인팅된 레이어 지우기</button>
               </div>
               <div className="paint-section">
-                <div className="subsection-label">Terrain Base</div>
+                <div className="subsection-label">지형 베이스</div>
                 <SelectRow label="기본" value={state.baseMode ?? 'generated'} options={BASE_MODE_OPTIONS} onChange={onSetBaseMode} />
-                <button className="wide-btn danger" type="button" onClick={onStartEmpty}>Start Empty Terrain</button>
+                <button className="wide-btn danger" type="button" onClick={onStartEmpty}>빈 지형 시작</button>
                 <p className="section-hint">
-                  <b>Base</b> swaps what you're painting on top of without touching existing strokes.
-                  <b> Start Empty Terrain</b> flattens the board and clears all paint layers for a fresh start.
-                </p>
+                  <b>기본</b>기존 스트로크를 건드리지 않고 페인트 중인 위쪽 레이어를 교체합니다.<b>빈 지형 시작</b>보드를 평평하게 만들고 모든 페인트 레이어를 지워 새 시작을 준비합니다.</p>
               </div>
             </>
           )}
 
           {activeTool === 'brush' && (
             <div className="paint-section">
-              <SelectRow label="Brush Shape" value={state.brushShape ?? 'round'} options={BRUSH_SHAPE_OPTIONS} onChange={set('brushShape')} />
+              <SelectRow label="브러시 형태" value={state.brushShape ?? 'round'} options={BRUSH_SHAPE_OPTIONS} onChange={set('brushShape')} />
               <SliderCtl def={defs.brushSize} value={state.brushSize ?? 90} onChange={set('brushSize')} />
               <SliderCtl def={defs.falloff} value={state.falloff ?? 0.75} onChange={set('falloff')} />
               {(state.brushShape === 'ellipse' || state.brushShape === 'ribbon') && (
@@ -169,7 +167,7 @@ export default function PaintPanel({ paintState, onSetting, onClear, onSetBaseMo
               )}
               <SliderCtl def={defs.brushSpacing} value={state.brushSpacing ?? 0.35} onChange={set('brushSpacing')} />
               <SliderCtl def={defs.layerOpacity} value={state.layerOpacity ?? 1} onChange={set('layerOpacity')} />
-              <p className="section-hint">Hold <b>Shift</b> and scroll to resize the brush. Right-click drag still orbits the Studio camera.</p>
+              <p className="section-hint">누르고 있기<b>시프트</b>후 스크롤하여 브러시 크기를 조정합니다. 우클릭 드래그는 여전히 스튜디오 카메라를 궤도 회전시킵니다.</p>
             </div>
           )}
         </SidePanel>

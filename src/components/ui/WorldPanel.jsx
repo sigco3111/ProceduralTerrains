@@ -91,7 +91,7 @@ export default function WorldPanel({ params, worldMode, onParam }) {
           />
         </>
       )}
-      <p className="section-hint">Wireframe, LOD Debug and Auto Update have moved to the <strong>Debug</strong> panel.</p>
+      <p className="section-hint">와이어프레임, LOD 디버그, 자동 업데이트가 다음으로 이동했습니다:<strong>디버그</strong>패널.</p>
     </ControlSection>
   );
 }

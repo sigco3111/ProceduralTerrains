@@ -565,7 +565,7 @@ export default function SurfaceLibraryPanel({ ctx }) {
   }, [libraryRevision]);
 
   if (error) return <p className="section-hint warning">Could not load the surface material manifest ({error}).</p>;
-  if (!manifest) return <p className="section-hint">Loading surface library...</p>;
+  if (!manifest) return <p className="section-hint">표면 라이브러리 로딩 중...</p>;
 
   const mapSlots = manifest.mapSlots.filter((slot) => RENDERED_SLOTS.has(slot));
   const layersById = new Map((status?.layers || []).map((layer) => [layer.id, layer]));

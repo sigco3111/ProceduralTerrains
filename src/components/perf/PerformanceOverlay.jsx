@@ -66,7 +66,7 @@ export default function PerformanceOverlay({
     return (
       <div className="perf-overlay perf-overlay-loading" role="dialog" aria-label="성능 오버레이">
         <div className="perf-overlay-head">
-          <span className="perf-title">Performance</span>
+          <span className="perf-title">성능 우선</span>
           <button type="button" className="perf-x" onClick={onClose} aria-label="닫기">✕</button>
         </div>
         <div className="perf-loading-body">
@@ -100,7 +100,7 @@ export default function PerformanceOverlay({
   return (
     <div className="perf-overlay" role="dialog" aria-label="성능 오버레이">
       <div className="perf-overlay-head">
-        <span className="perf-title">Performance</span>
+        <span className="perf-title">성능 우선</span>
         <div className="perf-head-actions">
           <button type="button" className={`perf-chip${copied === 'text' ? ' ok' : ''}`} onClick={() => copy('text')}>
             {copied === 'text' ? '복사됨' : '복사'}
@@ -122,11 +122,11 @@ export default function PerformanceOverlay({
             </div>
             <div className="perf-hero-secondary">
               <div className="perf-hero-stat">
-                <span className="perf-hero-stat-label">Frame</span>
+                <span className="perf-hero-stat-label">프레임</span>
                 <span className={`perf-hero-stat-value${frame?.avg > 22 ? ' warn' : ''}`}>{fmtMs(frame?.avg)}</span>
               </div>
               <div className="perf-hero-stat">
-                <span className="perf-hero-stat-label">Draws</span>
+                <span className="perf-hero-stat-label">드로우</span>
                 <span className="perf-hero-stat-value">{render?.calls ?? '–'}</span>
               </div>
               <div className="perf-hero-stat">
@@ -196,7 +196,7 @@ export default function PerformanceOverlay({
           <Row label="카메라" value={cam ? `${cam.x.toFixed(0)}, ${cam.y.toFixed(0)}, ${cam.z.toFixed(0)}` : '–'} />
         </Section>
 
-        <Section id="rendering" title="Rendering" collapsed={collapsed.rendering} onToggle={onToggleSection}>
+        <Section id="rendering" title="렌더링 중" collapsed={collapsed.rendering} onToggle={onToggleSection}>
           {render ? (
             <>
               <Row label="드로우 콜" value={render.calls} warn={render.calls > 1500} />
@@ -394,7 +394,7 @@ export default function PerformanceOverlay({
         )}
 
         <div className="perf-prefs">
-          <label><input type="checkbox" checked={!!settings.showWarnings} onChange={(e) => onSetShowWarnings(e.target.checked)} /> Warnings</label>
+          <label><input type="checkbox" checked={!!settings.showWarnings} onChange={(e) => onSetShowWarnings(e.target.checked)} /> 경고</label>
         </div>
       </div>
     </div>

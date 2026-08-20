@@ -97,7 +97,7 @@ export default function InfiniteHUD({
 
       <div id="fps-settings-panel">
         <div className="fps-setting-row">
-          <span className="fps-setting-label">Explore</span>
+          <span className="fps-setting-label">탐험</span>
           <div className="fps-explore-select" role="group" aria-label="탐험 모드">
             <button
               type="button"
@@ -105,31 +105,25 @@ export default function InfiniteHUD({
               onClick={() => onExploreMode?.('walk')}
               title="지형 위를 걷기"
             >
-              <Compass aria-hidden size={12} strokeWidth={1.8} />
-              Walk
-            </button>
+              <Compass aria-hidden size={12} strokeWidth={1.8} />걷기</button>
             <button
               type="button"
               className={`fps-explore-option${exploreMode === 'plane' ? ' active' : ''}`}
               onClick={() => onExploreMode?.('plane')}
               title="스로틀, 양력, 중력, 실속을 적용한 비행"
-            >
-              Plane
-            </button>
+            >비행기</button>
             {exploreMode === 'freecam' && (
               <button
                 type="button"
                 className="fps-explore-option active"
                 onClick={() => onExploreMode?.('freecam')}
                 title="노클립 자유 카메라 종료"
-              >
-                Free Cam
-              </button>
+              >프리캠</button>
             )}
           </div>
         </div>
         <div className="fps-setting-row">
-          <span className="fps-setting-label">Quality</span>
+          <span className="fps-setting-label">품질 우선</span>
           <select
             id="fps-quality-select"
             className="fps-select"
@@ -141,11 +135,11 @@ export default function InfiniteHUD({
                 {QUALITY_PRESETS[key].label}
               </option>
             ))}
-            {quality === 'custom' && <option value="custom">Custom</option>}
+            {quality === 'custom' && <option value="custom">사용자 지정</option>}
           </select>
         </div>
         <div className="fps-setting-row">
-          <span className="fps-setting-label">Time</span>
+          <span className="fps-setting-label">시간</span>
           <span className="fps-setting-value">{formatTimeOfDay(timeOfDay)}</span>
         </div>
         <input
@@ -160,7 +154,7 @@ export default function InfiniteHUD({
           onChange={(e) => onTimeOfDay(parseFloat(e.target.value))}
         />
         <div className="fps-setting-row">
-          <span className="fps-setting-label">Planet</span>
+          <span className="fps-setting-label">행성</span>
           <select
             className="fps-select"
             value={planetPreset ?? 'earth'}
@@ -172,15 +166,11 @@ export default function InfiniteHUD({
           </select>
         </div>
         <div className="fps-planet-actions">
-          <button type="button" className="fps-mini-btn" onClick={() => onGeneratePalette?.()}>
-            Gen Palette
-          </button>
-          <button type="button" className="fps-mini-btn" onClick={() => onRandomPlanet?.()}>
-            Random
-          </button>
+          <button type="button" className="fps-mini-btn" onClick={() => onGeneratePalette?.()}>팔레트 생성</button>
+          <button type="button" className="fps-mini-btn" onClick={() => onRandomPlanet?.()}>무작위</button>
         </div>
         <div className="fps-setting-row">
-          <span className="fps-setting-label">Back culling</span>
+          <span className="fps-setting-label">백 컬링</span>
           <button
             type="button"
             className={`toggle${behindCameraCulling ? ' on' : ''}`}
@@ -196,7 +186,7 @@ export default function InfiniteHUD({
           <line x1="3" y1="13" x2="13" y2="13" stroke="currentColor" strokeWidth="1.3" />
         </svg>
         <span>{stats.speed} u/s</span>
-        <span className="fps-speed-hint">Scroll to adjust</span>
+        <span className="fps-speed-hint">스크롤하여 조정</span>
       </div>
 
       {perf && (
@@ -221,7 +211,7 @@ export default function InfiniteHUD({
             <svg viewBox="0 0 16 16" width="13" height="13" fill="none" aria-hidden>
               <path d="M2 12h12M4 9l2.5-4 2.5 3.2L13 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <span className="fps-perf-title">Performance</span>
+            <span className="fps-perf-title">성능 우선</span>
             <svg className="fps-perf-chevron" viewBox="0 0 16 16" width="12" height="12" fill="none" aria-hidden>
               <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
@@ -245,26 +235,26 @@ export default function InfiniteHUD({
         {exploreMode === 'walk' ? (
           <>
             <span>ZQSD</span> Move &nbsp;·&nbsp;
-            <span>Mouse</span> Look &nbsp;·&nbsp;
-            <span>Shift</span> Run &nbsp;·&nbsp;
-            <span>Space</span> Jump/Swim up &nbsp;·&nbsp;
+            <span>마우스</span> Look &nbsp;·&nbsp;
+            <span>시프트</span> Run &nbsp;·&nbsp;
+            <span>우주</span> Jump/Swim up &nbsp;·&nbsp;
             <span>Ctrl/C</span> Swim down &nbsp;·&nbsp;
-            <span>Scroll</span> Speed &nbsp;·&nbsp;
+            <span>스크롤</span> Speed &nbsp;·&nbsp;
             Click to lock mouse
           </>
         ) : exploreMode === 'plane' ? (
           <>
-            <span>Mouse</span> Pitch/bank &nbsp;/&nbsp;
+            <span>마우스</span> Pitch/bank &nbsp;/&nbsp;
             <span>W/S</span> Throttle/brake &nbsp;/&nbsp;
             <span>A/D</span> Bank &nbsp;/&nbsp;
-            <span>Scroll</span> Cruise speed &nbsp;/&nbsp;
+            <span>스크롤</span> Cruise speed &nbsp;/&nbsp;
             Click to lock mouse
           </>
         ) : (
           <>
             <span>ZQSD</span> Move &nbsp;·&nbsp;
-            <span>Mouse</span> Look &nbsp;·&nbsp;
-            <span>Scroll</span> Speed &nbsp;·&nbsp;
+            <span>마우스</span> Look &nbsp;·&nbsp;
+            <span>스크롤</span> Speed &nbsp;·&nbsp;
             <span>Space/Shift</span> Up/Down &nbsp;·&nbsp;
             Click to lock mouse
           </>

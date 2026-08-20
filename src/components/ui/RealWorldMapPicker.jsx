@@ -317,8 +317,8 @@ export default function RealWorldMapPicker({
           <div>
             <span className="realworld-map-heading-icon"><Map size={17} aria-hidden /></span>
             <span>
-              <h2 id="realworld-map-title">Select a real-world area</h2>
-              <p>Move the map or click a location to position the terrain.</p>
+              <h2 id="realworld-map-title">실제 지형 영역 선택</h2>
+              <p>지형을 배치하려면 지도를 움직이거나 위치를 클릭하세요.</p>
             </span>
           </div>
           <button type="button" onClick={onClose} disabled={busy} aria-label="지도 선택기 닫기">
@@ -369,19 +369,17 @@ export default function RealWorldMapPicker({
               <Crosshair size={24} strokeWidth={1.6} />
             </div>
             <div className="realworld-map-instruction">
-              <Grip size={14} aria-hidden />
-              Drag to move · Scroll to zoom · Click to center
-            </div>
+              <Grip size={14} aria-hidden />드래그하여 이동 · 스크롤하여 확대/축소 · 클릭하여 중앙</div>
           </div>
 
           <aside className="realworld-map-sidebar">
             <div className="realworld-map-coordinates">
-              <span>Selection center</span>
+              <span>선택 중심</span>
               <strong>{formatCoordinateDisplay(spec)}</strong>
             </div>
 
             <div className="realworld-map-world-settings" aria-labelledby="realworld-world-settings-title">
-              <h3 id="realworld-world-settings-title">World settings</h3>
+              <h3 id="realworld-world-settings-title">월드 설정</h3>
               <SelectField
                 label="3D 월드 크기"
                 value={chunkSize}
@@ -408,9 +406,9 @@ export default function RealWorldMapPicker({
 
             <div className="realworld-map-stats">
               <Stat label="Selected area">{spec.sizeKm} × {spec.sizeKm} km</Stat>
-              <Stat label="Tiles fetched">{info.tilesX} × {info.tilesY}</Stat>
-              <Stat label="Output resolution">{info.outW} × {info.outH}</Stat>
-              <Stat label="Ground resolution">≈{groundResolution} m/px</Stat>
+              <Stat label="가져온 타일">{info.tilesX} × {info.tilesY}</Stat>
+              <Stat label="출력 해상도">{info.outW} × {info.outH}</Stat>
+              <Stat label="지표 해상도">≈{groundResolution} m/px</Stat>
             </div>
 
             {info.zoomClamped && (

@@ -50,9 +50,9 @@ const SETTINGS_INDEX = [
   { panelId: 'noiseLayers', sectionLabel: 'Layer Parameters', settingId: 'noise.layer.erosion', label: 'Layer Erosion', keywords: 'noise layer erosion derivative dampening eroded fractal valleys drainage realistic fbm ridged billow mountains' },
   { panelId: 'noiseLayers', sectionLabel: 'Layer Parameters', settingId: 'noise.layer.selfWarp', label: '자체 뒤틀림', keywords: 'noise layer self warp anti pattern breakup spaghetti ridges massif mountains fbm ridged billow realistic' },
   { panelId: 'noiseLayers', sectionLabel: 'Layer Parameters', settingId: 'noise.layer.domainWarpOctaves', label: 'Domain Warp Octaves', keywords: 'noise layer domain warp octaves pattern repetition distortion' },
-  { panelId: 'noiseLayers', sectionLabel: 'Masks', settingId: 'noise.mask.slopeMin', label: 'Slope Mask Min', keywords: 'noise layer mask slope cliff steep scree rock minimum min' },
-  { panelId: 'noiseLayers', sectionLabel: 'Masks', settingId: 'noise.mask.slopeMax', label: 'Slope Mask Max', keywords: 'noise layer mask slope cliff steep scree rock maximum max' },
-  { panelId: 'noiseLayers', sectionLabel: 'Masks', settingId: 'noise.mask.slopeFalloff', label: 'Slope Mask Falloff', keywords: 'noise layer mask slope softness falloff feather cliffs scree' },
+  { panelId: 'noiseLayers', sectionLabel: '마스크', settingId: 'noise.mask.slopeMin', label: 'Slope Mask Min', keywords: 'noise layer mask slope cliff steep scree rock minimum min' },
+  { panelId: 'noiseLayers', sectionLabel: '마스크', settingId: 'noise.mask.slopeMax', label: 'Slope Mask Max', keywords: 'noise layer mask slope cliff steep scree rock maximum max' },
+  { panelId: 'noiseLayers', sectionLabel: '마스크', settingId: 'noise.mask.slopeFalloff', label: 'Slope Mask Falloff', keywords: 'noise layer mask slope softness falloff feather cliffs scree' },
 
   // Biomes
   { panelId: 'biomes', settingId: 'biomes.biomeScale', label: 'Biome Density', keywords: 'biome density distribution climate map' },

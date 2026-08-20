@@ -63,7 +63,7 @@ function sourceDefinition(type) {
   const noise = getNoiseType(type);
   const inspector = [
     number('strength', '세기', -2, 2, 0.01, noise.defaultStrength ?? 1),
-    number('seedOffset', 'Seed Offset', -999, 999, 1, 0),
+    number('seedOffset', '시드 오프셋', -999, 999, 1, 0),
     ...(noise.params || []).map((param) => ({ type: param.type || 'number', ...param })),
   ];
   return {

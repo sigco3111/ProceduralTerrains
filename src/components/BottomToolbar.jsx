@@ -55,7 +55,7 @@ export default function BottomToolbar({ camMode, onTopDown, onAngled, onResetCam
           <rect x="3" y="3" width="10" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
           <path d="M3 7h10M7 3v10" stroke="currentColor" strokeWidth="0.8" opacity=".6" />
         </svg>
-        <span className="camera-bar-label">Top-down</span>
+        <span className="camera-bar-label">위에서 보기</span>
       </button>
       <button
         type="button"
@@ -68,7 +68,7 @@ export default function BottomToolbar({ camMode, onTopDown, onAngled, onResetCam
           <path d="M2 11 8 4l6 7z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
           <path d="M2 11h12" stroke="currentColor" strokeWidth="1.2" />
         </svg>
-        <span className="camera-bar-label">Angled</span>
+        <span className="camera-bar-label">비스듬히</span>
       </button>
       <button
         type="button"
@@ -81,7 +81,7 @@ export default function BottomToolbar({ camMode, onTopDown, onAngled, onResetCam
           <circle cx="8" cy="8" r="5.5" stroke="currentColor" strokeWidth="1.2" />
           <circle cx="8" cy="8" r="1.6" fill="currentColor" />
         </svg>
-        <span className="camera-bar-label">Reset Camera</span>
+        <span className="camera-bar-label">카메라 리셋</span>
       </button>
 
       <div className="explore-menu-wrap" ref={wrapRef}>
@@ -96,7 +96,7 @@ export default function BottomToolbar({ camMode, onTopDown, onAngled, onResetCam
           title="걷기 또는 비행기로 지형 탐험"
         >
           <Compass aria-hidden size={14} strokeWidth={1.9} />
-          <span className="camera-bar-label">Explore</span>
+          <span className="camera-bar-label">탐험</span>
           <ChevronUp className={`explore-chevron${open ? ' open' : ''}`} aria-hidden size={12} strokeWidth={2} />
         </button>
         {open && menuStyle && createPortal(
@@ -112,17 +112,13 @@ export default function BottomToolbar({ camMode, onTopDown, onAngled, onResetCam
               className={`explore-menu-item${exploreMode === 'walk' ? ' active' : ''}`}
               onClick={() => select('walk')}
               role="menuitem"
-            >
-              Walk
-            </button>
+            >걷기</button>
             <button
               type="button"
               className={`explore-menu-item${exploreMode === 'plane' ? ' active' : ''}`}
               onClick={() => select('plane')}
               role="menuitem"
-            >
-              Plane
-            </button>
+            >비행기</button>
           </div>,
           document.body
         )}

@@ -26,8 +26,8 @@ export default function SplinesPanel({ ctx }) {
     <PanelTabs active={type} onChange={setType} tabs={[{ id: 'road', label: '도로' }, { id: 'river', label: '강' }]} />
     <div className={`spline-create-card${creating ? ' creating' : ''}`}>
       <div className="spline-create-copy"><TypeIcon size={17} aria-hidden /><div><strong>{creating ? `Drawing ${meta.singular}` : `Create ${meta.singular}`}</strong><span>{creating ? `${state.draftPointCount} points placed · click terrain to add more` : 'Click terrain to add points'}</span></div></div>
-      {!creating && <button type="button" className="spline-create-btn" onClick={create} disabled={!!state.creatingType}><Plus size={15} aria-hidden /> Create</button>}
-      {creating && <div className="spline-create-actions"><button type="button" className="spline-create-btn" onClick={ctx.onConfirmSplineCreation} disabled={state.draftPointCount < 2}>Confirm <kbd>Enter</kbd></button><button type="button" className="spline-cancel-btn" onClick={ctx.onCancelSplineCreation}>Cancel</button></div>}
+      {!creating && <button type="button" className="spline-create-btn" onClick={create} disabled={!!state.creatingType}><Plus size={15} aria-hidden />만들기</button>}
+      {creating && <div className="spline-create-actions"><button type="button" className="spline-create-btn" onClick={ctx.onConfirmSplineCreation} disabled={state.draftPointCount < 2}>확인<kbd>Enter</kbd></button><button type="button" className="spline-cancel-btn" onClick={ctx.onCancelSplineCreation}>취소</button></div>}
     </div>
     <div className="spline-list" aria-label={`${meta.label} list`}>
       {!splines.length && <div className="spline-empty"><TypeIcon size={20} aria-hidden /><p>{meta.empty}</p></div>}
@@ -36,14 +36,14 @@ export default function SplinesPanel({ ctx }) {
         return <button key={s.id} type="button" className={`spline-list-row${active ? ' active' : ''}`} onClick={() => ctx.onSelectSpline(s.id)}>
           <span className="spline-list-icon"><Icon size={16} aria-hidden /></span>
           <span className="spline-list-copy"><strong>{s.name}</strong><small>{s.controlPoints.length} points · {Math.round(s.width)}u wide</small></span>
-          {!s.enabled && <span className="spline-state">Off</span>}
+          {!s.enabled && <span className="spline-state">꺼짐</span>}
           <ChevronRight size={15} aria-hidden />
         </button>;
       })}
     </div>
     {selected && selected.type === type && <section className="spline-settings">
       <div className="spline-settings-heading"><span>Selected {selected.type}</span><span>{selected.controlPoints.length} points</span></div>
-      <label className="spline-name-field"><span>Name</span><div><Route size={14} aria-hidden /><input value={selected.name} onChange={(e) => ctx.onUpdateSpline(selected.id, { name: e.target.value })} aria-label="스플라인 이름" /><Check size={14} aria-hidden /></div></label>
+      <label className="spline-name-field"><span>이름</span><div><Route size={14} aria-hidden /><input value={selected.name} onChange={(e) => ctx.onUpdateSpline(selected.id, { name: e.target.value })} aria-label="스플라인 이름" /><Check size={14} aria-hidden /></div></label>
       <SelectRow label="보간" value={selected.interpolation} options={[{ value: 'catmull-rom', label: '부드러움' }, { value: 'linear', label: '선형' }]} onChange={(v) => ctx.onUpdateSpline(selected.id, { interpolation: v })} />
       {sliders.map((def) => <SliderCtl key={def.key} def={def} value={selected[def.key]} onChange={(v) => ctx.onUpdateSpline(selected.id, { [def.key]: v })} />)}
       {selected.type === 'road' && <SelectRow label="지형 모드" value={selected.heightMode} options={[{ value: 'flatten', label: '국소 평탄화' }, { value: 'follow', label: '지형 따라가기' }, { value: 'fixed', label: '고정 표고' }]} onChange={(v) => ctx.onUpdateSpline(selected.id, { heightMode: v })} />}
@@ -56,7 +56,7 @@ export default function SplinesPanel({ ctx }) {
         <ToggleRow label="활성화됨" value={selected.enabled} onChange={(v) => ctx.onUpdateSpline(selected.id, { enabled: v })} />
         <ToggleRow label="소품 지우기" value={selected.clearProps} onChange={(v) => ctx.onUpdateSpline(selected.id, { clearProps: v })} />
       </div>
-      <div className="side-panel-quick"><button type="button" className="action-btn" onClick={() => ctx.onDuplicateSpline(selected.id)}>Duplicate</button><button type="button" className="action-btn danger" onClick={() => ctx.onDeleteSpline(selected.id)}>Delete</button></div>
+      <div className="side-panel-quick"><button type="button" className="action-btn" onClick={() => ctx.onDuplicateSpline(selected.id)}>복제</button><button type="button" className="action-btn danger" onClick={() => ctx.onDeleteSpline(selected.id)}>Delete</button></div>
     </section>}
   </SidePanel>;
 }

@@ -165,7 +165,7 @@ export default function TouchControls({ onInput, mode = 'none' }) {
         onPointerCancel={move.onPointerUp}
       >
         <div ref={move.knobRef} className="touch-joystick-knob" />
-        <span className="touch-joystick-label">Move</span>
+        <span className="touch-joystick-label">이동</span>
       </div>
       <div
         ref={look.baseRef}
@@ -176,7 +176,7 @@ export default function TouchControls({ onInput, mode = 'none' }) {
         onPointerCancel={look.onPointerUp}
       >
         <div ref={look.knobRef} className="touch-joystick-knob" />
-        <span className="touch-joystick-label">Look</span>
+        <span className="touch-joystick-label">시점</span>
       </div>
       {mode === 'plane' && (
         <div
@@ -189,7 +189,7 @@ export default function TouchControls({ onInput, mode = 'none' }) {
           aria-label="평면 스로틀"
         >
           <div ref={throttleFillRef} className="touch-throttle-fill" style={{ height: `${stateRef.current.throttle * 100}%` }} />
-          <span className="touch-throttle-label">Throttle</span>
+          <span className="touch-throttle-label">스로틀</span>
         </div>
       )}
     </div>

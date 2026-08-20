@@ -91,8 +91,8 @@ function NodePalette({
         {!detached ? <button type="button" onClick={onCollapse} title="노드 목록 접기"><ChevronLeft size={14} /></button> : null}
       </header>
       <div className="node-mode-switch node-palette-mode-switch" role="tablist" aria-label="노드 에디터 서브 모드">
-        <button type="button" role="tab" aria-selected={graphMode === 'noise'} className={graphMode === 'noise' ? 'active' : ''} onClick={() => onModeChange('noise')}>Noise nodes</button>
-        <button type="button" role="tab" aria-selected={graphMode === 'terrain'} className={graphMode === 'terrain' ? 'active' : ''} onClick={() => onModeChange('terrain')}>Terrain nodes</button>
+        <button type="button" role="tab" aria-selected={graphMode === 'noise'} className={graphMode === 'noise' ? 'active' : ''} onClick={() => onModeChange('noise')}>노이즈 노드</button>
+        <button type="button" role="tab" aria-selected={graphMode === 'terrain'} className={graphMode === 'terrain' ? 'active' : ''} onClick={() => onModeChange('terrain')}>지형 노드</button>
       </div>
       <label className="node-palette-filter">
         <Search size={12} aria-hidden />
@@ -124,7 +124,7 @@ function NodePalette({
         })}
         {!resultCount ? <div className="node-palette-empty"><Search size={16} /><span>No nodes match “{paletteQuery}”</span></div> : null}
       </div>
-      <footer><span>{resultCount} shown</span><span className="node-palette-footer-spacer" aria-hidden /> <kbd>Shift</kbd><span>+</span><kbd>A</kbd><span>all nodes</span></footer>
+      <footer><span>{resultCount} shown</span><span className="node-palette-footer-spacer" aria-hidden /> <kbd>시프트</kbd><span>+</span><kbd>A</kbd><span>모든 노드</span></footer>
     </aside>
   );
 }
@@ -165,7 +165,7 @@ function TerrainNode({ data, selected }) {
         </div>
       </div>
       {definition.preview === 'gradient' ? <div className="terrain-flow-node__gradient" style={{ background: terrainGradientCss(node.params?.preset) }} aria-label={`${node.params?.preset || 'alpine'} terrain gradient`} /> : null}
-      {definition.preview === 'color' && node.params?.rockColor ? <div className="terrain-flow-node__color-chip"><span style={{ background: node.params.rockColor }} /><small>Rock tint</small></div> : null}
+      {definition.preview === 'color' && node.params?.rockColor ? <div className="terrain-flow-node__color-chip"><span style={{ background: node.params.rockColor }} /><small>바위 틴트</small></div> : null}
     </div>
   );
 }
@@ -277,7 +277,7 @@ function InspectorField({ field, value, onChange }) {
         />
         <input type="number" min={field.min} max={field.max} step={field.step} value={numeric} onChange={(event) => onChange(Number(event.target.value), !!field.structural)} />
         {field.control === 'seed' || field.key === 'seed' ? (
-          <button type="button" className="node-inspector-randomize" onClick={() => onChange(Math.floor(Math.random() * 1000000), true)} title="Generate another deterministic seed"><Sparkles size={13} /><span>New seed</span></button>
+          <button type="button" className="node-inspector-randomize" onClick={() => onChange(Math.floor(Math.random() * 1000000), true)} title="Generate another deterministic seed"><Sparkles size={13} /><span>새 시드</span></button>
         ) : null}
       </div>
       {help}
@@ -314,42 +314,42 @@ function NodeInspector({
     <aside className="node-inspector" aria-label="Selected node properties">
       <header className="node-dock-header node-inspector__header node-dock-header--draggable" onPointerDown={onHeaderPointerDown}>
         <div className="node-dock-heading">
-          <span className="node-dock-kicker">Properties</span>
+          <span className="node-dock-kicker">속성</span>
           <strong>{title}</strong>
         </div>
         <GripVertical className="node-dock-drag-cue" size={15} aria-hidden />
-        {node && definition ? <button type="button" className="node-inspector-reset" onClick={onReset} title="이 노드를 기본값으로 초기화"><RotateCcw size={14} /><span>Reset</span></button> : null}
+        {node && definition ? <button type="button" className="node-inspector-reset" onClick={onReset} title="이 노드를 기본값으로 초기화"><RotateCcw size={14} /><span>초기화</span></button> : null}
       </header>
       {group ? (
         <div className="node-inspector__body">
           <label className="node-inspector-field node-name-field">
-            <span>Name</span>
+            <span>이름</span>
             <input value={group.label} onChange={(event) => onGroupPatch({ label: event.target.value })} />
           </label>
-          <p className="node-inspector-description">A visual frame for moving, collapsing, and organizing related terrain operations.</p>
+          <p className="node-inspector-description">관련 지형 작업을 이동, 접기, 정리할 수 있는 시각적 프레임.</p>
           <div className="node-inspector-section">
-            <h4>Organization</h4>
+            <h4>조직</h4>
             <label className="node-inspector-field">
-              <span>Frame color</span>
+              <span>프레임 색상</span>
               <select value={group.color || 'slate'} onChange={(event) => onGroupPatch({ color: event.target.value })}>
-                <option value="slate">Slate</option><option value="green">Green</option><option value="cyan">Cyan</option><option value="amber">Amber</option><option value="violet">Violet</option>
-                {/^(#[0-9a-f]{6})$/i.test(group.color || '') ? <option value={group.color}>Custom</option> : null}
+                <option value="slate">슬레이트</option><option value="green">녹색</option><option value="cyan">청록색</option><option value="amber">호박색</option><option value="violet">보라색</option>
+                {/^(#[0-9a-f]{6})$/i.test(group.color || '') ? <option value={group.color}>사용자 지정</option> : null}
               </select>
             </label>
             <label className="node-inspector-field node-group-color-field">
-              <span>Custom color</span>
+              <span>사용자 지정 색상</span>
               <span className="node-inspector-color-row">
                 <span className="node-inspector-color-swatch" style={{ background: GROUP_TONE_HEX[group.color] || group.color }} />
                 <input type="color" value={GROUP_TONE_HEX[group.color] || group.color || GROUP_TONE_HEX.slate} onChange={(event) => onGroupPatch({ color: event.target.value })} />
               </span>
             </label>
             <label className="node-inspector-toggle">
-              <span>Collapsed</span>
+              <span>접힘</span>
               <input type="checkbox" checked={group.collapsed === true} onChange={(event) => onGroupPatch({ collapsed: event.target.checked })} />
             </label>
-            <div className="node-group-summary"><strong>{group.nodeIds.length}</strong><span>nodes in this group</span></div>
+            <div className="node-group-summary"><strong>{group.nodeIds.length}</strong><span>이 그룹의 노드</span></div>
           </div>
-          <button type="button" className="node-danger-button node-ungroup-button" onClick={onUngroup}><Ungroup size={14} /> Remove group frame</button>
+          <button type="button" className="node-danger-button node-ungroup-button" onClick={onUngroup}><Ungroup size={14} />그룹 프레임 제거</button>
         </div>
       ) : node && definition ? (
         <>
@@ -364,23 +364,23 @@ function NodeInspector({
           </div>
           <div className="node-inspector__body">
             <label className="node-inspector-field node-name-field">
-              <span>Name</span>
+              <span>이름</span>
               <input value={node.label} onChange={(event) => onRename(event.target.value)} />
             </label>
             <p className="node-inspector-description">{definition.description}</p>
             {suggestedDefinition ? (
               <div className="node-inspector-recommendation">
-                <span><Sparkles size={13} /> Recommended next</span>
+                <span><Sparkles size={13} />다음 추천</span>
                 <strong>{suggestedDefinition.label}</strong>
                 <p>{suggestion.reason}</p>
-                <button type="button" onClick={() => onInsertAfter(suggestion.type)}><Plus size={13} /> Add and connect</button>
+                <button type="button" onClick={() => onInsertAfter(suggestion.type)}><Plus size={13} />추가 및 연결</button>
               </div>
             ) : null}
             {node.type === 'currentTerrain' ? (
               <div className="node-inspector-snapshot">
-                <span>Compatibility snapshot</span>
+                <span>호환성 스냅샷</span>
                 <strong>{node.params?.stack?.layers?.filter((layer) => layer.enabled).length || 0} active layers</strong>
-                <small>Its Noise Stack is frozen so first entry preserves the current terrain.</small>
+                <small>노이즈 스택이 고정되어 있어 첫 진입 시 현재 지형이 유지됩니다.</small>
               </div>
             ) : null}
             {normalizedPropertyQuery ? <div className="node-inspector-search-count">{resultCount} {resultCount === 1 ? 'setting' : 'settings'} found</div> : null}
@@ -403,18 +403,18 @@ function NodeInspector({
               );
             })}
             {!visibleSections.length && normalizedPropertyQuery ? (
-              <div className="node-inspector-no-results"><Search size={20} /><strong>No matching settings</strong><span>Try a parameter name such as “seed”, “talus”, or “scale”.</span></div>
+              <div className="node-inspector-no-results"><Search size={20} /><strong>일치하는 설정 없음</strong><span>“seed”, “talus”, “scale” 같은 매개변수 이름을 시도해 보세요.</span></div>
             ) : null}
             {!definition.permanent ? (
-              <button type="button" className="node-danger-button" onClick={onDelete}><Trash2 size={14} /> Delete node</button>
+              <button type="button" className="node-danger-button" onClick={onDelete}><Trash2 size={14} />노드 삭제</button>
             ) : null}
           </div>
         </>
       ) : (
         <div className="node-inspector-empty">
           <Boxes size={26} />
-          <strong>Select a node or group</strong>
-          <span>Its settings will appear here.</span>
+          <strong>노드 또는 그룹 선택</strong>
+          <span>설정이 여기에 표시됩니다.</span>
         </div>
       )}
       <footer className={`node-graph-health${graphState?.valid === false ? ' invalid' : ''}`}>
@@ -836,13 +836,13 @@ export default function NodeWorkspace({
       }}>
         <div className="node-graph-resizer" onPointerDown={beginGraphResize}><GripVertical size={14} /></div>
         <header className="node-dock-header node-graph-toolbar node-dock-header--draggable" onPointerDown={(event) => beginDockDrag('graph', event)}>
-          <div className="node-dock-heading"><span className="node-dock-kicker">Nodes</span><strong>{graphMode === 'terrain' ? '지형 그래프' : '프로시저럴 노이즈'}</strong></div>
+          <div className="node-dock-heading"><span className="node-dock-kicker">노드</span><strong>{graphMode === 'terrain' ? '지형 그래프' : '프로시저럴 노이즈'}</strong></div>
           <div className="node-toolbar-actions">
             {graphMode === 'terrain' && onApplyTemplate ? (
               <label className="node-template-picker" title="작성된 지형 레시피로 그래프 교체">
                 <Sparkles size={13} aria-hidden />
                 <select value={applyingTemplateId} onChange={applyTemplate} disabled={!!applyingTemplateId} aria-label="지형 노드 레시피 불러오기">
-                  <option value="">Recipes</option>
+                  <option value="">레시피</option>
                   {NODE_PROJECT_TEMPLATES.filter((template) => template.id !== 'nodes-blank').map((template) => (
                     <option key={template.id} value={template.id}>{template.name}</option>
                   ))}
@@ -860,7 +860,7 @@ export default function NodeWorkspace({
                   title={colorConfiguration.enabled ? '노드 색상 비활성화하고 프로젝트 팔레트 사용' : '이 지형에 노드 색상 적용'}
                 >
                   <Palette size={13} aria-hidden />
-                  <span>Colors</span>
+                  <span>색상</span>
                   {colorConfiguration.enabled ? <Eye size={12} aria-hidden /> : <EyeOff size={12} aria-hidden />}
                 </button>
                 <label className="node-color-preset" title="지형 색상 프리셋을 적용하고 노드 색상을 활성화">
@@ -872,12 +872,12 @@ export default function NodeWorkspace({
                 </label>
               </div>
             ) : null}
-            <button type="button" className="node-toolbar-button" onClick={openSearch}><Plus size={14} /> Add</button>
-            <button type="button" className="node-toolbar-button" onClick={createGroupFromSelection} disabled={!selectedNodes.size} title="선택한 노드 그룹화 (G)"><FolderPlus size={13} /> Group</button>
+            <button type="button" className="node-toolbar-button" onClick={openSearch}><Plus size={14} /> 추가</button>
+            <button type="button" className="node-toolbar-button" onClick={createGroupFromSelection} disabled={!selectedNodes.size} title="선택한 노드 그룹화 (G)"><FolderPlus size={13} /> 그룹</button>
             <button type="button" className="node-icon-button" onClick={() => ungroupSelection()} disabled={!selectedGroups.size} title="Remove selected group frame (Shift+G)"><Ungroup size={13} /></button>
             <button type="button" className="node-icon-button" onClick={() => instance?.fitView({ padding: 0.18, maxZoom: 1, duration: 280 })} title="그래프 맞추기"><Maximize2 size={14} /></button>
             <button type="button" className={`node-icon-button${layout.previewVisible ? ' active' : ''}`} onClick={() => updateLayout({ previewVisible: !layout.previewVisible })} title="2D 미리보기 토글">{layout.previewVisible ? <Eye size={14} /> : <EyeOff size={14} />}</button>
-            <button type="button" className="node-toolbar-button subtle" onClick={() => onStartBlank?.(graphMode)}>Clear graph</button>
+            <button type="button" className="node-toolbar-button subtle" onClick={() => onStartBlank?.(graphMode)}>그래프 지우기</button>
           </div>
         </header>
 

@@ -12,7 +12,7 @@ export default function ShortcutHint({ shortcut, className = '' }) {
         ? <Command className="shortcut-command-icon" size={12} strokeWidth={1.8} aria-hidden />
         : <span>Ctrl</span>}
       <span aria-hidden>+</span>
-      {shortcut.shiftKey && <><span>Shift</span><span aria-hidden>+</span></>}
+      {shortcut.shiftKey && <><span>시프트</span><span aria-hidden>+</span></>}
       {shortcut.altKey && <><span>{mac ? '옵션' : 'Alt'}</span><span aria-hidden>+</span></>}
       <span>{displayKey}</span>
     </span>

@@ -68,7 +68,7 @@ export default function AuthPage({ mode, onBack, onSwitch, onSuccess }) {
 
   return (
     <section className="auth-page" aria-labelledby="auth-title">
-      <button type="button" className="auth-back" onClick={onBack}><ArrowLeft size={14} /> Back to projects</button>
+      <button type="button" className="auth-back" onClick={onBack}><ArrowLeft size={14} /> 프로젝트로 돌아가기</button>
       <div className="auth-card">
         <header>
           <span className="auth-mark"><Logo size={25} /></span>
@@ -109,7 +109,7 @@ export default function AuthPage({ mode, onBack, onSwitch, onSuccess }) {
           </button>
         </footer>
       </div>
-      <p className="auth-local-note">An account is optional. You can keep creating and saving projects locally.</p>
+      <p className="auth-local-note">계정은 선택 사항입니다. 로컬에서 프로젝트를 계속 만들고 저장할 수 있습니다.</p>
     </section>
   );
 }

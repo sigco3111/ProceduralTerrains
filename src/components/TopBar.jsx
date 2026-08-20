@@ -177,17 +177,17 @@ export default function TopBar({
             aria-haspopup="menu"
             aria-expanded={fileMenuOpen}
           >
-            <span className="tb-text">File</span>
+            <span className="tb-text">파일</span>
             <Caret />
           </button>
           <div className={`tb-menu tb-menu-with-shortcuts${fileMenuOpen ? ' open' : ''}`} role="menu" aria-label="파일">
             <label className="tb-project-name-field">
-              <span>Project name</span>
+              <span>프로젝트 이름</span>
               <input
                 type="text"
                 value={projectName}
                 maxLength={120}
-                aria-label="Project name"
+                aria-label="프로젝트 이름"
                 onChange={(event) => onProjectNameChange?.(event.target.value)}
                 onKeyDown={(event) => {
                   if (event.key !== 'Enter') return;
@@ -198,37 +198,30 @@ export default function TopBar({
             </label>
             <div className="tb-menu-divider" role="separator" />
             <button type="button" role="menuitem" onClick={() => runMenuAction(setFileMenuOpen, onNew)}>
-              <FileText size={14} strokeWidth={1.75} aria-hidden /> New terrain
-              <ShortcutHint shortcut={EDITOR_SHORTCUTS.newTerrain} className="tb-menu-shortcut" />
+              <FileText size={14} strokeWidth={1.75} aria-hidden />새 지형<ShortcutHint shortcut={EDITOR_SHORTCUTS.newTerrain} className="tb-menu-shortcut" />
             </button>
             <button type="button" role="menuitem" onClick={() => runMenuAction(setFileMenuOpen, onOpenProjects)}>
-              <FolderOpen size={14} strokeWidth={1.75} aria-hidden /> Projects
-              <ShortcutHint shortcut={EDITOR_SHORTCUTS.projects} className="tb-menu-shortcut" />
+              <FolderOpen size={14} strokeWidth={1.75} aria-hidden />프로젝트<ShortcutHint shortcut={EDITOR_SHORTCUTS.projects} className="tb-menu-shortcut" />
             </button>
             <div className="tb-menu-divider" role="separator" />
             <button type="button" role="menuitem" onClick={() => runMenuAction(setFileMenuOpen, onSave)}>
-              <Save size={14} strokeWidth={1.75} aria-hidden /> Save
-              <ShortcutHint shortcut={EDITOR_SHORTCUTS.save} className="tb-menu-shortcut" />
+              <Save size={14} strokeWidth={1.75} aria-hidden /> 저장<ShortcutHint shortcut={EDITOR_SHORTCUTS.save} className="tb-menu-shortcut" />
             </button>
             <button type="button" role="menuitem" onClick={() => runMenuAction(setFileMenuOpen, () => fileRef.current?.click())}>
-              <Icon d={['M2 4h4l1.5 2H14v7H2z', 'M8 12V8M8 8l-1.7 1.7M8 8l1.7 1.7']} /> Load
-              <ShortcutHint shortcut={EDITOR_SHORTCUTS.load} className="tb-menu-shortcut" />
+              <Icon d={['M2 4h4l1.5 2H14v7H2z', 'M8 12V8M8 8l-1.7 1.7M8 8l1.7 1.7']} /> 불러오기<ShortcutHint shortcut={EDITOR_SHORTCUTS.load} className="tb-menu-shortcut" />
             </button>
             <button type="button" role="menuitem" onClick={() => runMenuAction(setFileMenuOpen, onDownload)}>
-              <Download size={14} strokeWidth={1.75} aria-hidden /> Download
-              <ShortcutHint shortcut={EDITOR_SHORTCUTS.download} className="tb-menu-shortcut" />
+              <Download size={14} strokeWidth={1.75} aria-hidden /> 다운로드<ShortcutHint shortcut={EDITOR_SHORTCUTS.download} className="tb-menu-shortcut" />
             </button>
             {canOpenInManual ? <>
               <div className="tb-menu-divider" role="separator" />
               <button type="button" role="menuitem" onClick={() => runMenuAction(setFileMenuOpen, onOpenInManual)}>
-                <Mountain size={14} strokeWidth={1.75} aria-hidden /> Open in Manual Terrain
-              </button>
+                <Mountain size={14} strokeWidth={1.75} aria-hidden /> 수동 지형에서 열기</button>
             </> : null}
             {canImportTerrain ? <>
               <div className="tb-menu-divider" role="separator" />
               <button type="button" role="menuitem" onClick={() => runMenuAction(setFileMenuOpen, onImportTerrain)}>
-                <FolderInput size={14} strokeWidth={1.75} aria-hidden /> Import terrain…
-              </button>
+                <FolderInput size={14} strokeWidth={1.75} aria-hidden />지형 가져오기…</button>
             </> : null}
           </div>
         </div>
@@ -242,25 +235,22 @@ export default function TopBar({
             aria-haspopup="menu"
             aria-expanded={editMenuOpen}
           >
-            <span className="tb-text">Edit</span>
+            <span className="tb-text">편집</span>
             <Caret />
           </button>
           <div className={`tb-menu tb-menu-with-shortcuts${editMenuOpen ? ' open' : ''}`} role="menu" aria-label="편집">
-            <div className="tb-menu-section-label">Layout</div>
+            <div className="tb-menu-section-label">레이아웃</div>
             <button type="button" role="menuitem" disabled title="프리셋 옵션이 다음에 추가됩니다">
-              <LayoutTemplate size={14} strokeWidth={1.75} aria-hidden /> Default layout
-            </button>
+              <LayoutTemplate size={14} strokeWidth={1.75} aria-hidden />기본 레이아웃</button>
             <button type="button" role="menuitem" disabled title="프리셋 옵션이 다음에 추가됩니다">
-              <LayoutTemplate size={14} strokeWidth={1.75} aria-hidden /> Modular layout
-            </button>
+              <LayoutTemplate size={14} strokeWidth={1.75} aria-hidden /> 모듈식 레이아웃</button>
             <div className="tb-menu-divider" role="separator" />
             <button
               type="button"
               role="menuitem"
               onClick={() => runMenuAction(setEditMenuOpen, () => onOpenUiSettings?.())}
             >
-              <Settings size={14} strokeWidth={1.75} aria-hidden /> Settings
-              <ShortcutHint shortcut={EDITOR_SHORTCUTS.settings} className="tb-menu-shortcut" />
+              <Settings size={14} strokeWidth={1.75} aria-hidden /> 설정<ShortcutHint shortcut={EDITOR_SHORTCUTS.settings} className="tb-menu-shortcut" />
             </button>
             {projectMode === 'procedural' ? <>
               <div className="tb-menu-divider" role="separator" />
@@ -269,8 +259,7 @@ export default function TopBar({
                 role="menuitem"
                 onClick={() => runMenuAction(setEditMenuOpen, onRandomize)}
               >
-                <Dices size={14} strokeWidth={1.75} aria-hidden /> Random seed
-                <ShortcutHint shortcut={EDITOR_SHORTCUTS.randomSeed} className="tb-menu-shortcut" />
+                <Dices size={14} strokeWidth={1.75} aria-hidden /> 랜덤 시드<ShortcutHint shortcut={EDITOR_SHORTCUTS.randomSeed} className="tb-menu-shortcut" />
               </button>
             </> : null}
           </div>
@@ -285,17 +274,16 @@ export default function TopBar({
             aria-haspopup="menu"
             aria-expanded={viewMenuOpen}
           >
-            <span className="tb-text">View</span>
+            <span className="tb-text">보기</span>
             <Caret />
           </button>
           <div className={`tb-menu${viewMenuOpen ? ' open' : ''}`} role="menu" aria-label="보기">
             <button type="button" role="menuitem" onClick={() => runMenuAction(setViewMenuOpen, onResetView)}>
-              <RotateCcw size={14} strokeWidth={1.75} aria-hidden /> Reset camera
-            </button>
+              <RotateCcw size={14} strokeWidth={1.75} aria-hidden /> 카메라 초기화</button>
             <button type="button" role="menuitem" onClick={() => runMenuAction(setViewMenuOpen, onTogglePreview)}>
               {previewMode
-                ? <><Eye size={14} strokeWidth={1.75} aria-hidden /> Show UI</>
-                : <><EyeOff size={14} strokeWidth={1.75} aria-hidden /> Hide UI</>}
+                ? <><Eye size={14} strokeWidth={1.75} aria-hidden /> UI 표시</>
+                : <><EyeOff size={14} strokeWidth={1.75} aria-hidden /> UI 숨기기</>}
             </button>
             {projectMode === 'nodes' || projectMode === 'manual' ? <>
               <div className="tb-menu-divider" role="separator" />
@@ -345,13 +333,13 @@ export default function TopBar({
         {projectMode === 'manual' && manualBaseSource ? (
           <div className="tb-workspace-switch" role="tablist" aria-label="수동 지형 작업 공간">
             <span><Mountain size={13} aria-hidden /> Manual · {manualBaseSource === 'nodes' ? '노드' : '절차적'}</span>
-            <button type="button" role="tab" aria-selected={manualWorkspace === 'base'} className={manualWorkspace === 'base' ? 'active' : ''} onClick={() => onManualWorkspace?.('base')}>Base</button>
-            <button type="button" role="tab" aria-selected={manualWorkspace === 'manual'} className={manualWorkspace === 'manual' ? 'active' : ''} onClick={() => onManualWorkspace?.('manual')}>Manual</button>
+            <button type="button" role="tab" aria-selected={manualWorkspace === 'base'} className={manualWorkspace === 'base' ? 'active' : ''} onClick={() => onManualWorkspace?.('base')}>기본</button>
+            <button type="button" role="tab" aria-selected={manualWorkspace === 'manual'} className={manualWorkspace === 'manual' ? 'active' : ''} onClick={() => onManualWorkspace?.('manual')}>매뉴얼</button>
           </div>
         ) : projectMode === 'nodes' ? (
-          <span className="tb-workspace-pill"><Boxes size={13} aria-hidden /> Nodes workspace</span>
+          <span className="tb-workspace-pill"><Boxes size={13} aria-hidden />노드 작업 공간</span>
         ) : projectMode === 'manual' ? (
-          <span className="tb-workspace-pill"><Mountain size={13} aria-hidden /> Manual Terrain</span>
+          <span className="tb-workspace-pill"><Mountain size={13} aria-hidden />수동 지형</span>
         ) : (
           <button
             type="button"
@@ -361,7 +349,7 @@ export default function TopBar({
             aria-pressed={settingsSearchOpen}
           >
             <Search size={13} strokeWidth={1.75} aria-hidden />
-            <span className="tb-text">Search settings</span>
+            <span className="tb-text">설정 검색</span>
             <ShortcutHint shortcut={SEARCH_SETTINGS_SHORTCUT} className="tb-shortcut" />
           </button>
         )}
@@ -380,7 +368,7 @@ export default function TopBar({
           title="Export the scene"
         >
           <Download size={14} strokeWidth={1.75} aria-hidden />
-          <span className="tb-text">Export</span>
+          <span className="tb-text">내보내기</span>
         </button>
         <button className="tb-btn tb-icon-btn" onClick={onToggleHelp} title="Show controls help" aria-label="도움말">
           <HelpCircle size={14} strokeWidth={1.75} aria-hidden />

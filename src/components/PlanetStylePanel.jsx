@@ -57,7 +57,7 @@ export default function PlanetStylePanel({
   return (
     <aside id="planet-style-panel" className="panel">
       <div className="panel-header">
-        <span>PLANET STYLE</span>
+        <span>행성 스타일</span>
       </div>
       <div className="panel-body">{content}</div>
     </aside>
