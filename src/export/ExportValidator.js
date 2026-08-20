@@ -8,7 +8,7 @@ export function validateExport(options = {}, context = {}) {
   const meshRes = Number(options.meshRes) || 0;
 
   if (context.worldMode === 'planet' && options.exportPresetId && options.exportPresetId !== 'custom') {
-    add('warning', 'Engine presets currently package studio terrain exports; planet export keeps its native layout.');
+    add('warning', '엔진 프리셋은 현재 스튜디오 지형 내보내기를 패키징합니다. 행성 내보내기는 네이티브 레이아웃을 유지합니다.');
   }
   if (!(Number(context.boardSize) > 0)) add('error', '지형 스케일이 잘못되었습니다.');
   else add('success', `Terrain scale valid (${Math.round(context.boardSize)} m board).`);

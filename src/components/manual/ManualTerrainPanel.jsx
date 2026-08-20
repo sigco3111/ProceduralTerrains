@@ -512,7 +512,7 @@ export default function ManualTerrainPanel({
             <div className="manual-inspector-body">
               <p className="manual-inspector-description">
                 {state.texturePaint.mode === 'props'
-                  ? 'Paint independent grass, flower, rock, and tree density directly onto Manual Terrain.'
+                  ? '수동 지형에 풀, 꽃, 바위, 나무 밀도를 독립적으로 페인트합니다.'
                   : 'Paint the shipped terrain materials directly onto the final surface. Soft weights and triplanar projection keep transitions continuous.'}
               </p>
               <section className="manual-inspector-section">

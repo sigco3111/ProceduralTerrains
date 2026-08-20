@@ -281,7 +281,7 @@ export default function ProjectLibrary({
       {!user && authStatus !== 'loading' && (
         <div className="project-cloud-note">
           <Cloud size={16} aria-hidden />
-          <span>{authStatus === 'unavailable' ? 'Cloud sync is unavailable right now. Your local projects are safe on this device.' : '로그인하여 프로젝트를 동기화하고 클라우드 사본을 다운로드하며 공유 가시성을 관리하세요.'}</span>
+          <span>{authStatus === 'unavailable' ? '현재 클라우드 동기화를 사용할 수 없습니다. 로컬 프로젝트는 이 기기에 안전하게 보관됩니다.' : '로그인하여 프로젝트를 동기화하고 클라우드 사본을 다운로드하며 공유 가시성을 관리하세요.'}</span>
           {authStatus !== 'unavailable' && <button type="button" onClick={onSignIn}>로그인</button>}
         </div>
       )}

@@ -281,7 +281,7 @@ function ErosionTabContent({ ctx, erosion }) {
     <>
       <ToggleRow label="침식 활성화" value={!!params.erosionEnabled} onChange={(v) => onParam('erosionEnabled', v)}
         settingId="erosion.erosionEnabled"
-        info="Apply the baked erosion to the terrain. Toggle to compare Before / After. Disabled until you bake." />
+        info="베이크된 침식을 지형에 적용합니다. 토글하여 전/후를 비교하세요. 베이크하기 전에는 비활성화됩니다." />
       {!baked && (
         <p className="section-hint">아직 베이크된 침식이 없습니다. 프리셋을 선택한 다음 누르세요<strong>침식 베이크</strong>. The simulation runs in the background.</p>
       )}
@@ -969,7 +969,7 @@ function TilesContent({ ctx }) {
           {shape === 'square'
             ? `Hover near a board edge and click the highlighted square to add a tile. Placement is limited to a ${grid}×${grid} grid centred on the origin.`
             : (ctx.diskRadiusCells < extent
-              ? 'Hover around the circular edge and click the highlighted ring to expand the disk.'
+              ? '원형 가장자리를 호버하고 강조된 링을 클릭하여 디스크를 확장하세요.'
               : '원형 지형이 최대 반경에 도달했습니다.')}
           {' '}Tiles share the same noise field and export together.
         </div>

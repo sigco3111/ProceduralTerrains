@@ -75,7 +75,7 @@ export class PaintModeManager {
     this.controls.enabled = true;
     this.controls.inputMode = 'orbitOnly';
     this._syncUniforms();
-    this.onToast?.('Paint Mode — left drag paints · right drag orbits · Shift + wheel changes brush size');
+    this.onToast?.('페인트 모드 — 왼쪽 드래그로 페인트 · 오른쪽 드래그로 궤도 회전 · Shift + 휠로 브러시 크기 변경');
     this._emit();
   }
 

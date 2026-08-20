@@ -4,7 +4,7 @@ export default function PlanetPresetPanel({ planetPreset, onSelect, onRandomize 
   return (
     <div className="planet-preset-block">
       <div className="row">
-        <div className="label-with-icon" data-tooltip="Apply a curated global style theme including terrain shape, biomes, colors, and atmosphere">
+        <div className="label-with-icon" data-tooltip="지형 형태, 바이옴, 색상, 분위기를 포함한 엄선된 글로벌 스타일 테마를 적용합니다">
           <span className="setting-icon">
             <svg viewBox="0 0 16 16" fill="none">
               <circle cx="8" cy="8" r="5" stroke="currentColor" strokeWidth="1.2" />

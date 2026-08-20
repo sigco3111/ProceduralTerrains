@@ -89,7 +89,7 @@ export default function CloudPanel({
   const enableInfo = worldMode === 'planet'
     ? '행성 주위의 볼류메트릭 구름 셸을 표시합니다.'
     : (worldMode === 'infinite'
-      ? 'Show a bounded volumetric cloud layer that follows the camera across the infinite world.'
+      ? '무한 세계에서 카메라를 따라가는 경계가 있는 볼류메트릭 구름 레이어를 표시합니다.'
       : '타일 어셈블리 위의 볼류메트릭 구름 슬랩을 표시합니다.');
   const p = perf ?? {};
   const currentSteps = p.cloudSteps ?? 12;
@@ -197,7 +197,7 @@ export default function CloudPanel({
               label="자체 그림자"
               value={p.cloudSelfShadow !== false}
               onChange={(v) => onPerfSetting('cloudSelfShadow', v)}
-              info="Secondary sun-direction march for soft self-shadowing (costlier). Shared with Performance settings."
+              info="부드러운 자체 그림자를 위한 보조 태양 방향 행진 (비용이 더 많이 듭니다). 성능 설정과 공유됩니다."
               settingId="performance.cloudSelfShadow"
             />
           </ControlSection>
@@ -214,7 +214,7 @@ export default function CloudPanel({
               value={resolutionName}
               options={RESOLUTION_OPTIONS}
               onChange={handleResolutionChange}
-              info="Raymarch step count. Higher = smoother clouds, lower FPS. Shared with Performance settings."
+              info="레이마칭 단계 수. 높을수록 매끄러운 구름, FPS 감소. 성능 설정과 공유됩니다."
               settingId="performance.cloudSteps"
             />
             <SelectRow

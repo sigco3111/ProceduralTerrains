@@ -202,7 +202,7 @@ export function LodPanel({
         </div>
         <span className="stat-value stat-mono">{visibleChunks} / {total}</span>
       </div>
-      <div className="stat-row" data-tooltip="Number of chunks culled (hidden) because they are outside the camera view or behind the camera">
+      <div className="stat-row" data-tooltip="카메라 뷰 밖에 있거나 카메라 뒤에 있어 컬링(숨김)된 청크 수">
         <div className="label-with-icon">
           <span className="setting-icon">
             <svg viewBox="0 0 16 16" fill="none">

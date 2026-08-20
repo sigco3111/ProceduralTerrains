@@ -452,7 +452,7 @@ const definitions = [
       number('slopeEnd', '전체 노출', 0.08, 1, 0.01, 0.56, { section: '바위' }),
       number('strength', '바위 양', 0, 1, 0.01, 0.72, { section: '바위' }),
       number('variation', '광물 변화', 0, 0.5, 0.01, 0.12, { section: '표면 디테일' }),
-      number('scale', 'Mineral Scale', 0.05, 4, 0.01, 0.78, { section: '표면 디테일' }),
+      number('scale', '광물 스케일', 0.05, 4, 0.01, 0.78, { section: '표면 디테일' }),
     ],
     defaults: { rockColor: '#6f6b63', slopeStart: 0.2, slopeEnd: 0.56, strength: 0.72, variation: 0.12, scale: 0.78 },
     structuralParams: [], uniformSlots: () => 0, colorUniformSlots: () => 1,

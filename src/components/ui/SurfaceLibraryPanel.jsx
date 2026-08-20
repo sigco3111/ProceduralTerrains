@@ -485,7 +485,7 @@ function SurfaceModeControls({ ctx, source, onBake, applying, status }) {
             value={params.surfaceTextureTriplanar !== false}
             onChange={(v) => onParam('surfaceTextureTriplanar', v)}
             settingId="surface.surfaceTextureTriplanar"
-            info="Blends X/Y/Z projections so cliffs don't stretch. Off = cheaper planar world-XZ."
+            info="절벽이 늘어나지 않도록 X/Y/Z 투영을 블렌드합니다. 끄기 = 더 저렴한 평면 world-XZ."
           />
         </>
       )}
