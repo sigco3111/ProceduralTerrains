@@ -54,7 +54,7 @@ function SeedRow({ seed, onParam, onRandomizeSeed }) {
         <input type="text" spellCheck="false" value={text}
           onChange={(e) => setText(e.target.value)} onBlur={commit}
           onKeyDown={(e) => e.key === 'Enter' && e.target.blur()} />
-        <button type="button" className="icon-btn" title="Randomize seed" onClick={onRandomizeSeed}>
+        <button type="button" className="icon-btn" title="시드 무작위화" onClick={onRandomizeSeed}>
           <Dices size={14} strokeWidth={1.75} aria-hidden />
         </button>
       </div>
@@ -71,7 +71,7 @@ const RandomizeTerrainButton = ({ onRandomize }) => (
 
 const SURFACE_TABS = [
   { id: 'general', label: 'General Settings' },
-  { id: 'textures', label: 'Textures' },
+  { id: 'textures', label: '텍스처' },
 ];
 
 // Terrain > Surface: procedural material-render sliders (General Settings) and
@@ -290,10 +290,10 @@ function ErosionTabContent({ ctx, erosion }) {
         <p className="section-hint">No erosion baked yet. Pick a preset, then press <strong>Bake Erosion</strong>. The simulation runs in the background.</p>
       )}
 
-      <SelectRow label="Preset" value={params.erosionPreset ?? 'natural'} settingId="erosion.erosionPreset"
+      <SelectRow label="프리셋" value={params.erosionPreset ?? 'natural'} settingId="erosion.erosionPreset"
         options={Object.entries(EROSION_PRESETS).map(([key, p]) => ({ value: key, label: p.label }))}
         onChange={(v) => ctx.onErosionPreset(v)} info="Erosion style. Editing any slider switches to Custom." />
-      <SelectRow label="Quality" value={params.erosionQuality ?? 'balanced'} settingId="erosion.erosionQuality"
+      <SelectRow label="품질 우선" value={params.erosionQuality ?? 'balanced'} settingId="erosion.erosionQuality"
         options={Object.entries(EROSION_QUALITY).map(([key, q]) => ({ value: key, label: `${q.label} (${q.res}²)` }))}
         onChange={(v) => onParam('erosionQuality', v)} info="Grid resolution of the bake. Higher = finer channels but slower." />
 
@@ -301,7 +301,7 @@ function ErosionTabContent({ ctx, erosion }) {
         <SliderCtl key={def.key} def={def} value={params[def.key]} onChange={(v) => setKnob(def.key, v)} settingId={`erosion.${def.key}`} />
       ))}
 
-      <ControlSection id="erosion-advanced" title="Advanced" defaultOpen={false} forceOpen={advTarget} settingId="erosion.section.advanced">
+      <ControlSection id="erosion-advanced" title="고급" defaultOpen={false} forceOpen={advTarget} settingId="erosion.section.advanced">
         {EROSION_ADVANCED.map((def) => (
           <SliderCtl key={def.key} def={def} value={params[def.key]} onChange={(v) => setKnob(def.key, v)} settingId={`erosion.${def.key}`} />
         ))}
@@ -315,7 +315,7 @@ function ErosionTabContent({ ctx, erosion }) {
 function BiomesPanel({ ctx }) {
   const { params, onParam } = ctx;
   return (
-      <SidePanel title="Biomes" description="Climate distribution and masks." onClose={ctx.onClose}>
+      <SidePanel title="생태계들" description="Climate distribution and masks." onClose={ctx.onClose}>
       {BIOME_SLIDERS.map((def) => (
         <SliderCtl key={def.key} def={def} value={params[def.key]} onChange={(v) => onParam(def.key, v)} settingId={`biomes.${def.key}`} />
       ))}
@@ -330,7 +330,7 @@ function BiomesPanel({ ctx }) {
 function WaterPanel({ ctx }) {
   const { stats } = useLiveMetrics(ctx.liveMetrics);
   return (
-    <SidePanel title="Water" description="Ocean surface, quality modes and volumetric settings." onClose={ctx.onClose}>
+    <SidePanel title="물" description="Ocean surface, quality modes and volumetric settings." onClose={ctx.onClose}>
       <WaterPanelInner
         params={ctx.params}
         onParam={ctx.onParam}
@@ -358,7 +358,7 @@ const PROP_SLIDERS = {
   propsRockScale: { label: 'Rock Scale', min: 0.05, max: 2.5, step: 0.05, digits: 2 },
   propsTreeDensity: { label: 'Tree Density', min: 0, max: 2, step: 0.05, digits: 2 },
   propsTreeScale: { label: 'Tree Scale', min: 0.25, max: 2.5, step: 0.05, digits: 2 },
-  propsWind: { label: 'Wind', min: 0, max: 1.5, step: 0.05, digits: 2 },
+  propsWind: { label: '바람', min: 0, max: 1.5, step: 0.05, digits: 2 },
   propsWindSpeed: { label: 'Animation Speed', min: 0, max: 4, step: 0.05, digits: 2 },
   propsGust: { label: 'Gust Motion', min: 0, max: 1.5, step: 0.05, digits: 2 },
   propsFlowers: { label: 'Flower Density', min: 0, max: 1, step: 0.01, digits: 2 },
@@ -376,11 +376,11 @@ function PropsPanel({ ctx }) {
     setSubTab(settingId === 'props.assetLibrary' ? 'assets' : 'settings');
   }, [ctx.settingsTarget]);
   return (
-    <SidePanel title="Props" description="Manage, preview and scatter optimized 3D terrain assets." onClose={ctx.onClose}>
+    <SidePanel title="소품" description="Manage, preview and scatter optimized 3D terrain assets." onClose={ctx.onClose}>
       <ToggleRow label="Procedural Props" value={enabled} onChange={(v) => onParam('propsEnabled', v)}
         info="Scatter optimized grass, flowers, terrain-matched boulders, broadleaf trees and conifers in every world mode." />
       <PanelTabs active={subTab} onChange={setSubTab} tabs={[
-        { id: 'assets', label: 'Asset Library' },
+        { id: 'assets', label: '자산 라이브러리' },
         { id: 'settings', label: 'Scatter Settings' },
       ]} />
       {subTab === 'assets' && (
@@ -388,7 +388,7 @@ function PropsPanel({ ctx }) {
       )}
       {subTab === 'settings' && enabled && (
         <>
-          <ControlSection id="props-distribution" title="Distribution" defaultOpen settingId="props.section.distribution">
+          <ControlSection id="props-distribution" title="분포" defaultOpen settingId="props.section.distribution">
             <SliderCtl def={PROP_SLIDERS.propsDensity} value={params.propsDensity} onChange={(v) => onParam('propsDensity', v)} />
             <SliderCtl def={PROP_SLIDERS.propsGrassDensity} value={params.propsGrassDensity ?? 1} onChange={(v) => onParam('propsGrassDensity', v)} />
             <SliderCtl def={PROP_SLIDERS.propsFlowers} value={params.propsFlowers} onChange={(v) => onParam('propsFlowers', v)} />
@@ -396,7 +396,7 @@ function PropsPanel({ ctx }) {
             <SliderCtl def={PROP_SLIDERS.propsTreeDensity} value={params.propsTreeDensity ?? 0.65} onChange={(v) => onParam('propsTreeDensity', v)} />
           </ControlSection>
 
-          <ControlSection id="props-look" title="Look" defaultOpen settingId="props.section.look">
+          <ControlSection id="props-look" title="시점" defaultOpen settingId="props.section.look">
             <SliderCtl def={PROP_SLIDERS.propsGrass} value={params.propsGrass} onChange={(v) => onParam('propsGrass', v)} />
             <SliderCtl def={PROP_SLIDERS.propsRockScale} value={params.propsRockScale ?? 1} onChange={(v) => onParam('propsRockScale', v)} />
             <SliderCtl def={PROP_SLIDERS.propsTreeScale} value={params.propsTreeScale ?? 1} onChange={(v) => onParam('propsTreeScale', v)} />
@@ -405,12 +405,12 @@ function PropsPanel({ ctx }) {
             <SliderCtl def={PROP_SLIDERS.propsGust} value={params.propsGust ?? 0.45} onChange={(v) => onParam('propsGust', v)} />
           </ControlSection>
 
-          <ControlSection id="props-performance" title="Performance" defaultOpen settingId="props.section.performance">
+          <ControlSection id="props-performance" title="성능 우선" defaultOpen settingId="props.section.performance">
             <SelectRow label="Prop Quality" value={perf?.propQuality ?? 2} options={[
-              { value: 0, label: 'Performance' },
-              { value: 1, label: 'Balanced' },
-              { value: 2, label: 'High' },
-              { value: 3, label: 'Ultra' },
+              { value: 0, label: '성능 우선' },
+              { value: 1, label: '균형' },
+              { value: 2, label: '높음' },
+              { value: 3, label: '울트라' },
             ]} onChange={(v) => onPerfSetting?.('propQuality', Number(v))} settingId="props.propQuality" />
             <SliderCtl def={PROP_SLIDERS.propsCullDistance} value={params.propsCullDistance} onChange={(v) => onParam('propsCullDistance', v)} />
             <SliderCtl def={PROP_SLIDERS.propsLodDistance} value={params.propsLodDistance} onChange={(v) => onParam('propsLodDistance', v)} />
@@ -432,7 +432,7 @@ function PropsPanel({ ctx }) {
 
 function CloudsPanel({ ctx }) {
   return (
-    <SidePanel title="Clouds" description="Volumetric cloud layer." onClose={ctx.onClose}>
+    <SidePanel title="구름" description="볼류메트릭 구름 레이어." onClose={ctx.onClose}>
       <CloudPanelInner
         params={ctx.params}
         onParam={ctx.onParam}
@@ -477,12 +477,12 @@ function SkyboxPanel({ ctx }) {
   const { params, onParam } = ctx;
   const enabled = params.skyboxEnabled !== false;
   return (
-    <SidePanel title="Skybox" description="Sky environment, time of day and atmosphere." onClose={ctx.onClose}>
+    <SidePanel title="하늘" description="Sky environment, time of day and atmosphere." onClose={ctx.onClose}>
       <ToggleRow label="Procedural Sky" value={enabled} onChange={(v) => onParam('skyboxEnabled', v)}
         settingId="skybox.skyboxEnabled"
         info="Surround the scene with the procedural sky dome (Tile + Infinite World). When off, a flat backdrop and the manual Lighting sun angles are used." />
 
-      <ControlSection id="skybox-time" title="Time of Day" defaultOpen settingId="skybox.section.time">
+      <ControlSection id="skybox-time" title="시간대" defaultOpen settingId="skybox.section.time">
         <TimeOfDayControl timeOfDay={ctx.timeOfDay} onTimeOfDay={ctx.onTimeOfDay} settingId="skybox.timeOfDay" />
         <ToggleRow label="Day/Night Cycle" value={!!params.skyboxDayNightCycle}
           onChange={(v) => onParam('skyboxDayNightCycle', v)}
@@ -514,7 +514,7 @@ function LightingPanel({ ctx }) {
   const { params } = ctx;
   const skyOn = params.skyboxEnabled !== false;
   return (
-    <SidePanel title="Lighting" description="Sun, atmosphere and fog." onClose={ctx.onClose}>
+    <SidePanel title="조명" description="태양, 대기 및 안개." onClose={ctx.onClose}>
       {skyOn && (
         <p className="section-hint">Time of day and the sky environment are configured in the <strong>Skybox</strong> tab. While the procedural sky is on, it drives the sun direction and atmosphere. Turn it off to use the manual lighting palette below.</p>
       )}
@@ -527,7 +527,7 @@ function LightingPanel({ ctx }) {
 
 function VisualsPanel({ ctx }) {
   return (
-    <SidePanel title="Visuals" description="Post effects, global camera shaders, HDR sky and surface polish." onClose={ctx.onClose}>
+    <SidePanel title="비주얼" description="Post effects, global camera shaders, HDR sky and surface polish." onClose={ctx.onClose}>
       <VisualsPanelInner ctx={ctx} />
     </SidePanel>
   );
@@ -536,7 +536,7 @@ function VisualsPanel({ ctx }) {
 function PerformancePanel({ ctx }) {
   const { stats } = useLiveMetrics(ctx.liveMetrics);
   return (
-    <SidePanel title="Performance" description="GPU, water, fog and cloud budgets." onClose={ctx.onClose}>
+    <SidePanel title="성능 우선" description="GPU, water, fog and cloud budgets." onClose={ctx.onClose}>
       <PerformanceStats stats={stats} gpu={ctx.gpu} />
       <PerfSettings perf={ctx.perf} rendererInfo={ctx.rendererInfo} onPerfPreset={ctx.onPerfPreset}
         onPerfSetting={ctx.onPerfSetting} onPerfReset={ctx.onPerfReset}
@@ -558,15 +558,15 @@ function DebugPanel({ ctx }) {
   }, [ctx.settingsTarget?.tabId, tab]);
 
   return (
-    <SidePanel title="Debug" description="Live stats and diagnostics." onClose={ctx.onClose}>
+    <SidePanel title="디버그" description="Live stats and diagnostics." onClose={ctx.onClose}>
       <PanelTabs
         active={tab}
         onChange={setTab}
         tabs={[
-          { id: 'monitor', label: 'Monitor' },
+          { id: 'monitor', label: '모니터' },
           { id: 'viewport', label: 'Viewport' },
-          ...(isStudio ? [{ id: 'analysis', label: 'Analysis' }] : []),
-          { id: 'engine', label: 'Engine' },
+          ...(isStudio ? [{ id: 'analysis', label: '분석' }] : []),
+          { id: 'engine', label: '엔진' },
         ]}
       />
 
@@ -641,7 +641,7 @@ function SessionInfo({ ctx }) {
           <div className="stat-row">
             <span className="stat-label">Height Bake</span>
             <span className="stat-value">
-              {ctx.debugFlags?.disableHeightBake ? 'Off (live field)' : 'Active'}
+              {ctx.debugFlags?.disableHeightBake ? 'Off (live field)' : '활성'}
             </span>
           </div>
         )}
@@ -658,7 +658,7 @@ function TerrainOverlayOptions({ ctx }) {
   const { params, onParam, worldMode } = ctx;
   const isStudio = worldMode === 'studio';
   const detailDebugOptions = [
-    { value: 'off', label: 'Off' },
+    { value: 'off', label: '꺼짐' },
     { value: 'slope', label: 'Slope Mask' },
     { value: 'rock', label: 'Rock Mask' },
     { value: 'shoreline', label: 'Shoreline Mask' },
@@ -675,7 +675,7 @@ function TerrainOverlayOptions({ ctx }) {
       defaultOpen
     >
       <ToggleRow
-        label="Wireframe"
+        label="와이어프레임"
         value={params.wireframe}
         onChange={(v) => onParam('wireframe', v)}
         info="Draw the terrain as wire mesh lines instead of solid triangles."
@@ -854,7 +854,7 @@ function ExportPanel({ ctx }) {
   };
 
   return (
-    <SidePanel title="Export" description="Export meshes and textures."
+    <SidePanel title="내보내기" description="Export meshes and textures."
       onClose={ctx.onClose}
       footer={(
         <button type="button" className="action-btn primary" onClick={doExport} disabled={busy || exportBlocked}>
@@ -867,7 +867,7 @@ function ExportPanel({ ctx }) {
       </div>
 
       <ControlSection id="export-production-preset" title="Production Preset" defaultOpen settingId="export.section.productionPreset">
-        <SelectRow label="Target" value={opt.exportPresetId} options={EXPORT_PRESET_OPTIONS} onChange={applyPreset} />
+        <SelectRow label="대상" value={opt.exportPresetId} options={EXPORT_PRESET_OPTIONS} onChange={applyPreset} />
         <div className="settings-hint">
           {selectedPreset ? selectedPreset.description : 'Choose files, maps, and geometry manually.'}
         </div>
@@ -900,7 +900,7 @@ function ExportPanel({ ctx }) {
       )}
 
       <ControlSection id="export-format" title="Format & Resolution" defaultOpen settingId="export.section.format">
-        <SelectRow label="Format" value={opt.format} options={FORMAT_OPTIONS} onChange={(v) => set('format', v)} />
+        <SelectRow label="형식" value={opt.format} options={FORMAT_OPTIONS} onChange={(v) => set('format', v)} />
         <ToggleRow label="Include Terrain Mesh" value={opt.includeMesh} onChange={(v) => set('includeMesh', v)} />
         {opt.includeMesh && (
           <>
@@ -924,12 +924,12 @@ function ExportPanel({ ctx }) {
         )}
       </ControlSection>
 
-      <ControlSection id="export-assets" title="Additional Assets" defaultOpen={false} settingId="export.section.assets">
-        <ToggleRow label="Export Heightmap" value={opt.exportHeightmap} onChange={(v) => set('exportHeightmap', v)} />
+      <ControlSection id="export-assets" title="추가 자산" defaultOpen={false} settingId="export.section.assets">
+        <ToggleRow label="하이맵 내보내기" value={opt.exportHeightmap} onChange={(v) => set('exportHeightmap', v)} />
         {opt.exportHeightmap && (
           <ToggleRow label="Include Biome Splat Map" value={opt.exportSplat} onChange={(v) => set('exportSplat', v)} />
         )}
-        <ToggleRow label="Export Collision Mesh" value={opt.exportCollision} onChange={(v) => set('exportCollision', v)} />
+        <ToggleRow label="충돌 메쉬 내보내기" value={opt.exportCollision} onChange={(v) => set('exportCollision', v)} />
         {opt.exportCollision && (
           <SelectRow label="Collision Resolution" value={opt.collisionRes} options={COLL_OPTIONS} onChange={(v) => set('collisionRes', v)} />
         )}
@@ -942,11 +942,11 @@ function ExportPanel({ ctx }) {
 
       <ControlSection id="export-water-maps" title="Water Maps" defaultOpen={false} settingId="export.section.waterMaps">
         <ToggleRow label="Export Water Mask" value={opt.exportWaterMask} onChange={(v) => setMask('exportWaterMask', v)} />
-        <ToggleRow label="Export Depth Map" value={opt.exportDepthMap} onChange={(v) => setMask('exportDepthMap', v)} />
+        <ToggleRow label="깊이 맵 내보내기" value={opt.exportDepthMap} onChange={(v) => setMask('exportDepthMap', v)} />
         <ToggleRow label="Export Shoreline Mask" value={opt.exportShorelineMask} onChange={(v) => setMask('exportShorelineMask', v)} />
-        <ToggleRow label="Export Foam Mask" value={opt.exportFoamMask} onChange={(v) => setMask('exportFoamMask', v)} />
+        <ToggleRow label="거품 마스크 내보내기" value={opt.exportFoamMask} onChange={(v) => setMask('exportFoamMask', v)} />
         <ToggleRow label="Include Water Material Metadata" value={opt.exportWaterMetadata} onChange={(v) => set('exportWaterMetadata', v)} />
-        <ToggleRow label="Export Preset (JSON)" value={opt.exportPreset} onChange={(v) => set('exportPreset', v)} />
+        <ToggleRow label="프리셋 내보내기 (JSON)" value={opt.exportPreset} onChange={(v) => set('exportPreset', v)} />
       </ControlSection>
     </SidePanel>
   );
@@ -967,7 +967,7 @@ function TilesContent({ ctx }) {
   const maxCells = shape === 'circle' ? diskMaxCells : gridCells;
   const atGridEdge = tiles.length >= maxCells;
   return (
-    <ControlSection id="inspector-tiles" title="Tiles" defaultOpen settingId="world.section.tiles" icon={PANEL_ICONS.tiles}>
+    <ControlSection id="inspector-tiles" title="타일" defaultOpen settingId="world.section.tiles" icon={PANEL_ICONS.tiles}>
       <ControlSection id="inspector-tiles-assembly" title="Assembly" nested defaultOpen settingId="world.section.tilesAssembly">
         <div className="settings-hint" style={{ marginBottom: 8 }}>
           {shape === 'square'
@@ -977,8 +977,8 @@ function TilesContent({ ctx }) {
               : 'The circular terrain has reached its maximum radius.')}
           {' '}Tiles share the same noise field and export together.
         </div>
-        <SelectRow label="Shape" value={shape}
-          options={[{ value: 'square', label: 'Square' }, { value: 'circle', label: 'Circle' }]}
+        <SelectRow label="형태" value={shape}
+          options={[{ value: 'square', label: '사각형' }, { value: 'circle', label: 'Circle' }]}
           onChange={ctx.onTileAssemblyShape} settingId="world.tileAssemblyShape"
           info="Square supports hover-to-add tiles. Circle crops the current square chunk assembly to a disk." />
         <div className="kv-row"><span>Tiles</span><span>{tiles.length} / {maxCells}</span></div>

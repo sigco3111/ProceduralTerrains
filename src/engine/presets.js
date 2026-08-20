@@ -135,7 +135,7 @@ export const PRESETS = {
     params: {},            // = defaults
   },
   archipelago: {
-    label: 'Archipelago',
+    label: '군도',
     params: {
       heightScale: 420, seaLevel: 78, falloff: 0.75, ridge: 0.45,
       warp: 1.4, noiseScale: 60, moistBias: 0.25, snowLine: 0.9,
@@ -166,14 +166,14 @@ export const PRESETS = {
     },
   },
   volcanic: {
-    label: 'Volcanic Island',
+    label: '화산 섬',
     params: {
       heightScale: 560, seaLevel: 58, ridge: 0.85, warp: 0.8,
       noiseScale: 30, falloff: 0.85, moistBias: -0.2, snowLine: 0.62,
     },
   },
   canyon: {
-    label: 'Canyonlands',
+    label: '캐년랜드',
     params: {
       heightScale: 380, seaLevel: 12, ridge: 0.55, warp: 2.4,
       noiseScale: 42, persistence: 0.58, lacunarity: 2.4,
@@ -184,7 +184,7 @@ export const PRESETS = {
   // colour palette and "Simple Cartoon" noise style, all applied in one click.
   // palettePreset / noisePreset are picked up by Engine.applyPresetByKey.
   cartoon: {
-    label: 'Cartoon',
+    label: '카툰',
     palettePreset: 'cartoon',
     noisePreset: 'cartoon',
     params: {

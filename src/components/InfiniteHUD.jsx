@@ -17,7 +17,7 @@ const PLAYER_STATE_LABELS = {
   grounded: 'Grounded',
   falling: 'Falling',
   swimming: 'Swimming',
-  underwater: 'Underwater',
+  underwater: '수중',
   flying: 'Flying',
   stalling: 'Stalling',
 };
@@ -98,7 +98,7 @@ export default function InfiniteHUD({
       <div id="fps-settings-panel">
         <div className="fps-setting-row">
           <span className="fps-setting-label">Explore</span>
-          <div className="fps-explore-select" role="group" aria-label="Explore mode">
+          <div className="fps-explore-select" role="group" aria-label="탐험 모드">
             <button
               type="button"
               className={`fps-explore-option${exploreMode === 'walk' ? ' active' : ''}`}
@@ -201,7 +201,7 @@ export default function InfiniteHUD({
 
       {perf && (
         <div className="fps-mobile-dock">
-          <DockBtn active={perfOpen} onClick={togglePerf} title="Performance">
+          <DockBtn active={perfOpen} onClick={togglePerf} title="성능 우선">
             <svg viewBox="0 0 16 16" fill="none" width="14" height="14" aria-hidden>
               <path d="M2 12h12M4 9l2.5-4 2.5 3.2L13 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
             </svg>

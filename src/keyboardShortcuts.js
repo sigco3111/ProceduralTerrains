@@ -20,8 +20,8 @@ export const isMacPlatform = (platform = getPlatformName()) => /mac|iphone|ipad|
 
 export const shortcutText = (shortcut, platform = getPlatformName()) => {
   const parts = [isMacPlatform(platform) ? 'Command' : 'Ctrl'];
-  if (shortcut.shiftKey) parts.push('Shift');
-  if (shortcut.altKey) parts.push(isMacPlatform(platform) ? 'Option' : 'Alt');
+  if (shortcut.shiftKey) parts.push('시프트');
+  if (shortcut.altKey) parts.push(isMacPlatform(platform) ? '옵션' : 'Alt');
   parts.push(shortcut.displayKey ?? String(shortcut.key).toUpperCase());
   return parts.join(' + ');
 };

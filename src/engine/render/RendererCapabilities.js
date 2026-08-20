@@ -11,18 +11,18 @@ export function sanitizeGpuPreference(value) {
 
 export function labelRendererBackend(value) {
   return ({
-    auto: 'Auto',
+    auto: '자동',
     webgl: 'WebGL',
     webgpu: 'WebGPU',
-  })[value] || 'Auto';
+  })[value] || '자동';
 }
 
 export function labelGpuPreference(value) {
   return ({
-    default: 'Default',
+    default: '기본',
     'high-performance': 'High Performance',
     'low-power': 'Low Power',
-  })[value] || 'Default';
+  })[value] || '기본';
 }
 
 export function getWebGpuSupport() {
@@ -43,7 +43,7 @@ export function detectRendererCapabilities(renderer = null) {
       supported: typeof performance !== 'undefined' && !!performance.memory,
     },
     gpuTiming: { supported: false },
-    detectedRenderer: 'Unavailable',
+    detectedRenderer: '사용 불가',
     detectedGpu: 'GPU info hidden by browser',
     gpuInfoAvailable: false,
     gpuInfoReason: 'Browser did not expose GPU info',

@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react';
 import surfaceMaterialsApi from './vite-plugins/surfaceMaterialsApi.js';
 
 export default defineConfig({
+  // GitHub Pages: 저장소 이름으로 base 경로 고정 (절대경로 흰화면 함정 회피)
+  base: '/ProceduralTerrains/',
   // Be explicit here: without the automatic runtime, JSX is compiled to
   // React.createElement and every JSX module must import a `React` binding.
   // The application uses the modern runtime throughout its components.

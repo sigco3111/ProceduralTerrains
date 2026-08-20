@@ -23,7 +23,7 @@ const FOG_SLIDER = {
 
 const SUN_INTENSITY = {
   key: 'sunIntensity',
-  label: 'Sun Intensity',
+  label: '태양 강도',
   min: 0.2,
   max: 3,
   step: 0.05,
@@ -69,7 +69,7 @@ const WATER_LIGHTING_SLIDERS = [
   },
   {
     key: 'waterSunResponse',
-    label: 'Sun Response',
+    label: '태양 반응',
     min: 0,
     max: 2,
     step: 0.05,
@@ -130,10 +130,10 @@ export default function EnvironmentPanel({ params, planetStyle, onParam, onTunin
     <>
       <ControlSection
         id="inspector-environment-sun"
-        title="Sun"
+        title="태양"
         defaultOpen
         settingId="lighting.section.sun"
-        forceOpen={forceSection('lighting.section.sun', 'Sun', ['lighting.sun'])}
+        forceOpen={forceSection('lighting.section.sun', '태양', ['lighting.sun'])}
       >
         <div className="color-field" data-setting-id="lighting.sunColor">
           <div className="label-with-icon" data-tooltip="Color tint of the direct sunlight">
@@ -199,10 +199,10 @@ export default function EnvironmentPanel({ params, planetStyle, onParam, onTunin
 
       <ControlSection
         id="inspector-environment-atmosphere"
-        title="Atmosphere"
+        title="대기"
         defaultOpen
         settingId="lighting.section.atmosphere"
-        forceOpen={forceSection('lighting.section.atmosphere', 'Atmosphere', ['lighting.fog', 'lighting.skyAmbient', 'lighting.groundBounce'])}
+        forceOpen={forceSection('lighting.section.atmosphere', '대기', ['lighting.fog', 'lighting.skyAmbient', 'lighting.groundBounce'])}
       >
         <SliderCtl
           def={FOG_SLIDER}

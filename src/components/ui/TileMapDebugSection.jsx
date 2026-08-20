@@ -3,15 +3,15 @@ import CollapsibleGroup from './CollapsibleGroup.jsx';
 import { ToggleRow, SelectRow } from '../controls.jsx';
 
 const DEBUG_VIEW_OPTIONS = [
-  { value: 'off', label: 'Off' },
+  { value: 'off', label: '꺼짐' },
   { value: 'noise', label: 'Noise Texture' },
-  { value: 'height', label: 'Height Map' },
+  { value: 'height', label: '하이맵' },
   { value: 'biome', label: 'Biome Map' },
 ];
 
 const BIOME_LEGEND = [
   ['#d6b35a', 'Desert / sand'],
-  ['#b05f32', 'Canyon / dry rock'],
+  ['#b05f32', '협곡 / 마른 바위'],
   ['#2f9f67', 'Wetland / grass'],
   ['#8b8f98', 'Mountains / snow'],
 ];

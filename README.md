@@ -1,34 +1,137 @@
-# Procedural Terrains
+# 절차적 지형 (Procedural Terrains) - 한글화
 
-A shader-driven procedural terrain generator and editor built with **React + Vite + Three.js (WebGL2)**.
+**React + Vite + Three.js (WebGL2)** 기반의 셰이더 중심 절차적 지형 생성기 및 에디터입니다.
 
-Height, normals and biome colors are computed **on the GPU** — there is no baked CPU heightmap
-driving the live view. The app ships three world modes (switchable from the top bar):
+높이, 법선, 생태계 색상은 모두 **GPU에서 실시간 계산**되며, CPU에서 베이크된 하이맵이 실시간 뷰를 구동하지 않습니다. 상단 바에서 전환 가능한 **세 가지 월드 모드**가 제공됩니다.
 
-| Mode | What it is |
+[![Live](https://img.shields.io/badge/Live-GitHub%20Pages-222222?style=for-the-badge&logo=githubpages&logoColor=white)](https://sigco3111.github.io/ProceduralTerrains/)
+
+라이브 데모 : https://sigco3111.github.io/ProceduralTerrains/
+
+| 모드 | 설명 |
 |---|---|
-| **Tile** | Fixed terrain board with per-chunk LOD — best for painting, multi-tile layouts and exports |
-| **Infinite World** | Streamed chunk grid around the camera with FPS walk / plane exploration |
-| **Planet** | Cube-sphere procedural planet with atmosphere, volumetric clouds and orbit camera |
+| **타일** | 청크별 LOD가 적용된 고정 지형 보드. 페인팅, 다중 타일 레이아웃, 내보내기에 최적 |
+| **무한 세계** | 카메라 주변으로 청크가 스트리밍되는 그리드. FPS 걷기 / 비행기 탐험 지원 |
+| **행성** | 큐브-스피어 기반 절차적 행성. 대기, 볼류메트릭 구름, 궤도 카메라 지원 |
 
-## Run
+![Procedural Terrains - 한글화 스크린샷](docs/screenshot.png)
+
+---
+
+## ✨ 핵심 특징
+
+- **결정론적**: 지형은 `(world XZ, seed, params)`의 순수 함수. 시드는 mulberry32 PRNG를 통해 도메인 오프셋을 구동하며, 형태 결정에 `Math.random()`은 사용되지 않습니다.
+- **레이어드 노이즈**: 타입이 지정된 노이즈 레이어 스택(add, carve, replace 등)이 셰이더로 코드젠되며, 모든 저장 데이터에 직렬화됩니다.
+- **균열 없음**: 청크 지오메트리는 버텍스 셰이더에서 스커트 링을 드롭하여 서로 다른 LOD의 인접 청크 사이에 빈틈이 없습니다.
+- **라이브 편집**: 대부분의 슬라이더는 셰이더 유니폼에 매핑되며, 청크 수/크기, 타일 레이아웃, 행성 반경 등 일부 구조적 키만 지오메트리 재빌드를 트리거합니다.
+- **카메라가 지형을 만들지 않음**: LOD는 시점 의존적이지만 높이 필드는 그렇지 않습니다.
+- **실행 취소 / 다시 실행**: `Ctrl+Z` / `Ctrl+Y`로 전체 프로젝트 상태(파라미터, 타일, 페인트 레이어) 관리.
+- **저장 / 불러오기**: 시드 + 모든 파라미터를 JSON으로 상단 바에서 처리.
+
+---
+
+## 🚀 빠른 시작
 
 ```sh
 npm install
 npm run dev
 ```
 
-The dev server starts on **http://localhost:6061** and is also reachable on your local network
-(Vite listens on all interfaces and prints the LAN URL, e.g. `http://192.168.x.x:6061`).
-If port 6061 is already in use, Vite picks the next free port.
+개발 서버는 **http://localhost:6061**에서 시작되며, 로컬 네트워크에서도 접근 가능합니다 (Vite가 모든 인터페이스에서 수신 대기하여 LAN URL을 출력합니다. 예: `http://192.168.x.x:6061`).
 
-Production build: `npm run build` (output in `dist/`), preview it with `npm run preview`.
+6061 포트가 이미 사용 중인 경우, Vite는 다음 사용 가능한 포트를 자동으로 선택합니다.
 
-## Optional accounts API
+프로덕션 빌드: `npm run build` (`dist/`에 출력), `npm run preview`로 미리보기.
 
-Login and registration are backed by an independent, self-hostable Node.js/MySQL service in [`api/`](api/). The editor remains local-first and fully usable without an account.
+---
 
-For local development, copy both environment examples and start the frontend and API in separate terminals:
+## 🏗️ 아키텍처
+
+WebGL **엔진**은 프레임워크에 독립적(`src/engine/`)이고, 에디터 **UI**는 React(`src/components/`)입니다. 둘은 `Engine` 메서드 + 콜백 객체를 통해 통신하며, React는 엔진의 파라미터 상태를 미러링하여 사이드 패널 컨트롤을 렌더링합니다.
+
+| 영역 | 주요 파일 |
+|---|---|
+| **코어** | [src/engine/Engine.js](src/engine/Engine.js) — 렌더러, 씬, 파라미터→유니폼 배관, 저장/불러오기, 실행 취소 상태 |
+| **타일 보드** | [src/engine/terrain/TerrainBoard.js](src/engine/terrain/TerrainBoard.js), [ChunkGeometry.js](src/engine/terrain/ChunkGeometry.js), [BoardPlinth.js](src/engine/terrain/BoardPlinth.js) |
+| **무한 세계** | [src/engine/terrain/InfiniteWorld.js](src/engine/terrain/InfiniteWorld.js) — 스트리밍 청크, 삼각형 예산, 카메라 뒤 컬링 |
+| **행성** | [src/engine/terrain/PlanetWorld.js](src/engine/terrain/PlanetWorld.js), [PlanetMaterial.js](src/engine/terrain/PlanetMaterial.js), [PlanetOrbitControls.js](src/engine/terrain/PlanetOrbitControls.js) |
+| **노이즈 스택** | [src/engine/terrain/noise/NoiseStack.js](src/engine/terrain/noise/NoiseStack.js), [noiseStackCodegen.js](src/engine/terrain/noise/noiseStackCodegen.js) — 레이어드, 직렬화 가능한 노이즈 레이어를 GLSL로 컴파일 |
+| **셰이더** | [src/engine/terrain/terrainGLSL.js](src/engine/terrain/terrainGLSL.js), [TerrainMaterial.js](src/engine/terrain/TerrainMaterial.js), [WaterMaterial.js](src/engine/terrain/WaterMaterial.js) |
+| **물** | [src/engine/water/WaterSystem.js](src/engine/water/WaterSystem.js), [RealisticWaterMaterial.js](src/engine/water/RealisticWaterMaterial.js), [UnderwaterEffect.js](src/engine/render/UnderwaterEffect.js) |
+| **하늘 & 구름** | [src/engine/sky/ProceduralSky.js](src/engine/sky/ProceduralSky.js), [CloudSlabLayer.js](src/engine/sky/CloudSlabLayer.js), [PlanetCloudChunks.js](src/engine/sky/PlanetCloudChunks.js), [TimeOfDay.js](src/engine/sky/TimeOfDay.js) |
+| **스타일** | [src/engine/style/PlanetStyleManager.js](src/engine/style/PlanetStyleManager.js), [ColorPalette.js](src/engine/style/ColorPalette.js) |
+| **페인팅** | [src/paint/PaintModeManager.js](src/paint/PaintModeManager.js) — 높이 / 생태계 / 소품 브러시 레이어 (타일 모드) |
+| **내보내기** | [src/engine/terrain/TerrainExporter.js](src/engine/terrain/TerrainExporter.js), [PlanetExporter.js](src/engine/terrain/PlanetExporter.js) |
+| **UI** | [src/App.jsx](src/App.jsx), [src/components/panels/index.jsx](src/components/panels/index.jsx) — 스키마 기반 사이드 패널, 설정 검색, 성능 오버레이 |
+
+---
+
+## 🎮 타일 모드 추가 기능
+
+- **다중 타일 어셈블리**: 그리드에 타일을 배치하여 더 큰 풍경을 구성. 병합 또는 타일별로 내보내기.
+- **사각형 또는 원형 레이아웃**: 원형 모드는 지형을 디스크로 클립하고, 링 확장을 지원하며, 지형 실루엣을 따라가는 방사형 벽을 렌더링합니다.
+- **페인팅 모드**: 보드에 높이, 강, 생태계, 절차적 소품을 브러시합니다.
+- **실제 지형 하이맵**: 위치 기반 고도 데이터를 가져옵니다 (미리보기, 대체 또는 블렌드).
+- **근접 디테일 레이어**: 타일 모드에서 카메라 근처에 추가 표면 디테일.
+
+---
+
+## 🕹️ 조작
+
+**에디터 카메라 (타일 모드)**
+- **좌측 드래그** — 보드 위에서 팬 (클램프됨)
+- **우측 드래그** — 궤도
+- **스크롤** — 줌
+- 하단 툴바: 위에서 보기 /비스듬히 / 카메라 초기화
+
+**탐험 (무한 세계 & 행성)**
+- 하단 툴바 **탐험** 메뉴: **걷기** (FPS) 또는 **비행기** (비행 통과)
+- 모바일에서는 터치 컨트롤 사용
+
+**단축키**
+- `Ctrl+K` — 모든 설정 검색
+- `Ctrl+Z` / `Ctrl+Y` — 실행 취소 / 다시 실행
+- `Ctrl+Shift+P` — 개발자 성능 오버레이 (상태 표시줄의 FPS 배지를 통해서도 접근 가능)
+
+---
+
+## 📤 내보내기
+
+빠른 작업 (내보내기 패널):
+- **스크린샷** — 현재 뷰포트의 PNG
+- **하이맵** — 동일한 셰이더에서 직교 회색조 베이크
+
+전체 내보내기 (선택적 콘텐츠가 포함된 ZIP):
+- 지형 메시는 **GLB/GLTF** 또는 **OBJ** (해상도, 스커트, 베이스 슬랩 설정 가능). 다중 타일 사각형 보드는 하나의 결합된 메쉬로 또는 ZIP의 타일별 패키로 내보낼 수 있습니다.
+- 베이크된 **컬러**, **법선** 및 **하이맵** 텍스처
+- **생태계 스플랫** 맵, **충돌** 메쉬, 수면 메쉬
+- 물 마스크 (깊이, 해안선, 거품) 및 재가져오기를 위한 프리셋 JSON
+
+### 프로덕션 프리셋
+
+내보내기 패널에는 **프로덕션 체크** 프리플라이트 및 **Unity Terrain**, **Unreal Landscape**, **Godot Terrain3D**, **Blender Scene**, **Three.js Viewer Assets** 대상 프리셋이 포함되어 있습니다. 엔진 프리셋은 파일을 가져오기 지향 폴더로 패키징하며 `terrain.json`과 `README.txt`가 함께 제공됩니다. Unity와 Unreal은 리틀 엔디언 부호 없는 16비트 원시 하이맵(`.raw` / `.r16`)을 사용합니다. 체커는 잘못된 자산 선택을 차단하고, GPU 베이크가 시작되기 전에 고메모리 맵이나 누락된 물 마스크를 플래그합니다.
+
+행성 모드에는 큐브맵 높이 베이킹이 가능한 전용 행성 익스포터가 있습니다.
+
+---
+
+## 💾 로컬 프로젝트
+
+홈 화면은 로컬 우선 프로젝트 허브입니다. 빈 지형을 만들거나 Island, Mountain Range, Desert 템플릿에서 시작한 다음, 에디터에서 **저장**을 사용하여 브라우저에 프로젝트를 영구 저장하세요. 프로젝트에는 버전이 지정된 지형 데이터, 메타데이터, 에디터에서 캡처한 썸네일 및 최근 프로젝트 항목이 포함됩니다. 저장은 IndexedDB를 사용하며 localStorage 폴백을 사용하고, **프로젝트** 버튼으로 허브를 다시 열 수 있습니다. 기존 시드 JSON 파일은 계속 가져올 수 있습니다.
+
+---
+
+## ⚡ 성능 노트
+
+법선은 프래그먼트별로 유한 차분법으로 계산되며(픽셀당 여러 번 높이 평가), 이는 낮은 지오메트리 LOD에서도 멀리 있는 지형을 선명하게 유지합니다. **성능** 패널은 GPU 티어 감지, 품질 프리셋, LOD 예산, 렌더러 옵션을 제공합니다. 약한 GPU에서는 픽셀 비율을 낮추고, 옥타브/레이어 수를 줄이거나, 더 가벼운 물 품질 모드로 전환하세요.
+
+---
+
+## 🌐 선택적 계정 API
+
+로그인과 등록은 [`api/`](api/)의 독립적인 자체 호스팅 가능한 Node.js/MySQL 서비스로 백업됩니다. 에디터는 로컬 우선이며 계정 없이도 완전히 사용할 수 있습니다.
+
+로컬 개발을 위해서는 두 환경 예시를 모두 복사하고 별도의 터미널에서 프런트엔드와 API를 시작하세요:
 
 ```sh
 cp .env.example .env
@@ -38,104 +141,23 @@ npm run dev
 npm run dev:api
 ```
 
-Run `npm run migrate:api` once MySQL is configured. Classic Linux, PM2, MySQL and Nginx deployment instructions are in [`api/README.md`](api/README.md).
+MySQL이 구성되면 `npm run migrate:api`를 실행하세요. 클래식 Linux, PM2, MySQL, Nginx 배포 지침은 [`api/README.md`](api/README.md)에 있습니다.
 
-## Architecture
+---
 
-The WebGL **engine** is framework-agnostic (`src/engine/`); the editor **UI** is React
-(`src/components/`). They talk through `Engine` methods + a callbacks object — React mirrors
-the engine's parameter state and renders the side-panel controls.
+## 📚 문서
 
-| Area | Key files |
-|---|---|
-| **Core** | [src/engine/Engine.js](src/engine/Engine.js) — renderer, scene, param→uniform plumbing, save/load, undo state |
-| **Tile board** | [src/engine/terrain/TerrainBoard.js](src/engine/terrain/TerrainBoard.js), [ChunkGeometry.js](src/engine/terrain/ChunkGeometry.js), [BoardPlinth.js](src/engine/terrain/BoardPlinth.js) |
-| **Infinite world** | [src/engine/terrain/InfiniteWorld.js](src/engine/terrain/InfiniteWorld.js) — streamed chunks, triangle budget, behind-camera culling |
-| **Planet** | [src/engine/terrain/PlanetWorld.js](src/engine/terrain/PlanetWorld.js), [PlanetMaterial.js](src/engine/terrain/PlanetMaterial.js), [PlanetOrbitControls.js](src/engine/PlanetOrbitControls.js) |
-| **Noise stack** | [src/engine/terrain/noise/NoiseStack.js](src/engine/terrain/noise/NoiseStack.js), [noiseStackCodegen.js](src/engine/terrain/noise/noiseStackCodegen.js) — layered, serializable noise layers compiled to GLSL |
-| **Shaders** | [src/engine/terrain/terrainGLSL.js](src/engine/terrain/terrainGLSL.js), [TerrainMaterial.js](src/engine/terrain/TerrainMaterial.js), [WaterMaterial.js](src/engine/terrain/WaterMaterial.js) |
-| **Water** | [src/engine/water/WaterSystem.js](src/engine/water/WaterSystem.js), [RealisticWaterMaterial.js](src/engine/water/RealisticWaterMaterial.js), [UnderwaterEffect.js](src/engine/render/UnderwaterEffect.js) |
-| **Sky & clouds** | [src/engine/sky/ProceduralSky.js](src/engine/sky/ProceduralSky.js), [CloudSlabLayer.js](src/engine/sky/CloudSlabLayer.js), [PlanetCloudChunks.js](src/engine/sky/PlanetCloudChunks.js), [TimeOfDay.js](src/engine/sky/TimeOfDay.js) |
-| **Style** | [src/engine/style/PlanetStyleManager.js](src/engine/style/PlanetStyleManager.js), [ColorPalette.js](src/engine/style/ColorPalette.js) |
-| **Paint** | [src/paint/PaintModeManager.js](src/paint/PaintModeManager.js) — height / biome / props brush layers (Tile mode) |
-| **Export** | [src/engine/terrain/TerrainExporter.js](src/engine/terrain/TerrainExporter.js), [PlanetExporter.js](src/engine/terrain/PlanetExporter.js) |
-| **UI** | [src/App.jsx](src/App.jsx), [src/components/panels/index.jsx](src/components/panels/index.jsx) — schema-driven side panels, settings search, performance overlay |
+- [`design-qa.md`](design-qa.md) — 디자인 결정 및 QA 노트
+- [`progress.md`](progress.md) — 개발 진행 상황
+- [`docs/`](docs/) — 추가 문서
 
-## Key properties
+---
 
-- **Deterministic**: terrain is a pure function of `(world XZ, seed, params)`. The seed drives
-  a domain offset via a mulberry32 PRNG; `Math.random()` is never used for shape.
-- **Layered noise**: a stack of typed noise layers (add, carve, replace, …) is codegen'd into
-  the terrain shader and serializes with every save.
-- **No cracks**: chunk geometries carry skirt rings dropped in the vertex shader so adjacent
-  chunks at different LODs never show gaps.
-- **Live editing**: most sliders map to shader uniforms — only chunk count/size, tile layout,
-  planet radius and a few structural keys trigger a geometry rebuild.
-- **Camera never shapes terrain**: LOD is view-dependent; the height field is not.
-- **Undo / redo**: full project state (params, tiles, paint layers) with `Ctrl+Z` / `Ctrl+Y`.
-- **Save / load**: seed + all parameters as JSON from the top bar.
+## 📄 라이선스
 
-## Tile mode extras
+원본 라이선스를 따릅니다. 자세한 내용은 [LICENSE](LICENSE)를 참조하세요.
 
-- **Multi-tile assembly**: place tiles on a grid to build larger landscapes; export merged or
-  per-tile.
-- **Square or circle layout**: circle mode clips terrain to a disk, supports ring expansion,
-  and renders a radial wall that follows the terrain silhouette.
-- **Paint mode**: brush height, rivers, biomes and procedural props onto the board.
-- **Real-world heightmaps**: import location-based elevation data (preview, replace or blend).
-- **Close-range detail layer**: extra surface detail near the camera in Tile mode.
+## 🙏 크레딧
 
-## Controls
-
-**Editor camera (Tile mode)**
-- **Left-drag** — pan across the board (clamped)
-- **Right-drag** — orbit
-- **Scroll** — zoom
-- Bottom toolbar: top-down / angled / reset camera
-
-**Exploration (Infinite World & Planet)**
-- Bottom toolbar **Explore** menu: **Walk** (FPS) or **Plane** (fly-through)
-- Touch controls on mobile while exploring
-
-**Shortcuts**
-- `Ctrl+K` — search all settings
-- `Ctrl+Z` / `Ctrl+Y` — undo / redo
-- `Ctrl+Shift+P` — developer performance overlay (also via the FPS badge in the status bar)
-
-## Exports
-
-Quick actions (Export panel):
-- **Screenshot** — PNG of the current viewport
-- **Heightmap** — orthographic grayscale bake from the same shader
-
-Full export (ZIP with optional contents):
-- Terrain mesh as **GLB/GLTF** or **OBJ** (configurable resolution, skirts, base slab). Multi-tile square boards can export as one combined mesh or as per-tile packages in the ZIP.
-- Baked **color**, **normal** and **heightmap** textures
-- **Biome splat** map, **collision** mesh, water surface mesh
-- Water masks (depth, shoreline, foam) and preset JSON for re-import
-
-### Production presets
-
-The Export panel includes a preflight **Production Check** and target presets for **Unity
-Terrain**, **Unreal Landscape**, **Godot Terrain3D**, **Blender Scene**, and **Three.js Viewer
-Assets**. Engine presets package files into import-oriented folders with a `terrain.json` and
-`README.txt`; Unity and Unreal use a little-endian unsigned 16-bit raw heightmap (`.raw` / `.r16`).
-The checker blocks invalid asset selections and flags high-memory maps or missing water masks
-before the GPU bake begins.
-
-Planet mode has a dedicated planet exporter with cubemap height baking.
-
-## Local projects
-
-The home screen is a local-first project hub. Create a blank terrain or start from Island,
-Mountain Range, or Desert templates; then use **Save** in the editor to persist the
-project in the browser. Projects include versioned terrain data, metadata, an editor-captured
-thumbnail, and a recent-project entry. Storage uses IndexedDB with a localStorage fallback, and
-the **Projects** button reopens the hub. Existing seed JSON files can still be imported.
-
-## Performance notes
-
-Normals are finite-differenced per fragment (multiple height evaluations per pixel), which
-keeps distant terrain crisp at low geometric LOD. The **Performance** panel offers GPU-tier
-detection, quality presets, LOD budgets and renderer options. On weaker GPUs, lower the pixel
-ratio, reduce octaves/layer count, or switch to a lighter water quality mode.
+원본 제작: [ZyFou](https://github.com/ZyFou)
+한글화: [sigco3111](https://github.com/sigco3111)

@@ -27,7 +27,7 @@ export function createProductionFiles(options, context) {
   const root = preset.layout.root;
   const terrainSize = Number(context.boardSize) || 0;
   const metadata = {
-    app: 'Procedural Terrains', version: 1, preset: preset.id,
+    app: '절차적 지형', version: 1, preset: preset.id,
     generatedAt: new Date().toISOString(), seed: context.seed,
     worldSizeMeters: terrainSize, heightRangeMeters: Number(context.heightScale) || 0,
     coordinateSystem: preset.id === 'unreal' ? 'Unreal centimeters (Z-up import)' : 'Y-up meters',

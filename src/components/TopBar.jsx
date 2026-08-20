@@ -41,7 +41,7 @@ const Caret = () => (
 export default function TopBar({
   projectMode = 'procedural',
   shortcutsEnabled = true,
-  projectName = 'Untitled terrain',
+  projectName = '이름 없는 지형',
   onProjectNameChange,
   previewMode, onNew, onRandomize, onSave, onLoadJSON, onDownload,
   canOpenInManual = false, onOpenInManual,
@@ -173,14 +173,14 @@ export default function TopBar({
             type="button"
             className={`tb-btn tb-menu-btn${fileMenuOpen ? ' active' : ''}`}
             onClick={() => openOnly(fileMenuOpen ? null : 'file')}
-            title="File"
+            title="파일"
             aria-haspopup="menu"
             aria-expanded={fileMenuOpen}
           >
             <span className="tb-text">File</span>
             <Caret />
           </button>
-          <div className={`tb-menu tb-menu-with-shortcuts${fileMenuOpen ? ' open' : ''}`} role="menu" aria-label="File">
+          <div className={`tb-menu tb-menu-with-shortcuts${fileMenuOpen ? ' open' : ''}`} role="menu" aria-label="파일">
             <label className="tb-project-name-field">
               <span>Project name</span>
               <input
@@ -238,14 +238,14 @@ export default function TopBar({
             type="button"
             className={`tb-btn tb-menu-btn${editMenuOpen ? ' active' : ''}`}
             onClick={() => openOnly(editMenuOpen ? null : 'edit')}
-            title="Edit"
+            title="편집"
             aria-haspopup="menu"
             aria-expanded={editMenuOpen}
           >
             <span className="tb-text">Edit</span>
             <Caret />
           </button>
-          <div className={`tb-menu tb-menu-with-shortcuts${editMenuOpen ? ' open' : ''}`} role="menu" aria-label="Edit">
+          <div className={`tb-menu tb-menu-with-shortcuts${editMenuOpen ? ' open' : ''}`} role="menu" aria-label="편집">
             <div className="tb-menu-section-label">Layout</div>
             <button type="button" role="menuitem" disabled title="Preset options will be added next">
               <LayoutTemplate size={14} strokeWidth={1.75} aria-hidden /> Default layout
@@ -281,14 +281,14 @@ export default function TopBar({
             type="button"
             className={`tb-btn tb-menu-btn${viewMenuOpen ? ' active' : ''}`}
             onClick={() => openOnly(viewMenuOpen ? null : 'view')}
-            title="View"
+            title="보기"
             aria-haspopup="menu"
             aria-expanded={viewMenuOpen}
           >
             <span className="tb-text">View</span>
             <Caret />
           </button>
-          <div className={`tb-menu${viewMenuOpen ? ' open' : ''}`} role="menu" aria-label="View">
+          <div className={`tb-menu${viewMenuOpen ? ' open' : ''}`} role="menu" aria-label="보기">
             <button type="button" role="menuitem" onClick={() => runMenuAction(setViewMenuOpen, onResetView)}>
               <RotateCcw size={14} strokeWidth={1.75} aria-hidden /> Reset camera
             </button>
@@ -314,19 +314,19 @@ export default function TopBar({
           </div>
         </div>
 
-        <div className="tb-history" role="group" aria-label="History">
-          <button className="tb-btn tb-icon-btn" onClick={onUndo} disabled={!canUndo} title="Undo (Ctrl+Z)" aria-label="Undo">
+        <div className="tb-history" role="group" aria-label="기록">
+          <button className="tb-btn tb-icon-btn" onClick={onUndo} disabled={!canUndo} title="Undo (Ctrl+Z)" aria-label="실행 취소">
             <Undo2 size={14} strokeWidth={1.75} aria-hidden />
           </button>
           <button
             className={`tb-btn tb-icon-btn${activePanel === 'history' ? ' active' : ''}`}
             onClick={onOpenHistory}
-            title="Creator history"
-            aria-label="Creator history"
+            title="제작자 기록"
+            aria-label="제작자 기록"
           >
             <Clock3 size={14} strokeWidth={1.75} aria-hidden />
           </button>
-          <button className="tb-btn tb-icon-btn" onClick={onRedo} disabled={!canRedo} title="Redo (Ctrl+Y)" aria-label="Redo">
+          <button className="tb-btn tb-icon-btn" onClick={onRedo} disabled={!canRedo} title="Redo (Ctrl+Y)" aria-label="다시 실행">
             <Redo2 size={14} strokeWidth={1.75} aria-hidden />
           </button>
         </div>
@@ -344,7 +344,7 @@ export default function TopBar({
         )}
         {projectMode === 'manual' && manualBaseSource ? (
           <div className="tb-workspace-switch" role="tablist" aria-label="Manual Terrain workspace">
-            <span><Mountain size={13} aria-hidden /> Manual · {manualBaseSource === 'nodes' ? 'Nodes' : 'Procedural'}</span>
+            <span><Mountain size={13} aria-hidden /> Manual · {manualBaseSource === 'nodes' ? '노드' : '절차적'}</span>
             <button type="button" role="tab" aria-selected={manualWorkspace === 'base'} className={manualWorkspace === 'base' ? 'active' : ''} onClick={() => onManualWorkspace?.('base')}>Base</button>
             <button type="button" role="tab" aria-selected={manualWorkspace === 'manual'} className={manualWorkspace === 'manual' ? 'active' : ''} onClick={() => onManualWorkspace?.('manual')}>Manual</button>
           </div>
@@ -382,7 +382,7 @@ export default function TopBar({
           <Download size={14} strokeWidth={1.75} aria-hidden />
           <span className="tb-text">Export</span>
         </button>
-        <button className="tb-btn tb-icon-btn" onClick={onToggleHelp} title="Show controls help" aria-label="Help">
+        <button className="tb-btn tb-icon-btn" onClick={onToggleHelp} title="Show controls help" aria-label="도움말">
           <HelpCircle size={14} strokeWidth={1.75} aria-hidden />
         </button>
         <span className="app-version">v{APP_VERSION}</span>

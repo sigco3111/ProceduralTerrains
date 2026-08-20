@@ -12,16 +12,16 @@ const CONTROL_SCHEMA = [
   { key: 'noiseScale', label: 'Noise Scale', min: 8, max: 160, step: 0.5, digits: 1 },
   { key: 'noiseStrength', label: 'Noise Strength', min: 0.1, max: 2, step: 0.01, digits: 2 },
   { key: 'terrainSmoothing', label: 'Peak Smoothing', min: 0, max: 1, step: 0.01, digits: 2 },
-  { key: 'octaves', label: 'Octaves', min: 1, max: 9, step: 1 },
-  { key: 'persistence', label: 'Persistence', min: 0.15, max: 0.85, step: 0.01, digits: 2 },
-  { key: 'lacunarity', label: 'Lacunarity', min: 1.5, max: 3.5, step: 0.01, digits: 2 },
+  { key: 'octaves', label: '옥타브', min: 1, max: 9, step: 1 },
+  { key: 'persistence', label: '지속성', min: 0.15, max: 0.85, step: 0.01, digits: 2 },
+  { key: 'lacunarity', label: '틈새도', min: 1.5, max: 3.5, step: 0.01, digits: 2 },
   { key: 'ridge', label: 'Ridge Intensity', min: 0, max: 1, step: 0.01, digits: 2 },
   { key: 'warp', label: 'Domain Warp', min: 0, max: 3, step: 0.05, digits: 2 },
   { key: 'falloff', label: 'Edge Falloff Width', min: 0, max: 1, step: 0.01, digits: 2 },
 
   { section: 'BIOME' },
   { key: 'biomeScale', label: 'Biome Density', min: 0.3, max: 3, step: 0.05, digits: 2 },
-  { key: 'tempBias', label: 'Temperature', min: -1, max: 1, step: 0.05, digits: 2 },
+  { key: 'tempBias', label: '온도', min: -1, max: 1, step: 0.05, digits: 2 },
   { key: 'moistScale', label: 'Moisture Scale', min: 0.2, max: 3, step: 0.05, digits: 2 },
   { key: 'moistBias', label: 'Moisture Bias', min: -1, max: 1, step: 0.05, digits: 2 },
   { key: 'snowLine', label: 'Snow Line', min: 0.2, max: 1, step: 0.01, digits: 2 },
@@ -29,13 +29,13 @@ const CONTROL_SCHEMA = [
 
   { section: 'RENDER' },
   { key: 'normalStrength', label: 'Normal Strength', min: 0.2, max: 3, step: 0.05, digits: 2 },
-  { key: 'aoStrength', label: 'Ambient Occlusion', min: 0, max: 1, step: 0.05, digits: 2 },
+  { key: 'aoStrength', label: '주변 폐색', min: 0, max: 1, step: 0.05, digits: 2 },
   { key: 'chunkGrid', label: 'Chunk Grid', type: 'toggle' },
 
   { section: 'WORLD' },
   { key: 'chunkCount', label: 'Chunk Count', type: 'select', options: [8, 12, 16, 20, 24], format: (v) => `${v} × ${v}` },
   { key: 'chunkSize', label: 'Chunk Size', type: 'select', options: [64, 128, 192, 256] },
-  { key: 'wireframe', label: 'Wireframe', type: 'toggle' },
+  { key: 'wireframe', label: '와이어프레임', type: 'toggle' },
   { key: 'lodDebug', label: 'LOD Debug', type: 'toggle' },
   { key: 'autoUpdate', label: 'Auto Update', type: 'toggle' },
 ];
@@ -81,7 +81,7 @@ export default function LeftPanel({ params, onParam, onPreset, onRandomizeSeed, 
             onBlur={commitSeed}
             onKeyDown={(e) => e.key === 'Enter' && e.target.blur()}
           />
-          <button title="Random seed" onClick={onRandomizeSeed}>⚄</button>
+          <button title="난수 시드" onClick={onRandomizeSeed}>⚄</button>
         </div>
 
         <button className="wide-btn primary" onClick={onRegenerate}>

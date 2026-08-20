@@ -7,7 +7,7 @@ export default function PlanetSummaryCard({ params }) {
   const terrainLabel = PRESETS[params.preset]?.label ?? params.preset;
   const planetLabel = PLANET_PRESETS[params.planetPreset]?.label ?? params.planetPreset;
   const paletteLabel = COLOR_PALETTE_PRESETS[params.palettePreset]?.label
-    ?? (params.palettePreset === 'custom' ? 'Custom' : params.palettePreset);
+    ?? (params.palettePreset === 'custom' ? '사용자 지정' : params.palettePreset);
 
   return (
     <ControlSection

@@ -41,35 +41,35 @@ import {
 } from '../../manual/ManualSurfaceCatalog.js';
 
 const TRANSFORMS = [
-  { id: 'translate', label: 'Move', Icon: Move3D, shortcut: 'M' },
-  { id: 'rotate', label: 'Rotate', Icon: RotateCw, shortcut: 'R' },
-  { id: 'scale', label: 'Scale', Icon: Scaling, shortcut: 'S' },
+  { id: 'translate', label: '이동', Icon: Move3D, shortcut: 'M' },
+  { id: 'rotate', label: '회전', Icon: RotateCw, shortcut: 'R' },
+  { id: 'scale', label: '스케일', Icon: Scaling, shortcut: 'S' },
 ];
 
 const SCULPT_TOOLS = [
   { id: 'raise', label: 'Raise', Icon: Mountain, description: 'Build broad positive relief.' },
-  { id: 'lower', label: 'Lower', Icon: Minus, description: 'Carve broad depressions into the terrain.' },
-  { id: 'smooth', label: 'Smooth', Icon: Waves, description: 'Relax abrupt height changes without flattening the whole form.' },
-  { id: 'flatten', label: 'Flatten', Icon: SlidersHorizontal, description: 'Move the terrain toward an exact elevation.' },
+  { id: 'lower', label: '더 낮음', Icon: Minus, description: 'Carve broad depressions into the terrain.' },
+  { id: 'smooth', label: '부드러움', Icon: Waves, description: 'Relax abrupt height changes without flattening the whole form.' },
+  { id: 'flatten', label: '평탄화', Icon: SlidersHorizontal, description: 'Move the terrain toward an exact elevation.' },
   { id: 'erode', label: 'Erode', Icon: Droplet, description: 'Move material downhill and deposit sediment in lower areas.' },
-  { id: 'crease', label: 'Crease', Icon: Minus, description: 'Cut narrow gullies, cracks, and drainage lines.' },
-  { id: 'ridge', label: 'Ridge', Icon: Mountain, description: 'Pinch terrain upward into narrow ridges and spines.' },
-  { id: 'detail', label: 'Detail', Icon: Dices, description: 'Paint seeded multi-scale rocky relief over larger forms.' },
+  { id: 'crease', label: '주름', Icon: Minus, description: 'Cut narrow gullies, cracks, and drainage lines.' },
+  { id: 'ridge', label: '산등성이', Icon: Mountain, description: 'Pinch terrain upward into narrow ridges and spines.' },
+  { id: 'detail', label: '디테일', Icon: Dices, description: 'Paint seeded multi-scale rocky relief over larger forms.' },
   { id: 'terrace', label: 'Terrace', Icon: GripVertical, description: 'Quantize elevation into editable steps and shelves.' },
-  { id: 'erase', label: 'Erase', Icon: Eraser, description: 'Remove sculpted detail and reveal the procedural shapes.' },
+  { id: 'erase', label: '지우기', Icon: Eraser, description: 'Remove sculpted detail and reveal the procedural shapes.' },
 ];
 
 const TEXTURE_TOOLS = [
-  { id: 'paint', label: 'Paint', Icon: Palette },
-  { id: 'blend', label: 'Blend', Icon: Waves },
-  { id: 'erase', label: 'Erase', Icon: Eraser },
+  { id: 'paint', label: '페인트', Icon: Palette },
+  { id: 'blend', label: '혼합', Icon: Waves },
+  { id: 'erase', label: '지우기', Icon: Eraser },
 ];
 
 const PROP_PAINT_TYPES = [
-  { id: 'grass', label: 'Grass', Icon: Sprout, color: '#65a30d' },
+  { id: 'grass', label: '잔디', Icon: Sprout, color: '#65a30d' },
   { id: 'flowers', label: 'Flowers', Icon: Flower2, color: '#f472b6' },
-  { id: 'rocks', label: 'Rocks', Icon: Mountain, color: '#a8a29e' },
-  { id: 'trees', label: 'Trees', Icon: TreePine, color: '#15803d' },
+  { id: 'rocks', label: '바위', Icon: Mountain, color: '#a8a29e' },
+  { id: 'trees', label: '나무', Icon: TreePine, color: '#15803d' },
 ];
 
 const MIN_LIBRARY_HEIGHT = 150;
@@ -299,29 +299,29 @@ export default function ManualTerrainPanel({
   }, [selected?.id, selected?.layers]);
   const positionX = { label: 'Position X', min: -half, max: half, step: 1, digits: 0, unit: 'u' };
   const positionZ = { label: 'Position Z', min: -half, max: half, step: 1, digits: 0, unit: 'u' };
-  const rotation = { label: 'Rotation', min: -180, max: 180, step: 1, digits: 0, unit: 'deg' };
-  const scaleX = { label: 'Scale X', min: 8, max: Math.max(1000, boardSize), step: 2, digits: 0, unit: 'u' };
-  const scaleZ = { label: 'Scale Z', min: 8, max: Math.max(1000, boardSize), step: 2, digits: 0, unit: 'u' };
-  const height = { label: 'Height', min: -1000, max: 1000, step: 2, digits: 0, unit: 'u' };
-  const detail = { label: 'Detail', min: 0, max: 1, step: 0.01, digits: 2 };
-  const opacity = { label: 'Opacity', min: 0, max: 1, step: 0.01, digits: 2 };
-  const sharpness = { label: 'Sharpness', min: 0.2, max: 4, step: 0.05, digits: 2 };
+  const rotation = { label: '회전', min: -180, max: 180, step: 1, digits: 0, unit: 'deg' };
+  const scaleX = { label: '스케일 X', min: 8, max: Math.max(1000, boardSize), step: 2, digits: 0, unit: 'u' };
+  const scaleZ = { label: '스케일 Z', min: 8, max: Math.max(1000, boardSize), step: 2, digits: 0, unit: 'u' };
+  const height = { label: '높이', min: -1000, max: 1000, step: 2, digits: 0, unit: 'u' };
+  const detail = { label: '디테일', min: 0, max: 1, step: 0.01, digits: 2 };
+  const opacity = { label: '불투명도', min: 0, max: 1, step: 0.01, digits: 2 };
+  const sharpness = { label: '선예도', min: 0.2, max: 4, step: 0.05, digits: 2 };
   const terraces = { label: 'Terraces', min: 0, max: 16, step: 1, digits: 0 };
   const maskFeather = { label: 'Mask Feather', min: 0.02, max: 1, step: 0.01, digits: 2 };
   const maskStrength = { label: 'Mask Strength', min: 0, max: 1, step: 0.01, digits: 2 };
   const brushSize = { label: 'Brush Size', min: 4, max: 900, step: 2, digits: 0, unit: 'u' };
-  const brushStrength = { label: 'Strength', min: 0.01, max: 1, step: 0.01, digits: 2 };
-  const brushFalloff = { label: 'Falloff', min: 0.02, max: 1, step: 0.01, digits: 2 };
+  const brushStrength = { label: '세기', min: 0.01, max: 1, step: 0.01, digits: 2 };
+  const brushFalloff = { label: '감쇠', min: 0.02, max: 1, step: 0.01, digits: 2 };
   const targetHeight = { label: 'Target Height', min: -1000, max: 1000, step: 2, digits: 0, unit: 'u' };
   const creaseWidth = { label: 'Profile Width', min: 0.04, max: 0.8, step: 0.01, digits: 2 };
   const detailScale = { label: 'Detail Scale', min: 2, max: 240, step: 2, digits: 0, unit: 'u' };
-  const detailRoughness = { label: 'Roughness', min: 0, max: 1, step: 0.01, digits: 2 };
+  const detailRoughness = { label: '거칠기', min: 0, max: 1, step: 0.01, digits: 2 };
   const terraceStep = { label: 'Step Height', min: 1, max: 400, step: 1, digits: 0, unit: 'u' };
   const erosionIterations = { label: 'Iterations', min: 1, max: 10, step: 1, digits: 0 };
   const erosionDeposition = { label: 'Sediment Deposit', min: 0, max: 1, step: 0.01, digits: 2 };
   const erosionTalus = { label: 'Talus Threshold', min: 0, max: 20, step: 0.1, digits: 1 };
   const textureBrushSize = { label: 'Brush Size', min: 4, max: 900, step: 2, digits: 0, unit: 'u' };
-  const textureStrength = { label: 'Strength', min: 0.01, max: 1, step: 0.01, digits: 2 };
+  const textureStrength = { label: '세기', min: 0.01, max: 1, step: 0.01, digits: 2 };
   const textureFalloff = { label: 'Edge Blend', min: 0.02, max: 1, step: 0.01, digits: 2 };
   const layerOpacity = { label: 'Layer Opacity', min: 0, max: 1, step: 0.01, digits: 2 };
 
@@ -373,7 +373,7 @@ export default function ManualTerrainPanel({
           type="button"
           className={state?.texturePaint?.enabled ? 'active texture-active' : ''}
           onClick={() => onTexturePaintEnabled(!state?.texturePaint?.enabled)}
-          title="Surface & Props Paint (T)"
+          title="표면 & 소품 페인트 (T)"
           aria-label="Toggle Surface & Props Paint (T)"
           aria-pressed={!!state?.texturePaint?.enabled}
         >
@@ -670,7 +670,7 @@ export default function ManualTerrainPanel({
               ) : null}
               {state.sculpt.tool === 'crease' || state.sculpt.tool === 'ridge' ? (
                 <section className="manual-inspector-section manual-inspector-controls">
-                  <h3>{state.sculpt.tool === 'crease' ? 'Crease Profile' : 'Ridge Profile'}</h3>
+                  <h3>{state.sculpt.tool === 'crease' ? '주름 프로필' : 'Ridge Profile'}</h3>
                   <SliderCtl def={creaseWidth} value={state.sculpt.creaseWidth} onChange={(value) => onSculptSetting('creaseWidth', value)} />
                 </section>
               ) : null}
@@ -764,7 +764,7 @@ export default function ManualTerrainPanel({
                       value={selected.seed}
                       onChange={(event) => onUpdate(selected.id, { seed: Number(event.target.value) || 0 })}
                     />
-                    <button type="button" onClick={() => onUpdate(selected.id, { seed: Math.floor(Math.random() * 0x7fffffff) })} title="Randomize seed" aria-label="Randomize shape seed">
+                    <button type="button" onClick={() => onUpdate(selected.id, { seed: Math.floor(Math.random() * 0x7fffffff) })} title="시드 무작위화" aria-label="Randomize shape seed">
                       <Dices size={14} aria-hidden />
                     </button>
                   </span>
@@ -776,12 +776,12 @@ export default function ManualTerrainPanel({
                     <h3>Shape Layers</h3>
                     <small>{selected.layers.length} / {MAX_MANUAL_SHAPE_LAYERS}</small>
                   </span>
-                  <label title="Add a modifier layer to this shape">
+                  <label title="이 셰이프에 모디파이어 레이어 추가">
                     <Plus size={13} aria-hidden />
                     <select
                       value=""
                       disabled={selected.layers.length >= MAX_MANUAL_SHAPE_LAYERS}
-                      aria-label="Add shape modifier layer"
+                      aria-label="셰이프 모디파이어 레이어 추가"
                       onChange={(event) => {
                         const layer = onAddShapeLayer?.(selected.id, event.target.value);
                         if (layer?.id) setExpandedLayerId(layer.id);

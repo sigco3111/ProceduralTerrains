@@ -1631,7 +1631,7 @@ export class Engine {
       return true;
     } catch (e) {
       console.error(e);
-      const error = e?.name === 'AbortError'
+      const error = e?.name === '중단 오류'
         ? 'Load cancelled.'
         : 'Could not load elevation data (network or CORS blocked).';
       this._setImportState('height', { loading: false, error });
@@ -2592,7 +2592,7 @@ export class Engine {
     const { style, meta } = this.planetStyle.generatePalette(this.params.seed, options);
     this.params.planetStyle = style;
     this._notifyPlanetStyle();
-    const label = meta?.typeLabel ?? 'Procedural';
+    const label = meta?.typeLabel ?? '절차적';
     this.cb.onToast(`Planet generated: ${label}`);
     return style;
   }
@@ -2844,7 +2844,7 @@ export class Engine {
       const hasPending = !!this._pendingNoiseStack
         || Object.keys(this._pendingTerrainParams || {}).length > 0;
       this.cb.onStatus(
-        hasPending ? 'Pending changes — enable Auto Update to apply' : 'Ready',
+        hasPending ? 'Pending changes — enable Auto Update to apply' : '준비',
         hasPending,
       );
       return Promise.resolve({ pending: true, swapped: false });
@@ -2903,7 +2903,7 @@ export class Engine {
       this._syncNoiseStackSamplers(stack);
       this._markTerrainFieldDirty();
       this._applyUniforms();
-      this.cb.onStatus('Planet', false);
+      this.cb.onStatus('행성', false);
       return Promise.resolve({ swapped: false, cached: true });
     }
 
@@ -2946,7 +2946,7 @@ export class Engine {
     this._minimapDirtyAt = performance.now();
     this.minimap.requestRedraw();
     this._needsRender = true;
-    this.cb.onStatus('Ready', false);
+    this.cb.onStatus('준비', false);
     return Promise.resolve({ swapped: false, cached: true });
   }
 
@@ -2967,7 +2967,7 @@ export class Engine {
       const hasPending = !!this._pendingNoiseStack
         || Object.keys(this._pendingTerrainParams || {}).length > 0;
       this.cb.onStatus(
-        hasPending ? 'Pending changes — enable Auto Update to apply' : 'Ready',
+        hasPending ? 'Pending changes — enable Auto Update to apply' : '준비',
         hasPending,
       );
       return;
@@ -3802,7 +3802,7 @@ export class Engine {
     // (async, fire-and-forget; no-op unless a geoRef-carrying import is active).
     this._syncRealWorldNeighborTiles();
     if (!this._bootPending) {
-      this.cb.onStatus(this.board?.isBuilding ? this._terrainBuildStatusText() : 'Ready', false);
+      this.cb.onStatus(this.board?.isBuilding ? this._terrainBuildStatusText() : '준비', false);
     }
   }
 
@@ -3847,7 +3847,7 @@ export class Engine {
     this._minimapDirtyAt = performance.now();
     this.minimap.requestRedraw();
     if (!this._bootPending) {
-      this.cb.onStatus(this.board?.isBuilding ? this._terrainBuildStatusText() : 'Ready', false);
+      this.cb.onStatus(this.board?.isBuilding ? this._terrainBuildStatusText() : '준비', false);
     }
   }
 
@@ -3900,7 +3900,7 @@ export class Engine {
       this.board.culledChunkCount
     );
     if (!this._bootPending) {
-      this.cb.onStatus(this.board.isBuilding ? this._terrainBuildStatusText() : 'Ready', false);
+      this.cb.onStatus(this.board.isBuilding ? this._terrainBuildStatusText() : '준비', false);
     } else {
       this._completeBootIfInteractiveReady();
       if (!this.board.isBuilding) this._completeBootIfQualityReady();
@@ -4873,7 +4873,7 @@ export class Engine {
         } catch (e) {
           console.warn('Water shader compile failed', e);
         } finally {
-          if (!this._disposed) this.cb.onStatus('Ready', false);
+          if (!this._disposed) this.cb.onStatus('준비', false);
           resolve(ready);
         }
       };
@@ -4903,7 +4903,7 @@ export class Engine {
   /** Compile a final-quality first frame behind the loading overlay. */
   async _warmupInitialShaders() {
     this._compiling++;
-    this.cb.onStatus('Preparing first frame…', true);
+    this.cb.onStatus('첫 프레임 준비 중…', true);
     const startedAt = performance.now();
     try {
       // Allocate/size the current visual pipeline before painting the safety
@@ -5285,7 +5285,7 @@ export class Engine {
       clearTimeout(this._bootWatchdogTimer);
       this._bootWatchdogTimer = null;
     }
-    this.cb.onStatus('Ready', false);
+    this.cb.onStatus('준비', false);
     if (this._tierNotice) {
       this.cb.onToast(this._tierNotice);
       this._tierNotice = null;
@@ -5844,7 +5844,7 @@ export class Engine {
       this._waterWarmRestartPending = this.worldMode === 'studio'
         && desiredEffectiveMode !== 'off'
         && this._isStudioWaterBakeReady();
-      if (!this._bootPending) this.cb.onStatus('Ready', false);
+      if (!this._bootPending) this.cb.onStatus('준비', false);
       return false;
     }
 
@@ -5869,7 +5869,7 @@ export class Engine {
       }
       if (!this._disposed) {
         console.warn('Water material was not activated because its shader is not ready');
-        if (!this._bootPending) this.cb.onStatus('Ready', false);
+        if (!this._bootPending) this.cb.onStatus('준비', false);
       }
       return false;
     }
@@ -5890,7 +5890,7 @@ export class Engine {
       // this promise clears. Otherwise final bake publication triggers it.
       this._waterWarmRestartPending = this.worldMode === 'studio'
         && this._isStudioWaterBakeReady();
-      if (!this._bootPending) this.cb.onStatus('Ready', false);
+      if (!this._bootPending) this.cb.onStatus('준비', false);
       return false;
     }
 
@@ -5902,7 +5902,7 @@ export class Engine {
     console.info(`[boot] water init ${(performance.now() - t0).toFixed(0)}ms (precompiled)`);
     this._completeBootIfInteractiveReady();
     this._completeBootIfQualityReady();
-    if (!this._bootPending) this.cb.onStatus('Ready', false);
+    if (!this._bootPending) this.cb.onStatus('준비', false);
     return true;
   }
 
@@ -6170,7 +6170,7 @@ export class Engine {
           this.params.octaves = liveOctaves;
           this.cb.onParams(this._paramsSnapshot());
           this._applyUniforms();
-          this.cb.onStatus('Ready', false);
+          this.cb.onStatus('준비', false);
           this.cb.onToast?.('Octave change could not be compiled; previous value restored');
         }
         return result;
@@ -6199,7 +6199,7 @@ export class Engine {
         this.params.octaves = liveOctaves;
         this.cb.onParams(this._paramsSnapshot());
         this._applyUniforms();
-        this.cb.onStatus('Planet', false);
+        this.cb.onStatus('행성', false);
         this.cb.onToast?.('Octave change could not be compiled; previous value restored');
       }
       return result;
@@ -6798,7 +6798,7 @@ export class Engine {
       this.planetControls.onFirstInteract = () => this.cb.onFirstInteract();
       this.planetControls.update(0.001);
     }
-    this.cb.onToast('Free camera');
+    this.cb.onToast('자유 카메라');
   }
 
   _legacySetPlayerMode(enabled) {
@@ -6847,7 +6847,7 @@ export class Engine {
         this.controls.enabled = true;
         this.controls.reset(this.boardSize);
       }
-      this.cb.onToast('Free camera');
+      this.cb.onToast('자유 카메라');
     }
 
     if (this.cb.onPlayerMode) this.cb.onPlayerMode(this.playerMode);
@@ -6890,7 +6890,7 @@ export class Engine {
       this.planetControls = new planet.PlanetOrbitControls(this.camera, this.canvas, this.params.planetRadius);
       this.planetControls.onFirstInteract = () => this.cb.onFirstInteract();
       this.planetControls.update(0.001);
-      this.cb.onToast('Orbit camera');
+      this.cb.onToast('궤도 카메라');
     }
   }
 
@@ -7229,7 +7229,7 @@ export class Engine {
     // mode-specific world materials need background preparation.
     this._warmupInfiniteShaders(oct);
 
-    if (!this._compiling) this.cb.onStatus('Infinite World', false);
+    if (!this._compiling) this.cb.onStatus('무한 세계', false);
     if (this.cb.onQualityChange) this.cb.onQualityChange(this.qualityPreset);
     if (this.cb.onTimeOfDayChange) this.cb.onTimeOfDayChange(this.timeOfDay);
   }
@@ -7294,7 +7294,7 @@ export class Engine {
       if (success) this._worldWarmRetryCount.infinite = 0;
       const released = this._releaseWorldCompile(gate);
       if (released && !this._disposed && !this._compiling) {
-        this.cb.onStatus(this.worldMode === 'infinite' ? 'Infinite World' : 'Ready', false);
+        this.cb.onStatus(this.worldMode === 'infinite' ? '무한 세계' : '준비', false);
       }
     }
   }
@@ -7351,7 +7351,7 @@ export class Engine {
     const rebuildJob = this._rebuildStackMaterialsAsync(this._activeHeightProgram(), {
       atomic: true,
       terrainDirtyOnSwap: true,
-      label: 'Preparing Studio terrain',
+      label: '스튜디오 지형 준비 중',
     });
 
     this.scene.background = new THREE.Color(0x0b0e14);
@@ -7369,7 +7369,7 @@ export class Engine {
     Promise.resolve(rebuildJob).then((result) => {
       if (this._disposed || this.worldMode !== 'studio') return;
       if (!result?.error) this._renderMinimapBase();
-      this.cb.onStatus(result?.error ? 'Studio terrain unavailable' : 'Ready', false);
+      this.cb.onStatus(result?.error ? 'Studio terrain unavailable' : '준비', false);
     });
   }
 
@@ -7825,7 +7825,7 @@ export class Engine {
     // compile the PLANET_MODE shader variant in the background (no freeze)
     this._warmupPlanetShaders(Math.round(p.octaves), cloudWarmPromise);
 
-    if (!this._compiling) this.cb.onStatus('Planet', false);
+    if (!this._compiling) this.cb.onStatus('행성', false);
   }
 
   /** Camera near/far tuned to the planet scale. */
@@ -8065,7 +8065,7 @@ export class Engine {
       if (success) this._worldWarmRetryCount.planet = 0;
       const released = this._releaseWorldCompile(gate);
       if (released && !this._disposed && !this._compiling) {
-        this.cb.onStatus(this.worldMode === 'planet' ? 'Planet' : 'Ready', false);
+        this.cb.onStatus(this.worldMode === 'planet' ? '행성' : '준비', false);
       }
     }
     if (shouldUpgrade && !this._disposed && this.worldMode === 'planet') {

@@ -10,7 +10,7 @@ export default function CompileProgressChip({ progress }) {
     ? Math.max(0, Math.min(total, rawDone))
     : 0;
   const ratio = hasTotal ? done / total : null;
-  const label = progress.label || 'Compiling';
+  const label = progress.label || '컴파일 중';
 
   return (
     <div className="compile-progress-chip" role="status" aria-live="polite">

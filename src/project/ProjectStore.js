@@ -76,7 +76,7 @@ export const projectSyncStore = {
 
   async save(binding) {
     const normalized = normalizeSyncBinding(binding);
-    if (!normalized) throw new Error('A complete cloud sync binding is required.');
+    if (!normalized) throw new Error('완전한 클라우드 동기화 바인딩이 필요합니다.');
     try { await withStore(SYNC_STORE_NAME, 'readwrite', (store) => store.put(normalized)); }
     catch {
       const bindings = fallbackSyncRead().filter((item) => item.localProjectId !== normalized.localProjectId);
@@ -132,7 +132,7 @@ export function normalizeProject(input = {}) {
     schemaVersion: 2,
     id: input.id ?? id(),
     metadata: {
-      name: String(metadata.name ?? input.name ?? 'Untitled terrain').trim() || 'Untitled terrain',
+      name: String(metadata.name ?? input.name ?? '이름 없는 지형').trim() || '이름 없는 지형',
       author: String(metadata.author ?? ''),
       description: String(metadata.description ?? ''),
       tags: Array.isArray(metadata.tags) ? metadata.tags.map(String).slice(0, 12) : [],
@@ -150,7 +150,7 @@ export function normalizeProject(input = {}) {
 export function createManualProjectCopy(sourceProject, terrainPayload, baseSource) {
   const source = sourceProject ? normalizeProject(sourceProject) : null;
   const normalizedBase = baseSource === 'nodes' ? 'nodes' : 'procedural';
-  const sourceName = String(source?.metadata?.name ?? 'Untitled terrain').trim() || 'Untitled terrain';
+  const sourceName = String(source?.metadata?.name ?? '이름 없는 지형').trim() || '이름 없는 지형';
   const terrain = structuredClone(terrainPayload || source?.terrain || {});
   delete terrain.workspacePreset;
   return normalizeProject({
@@ -264,7 +264,7 @@ export const projectStore = {
 
   async rename(project, name) {
     const nextName = String(name ?? '').trim();
-    if (!nextName) throw new Error('A project name is required');
+    if (!nextName) throw new Error('프로젝트 이름이 필요합니다');
     return this.save({ ...project, metadata: { ...project.metadata, name: nextName } });
   },
 

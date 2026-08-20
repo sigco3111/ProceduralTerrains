@@ -87,7 +87,7 @@ export class PaintModeManager {
     this.controls.inputMode = this._previousControlInputMode ?? 'all';
     this.cursor.setVisible(false);
     this._syncUniforms();
-    this.onToast?.('Exited Paint Mode');
+    this.onToast?.('페인트 모드 종료');
     this._emit();
   }
 

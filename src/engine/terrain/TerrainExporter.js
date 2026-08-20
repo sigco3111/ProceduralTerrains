@@ -572,7 +572,7 @@ export class TerrainExporter {
 
     // F. Add Water Mesh spanning the whole assembly
     if (!separateTileExport && exportWater && !options.excludeWaterFromExport && seaLevel > 0.5) {
-      onToast('Adding water plane...');
+      onToast('수면 평면 추가 중...');
       const waterGeo = tileShape === 'circle' ? new THREE.CircleGeometry(diskRadiusWorld, 96) : new THREE.PlaneGeometry(unionSpanX, unionSpanZ);
       waterGeo.rotateX(-Math.PI / 2);
       const waterMat = new THREE.MeshStandardMaterial({
@@ -580,7 +580,7 @@ export class TerrainExporter {
         transparent: true, opacity: 0.6,
       });
       const waterMesh = new THREE.Mesh(waterGeo, waterMat);
-      waterMesh.name = 'Water';
+      waterMesh.name = '물';
       waterMesh.position.set(tileShape === 'circle' ? 0 : unionCenter.x, seaLevel, tileShape === 'circle' ? 0 : unionCenter.z);
       exportGroup.add(waterMesh);
     }
@@ -624,7 +624,7 @@ export class TerrainExporter {
     // are only used while their individual GLB/OBJ payloads are generated.
     const tilePackages = [];
     if (separateTileExport) {
-      onToast('Preparing individual tile packages...');
+      onToast('개별 타일 패키지 준비 중...');
       for (const cell of tiles) {
         const ctr = cellCenter(cell.cx, cell.cz);
         const group = new THREE.Group();
@@ -642,7 +642,7 @@ export class TerrainExporter {
             name: 'Water_Material', color: 0x0f5e73, roughness: 0.1, metalness: 0.8,
             transparent: true, opacity: 0.6,
           }));
-          water.name = 'Water';
+          water.name = '물';
           water.position.set(ctr.x, seaLevel, ctr.z);
           group.add(water);
         }

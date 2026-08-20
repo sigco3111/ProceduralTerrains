@@ -10,7 +10,7 @@ import { computeWarnings } from './warnings.js';
 export function buildDiagnosticsObject(snap) {
   const warnings = computeWarnings(snap);
   return {
-    app: { name: 'Procedural Terrains', version: APP_VERSION },
+    app: { name: '절차적 지형', version: APP_VERSION },
     browser: typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown',
     devicePixelRatio: typeof window !== 'undefined' ? window.devicePixelRatio : 1,
     capturedAt: new Date().toISOString(),

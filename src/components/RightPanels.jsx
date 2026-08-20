@@ -148,7 +148,7 @@ export function CameraPanel({ camInfo, camMode, onMode, onFov, onFocusCenter, em
     return (
       <ControlSection
         id="inspector-camera"
-        title="CAMERA"
+        title="카메라"
         defaultOpen
         icon={(
           <svg viewBox="0 0 16 16" fill="none">
@@ -300,7 +300,7 @@ export function MinimapPanel({ boardSize, baseRef, overlayRef, embedded }) {
     return (
       <ControlSection
         id="inspector-minimap"
-        title="MINIMAP"
+        title="미니맵"
         defaultOpen
         icon={(
           <svg viewBox="0 0 16 16" fill="none">

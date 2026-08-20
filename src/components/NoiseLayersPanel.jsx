@@ -50,8 +50,8 @@ const TrashIcon = () => (
 
 // ---- blend mode options for select ------------------------------------------
 const BLEND_OPTIONS = BLEND_MODES.map((m) => ({ value: m, label: BLEND_LABELS[m] || m }));
-const OUTPUT_MIN_DEF = { key: 'outputMin', label: 'Min', min: -1, max: 1, step: 0.01, digits: 2, info: 'Raw stack value mapped to zero when output normalization is enabled.' };
-const OUTPUT_MAX_DEF = { key: 'outputMax', label: 'Max', min: 0.5, max: 3, step: 0.01, digits: 2, info: 'Raw stack value mapped to full height before the soft clamp.' };
+const OUTPUT_MIN_DEF = { key: 'outputMin', label: '최소', min: -1, max: 1, step: 0.01, digits: 2, info: 'Raw stack value mapped to zero when output normalization is enabled.' };
+const OUTPUT_MAX_DEF = { key: 'outputMax', label: '최대', min: 0.5, max: 3, step: 0.01, digits: 2, info: 'Raw stack value mapped to full height before the soft clamp.' };
 const OUTPUT_RANGE_GAP = 0.01;
 
 function finiteNumber(value, fallback) {
@@ -64,7 +64,7 @@ function clampNumber(value, min, max) {
 
 // ---- add-layer type menu items (grouped) ------------------------------------
 const TYPE_GROUPS = [
-  { label: 'Height', items: ADDABLE_TYPES.filter((t) => { const d = getNoiseType(t); return d && d.category === 'height'; }) },
+  { label: '높이', items: ADDABLE_TYPES.filter((t) => { const d = getNoiseType(t); return d && d.category === 'height'; }) },
   { label: 'Modifier', items: ADDABLE_TYPES.filter((t) => { const d = getNoiseType(t); return d && d.category === 'modifier'; }) },
 ];
 
@@ -119,7 +119,7 @@ function NoiseLayerItem({
           {/* action bar */}
           <div className="nl-actions">
             <button type="button" className={`nl-icon-btn${isSolo ? ' active' : ''}`} title="Solo preview" onClick={() => onSolo(isSolo ? null : layer.id)}><SoloIcon /></button>
-            <button type="button" className="nl-icon-btn" title="Duplicate" onClick={() => onDuplicate(layer.id)} disabled={total >= MAX_LAYERS}><DupIcon /></button>
+            <button type="button" className="nl-icon-btn" title="복제" onClick={() => onDuplicate(layer.id)} disabled={total >= MAX_LAYERS}><DupIcon /></button>
             <button type="button" className="nl-icon-btn danger" title="Delete" onClick={() => onRemove(layer.id)} disabled={total <= 0}><TrashIcon /></button>
           </div>
 
@@ -136,7 +136,7 @@ function NoiseLayerItem({
 
           {/* strength slider */}
           <SliderCtl
-            def={{ key: '_str', label: 'Strength', min: 0, max: 2, step: 0.01, digits: 2 }}
+            def={{ key: '_str', label: '세기', min: 0, max: 2, step: 0.01, digits: 2 }}
             value={layer.strength}
             onChange={(v) => onUpdate(layer.id, { strength: v })}
           />
@@ -233,47 +233,47 @@ function MaskItem({ mask, onRemove, onToggle, onInvert, onParam }) {
           <EyeIcon on={mask.enabled !== false} />
         </button>
         <span className="nl-mask-label">{label}</span>
-        <ToggleRow label="Invert" value={!!mask.invert} onChange={() => onInvert(mask.type)} />
+        <ToggleRow label="반전" value={!!mask.invert} onChange={() => onInvert(mask.type)} />
         <button type="button" className="nl-icon-btn danger" title="Remove mask" onClick={() => onRemove(mask.type)}>
           <TrashIcon />
         </button>
       </div>
       {mask.type === 'height' && mask.enabled !== false && (
         <>
-          <SliderCtl def={{ key: '_hmin', label: 'Min', min: -0.5, max: 2, step: 0.01, digits: 2 }}
+          <SliderCtl def={{ key: '_hmin', label: '최소', min: -0.5, max: 2, step: 0.01, digits: 2 }}
             value={mask.params.min ?? 0} onChange={(v) => onParam('height', 'min', v)} />
-          <SliderCtl def={{ key: '_hmax', label: 'Max', min: -0.5, max: 2, step: 0.01, digits: 2 }}
+          <SliderCtl def={{ key: '_hmax', label: '최대', min: -0.5, max: 2, step: 0.01, digits: 2 }}
             value={mask.params.max ?? 1.35} onChange={(v) => onParam('height', 'max', v)} />
-          <SliderCtl def={{ key: '_hfall', label: 'Falloff', min: 0, max: 0.5, step: 0.005, digits: 3 }}
+          <SliderCtl def={{ key: '_hfall', label: '감쇠', min: 0, max: 0.5, step: 0.005, digits: 3 }}
             value={mask.params.falloff ?? 0.06} onChange={(v) => onParam('height', 'falloff', v)} />
         </>
       )}
       {mask.type === 'noise' && mask.enabled !== false && (
         <>
-          <SliderCtl def={{ key: '_nsc', label: 'Scale', min: 0.1, max: 10, step: 0.05, digits: 2 }}
+          <SliderCtl def={{ key: '_nsc', label: '스케일', min: 0.1, max: 10, step: 0.05, digits: 2 }}
             value={mask.params.scale ?? 1} onChange={(v) => onParam('noise', 'scale', v)} />
-          <SliderCtl def={{ key: '_nth', label: 'Threshold', min: 0, max: 1, step: 0.01, digits: 2 }}
+          <SliderCtl def={{ key: '_nth', label: '임계값', min: 0, max: 1, step: 0.01, digits: 2 }}
             value={mask.params.threshold ?? 0.5} onChange={(v) => onParam('noise', 'threshold', v)} />
-          <SliderCtl def={{ key: '_nsf', label: 'Softness', min: 0, max: 0.5, step: 0.005, digits: 3 }}
+          <SliderCtl def={{ key: '_nsf', label: '부드러움', min: 0, max: 0.5, step: 0.005, digits: 3 }}
             value={mask.params.softness ?? 0.12} onChange={(v) => onParam('noise', 'softness', v)} />
         </>
       )}
       {mask.type === 'slope' && mask.enabled !== false && (
         <>
           <SliderCtl
-            def={{ key: '_smin', label: 'Min', min: 0, max: 3, step: 0.01, digits: 2 }}
+            def={{ key: '_smin', label: '최소', min: 0, max: 3, step: 0.01, digits: 2 }}
             value={mask.params.min ?? 0}
             onChange={(v) => onParam('slope', 'min', v)}
             settingId="noise.mask.slopeMin"
           />
           <SliderCtl
-            def={{ key: '_smax', label: 'Max', min: 0, max: 3, step: 0.01, digits: 2 }}
+            def={{ key: '_smax', label: '최대', min: 0, max: 3, step: 0.01, digits: 2 }}
             value={mask.params.max ?? 1}
             onChange={(v) => onParam('slope', 'max', v)}
             settingId="noise.mask.slopeMax"
           />
           <SliderCtl
-            def={{ key: '_sfall', label: 'Falloff', min: 0, max: 1, step: 0.005, digits: 3 }}
+            def={{ key: '_sfall', label: '감쇠', min: 0, max: 1, step: 0.005, digits: 3 }}
             value={mask.params.falloff ?? 0.1}
             onChange={(v) => onParam('slope', 'falloff', v)}
             settingId="noise.mask.slopeFalloff"

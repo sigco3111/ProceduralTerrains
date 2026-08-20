@@ -43,7 +43,7 @@ export default function AuthPage({ mode, onBack, onSwitch, onSuccess }) {
       }
       onSuccess();
     } catch (error) {
-      showPopup(error.message || 'The request could not be completed.', { type: 'error', title: isRegister ? 'Account not created' : 'Sign-in failed' });
+      showPopup(error.message || 'The request could not be completed.', { type: 'error', title: isRegister ? '계정이 생성되지 않았습니다' : 'Sign-in failed' });
       setFieldErrors(error.fields ?? {});
     } finally {
       setBusy(false);
@@ -74,20 +74,20 @@ export default function AuthPage({ mode, onBack, onSwitch, onSuccess }) {
           <span className="auth-mark"><Logo size={25} /></span>
           <div>
             <small>{APP_NAME}</small>
-            <h1 id="auth-title">{isRegister ? 'Create your account' : 'Welcome back'}</h1>
+            <h1 id="auth-title">{isRegister ? '계정을 만드세요' : 'Welcome back'}</h1>
             <p>{isRegister ? 'Keep your identity ready for cloud projects and sharing.' : 'Sign in to access your account. Local projects remain on this device.'}</p>
           </div>
         </header>
 
         <form onSubmit={submit} noValidate>
-          {isRegister && input('username', 'Username', {
+          {isRegister && input('username', '사용자 이름', {
             type: 'text', autoComplete: 'username', minLength: 3, maxLength: 32,
             pattern: '[a-zA-Z0-9_]+', placeholder: 'terrain_creator', required: true,
           })}
           {isRegister
-            ? input('email', 'Email', { type: 'email', autoComplete: 'email', maxLength: 320, placeholder: 'you@example.com', required: true })
+            ? input('email', '이메일', { type: 'email', autoComplete: 'email', maxLength: 320, placeholder: 'you@example.com', required: true })
             : input('identifier', 'Email or username', { type: 'text', autoComplete: 'username', maxLength: 320, placeholder: 'you@example.com', required: true })}
-          {input('password', 'Password', {
+          {input('password', '비밀번호', {
             type: 'password', autoComplete: isRegister ? 'new-password' : 'current-password',
             minLength: isRegister ? 10 : undefined, maxLength: 128, placeholder: '••••••••••', required: true,
           })}
@@ -98,14 +98,14 @@ export default function AuthPage({ mode, onBack, onSwitch, onSuccess }) {
 
           <button type="submit" className="lp-primary auth-submit" disabled={busy}>
             {isRegister ? <UserPlus size={15} /> : <LogIn size={15} />}
-            {busy ? 'Please wait…' : isRegister ? 'Create account' : 'Sign in'}
+            {busy ? 'Please wait…' : isRegister ? '계정 만들기' : '로그인'}
           </button>
         </form>
 
         <footer>
           <span>{isRegister ? 'Already have an account?' : 'New to Procedural Terrains?'}</span>
           <button type="button" className="lp-link" onClick={() => onSwitch(isRegister ? 'login' : 'register')}>
-            {isRegister ? 'Sign in' : 'Create an account'}
+            {isRegister ? '로그인' : '계정 만들기'}
           </button>
         </footer>
       </div>

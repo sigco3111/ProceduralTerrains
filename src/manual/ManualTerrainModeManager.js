@@ -434,7 +434,7 @@ export class ManualTerrainModeManager {
     if (!silent) {
       this.onToast?.(next
         ? 'Surface & Props Paint — left drag paints · Alt + left drag pans · right drag orbits'
-        : 'Exited Surface & Props Paint');
+        : '표면 & 소품 페인트 종료');
     }
   }
 
@@ -535,7 +535,7 @@ export class ManualTerrainModeManager {
     if (shapeIndex < 0) return null;
     const shape = this.shapes[shapeIndex];
     if (shape.layers.length >= MAX_MANUAL_SHAPE_LAYERS) {
-      this.onToast?.(`A shape can contain up to ${MAX_MANUAL_SHAPE_LAYERS} modifier layers`);
+      this.onToast?.(`셰이프에는 최대 ${MAX_MANUAL_SHAPE_LAYERS}개의 모디파이어 레이어를 포함할 수 있습니다`);
       return null;
     }
     const layer = createManualShapeLayer(type, { seedOffset: shape.seed + shape.layers.length * 1013 });
@@ -579,7 +579,7 @@ export class ManualTerrainModeManager {
     if (shapeIndex < 0) return null;
     const shape = this.shapes[shapeIndex];
     if (shape.layers.length >= MAX_MANUAL_SHAPE_LAYERS) {
-      this.onToast?.(`A shape can contain up to ${MAX_MANUAL_SHAPE_LAYERS} modifier layers`);
+      this.onToast?.(`셰이프에는 최대 ${MAX_MANUAL_SHAPE_LAYERS}개의 모디파이어 레이어를 포함할 수 있습니다`);
       return null;
     }
     const layerIndex = shape.layers.findIndex((layer) => layer.id === layerId);

@@ -26,7 +26,7 @@ export default function UiSettingsPanel({ open, prefs, onChange, onClose }) {
               <p className="ui-settings-desc">Interface appearance and chrome density.</p>
             </div>
           </div>
-          <button type="button" className="side-panel-close" onClick={onClose} aria-label="Close" title="Close (Esc)">
+          <button type="button" className="side-panel-close" onClick={onClose} aria-label="닫기" title="Close (Esc)">
             <X size={15} strokeWidth={2} aria-hidden />
           </button>
         </header>

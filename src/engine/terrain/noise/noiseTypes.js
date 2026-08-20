@@ -187,12 +187,12 @@ ${fbmAssign3('wz', 'WP + vec3(31.7, 5.3, 91.4)', oct)}
     }`;
 
 // common param descriptors
-const P_OCT = { key: 'octaves', label: 'Octaves', min: 1, max: 8, step: 1, default: 5, structural: true };
-const P_WARP_OCT = { key: 'octaves', label: 'Octaves', min: 1, max: 6, step: 1, default: 4, structural: true, settingId: 'noise.layer.domainWarpOctaves' };
-const P_PERS = { key: 'persistence', label: 'Persistence', min: 0.15, max: 0.85, step: 0.01, default: 0.5, digits: 2 };
-const P_LAC = { key: 'lacunarity', label: 'Lacunarity', min: 1.5, max: 3.5, step: 0.01, default: 2.0, digits: 2 };
-const P_SCALE = { key: 'scale', label: 'Scale', min: 0.1, max: 20, step: 0.05, default: 1.0, digits: 2 };
-const P_EROSION = { key: 'erosion', label: 'Erosion', min: 0, max: 1, step: 0.01, default: 0, digits: 2, settingId: 'noise.layer.erosion' };
+const P_OCT = { key: 'octaves', label: '옥타브', min: 1, max: 8, step: 1, default: 5, structural: true };
+const P_WARP_OCT = { key: 'octaves', label: '옥타브', min: 1, max: 6, step: 1, default: 4, structural: true, settingId: 'noise.layer.domainWarpOctaves' };
+const P_PERS = { key: 'persistence', label: '지속성', min: 0.15, max: 0.85, step: 0.01, default: 0.5, digits: 2 };
+const P_LAC = { key: 'lacunarity', label: '틈새도', min: 1.5, max: 3.5, step: 0.01, default: 2.0, digits: 2 };
+const P_SCALE = { key: 'scale', label: '스케일', min: 0.1, max: 20, step: 0.05, default: 1.0, digits: 2 };
+const P_EROSION = { key: 'erosion', label: '침식', min: 0, max: 1, step: 0.01, default: 0, digits: 2, settingId: 'noise.layer.erosion' };
 const P_SELF_WARP = { key: 'warp', label: 'Self Warp', min: 0, max: 1.5, step: 0.01, default: 0, digits: 2, settingId: 'noise.layer.selfWarp' };
 
 export const NOISE_TYPES = [
@@ -223,7 +223,7 @@ export const NOISE_TYPES = [
 
   // ---------------------------------------------------------------- ridged
   {
-    id: 'ridged', label: 'Ridged', category: 'height',
+    id: 'ridged', label: '능선', category: 'height',
     defaultBlend: 'add', defaultStrength: 0.5,
     desc: 'Sharp ridges and mountain chains, alpine terrain, canyon edges.',
     scaleKey: 'scale', paKeys: ['persistence', 'lacunarity', 'sharpness'], pbKeys: ['erosion', 'warp'],
@@ -238,7 +238,7 @@ export const NOISE_TYPES = [
 
   // ---------------------------------------------------------------- billow
   {
-    id: 'billow', label: 'Billow', category: 'height',
+    id: 'billow', label: '물결', category: 'height',
     defaultBlend: 'add', defaultStrength: 0.4,
     desc: 'Soft rounded noise for hills, soft dunes, and organic or cloud-like surfaces.',
     scaleKey: 'scale', paKeys: ['persistence', 'lacunarity'], pbKeys: ['erosion', 'warp'],
@@ -251,13 +251,13 @@ export const NOISE_TYPES = [
 
   // ---------------------------------------------------------------- value
   {
-    id: 'value', label: 'Value', category: 'height',
+    id: 'value', label: '값', category: 'height',
     defaultBlend: 'add', defaultStrength: 0.3,
     desc: 'Simple blocky base noise for broad masks, biome zones, and stylized variation.',
     scaleKey: 'scale', paKeys: [], pbKeys: [],
     params: [P_SCALE,
       { key: 'interp', label: 'Interpolation', type: 'enum', structural: true, default: 2,
-        options: [{ value: 0, label: 'Linear' }, { value: 1, label: 'Smooth' }, { value: 2, label: 'Smoother' }] }],
+        options: [{ value: 0, label: '선형' }, { value: 1, label: '부드러움' }, { value: 2, label: 'Smoother' }] }],
     body2d: (l) => `val = valueNoise2(P, ${l.params.interp | 0});`,
     body3d: (l) => `val = valueNoise3(P, ${l.params.interp | 0});`,
     eval2d: (px, pz) => vnoise2(px, pz),
@@ -271,7 +271,7 @@ export const NOISE_TYPES = [
     desc: 'Fine random detail for micro variation, roughness, and mask breakup.',
     scaleKey: 'scale', paKeys: ['smoothing'], pbKeys: [],
     params: [{ ...P_SCALE, default: 8.0 },
-      { key: 'smoothing', label: 'Smoothing', min: 0, max: 1, step: 0.01, default: 0.0, digits: 2 }],
+      { key: 'smoothing', label: '스무딩', min: 0, max: 1, step: 0.01, default: 0.0, digits: 2 }],
     body2d: () => `val = whiteNoise2(P, pa.x);`,
     body3d: () => `val = whiteNoise3(P, pa.x);`,
     eval2d: (px, pz, l) => {
@@ -290,7 +290,7 @@ export const NOISE_TYPES = [
     defaultBlend: 'add', defaultStrength: 1.0,
     desc: 'A flat constant value to raise or lower the whole terrain, flatten the base, or test water.',
     scaleKey: null, paKeys: ['value'], pbKeys: [],
-    params: [{ key: 'value', label: 'Value', min: -1, max: 1, step: 0.01, default: 0.1, digits: 2 }],
+    params: [{ key: 'value', label: '값', min: -1, max: 1, step: 0.01, default: 0.1, digits: 2 }],
     body2d: () => `val = pa.x;`,
     body3d: () => `val = pa.x;`,
     eval2d: (px, pz, l) => l.params.value,
@@ -305,9 +305,9 @@ export const NOISE_TYPES = [
     scaleKey: 'scale', paKeys: ['jitter'], pbKeys: [],
     params: [{ ...P_SCALE, default: 2.0 },
       { key: 'jitter', label: 'Jitter', min: 0, max: 1, step: 0.01, default: 1.0, digits: 2 },
-      { key: 'distanceMode', label: 'Distance', type: 'enum', structural: true, default: 0,
+      { key: 'distanceMode', label: '거리', type: 'enum', structural: true, default: 0,
         options: [{ value: 0, label: 'Euclidean' }, { value: 1, label: 'Manhattan' }, { value: 2, label: 'Chebyshev' }] },
-      { key: 'outputMode', label: 'Output', type: 'enum', structural: true, default: 2,
+      { key: 'outputMode', label: '출력', type: 'enum', structural: true, default: 2,
         options: [{ value: 0, label: 'Cell Value' }, { value: 1, label: 'Dist Center' }, { value: 2, label: 'Dist Edge' }, { value: 3, label: 'Edge Lines' }] }],
     body2d: (l) => `val = voronoi2(P, pa.x, ${l.params.distanceMode | 0}, ${l.params.outputMode | 0});`,
     body3d: (l) => `val = voronoi3(P, pa.x, ${l.params.distanceMode | 0}, ${l.params.outputMode | 0});`,
@@ -317,13 +317,13 @@ export const NOISE_TYPES = [
 
   // ---------------------------------------------------------------- crater
   {
-    id: 'crater', label: 'Crater', category: 'height',
+    id: 'crater', label: '분화구', category: 'height',
     defaultBlend: 'add', defaultStrength: 0.5,
     desc: 'Impact craters for moons, asteroids, dead planets, and sci-fi terrain.',
     scaleKey: 'scale', paKeys: ['density', 'depth', 'rim', 'rimWidth'], pbKeys: [],
     params: [{ ...P_SCALE, default: 1.5 },
-      { key: 'density', label: 'Density', min: 0, max: 1, step: 0.01, default: 0.55, digits: 2 },
-      { key: 'depth', label: 'Depth', min: 0, max: 1.5, step: 0.01, default: 0.6, digits: 2 },
+      { key: 'density', label: '밀도', min: 0, max: 1, step: 0.01, default: 0.55, digits: 2 },
+      { key: 'depth', label: '깊이', min: 0, max: 1.5, step: 0.01, default: 0.6, digits: 2 },
       { key: 'rim', label: 'Rim Height', min: 0, max: 1, step: 0.01, default: 0.3, digits: 2 },
       { key: 'rimWidth', label: 'Rim Width', min: 0.05, max: 1, step: 0.01, default: 0.35, digits: 2 }],
     body2d: () => `val = crater2(P, pa.x, pa.y, pa.z, pa.w);`,
@@ -402,7 +402,7 @@ export const NOISE_TYPES = [
     scaleKey: null, paKeys: ['count', 'smoothness'], pbKeys: [],
     params: [
       { key: 'count', label: 'Terrace Count', min: 2, max: 40, step: 1, default: 12, digits: 0 },
-      { key: 'smoothness', label: 'Smoothness', min: 0.02, max: 1, step: 0.01, default: 0.5, digits: 2 }],
+      { key: 'smoothness', label: '매끄러움', min: 0.02, max: 1, step: 0.01, default: 0.5, digits: 2 }],
     mod2d: (l, heightVar = 'h') => terraceMod(heightVar),
     mod3d: (l, heightVar = 'h') => terraceMod(heightVar),
     modHeightJs: (h, l, eff, m) => {
@@ -519,6 +519,6 @@ function flowJs(px, pz, p) {
 const _byId = new Map(NOISE_TYPES.map((t) => [t.id, t]));
 export function getNoiseType(id) { return _byId.get(id); }
 
-// Types offered in the "Add Noise Layer" menu (legacy is added via migration,
+// Types offered in the "노이즈 레이어 추가" menu (legacy is added via migration,
 // not the menu — but allow re-adding it too).
 export const ADDABLE_TYPES = NOISE_TYPES.map((t) => t.id);

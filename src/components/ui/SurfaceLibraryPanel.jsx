@@ -29,13 +29,13 @@ const ZIP_EXT_RE = /\.zip$/i;
 
 const STATUS_LABEL = {
   checking: '...',
-  custom: 'Custom',
+  custom: '사용자 지정',
   missing: 'Missing',
 };
 
 const LAYER_STATUS_LABEL = {
   notBaked: 'Not Baked',
-  ready: 'Ready',
+  ready: '준비',
   missingDiffuse: 'Missing Diffuse',
   missingOptional: 'Missing Optional Maps',
 };
@@ -188,7 +188,7 @@ function FileSlotRow({ role, variantIndex, slot, onChanged }) {
       <div className="file-picker surface-slot-picker">
         <button type="button" className="file-picker-btn" onClick={() => inputRef.current?.click()}>
           <ImageUp size={13} strokeWidth={1.75} aria-hidden />
-          <span>{directOverride || resolved ? 'Replace' : 'Upload'}</span>
+          <span>{directOverride || resolved ? '대체' : '업로드'}</span>
         </button>
         <input
           ref={inputRef}
@@ -408,7 +408,7 @@ function RoleCard({ role, mapSlots, targetId, atlasLayer, palette, onMaterialCha
                     onClick={() => setActiveVariant(variantIndex)}
                   >
                     <span>V{variantIndex + 1}</span>
-                    <small>{ready ? 'Ready' : 'Empty'}</small>
+                    <small>{ready ? '준비' : 'Empty'}</small>
                   </button>
                 );
               })}
@@ -430,7 +430,7 @@ function RoleCard({ role, mapSlots, targetId, atlasLayer, palette, onMaterialCha
 
 const slider = (key, label, min, max, step, opts = {}) => ({ key, label, min, max, step, ...opts });
 const SURFACE_MODE_SLIDERS = [
-  slider('surfaceTextureScale', 'Scale', 0.25, 4, 0.05, { digits: 2, fallback: 1 }),
+  slider('surfaceTextureScale', '스케일', 0.25, 4, 0.05, { digits: 2, fallback: 1 }),
   slider('surfaceTextureBreakup', 'Break Tiling', 0, 1, 0.02, { digits: 2, fallback: 0.5 }),
   slider('surfaceTextureBlend', 'Blend Textures', 0, 1, 0.02, { digits: 2, fallback: 0.35 }),
   slider('surfaceTexturePaletteInfluence', 'Palette Influence', 0, 1, 0.02, { digits: 2, fallback: 0.6 }),
@@ -450,10 +450,10 @@ function SurfaceModeControls({ ctx, source, onBake, applying, status }) {
   return (
     <div className="surface-mode-bar">
       <SelectRow
-        label="Surface Source"
+        label="표면 소스"
         value={source}
         options={[
-          { value: SURFACE_TEXTURE_SOURCE.PROCEDURAL, label: 'Procedural' },
+          { value: SURFACE_TEXTURE_SOURCE.PROCEDURAL, label: '절차적' },
           { value: SURFACE_TEXTURE_SOURCE.CUSTOM, label: 'Custom Materials' },
         ]}
         onChange={(value) => onParam('surfaceTextureSource', value)}

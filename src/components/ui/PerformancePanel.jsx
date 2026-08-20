@@ -42,7 +42,7 @@ export default function PerformancePanel({ stats, gpu }) {
           </span>
           <span className="setting-label">GPU</span>
         </div>
-        <span className="stat-value stat-mono stat-truncate" title={gpu}>{gpu || 'Unknown'}</span>
+        <span className="stat-value stat-mono stat-truncate" title={gpu}>{gpu || '알 수 없음'}</span>
       </div>
       <div className="stat-row" data-tooltip="Total number of 3D triangles rendered in this frame">
         <div className="label-with-icon">

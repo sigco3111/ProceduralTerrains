@@ -158,7 +158,7 @@ export default function RealWorldMapPicker({
       setSearchResults(results);
       if (!results.length) setSearchError('No matching places found.');
     } catch (error) {
-      if (error?.name !== 'AbortError') setSearchError('Place search is unavailable right now.');
+      if (error?.name !== '중단 오류') setSearchError('Place search is unavailable right now.');
     } finally {
       if (searchAbortRef.current === controller) {
         searchAbortRef.current = null;
@@ -346,7 +346,7 @@ export default function RealWorldMapPicker({
                   spellCheck={false}
                 />
                 <button type="submit" disabled={searchBusy || searchQuery.trim().length < 2} aria-label="Search map">
-                  {searchBusy ? <LoaderCircle size={15} className="tb-spin" aria-hidden /> : 'Search'}
+                  {searchBusy ? <LoaderCircle size={15} className="tb-spin" aria-hidden /> : '검색'}
                 </button>
               </form>
               {(searchResults.length > 0 || searchError) && (

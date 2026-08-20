@@ -8,10 +8,10 @@ import { adminApi } from './adminApi.js';
 import { usePopup } from '../components/ui/PopupProvider.jsx';
 
 const TABS = [
-  { id: 'overview', label: 'Overview', icon: BarChart3 },
-  { id: 'users', label: 'Users', icon: UsersRound },
-  { id: 'visits', label: 'Visits', icon: Eye },
-  { id: 'terrains', label: 'Terrains', icon: FolderKanban },
+  { id: 'overview', label: '개요', icon: BarChart3 },
+  { id: 'users', label: '사용자', icon: UsersRound },
+  { id: 'visits', label: '방문', icon: Eye },
+  { id: 'terrains', label: '지형들', icon: FolderKanban },
   { id: 'audit', label: 'Audit log', icon: FileClock },
   { id: 'security', label: 'Security', icon: ShieldCheck },
 ];
@@ -20,7 +20,7 @@ const number = new Intl.NumberFormat();
 const shortDate = new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric' });
 const dateTime = new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 
-const formatDate = (value, fallback = 'Never') => value ? dateTime.format(new Date(value)) : fallback;
+const formatDate = (value, fallback = '없음') => value ? dateTime.format(new Date(value)) : fallback;
 const actionLabel = (value = '') => value.split('.').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' · ');
 const localDayKey = (value) => {
   if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value)) return value.slice(0, 10);
@@ -100,7 +100,7 @@ function TrendChart({ data = [], valueKey = 'visits', days: requestedDays = 14, 
 
 const REPORTING_RANGES = [
   { value: 7, label: 'Weekly' },
-  { value: 30, label: 'Monthly' },
+  { value: 30, label: '월간' },
   { value: 90, label: '90 days' },
 ];
 
@@ -120,8 +120,8 @@ function Overview({ data, onNavigate, rangeDays, onRangeChange }) {
   const rangeLabel = REPORTING_RANGES.find((range) => range.value === rangeDays)?.label.toLowerCase() || `${rangeDays} days`;
   const stats = [
     { label: 'Total users', value: data.counts.users, meta: `${number.format(data.counts.activeUsers)} active`, icon: UsersRound, tone: 'blue' },
-    { label: 'Visits today', value: data.counts.visitsToday, meta: `${number.format(data.counts.uniqueToday)} unique`, icon: Activity, tone: 'green' },
-    { label: 'Terrains', value: data.counts.terrains, meta: 'Across all users', icon: FolderKanban, tone: 'violet' },
+    { label: '오늘 방문', value: data.counts.visitsToday, meta: `${number.format(data.counts.uniqueToday)} unique`, icon: Activity, tone: 'green' },
+    { label: '지형들', value: data.counts.terrains, meta: '모든 사용자', icon: FolderKanban, tone: 'violet' },
     { label: 'Open sessions', value: data.counts.openSessions, meta: 'Unexpired sessions', icon: KeyRound, tone: 'amber' },
   ];
   return (
@@ -317,7 +317,7 @@ function VisitsPanel() {
     catch (nextError) { setError(nextError.message); }
   }, [page, days]);
   useEffect(() => { load(); }, [load]);
-  const DeviceIcon = ({ device }) => device === 'Mobile' ? <Smartphone size={13} /> : device === 'Tablet' ? <Tablet size={13} /> : <Laptop size={13} />;
+  const DeviceIcon = ({ device }) => device === '모바일' ? <Smartphone size={13} /> : device === 'Tablet' ? <Tablet size={13} /> : <Laptop size={13} />;
   return (
     <div className="admin-stack">
       {data && <section className="admin-panel admin-trend-panel"><header><div><span className="admin-eyebrow">Audience</span><h2>Visits and unique visitors</h2></div><RangeSelector value={days} onChange={(value) => { setPage(1); setDays(value); }} /></header><div className="admin-inline-metrics"><div><strong>{number.format(data.summary?.visits ?? data.total)}</strong><span>Total visits</span></div><div><strong>{number.format(data.summary?.uniqueVisitors ?? 0)}</strong><span>Unique visitors</span></div><div><strong>{number.format(data.summary?.averagePerDay ?? 0)}</strong><span>Average per day</span></div></div><TrendChart data={data.trend} days={days} valueLabel="page visits" /><div className="admin-chart-legend"><span><i className="blue" /> Page visits</span><span><i className="green" /> Hover a day for the exact count</span></div></section>}
@@ -390,7 +390,7 @@ function SecurityPanel() {
     { label: 'Failed sign-ins · 24h', value: data.summary.failedLogins, icon: ShieldAlert, danger: data.summary.failedLogins > 10 },
     { label: 'Open sessions', value: data.summary.openSessions, icon: KeyRound },
     { label: 'Suspended users', value: data.summary.suspendedUsers, icon: UserX },
-    { label: 'Active administrators', value: data.summary.admins, icon: ShieldCheck },
+    { label: '활성 관리자', value: data.summary.admins, icon: ShieldCheck },
   ];
   return (
     <div className="admin-stack">
@@ -416,13 +416,13 @@ export default function AdminDashboard({ user, onBack }) {
     setOverview(null);
     setOverviewDays(days);
   }, []);
-  const title = TABS.find((item) => item.id === tab)?.label ?? 'Overview';
+  const title = TABS.find((item) => item.id === tab)?.label ?? '개요';
 
   return (
     <section className="admin-dashboard" aria-labelledby="admin-title">
       <aside className="admin-sidebar">
         <div className="admin-sidebar-heading"><span className="admin-shield"><ShieldCheck size={18} /></span><span><strong>Admin console</strong><small>Three Terrain</small></span></div>
-        <nav aria-label="Administration">
+        <nav aria-label="관리">
           {TABS.map(({ id, label, icon: Icon }) => <button type="button" key={id} className={tab === id ? 'active' : ''} onClick={() => setTab(id)}><Icon size={15} /><span>{label}</span></button>)}
         </nav>
         <div className="admin-sidebar-account"><span>{(user.displayName || user.username).slice(0, 2).toUpperCase()}</span><div><strong>{user.displayName || user.username}</strong><small>Administrator</small></div></div>
@@ -437,7 +437,7 @@ export default function AdminDashboard({ user, onBack }) {
             <div className="admin-secure-indicator"><LockKeyhole size={13} /><span>Secure admin session</span></div>
           </div>
         </header>
-        <div className="admin-mobile-tabs" role="tablist" aria-label="Administration sections">{TABS.map(({ id, label }) => <button type="button" role="tab" aria-selected={tab === id} key={id} className={tab === id ? 'active' : ''} onClick={() => setTab(id)}>{label}</button>)}</div>
+        <div className="admin-mobile-tabs" role="tablist" aria-label="관리 섹션">{TABS.map(({ id, label }) => <button type="button" role="tab" aria-selected={tab === id} key={id} className={tab === id ? 'active' : ''} onClick={() => setTab(id)}>{label}</button>)}</div>
         <div className="admin-page">
           {tab === 'overview' && !overview && !error && <LoadingState />}
           {tab === 'overview' && error && <ErrorState message={error} onRetry={loadOverview} />}

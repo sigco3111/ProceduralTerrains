@@ -38,17 +38,17 @@ export const NOISE_SLIDERS = [
     icon: (<svg viewBox="0 0 16 16" fill="none"><path d="M1.5 11.5c2-4.5 4-6 6-2.5 1.9 3.2 4.1 2.2 7-3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" /></svg>),
   },
   {
-    key: 'octaves', label: 'Octaves', min: 1, max: 9, step: 1,
+    key: 'octaves', label: '옥타브', min: 1, max: 9, step: 1,
     info: 'Number of layered noise detail passes (higher = more detailed but slower)',
     icon: (<svg viewBox="0 0 16 16" fill="none"><path d="M2 12h12M2 8h12M2 4h12" stroke="currentColor" strokeWidth="1.2" /></svg>),
   },
   {
-    key: 'persistence', label: 'Persistence', min: 0.15, max: 0.85, step: 0.01, digits: 2,
+    key: 'persistence', label: '지속성', min: 0.15, max: 0.85, step: 0.01, digits: 2,
     info: 'Amplitude retention factor of successive octave passes (higher = rougher terrain)',
     icon: (<svg viewBox="0 0 16 16" fill="none"><path d="M1 8h3v1h3v1h3v1h5" stroke="currentColor" strokeWidth="1.2" /></svg>),
   },
   {
-    key: 'lacunarity', label: 'Lacunarity', min: 1.5, max: 3.5, step: 0.01, digits: 2,
+    key: 'lacunarity', label: '틈새도', min: 1.5, max: 3.5, step: 0.01, digits: 2,
     info: 'Frequency scale factor of successive octave passes (higher = finer detail frequency)',
     icon: (<svg viewBox="0 0 16 16" fill="none"><path d="M1 8h2v-4h2v4h2v-4h2v4h2v-4h2v4h1" stroke="currentColor" strokeWidth="1.2" /></svg>),
   },
@@ -71,7 +71,7 @@ export const BIOME_SLIDERS = [
     icon: (<svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.1" /><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.1" /></svg>),
   },
   {
-    key: 'tempBias', label: 'Temperature', min: -1, max: 1, step: 0.05, digits: 2,
+    key: 'tempBias', label: '온도', min: -1, max: 1, step: 0.05, digits: 2,
     info: 'Adjust world temperature (colder = more snow/tundra, hotter = desert/dry grass)',
     icon: (<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="11" r="2.5" stroke="currentColor" strokeWidth="1.2" /><path d="M8 8.5V3a1 1 0 0 0-2 0v5.5a2.5 2.5 0 0 0 2 0z" stroke="currentColor" strokeWidth="1.2" /></svg>),
   },
@@ -119,7 +119,7 @@ export const RENDER_SLIDERS = [
     icon: (<svg viewBox="0 0 16 16" fill="none"><path d="M8 2v12M8 2l-3 3M8 2l3 3" stroke="currentColor" strokeWidth="1.2" /></svg>),
   },
   {
-    key: 'aoStrength', label: 'Ambient Occlusion', min: 0, max: 1, step: 0.05, digits: 2,
+    key: 'aoStrength', label: '주변 폐색', min: 0, max: 1, step: 0.05, digits: 2,
     info: 'Shadow shading intensity in crevices and valleys (Ambient Occlusion)',
     icon: (<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" /><path d="M3 8h10M8 3v10" stroke="currentColor" strokeWidth="1.2" /></svg>),
   },
@@ -140,7 +140,7 @@ export const WATER_COLORS = [
     icon: (<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" /><circle cx="8" cy="8" r="4.5" stroke="currentColor" strokeWidth="1.2" /></svg>),
   },
   {
-    key: 'foam', label: 'Foam', info: 'Color of waves breaking near the shoreline',
+    key: 'foam', label: '거품', info: 'Color of waves breaking near the shoreline',
     icon: (<svg viewBox="0 0 16 16" fill="none"><path d="M2 10a2 2 0 0 1 4 0M6 10a2 2 0 0 1 4 0M10 10a2 2 0 0 1 4 0" stroke="currentColor" strokeWidth="1.2" /></svg>),
   },
 ];

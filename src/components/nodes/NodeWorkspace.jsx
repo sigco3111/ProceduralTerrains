@@ -30,12 +30,12 @@ const DEFAULT_LAYOUT = {
 };
 const GRAPH_EDGES = ['bottom', 'left', 'top', 'right'];
 const NEXT_NODE_SUGGESTIONS = {
-  mountain: { type: 'shaper', reason: 'Add durable mass before weathering.' },
+  mountain: { type: 'shaper', reason: '풍화 전에 내구성 있는 매스 추가.' },
   mountainRange: { type: 'shaper', reason: 'Give the range a broader, erosion-ready body.' },
   canyon: { type: 'stratify', reason: 'Expose broken sedimentary layers on the canyon walls.' },
   duneSea: { type: 'domainWarp', reason: 'Break up the dune field with a restrained wind-scale bend.' },
   shaper: { type: 'domainWarp', reason: 'Introduce broad organic displacement.' },
-  domainWarp: { type: 'stratify', reason: 'Add broken geological layers.' },
+  domainWarp: { type: 'stratify', reason: '깨진 지질학 레이어 추가.' },
   stratify: { type: 'thermalErosion', reason: 'Relax exposed slopes and form scree.' },
   geologyDetail: { type: 'thermalErosion', reason: 'Redistribute loose rock on steep faces.' },
   thermalErosion: { type: 'naturalErosion', reason: 'Carve drainage after slope relaxation.' },
@@ -193,7 +193,7 @@ function TerrainGroup({ data, selected }) {
         <strong>{group.label}</strong>
         <span>{group.nodeIds.length} nodes</span>
         <button type="button" className="nodrag" onClick={(event) => { event.stopPropagation(); data.onToggle(group.id); }}>
-          {group.collapsed ? 'Expand' : 'Collapse'}
+          {group.collapsed ? '펼치기' : '접기'}
         </button>
       </div>
     </div>
@@ -296,7 +296,7 @@ function NodeInspector({
   }) : null;
   useEffect(() => { setPropertyQuery(''); }, [node?.id, group?.id]);
   const inspectorSections = definition?.inspector?.reduce((sections, field) => {
-    const label = field.tier === 'essential' ? 'Essentials' : field.section || 'Parameters';
+    const label = field.tier === 'essential' ? 'Essentials' : field.section || '매개변수';
     const entry = sections.find((section) => section.label === label);
     if (entry) entry.fields.push(field); else sections.push({ label, fields: [field] });
     return sections;
@@ -309,7 +309,7 @@ function NodeInspector({
   const resultCount = visibleSections.reduce((sum, section) => sum + section.fields.length, 0);
   const suggestion = node ? NEXT_NODE_SUGGESTIONS[node.type] : null;
   const suggestedDefinition = suggestion ? getGraphNodeDefinition(suggestion.type) : null;
-  const title = group ? 'Group' : definition?.label || 'Nothing selected';
+  const title = group ? '그룹' : definition?.label || 'Nothing selected';
   return (
     <aside className="node-inspector" aria-label="Selected node properties">
       <header className="node-dock-header node-inspector__header node-dock-header--draggable" onPointerDown={onHeaderPointerDown}>
@@ -892,7 +892,7 @@ export default function NodeWorkspace({
           isValidConnection={(connection) => canConnectGraphNodes(graphRef.current, connection)}
           connectionLineStyle={{ stroke: 'var(--node-cyan)', strokeWidth: 2.4 }}
           elevateNodesOnSelect={false}
-          deleteKeyCode={null} multiSelectionKeyCode={['Meta', 'Control', 'Shift']}
+          deleteKeyCode={null} multiSelectionKeyCode={['메타', '컨트롤', '시프트']}
           onMoveEnd={(_, viewport) => onGraphViewChange?.(viewport)}
           onNodeClick={() => onRequestInspector?.()}
           onSelectionChange={({ nodes, edges }) => {

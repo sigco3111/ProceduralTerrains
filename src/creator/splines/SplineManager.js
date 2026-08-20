@@ -6,7 +6,7 @@ import { migrateSplines, serializeSplines } from './SplineSerializer.js';
 
 const uid = (prefix) => `${prefix}-${crypto?.randomUUID?.() || Math.random().toString(36).slice(2)}`;
 const defaultSpline = (type) => ({
-  id: uid('spline'), name: type === 'river' ? 'River' : 'Road', type, enabled: true, visible: true, locked: false,
+  id: uid('spline'), name: type === 'river' ? '강' : '도로', type, enabled: true, visible: true, locked: false,
   controlPoints: [], closed: false, interpolation: 'catmull-rom', resolution: 'auto', width: type === 'river' ? 34 : 24,
   falloff: type === 'river' ? 16 : 18, heightMode: type === 'river' ? 'carve' : 'flatten', targetHeight: 0, heightOffset: 0,
   depth: type === 'river' ? 14 : 0, bankWidth: type === 'river' ? 18 : 0, bankSoftness: .7, materialMask: true,
@@ -31,7 +31,7 @@ export class SplineManager {
   finishDraft() {
     if (!this.draft || this.draft.controlPoints.length < 2) { this.cancelDraft(); return; }
     this.draft.name = `${this.draft.type === 'river' ? 'River' : 'Road'} ${this.splines.filter((s) => s.type === this.draft.type).length + 1}`;
-    this.splines.push(this.draft); this.selectedId = this.draft.id; this.draft = null; this.bake(); this._stable('Added spline');
+    this.splines.push(this.draft); this.selectedId = this.draft.id; this.draft = null; this.bake(); this._stable('스플라인 추가됨');
   }
   updateSpline(id, patch, { preview = false } = {}) {
     const s = this._find(id); if (!s || s.locked) return;

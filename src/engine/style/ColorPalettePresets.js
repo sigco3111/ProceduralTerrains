@@ -81,7 +81,7 @@ export const TERRAIN_COLOR_PALETTE_OPTIONS = Object.freeze(Object.entries(TERRAI
 export const COLOR_PALETTE_PRESETS = {
   ...TERRAIN_COLOR_PALETTE_PRESETS,
   earth: {
-    label: 'Earth',
+    label: '지구',
     palette: clonePalette(),
   },
   desert: {
@@ -150,7 +150,7 @@ export const COLOR_PALETTE_PRESETS = {
     },
   },
   volcanic: {
-    label: 'Volcanic',
+    label: '화산성',
     palette: {
       deep: [0.02, 0.02, 0.03], shallow: [0.12, 0.08, 0.06],
       sand: [0.35, 0.22, 0.15], dune: [0.42, 0.28, 0.18],
@@ -255,7 +255,7 @@ export const COLOR_PALETTE_PRESETS = {
     },
   },
   monolith: {
-    label: 'Monolith',
+    label: '모놀리스',
     palette: {
       deep: [0.10, 0.10, 0.11], shallow: [0.32, 0.32, 0.34],
       sand: [0.80, 0.79, 0.77], dune: [0.84, 0.83, 0.81],

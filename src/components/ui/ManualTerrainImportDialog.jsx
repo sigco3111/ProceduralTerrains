@@ -7,7 +7,7 @@ const relativeTime = (value) => {
   const time = new Date(value).getTime();
   if (!Number.isFinite(time)) return 'Unknown date';
   const seconds = Math.max(0, Math.floor((Date.now() - time) / 1000));
-  if (seconds < 45) return 'Just now';
+  if (seconds < 45) return '방금 전';
   if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
   if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
   if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
@@ -134,7 +134,7 @@ export default function ManualTerrainImportDialog({
                     : mode === 'nodes' ? <Boxes size={24} aria-hidden /> : <Mountain size={24} aria-hidden />}
                 </span>
                 <span className="manual-import-project-copy">
-                  <strong>{project.metadata?.name || 'Untitled terrain'}</strong>
+                  <strong>{project.metadata?.name || '이름 없는 지형'}</strong>
                   <small>{tileCount} {tileCount === 1 ? 'tile' : 'tiles'} · {relativeTime(project.metadata?.modified)}</small>
                 </span>
                 <span className="manual-import-check">{selected ? <Check size={15} aria-hidden /> : null}</span>
@@ -143,7 +143,7 @@ export default function ManualTerrainImportDialog({
           }) : (
             <div className="manual-import-empty">
               {mode === 'nodes' ? <Boxes size={24} aria-hidden /> : <Mountain size={24} aria-hidden />}
-              <strong>No {mode === 'nodes' ? 'Nodes' : 'Procedural'} Tile projects</strong>
+              <strong>No {mode === 'nodes' ? '노드' : '절차적'} Tile projects</strong>
               <span>Create or save one first, then return here to import it.</span>
             </div>
           )}

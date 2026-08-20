@@ -125,7 +125,7 @@ export default function SettingsSearchOverlay({
                               </div>
                             </div>
                             <span className="settings-search-item-value">
-                              {item.isSection ? 'Section' : (item.valueText ?? '-')}
+                              {item.isSection ? '섹션' : (item.valueText ?? '-')}
                             </span>
                           </div>
                         </button>

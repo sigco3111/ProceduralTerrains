@@ -52,7 +52,7 @@ const MODE_HINTS = {
 
 const MATERIAL_SLIDERS = [
   { key: 'waterOpacity', label: 'Density / Opacity', min: 0.2, max: 1, step: 0.01, digits: 2, info: 'Optical density in Realistic modes; traditional transparency in Legacy mode.' },
-  { key: 'waterRoughness', label: 'Roughness', min: 0, max: 1, step: 0.02, digits: 2, info: 'Broadens the reflected sky and sun highlight, and softens micro ripples.' },
+  { key: 'waterRoughness', label: '거칠기', min: 0, max: 1, step: 0.02, digits: 2, info: 'Broadens the reflected sky and sun highlight, and softens micro ripples.' },
   { key: 'waterFresnelStrength', label: 'Fresnel Strength', min: 0, max: 2, step: 0.05, digits: 2 },
   { key: 'waterRefractionStrength', label: 'Transmission / Refraction', min: 0.05, max: 1.5, step: 0.05, digits: 2, info: 'Controls transmission clarity in Realistic mode and scene distortion in Volumetric/Cinematic modes.' },
   { key: 'waterSpecularStrength', label: 'Specular Strength', min: 0, max: 2, step: 0.05, digits: 2 },
@@ -65,7 +65,7 @@ const DEPTH_SLIDERS = [
   { key: 'waterDepthFalloff', label: 'Depth Falloff', min: 0.2, max: 3, step: 0.05, digits: 2 },
   { key: 'waterShallowDistance', label: 'Shallow Distance', min: 2, max: 30, step: 0.5, digits: 1, unit: ' u' },
   { key: 'waterDeepDistance', label: 'Deep Distance', min: 20, max: 120, step: 1, unit: ' u' },
-  { key: 'waterAbsorptionStrength', label: 'Absorption Strength', min: 0, max: 2, step: 0.05, digits: 2 },
+  { key: 'waterAbsorptionStrength', label: '흡수 강도', min: 0, max: 2, step: 0.05, digits: 2 },
 ];
 
 const WAVE_SLIDERS = [
@@ -95,15 +95,15 @@ const SHORE_DISTANCE_SLIDER = {
   step: 0.1,
   digits: 1,
   unit: ' u',
-  info: 'How far the visible shoreline band extends into the water.',
+  info: '보이는 해안선 띠가 물 안으로 얼마나 멀리 뻗어가는지.',
 };
 
 // Apply to both Lite and High underwater modes.
 const UNDERWATER_SLIDERS = [
   { key: 'waterUnderwaterFogDensity', label: 'Fog Density', min: 0.2, max: 2.5, step: 0.05, digits: 2 },
-  { key: 'waterUnderwaterVisibility', label: 'Visibility Distance', min: 0.25, max: 2, step: 0.05, digits: 2 },
-  { key: 'waterUnderwaterDistortion', label: 'Surface Distortion', min: 0, max: 1.5, step: 0.05, digits: 2 },
-  { key: 'waterSurfaceTransition', label: 'Surface Transition', min: 0.2, max: 2, step: 0.05, digits: 2 },
+  { key: 'waterUnderwaterVisibility', label: '가시 거리', min: 0.25, max: 2, step: 0.05, digits: 2 },
+  { key: 'waterUnderwaterDistortion', label: '표면 왜곡', min: 0, max: 1.5, step: 0.05, digits: 2 },
+  { key: 'waterSurfaceTransition', label: '표면 전환', min: 0.2, max: 2, step: 0.05, digits: 2 },
 ];
 
 const CAUSTIC_SLIDERS = [
@@ -152,9 +152,9 @@ const REFLECTION_UPDATE_OPTIONS = [
 ];
 
 const WATER_QUALITY_OPTIONS = [
-  { value: '0', label: 'Low' },
-  { value: '1', label: 'Medium' },
-  { value: '2', label: 'High' },
+  { value: '0', label: '낮음' },
+  { value: '1', label: '중간' },
+  { value: '2', label: '높음' },
 ];
 
 const lim = (key, label, step, opts = {}) => ({
@@ -273,10 +273,10 @@ export default function WaterPanelInner({
 
       <ControlSection
         id={`${id}-mode`}
-        title="Mode"
+        title="최빈값"
         defaultOpen
         settingId="water.section.mode"
-        forceOpen={forceSection('water.section.mode', 'Mode', ['water.water', 'water.seaLevel', 'performance.water'])}
+        forceOpen={forceSection('water.section.mode', '최빈값', ['water.water', 'water.seaLevel', 'performance.water'])}
       >
         <ToggleRow
           label="Water Enabled"
@@ -359,10 +359,10 @@ export default function WaterPanelInner({
 
       <ControlSection
         id={`${id}-material`}
-        title="Material"
+        title="재질"
         defaultOpen={enabled}
         settingId="water.section.material"
-        forceOpen={forceSection('water.section.material', 'Material', ['water.waterAnim', 'planet.water', 'water.waterOpacity', 'water.waterRoughness', 'water.waterFresnel', 'water.waterRefraction', 'water.waterSpecular'])}
+        forceOpen={forceSection('water.section.material', '재질', ['water.waterAnim', 'planet.water', 'water.waterOpacity', 'water.waterRoughness', 'water.waterFresnel', 'water.waterRefraction', 'water.waterSpecular'])}
       >
         <ToggleRow
           label="Water Animation"
@@ -435,10 +435,10 @@ export default function WaterPanelInner({
       {selectedRealistic && (
         <ControlSection
           id={`${id}-depth`}
-          title="Depth"
+          title="깊이"
           defaultOpen={isStudio}
           settingId="water.section.depth"
-          forceOpen={forceSection('water.section.depth', 'Depth', ['water.waterDepth', 'water.waterMaxVisible', 'water.waterShallow', 'water.waterDeep', 'water.waterAbsorption'])}
+          forceOpen={forceSection('water.section.depth', '깊이', ['water.waterDepth', 'water.waterMaxVisible', 'water.waterShallow', 'water.waterDeep', 'water.waterAbsorption'])}
         >
           {!effectiveRealistic && (
             <p className="section-hint">
@@ -454,10 +454,10 @@ export default function WaterPanelInner({
       {enabled && (
         <ControlSection
           id={`${id}-waves`}
-          title="Waves"
+          title="물결"
           defaultOpen={false}
           settingId="water.section.waves"
-          forceOpen={forceSection('water.section.waves', 'Waves', ['water.waterWave', 'water.waterSmall', 'water.waterLarge', 'water.waterNormal', 'water.waterAnimSpeed', 'performance.waterWaves'])}
+          forceOpen={forceSection('water.section.waves', '물결', ['water.waterWave', 'water.waterSmall', 'water.waterLarge', 'water.waterNormal', 'water.waterAnimSpeed', 'performance.waterWaves'])}
         >
           {selectedRealistic
             ? WAVE_SLIDERS.map((def) => (
@@ -507,10 +507,10 @@ export default function WaterPanelInner({
         return (
           <ControlSection
             id={`${id}-underwater`}
-            title="Underwater"
+            title="수중"
             defaultOpen={false}
             settingId="water.section.underwater"
-            forceOpen={forceSection('water.section.underwater', 'Underwater', ['water.waterUnderwater', 'performance.underwater'])}
+            forceOpen={forceSection('water.section.underwater', '수중', ['water.waterUnderwater', 'performance.underwater'])}
           >
             <ToggleRow
               label="Enable Underwater Effect"
@@ -546,11 +546,11 @@ export default function WaterPanelInner({
             {uwEnabled && (
               <ControlSection
                 id={`${id}-caustics`}
-                title="Caustics"
+                title="반사광"
                 nested
                 defaultOpen={false}
                 settingId="water.section.caustics"
-                forceOpen={forceSection('water.section.caustics', 'Caustics', ['water.waterUnderwaterCaustics'])}
+                forceOpen={forceSection('water.section.caustics', '반사광', ['water.waterUnderwaterCaustics'])}
               >
                 <ToggleRow
                   label="Caustics Enabled"
@@ -609,10 +609,10 @@ export default function WaterPanelInner({
       {selectedRealistic && (
         <ControlSection
           id={`${id}-performance`}
-          title="Performance"
+          title="성능 우선"
           defaultOpen={false}
           settingId="water.section.performance"
-          forceOpen={forceSection('water.section.performance', 'Performance', ['water.waterReflectionQuality', 'water.waterUpdateFrequency', 'water.waterRefractionQuality', 'water.waterRenderScale', 'water.waterFoamQuality', 'water.waterCausticsQuality', 'water.waterNormal', 'water.waterDisable'])}
+          forceOpen={forceSection('water.section.performance', '성능 우선', ['water.waterReflectionQuality', 'water.waterUpdateFrequency', 'water.waterRefractionQuality', 'water.waterRenderScale', 'water.waterFoamQuality', 'water.waterCausticsQuality', 'water.waterNormal', 'water.waterDisable'])}
         >
           {mode === 'cinematic' && isStudio && (
             <p className="section-hint warning">Cinematic adds a mirrored scene render for planar reflection — best for Tile mode screenshots.</p>
@@ -658,13 +658,13 @@ export default function WaterPanelInner({
 
       <ControlSection
         id={`${id}-debug`}
-        title="Debug"
+        title="디버그"
         defaultOpen={false}
         settingId="water.section.debug"
-        forceOpen={forceSection('water.section.debug', 'Debug', ['water.waterDebug', 'water.waterShow'])}
+        forceOpen={forceSection('water.section.debug', '디버그', ['water.waterDebug', 'water.waterShow'])}
       >
         <SelectRow
-          label="Visual Baseline Scene"
+          label="시각 기준 씬"
           value={baselineScene}
           options={WATER_BASELINE_SCENES}
           onChange={setBaselineScene}
@@ -685,7 +685,7 @@ export default function WaterPanelInner({
           disabled={!!baselineBusy}
           onClick={() => runBaselineAction(onCaptureWaterBaseline, 'capture')}
         >
-          {baselineBusy === 'capture' ? 'Capturing Baseline…' : 'Capture PNG + Metrics (.zip)'}
+          {baselineBusy === 'capture' ? 'Capturing Baseline…' : 'PNG + 지표 캡처 (.zip)'}
         </button>
         <p className="section-hint">
           Capture the same scene on each target GPU. The ZIP records FPS, frame time,
@@ -728,7 +728,7 @@ export default function WaterPanelInner({
         )}
       </ControlSection>
 
-      <ControlSection id={`${id}-export`} title="Export" defaultOpen={false} settingId="water.section.export">
+      <ControlSection id={`${id}-export`} title="내보내기" defaultOpen={false} settingId="water.section.export">
         <p className="section-hint">
           {isStudio
             ? 'Export water masks from the tile height field, or use the Export panel for GLB output.'

@@ -4,13 +4,13 @@ import SidePanel, { PanelTabs } from './SidePanel.jsx';
 import { SliderCtl, ToggleRow, SelectRow } from '../controls.jsx';
 
 const sliders = [
-  { key: 'width', label: 'Width', min: 2, max: 180, step: 1, digits: 0 },
-  { key: 'falloff', label: 'Falloff', min: 0, max: 160, step: 1, digits: 0 },
+  { key: 'width', label: '너비', min: 2, max: 180, step: 1, digits: 0 },
+  { key: 'falloff', label: '감쇠', min: 0, max: 160, step: 1, digits: 0 },
 ];
 
 const TYPE = {
   road: { label: 'Roads', singular: 'road', Icon: Route, empty: 'No roads yet. Create one to shape a route across the terrain.' },
-  river: { label: 'Rivers', singular: 'river', Icon: Waves, empty: 'No rivers yet. Create one to carve a channel and water ribbon.' },
+  river: { label: '강', singular: 'river', Icon: Waves, empty: 'No rivers yet. Create one to carve a channel and water ribbon.' },
 };
 
 export default function SplinesPanel({ ctx }) {
@@ -22,8 +22,8 @@ export default function SplinesPanel({ ctx }) {
   const create = () => ctx.onCreateSpline(type);
   const creating = state.creatingType === type;
 
-  return <SidePanel title="Splines" description="Draw and refine terrain routes." onClose={ctx.onClose}>
-    <PanelTabs active={type} onChange={setType} tabs={[{ id: 'road', label: 'Roads' }, { id: 'river', label: 'Rivers' }]} />
+  return <SidePanel title="스플라인" description="Draw and refine terrain routes." onClose={ctx.onClose}>
+    <PanelTabs active={type} onChange={setType} tabs={[{ id: 'road', label: 'Roads' }, { id: 'river', label: '강' }]} />
     <div className={`spline-create-card${creating ? ' creating' : ''}`}>
       <div className="spline-create-copy"><TypeIcon size={17} aria-hidden /><div><strong>{creating ? `Drawing ${meta.singular}` : `Create ${meta.singular}`}</strong><span>{creating ? `${state.draftPointCount} points placed · click terrain to add more` : 'Click terrain to add points'}</span></div></div>
       {!creating && <button type="button" className="spline-create-btn" onClick={create} disabled={!!state.creatingType}><Plus size={15} aria-hidden /> Create</button>}
@@ -44,7 +44,7 @@ export default function SplinesPanel({ ctx }) {
     {selected && selected.type === type && <section className="spline-settings">
       <div className="spline-settings-heading"><span>Selected {selected.type}</span><span>{selected.controlPoints.length} points</span></div>
       <label className="spline-name-field"><span>Name</span><div><Route size={14} aria-hidden /><input value={selected.name} onChange={(e) => ctx.onUpdateSpline(selected.id, { name: e.target.value })} aria-label="Spline name" /><Check size={14} aria-hidden /></div></label>
-      <SelectRow label="Interpolation" value={selected.interpolation} options={[{ value: 'catmull-rom', label: 'Smooth' }, { value: 'linear', label: 'Linear' }]} onChange={(v) => ctx.onUpdateSpline(selected.id, { interpolation: v })} />
+      <SelectRow label="Interpolation" value={selected.interpolation} options={[{ value: 'catmull-rom', label: '부드러움' }, { value: 'linear', label: '선형' }]} onChange={(v) => ctx.onUpdateSpline(selected.id, { interpolation: v })} />
       {sliders.map((def) => <SliderCtl key={def.key} def={def} value={selected[def.key]} onChange={(v) => ctx.onUpdateSpline(selected.id, { [def.key]: v })} />)}
       {selected.type === 'road' && <SelectRow label="Terrain mode" value={selected.heightMode} options={[{ value: 'flatten', label: 'Flatten locally' }, { value: 'follow', label: 'Follow terrain' }, { value: 'fixed', label: 'Fixed elevation' }]} onChange={(v) => ctx.onUpdateSpline(selected.id, { heightMode: v })} />}
       {selected.type === 'river' && <>
@@ -52,9 +52,9 @@ export default function SplinesPanel({ ctx }) {
         <SliderCtl def={{ key: 'bankWidth', label: 'Bank Width', min: 0, max: 120, step: 1, digits: 0 }} value={selected.bankWidth} onChange={(v) => ctx.onUpdateSpline(selected.id, { bankWidth: v })} />
       </>}
       <div className="spline-toggle-grid">
-        <ToggleRow label="Visible" value={selected.visible} onChange={(v) => ctx.onUpdateSpline(selected.id, { visible: v })} />
-        <ToggleRow label="Enabled" value={selected.enabled} onChange={(v) => ctx.onUpdateSpline(selected.id, { enabled: v })} />
-        <ToggleRow label="Clear props" value={selected.clearProps} onChange={(v) => ctx.onUpdateSpline(selected.id, { clearProps: v })} />
+        <ToggleRow label="표시됨" value={selected.visible} onChange={(v) => ctx.onUpdateSpline(selected.id, { visible: v })} />
+        <ToggleRow label="활성화됨" value={selected.enabled} onChange={(v) => ctx.onUpdateSpline(selected.id, { enabled: v })} />
+        <ToggleRow label="소품 지우기" value={selected.clearProps} onChange={(v) => ctx.onUpdateSpline(selected.id, { clearProps: v })} />
       </div>
       <div className="side-panel-quick"><button type="button" className="action-btn" onClick={() => ctx.onDuplicateSpline(selected.id)}>Duplicate</button><button type="button" className="action-btn danger" onClick={() => ctx.onDeleteSpline(selected.id)}>Delete</button></div>
     </section>}

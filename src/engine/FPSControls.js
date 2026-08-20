@@ -160,7 +160,7 @@ export class FPSControls {
     if (this._keys.has('KeyS')) { dx -= fwdX; dz -= fwdZ; }
     if (this._keys.has('KeyA') || this._keys.has('KeyQ')) { dx -= rightX; dz -= rightZ; }
     if (this._keys.has('KeyD')) { dx += rightX; dz += rightZ; }
-    if (this._keys.has('Space')) { dy += 1; }
+    if (this._keys.has('우주')) { dy += 1; }
     if (this._keys.has('ShiftLeft') || this._keys.has('ShiftRight')) { dy -= 1; }
 
     if (this.touchActive) {

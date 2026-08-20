@@ -279,12 +279,12 @@ export function validateGraph(graph, { requireInputs = true, enforceCapacity = t
     nodes.set(node.id, node);
     if (node.type === 'terrainOutput') outputCount++;
   }
-  if (outputCount !== 1) diagnostics.push({ code: 'duplicate-output', message: 'A graph must contain exactly one Terrain Output.' });
+  if (outputCount !== 1) diagnostics.push({ code: 'duplicate-output', message: '그래프에는 정확히 하나의 지형 출력이 있어야 합니다.' });
   const incoming = new Set();
   for (const edge of graph?.edges || []) {
     const source = nodes.get(edge.source), target = nodes.get(edge.target);
-    if (!source || !target) { diagnostics.push({ code: 'dangling-edge', edgeId: edge.id, message: 'A connection references a missing node.' }); continue; }
-    if (source.id === target.id) diagnostics.push({ code: 'self-link', edgeId: edge.id, message: 'A node cannot connect to itself.' });
+    if (!source || !target) { diagnostics.push({ code: 'dangling-edge', edgeId: edge.id, message: '연결이 누락된 노드를 참조합니다.' }); continue; }
+    if (source.id === target.id) diagnostics.push({ code: 'self-link', edgeId: edge.id, message: '노드는 자기 자신에게 연결할 수 없습니다.' });
     const sourcePort = getGraphNodeDefinition(source.type)?.outputs.find((port) => port.id === edge.sourceHandle);
     const targetPort = getGraphNodeDefinition(target.type)?.inputs.find((port) => port.id === edge.targetHandle);
     if (!sourcePort || !targetPort || sourcePort.type !== targetPort.type || edge.type !== targetPort.type) {
@@ -404,7 +404,7 @@ export function resolveGraphConnection(graph, connection) {
   const sourceNode = graph.nodes.find((node) => node.id === connection?.source);
   const targetNode = graph.nodes.find((node) => node.id === connection?.target);
   if (!sourceNode || !targetNode) throw new GraphValidationError('dangling-edge', 'Choose an existing source and target node.');
-  if (sourceNode.id === targetNode.id) throw new GraphValidationError('self-link', 'A node cannot connect to itself.');
+  if (sourceNode.id === targetNode.id) throw new GraphValidationError('self-link', '노드는 자기 자신에게 연결할 수 없습니다.');
 
   const sourceDef = getGraphNodeDefinition(sourceNode.type);
   const targetDef = getGraphNodeDefinition(targetNode.type);

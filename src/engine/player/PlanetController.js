@@ -4,7 +4,7 @@ import { DEFAULT_PLAYER_CONFIG } from './PlayerConfig.js';
 // ============================================================================
 // First-person spherical-gravity walker for Planet mode.
 //
-// "Up" is the local surface normal (radial from the planet center), gravity
+// "위" is the local surface normal (radial from the planet center), gravity
 // pulls toward the center, and movement happens in the tangent plane. The
 // camera basis is rebuilt every frame from the local up so the horizon stays
 // level as the player walks around the globe. Ground height comes from

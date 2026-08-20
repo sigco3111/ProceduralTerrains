@@ -31,7 +31,7 @@ export async function apiRequest(path, { method = 'GET', body, signal } = {}) {
       body: body == null ? undefined : JSON.stringify(body),
     });
   } catch (error) {
-    if (error?.name === 'AbortError') throw error;
+    if (error?.name === '중단 오류') throw error;
     throw new AuthApiError('The account server is unavailable. Check the API URL or try again later.', {
       code: 'API_UNAVAILABLE',
     });

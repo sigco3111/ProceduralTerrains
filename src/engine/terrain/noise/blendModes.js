@@ -65,7 +65,7 @@ export function blendGlslStmt(mode, accId, valId) {
 }
 
 export const BLEND_LABELS = {
-  add: 'Add', subtract: 'Subtract', multiply: 'Multiply', divide: 'Divide',
-  max: 'Max', min: 'Min', replace: 'Replace', difference: 'Difference',
-  overlay: 'Overlay', carve: 'Carve', flatten: 'Flatten',
+  add: '추가', subtract: '빼기', multiply: '곱하기', divide: '나누기',
+  max: '최대', min: '최소', replace: '대체', difference: 'Difference',
+  overlay: 'Overlay', carve: 'Carve', flatten: '평탄화',
 };

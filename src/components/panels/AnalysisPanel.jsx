@@ -7,20 +7,20 @@ export function AnalysisContent({ ctx }) {
   const patch = (p) => ctx.onAnalysisSettings(p);
   return <>
     <ToggleRow label="Show analysis" value={!!s.enabled} onChange={(v) => patch({ enabled: v })} />
-    <SelectRow label="Mode" value={s.mode || 'elevation'} options={[
-      { value: 'elevation', label: 'Elevation' }, { value: 'slope', label: 'Slope' }, { value: 'normals', label: 'Normals' }, { value: 'curvature', label: 'Curvature' }, { value: 'waterDepth', label: 'Water depth' }, { value: 'biome', label: 'Biome distribution' }, { value: 'contribution', label: 'Paint + spline contribution' },
+    <SelectRow label="최빈값" value={s.mode || 'elevation'} options={[
+      { value: 'elevation', label: '고도' }, { value: 'slope', label: '경사' }, { value: 'normals', label: 'Normals' }, { value: 'curvature', label: 'Curvature' }, { value: 'waterDepth', label: '물 깊이' }, { value: 'biome', label: 'Biome distribution' }, { value: 'contribution', label: 'Paint + spline contribution' },
     ]} onChange={(v) => ctx.onAnalysisMode(v)} />
-    <SelectRow label="Display" value={s.display || 'overlay'} options={[{ value: 'overlay', label: 'Overlay' }, { value: 'replace', label: 'Replace' }]} onChange={(v) => patch({ display: v, opacity: v === 'replace' ? 1 : s.opacity })} />
-    <SliderCtl def={{ key: 'opacity', label: 'Opacity', min: 0, max: 1, step: .01, digits: 2 }} value={s.opacity ?? .72} onChange={(v) => patch({ opacity: v })} />
-    {(s.mode === 'elevation' || s.mode === 'waterDepth') && <><SliderCtl def={{ key: 'min', label: 'Minimum', min: -300, max: 1000, step: 5, digits: 0 }} value={s.min ?? 0} onChange={(v) => patch({ min: v })} /><SliderCtl def={{ key: 'max', label: 'Maximum', min: 1, max: 2000, step: 5, digits: 0 }} value={s.max ?? 600} onChange={(v) => patch({ max: v })} /></>}
-    {s.mode === 'slope' && <><SliderCtl def={{ key: 'thresholdA', label: 'Walkable', min: 0, max: 70, step: 1, digits: 0 }} value={s.thresholdA ?? 35} onChange={(v) => patch({ thresholdA: v })} /><SliderCtl def={{ key: 'thresholdB', label: 'Cliff', min: 5, max: 90, step: 1, digits: 0 }} value={s.thresholdB ?? 55} onChange={(v) => patch({ thresholdB: v })} /></>}
+    <SelectRow label="표시" value={s.display || 'overlay'} options={[{ value: 'overlay', label: 'Overlay' }, { value: 'replace', label: '대체' }]} onChange={(v) => patch({ display: v, opacity: v === 'replace' ? 1 : s.opacity })} />
+    <SliderCtl def={{ key: 'opacity', label: '불투명도', min: 0, max: 1, step: .01, digits: 2 }} value={s.opacity ?? .72} onChange={(v) => patch({ opacity: v })} />
+    {(s.mode === 'elevation' || s.mode === 'waterDepth') && <><SliderCtl def={{ key: 'min', label: '최소', min: -300, max: 1000, step: 5, digits: 0 }} value={s.min ?? 0} onChange={(v) => patch({ min: v })} /><SliderCtl def={{ key: 'max', label: '최대', min: 1, max: 2000, step: 5, digits: 0 }} value={s.max ?? 600} onChange={(v) => patch({ max: v })} /></>}
+    {s.mode === 'slope' && <><SliderCtl def={{ key: 'thresholdA', label: 'Walkable', min: 0, max: 70, step: 1, digits: 0 }} value={s.thresholdA ?? 35} onChange={(v) => patch({ thresholdA: v })} /><SliderCtl def={{ key: 'thresholdB', label: '절벽', min: 5, max: 90, step: 1, digits: 0 }} value={s.thresholdB ?? 55} onChange={(v) => patch({ thresholdB: v })} /></>}
     <ToggleRow label="Show legend" value={s.legend !== false} onChange={(v) => patch({ legend: v })} />
     {s.legend !== false && <p className="section-hint">{ANALYSIS_LEGENDS[s.mode] || ANALYSIS_LEGENDS.elevation}</p>}
   </>;
 }
 
 export default function AnalysisPanel({ ctx }) {
-  return <SidePanel title="Analysis" description="Inspect final terrain structure." onClose={ctx.onClose}><AnalysisContent ctx={ctx} /></SidePanel>;
+  return <SidePanel title="분석" description="Inspect final terrain structure." onClose={ctx.onClose}><AnalysisContent ctx={ctx} /></SidePanel>;
 }
 import React from 'react';
 

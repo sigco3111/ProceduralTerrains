@@ -7,10 +7,10 @@
 
 // Quality → grid resolution. Higher = finer channels but slower bake.
 export const EROSION_QUALITY = {
-  preview:  { res: 192,  label: 'Preview' },
-  balanced: { res: 256,  label: 'Balanced' },
-  high:     { res: 384,  label: 'High' },
-  ultra:    { res: 512,  label: 'Ultra' },
+  preview:  { res: 192,  label: '미리보기' },
+  balanced: { res: 256,  label: '균형' },
+  high:     { res: 384,  label: '높음' },
+  ultra:    { res: 512,  label: '울트라' },
 };
 
 // Flat `params` keys (the UI binds to these). Tuned for the default board.
@@ -41,7 +41,7 @@ export const EROSION_DEFAULT_PARAMS = {
 // Each preset is a partial override of the simulation knobs (not enable/quality).
 export const EROSION_PRESETS = {
   lite: {
-    label: 'Lite',
+    label: '라이트',
     params: {
       erosionStrength: 0.5, erosionDroplets: 30000, erosionRadius: 2,
       erosionDeposition: 0.35, erosionErosionRate: 0.2, erosionEvaporation: 0.03,
@@ -50,7 +50,7 @@ export const EROSION_PRESETS = {
     },
   },
   natural: {
-    label: 'Natural',
+    label: '자연',
     params: {
       erosionStrength: 1.0, erosionDroplets: 60000, erosionRadius: 3,
       erosionDeposition: 0.3, erosionErosionRate: 0.3, erosionEvaporation: 0.02,
@@ -59,7 +59,7 @@ export const EROSION_PRESETS = {
     },
   },
   mountain: {
-    label: 'Mountain',
+    label: '산',
     params: {
       erosionStrength: 1.0, erosionDroplets: 80000, erosionRadius: 3,
       erosionDeposition: 0.25, erosionErosionRate: 0.35, erosionEvaporation: 0.02,
@@ -68,7 +68,7 @@ export const EROSION_PRESETS = {
     },
   },
   canyon: {
-    label: 'Canyon',
+    label: '협곡',
     params: {
       erosionStrength: 1.0, erosionDroplets: 110000, erosionRadius: 2,
       erosionDeposition: 0.12, erosionErosionRate: 0.5, erosionEvaporation: 0.012,
@@ -94,7 +94,7 @@ export const EROSION_PRESETS = {
       erosionSmoothing: 0.2,
     },
   },
-  custom: { label: 'Custom', params: {} },
+  custom: { label: '사용자 지정', params: {} },
 };
 
 export function getErosionPreset(key) {

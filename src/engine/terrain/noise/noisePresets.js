@@ -16,9 +16,9 @@ export const NOISE_STACK_PRESETS = {
   rollingHills: {
     label: 'Rolling Hills',
     build: () => makeStack([
-      L('fbm', { name: 'Base', blendMode: 'add', strength: 0.5, params: { scale: 1.0, octaves: 4, persistence: 0.5 } }),
+      L('fbm', { name: '기본', blendMode: 'add', strength: 0.5, params: { scale: 1.0, octaves: 4, persistence: 0.5 } }),
       L('billow', { name: 'Soft Hills', blendMode: 'add', strength: 0.25, params: { scale: 2.2, octaves: 3 } }),
-      L('fbm', { name: 'Detail', blendMode: 'add', strength: 0.06, params: { scale: 6.0, octaves: 3 } }),
+      L('fbm', { name: '디테일', blendMode: 'add', strength: 0.06, params: { scale: 6.0, octaves: 3 } }),
     ]),
   },
   sharpMountains: {
@@ -31,23 +31,23 @@ export const NOISE_STACK_PRESETS = {
     ]),
   },
   canyonTerraces: {
-    label: 'Canyon Terraces',
+    label: '협곡 단구',
     build: () => makeStack([
-      L('fbm', { name: 'Base', blendMode: 'add', strength: 0.5, params: { scale: 0.8, octaves: 4 } }),
+      L('fbm', { name: '기본', blendMode: 'add', strength: 0.5, params: { scale: 0.8, octaves: 4 } }),
       L('ridged', { name: 'Mesa Edges', blendMode: 'add', strength: 0.35, params: { scale: 2.0, octaves: 4, sharpness: 3.0 } }),
-      L('terrace', { name: 'Strata', blendMode: 'replace', strength: 0.9, params: { count: 14, smoothness: 0.35 } }),
+      L('terrace', { name: '지층', blendMode: 'replace', strength: 0.9, params: { count: 14, smoothness: 0.35 } }),
     ]),
   },
   desertDunes: {
     label: 'Desert Dunes',
     build: () => makeStack([
-      L('fbm', { name: 'Base', blendMode: 'add', strength: 0.3, params: { scale: 0.6, octaves: 3 } }),
+      L('fbm', { name: '기본', blendMode: 'add', strength: 0.3, params: { scale: 0.6, octaves: 3 } }),
       L('dune', { name: 'Dunes', blendMode: 'add', strength: 0.35, params: { scale: 1.4 } }),
       L('white', { name: 'Grain', blendMode: 'add', strength: 0.02, params: { scale: 10.0 } }),
     ]),
   },
   moonCraters: {
-    label: 'Moon Craters',
+    label: '달 분화구',
     build: () => makeStack([
       L('fbm', { name: 'Regolith', blendMode: 'add', strength: 0.25, params: { scale: 1.2, octaves: 4 } }),
       L('crater', { name: 'Large Craters', blendMode: 'add', strength: 0.7, params: { scale: 1.0, density: 0.5, depth: 0.7, rim: 0.35 } }),
@@ -55,11 +55,11 @@ export const NOISE_STACK_PRESETS = {
     ]),
   },
   alienCellular: {
-    label: 'Alien Cellular',
+    label: '에일리언 셀룰러',
     build: () => makeStack([
-      L('fbm', { name: 'Base', blendMode: 'add', strength: 0.3, params: { scale: 0.8, octaves: 3 } }),
+      L('fbm', { name: '기본', blendMode: 'add', strength: 0.3, params: { scale: 0.8, octaves: 3 } }),
       L('voronoi', { name: 'Plates', blendMode: 'add', strength: 0.5, params: { scale: 1.8, jitter: 1.0, outputMode: 3 } }),
-      L('domainWarp', { name: 'Twist', blendMode: 'add', strength: 0.8, params: { scale: 1.5 } }),
+      L('domainWarp', { name: '비틀기', blendMode: 'add', strength: 0.8, params: { scale: 1.5 } }),
     ]),
   },
   islandContinents: {
@@ -67,7 +67,7 @@ export const NOISE_STACK_PRESETS = {
     build: () => makeStack([
       L('fbm', { name: 'Continents', blendMode: 'add', strength: 0.7, params: { scale: 0.4, octaves: 5 } }),
       L('billow', { name: 'Coastal Hills', blendMode: 'add', strength: 0.15, params: { scale: 2.0, octaves: 3 } }),
-      L('fbm', { name: 'Detail', blendMode: 'add', strength: 0.05, params: { scale: 7.0, octaves: 3 } }),
+      L('fbm', { name: '디테일', blendMode: 'add', strength: 0.05, params: { scale: 7.0, octaves: 3 } }),
     ]),
   },
   erodedValleys: {
@@ -75,7 +75,7 @@ export const NOISE_STACK_PRESETS = {
     build: () => makeStack([
       L('ridged', { name: 'Highlands', blendMode: 'add', strength: 0.7, params: { scale: 1.4, octaves: 5, sharpness: 1.8 } }),
       L('flow', { name: 'River Carving', blendMode: 'subtract', strength: 0.4, params: { scale: 0.8 } }),
-      L('fbm', { name: 'Detail', blendMode: 'add', strength: 0.06, params: { scale: 8.0, octaves: 3 } }),
+      L('fbm', { name: '디테일', blendMode: 'add', strength: 0.06, params: { scale: 8.0, octaves: 3 } }),
     ]),
   },
 

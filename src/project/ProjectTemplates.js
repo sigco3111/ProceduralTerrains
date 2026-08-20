@@ -1,6 +1,6 @@
 export const PROJECT_TEMPLATES = [
-  { id: 'blank', name: 'Blank terrain', description: 'A clean terrain canvas.', preset: 'highlands' },
-  { id: 'island', name: 'Island', description: 'Ocean, beaches, and a dramatic core.', preset: 'archipelago' },
+  { id: 'blank', name: 'Blank terrain', description: '깔끔한 지형 캔버스.', preset: 'highlands' },
+  { id: 'island', name: '섬', description: 'Ocean, beaches, and a dramatic core.', preset: 'archipelago' },
   { id: 'mountain', name: 'Mountain range', description: 'Sharp peaks, snow, and valleys.', preset: 'alpine' },
   {
     id: 'geological-hybrid',
@@ -10,7 +10,7 @@ export const PROJECT_TEMPLATES = [
     noiseStackPreset: 'geologicalHybrid',
     icon: 'layers',
   },
-  { id: 'desert', name: 'Desert', description: 'Dunes, dry basins, and warm light.', preset: 'dunes' },
+  { id: 'desert', name: '사막', description: 'Dunes, dry basins, and warm light.', preset: 'dunes' },
 ];
 
 export function getProjectTemplate(id) {

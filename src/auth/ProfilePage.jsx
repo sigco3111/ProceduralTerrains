@@ -148,7 +148,7 @@ export default function ProfilePage({ onBack }) {
           <div className="profile-avatar-row">
             <span className="profile-avatar">{picture ? <img src={picture} alt="Your profile" /> : initials}</span>
             <div className="profile-avatar-actions">
-              <button type="button" className="lp-primary sm" onClick={() => fileRef.current?.click()} disabled={busy === 'avatar'}><Camera size={13} /> {picture ? 'Replace' : 'Upload'}</button>
+              <button type="button" className="lp-primary sm" onClick={() => fileRef.current?.click()} disabled={busy === 'avatar'}><Camera size={13} /> {picture ? '대체' : '업로드'}</button>
               {picture && <button type="button" className="profile-danger-button" onClick={deleteAvatar} disabled={busy === 'avatar'}><Trash2 size={13} /> Remove</button>}
             </div>
             <input ref={fileRef} className="profile-file-input" type="file" accept="image/png,image/jpeg,image/webp" onChange={chooseAvatar} />
@@ -159,8 +159,8 @@ export default function ProfilePage({ onBack }) {
           <header><UserRound size={16} /><div><h2>Profile information</h2><p>Your public identity and project defaults.</p></div></header>
           <form onSubmit={saveDetails} noValidate>
             <div className="profile-field-grid">
-              {field('username', 'Username', { type: 'text', autoComplete: 'username', minLength: 3, maxLength: 32, required: true })}
-              {field('displayName', 'Display name', { type: 'text', autoComplete: 'name', maxLength: 80, placeholder: 'Terrain artist' })}
+              {field('username', '사용자 이름', { type: 'text', autoComplete: 'username', minLength: 3, maxLength: 32, required: true })}
+              {field('displayName', '표시 이름', { type: 'text', autoComplete: 'name', maxLength: 80, placeholder: 'Terrain artist' })}
             </div>
             <label className="auth-field"><span>Email</span><input value={user?.email ?? ''} type="email" readOnly aria-readonly="true" /><small className="profile-field-note">Email changes are not available yet.</small></label>
             {field('websiteUrl', 'Website', { type: 'url', autoComplete: 'url', maxLength: 2048, placeholder: 'https://example.com' })}
@@ -173,7 +173,7 @@ export default function ProfilePage({ onBack }) {
               </div>
               {detailsErrors.defaultProjectVisibility && <small>{detailsErrors.defaultProjectVisibility}</small>}
             </fieldset>
-            <button type="submit" className="lp-primary profile-save" disabled={busy === 'details'}><Save size={14} /> {busy === 'details' ? 'Saving...' : 'Save profile'}</button>
+            <button type="submit" className="lp-primary profile-save" disabled={busy === 'details'}><Save size={14} /> {busy === 'details' ? '저장 중...' : '프로필 저장'}</button>
           </form>
         </section>
 

@@ -37,7 +37,7 @@ async function copyText(value) {
 }
 
 function projectName(entry) {
-  return entry.localProject?.metadata.name ?? entry.cloudProject?.name ?? 'Untitled terrain';
+  return entry.localProject?.metadata.name ?? entry.cloudProject?.name ?? '이름 없는 지형';
 }
 
 function projectDescription(entry) {
@@ -266,7 +266,7 @@ export default function ProjectLibrary({
   const empty = visibleEntries.length === 0;
 
   return (
-    <section className="project-library" aria-label="Projects">
+    <section className="project-library" aria-label="프로젝트">
       <div className="project-library-head">
         <div className="lp-search project-library-search">
           <Search size={14} aria-hidden />
@@ -314,7 +314,7 @@ export default function ProjectLibrary({
                   <span className="project-library-thumb">
                     {localProject?.metadata.thumbnail ? <img src={localProject.metadata.thumbnail} alt="" /> : localProject ? <LayoutTemplate size={28} /> : <Cloud size={28} />}
                   </span>
-                  {localProject && <span className={`lp-template-kind-badge ${localProject.terrain.workspacePreset === 'real-terrain' ? 'real' : localProject.terrain.editorMode}`}>{localProject.terrain.workspacePreset === 'real-terrain' ? 'Real terrain' : localProject.terrain.editorMode === 'nodes' ? 'Nodes' : localProject.terrain.editorMode === 'manual' ? 'Manual' : 'Procedural'}</span>}
+                  {localProject && <span className={`lp-template-kind-badge ${localProject.terrain.workspacePreset === 'real-terrain' ? 'real' : localProject.terrain.editorMode}`}>{localProject.terrain.workspacePreset === 'real-terrain' ? '실제 지형' : localProject.terrain.editorMode === 'nodes' ? '노드' : localProject.terrain.editorMode === 'manual' ? '매뉴얼' : '절차적'}</span>}
                   {cloudProject && <span className={`project-library-cloud-badge ${cloudProject.visibility}`} title={`In the cloud · ${cloudProject.visibility}`} aria-label={`In the cloud · ${cloudProject.visibility}`}><Cloud size={12} /><VisibilityIcon size={12} /></span>}
                   <span className="project-library-copy">
                     <strong>{name}</strong>

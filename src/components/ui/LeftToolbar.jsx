@@ -174,7 +174,7 @@ export default function LeftToolbar({
         ref={railRef}
         className={classNames}
         style={dragging && ghost ? { left: ghost.x, top: ghost.y, right: 'auto', bottom: 'auto' } : undefined}
-        aria-label="Tools"
+        aria-label="도구"
         data-tools-edge={edge}
         onPointerDown={startDrag}
         onContextMenu={onContextMenu}
@@ -182,7 +182,7 @@ export default function LeftToolbar({
         {panelIds.filter((id) => panelAvailable(id, worldMode)).map((id) => {
           const meta = PANEL_META[id];
           const display = realTerrainMode && id === 'terrain'
-            ? { label: 'Real terrain' }
+            ? { label: '실제 지형' }
             : getPanelDisplay(id, worldMode);
           return (
             <button

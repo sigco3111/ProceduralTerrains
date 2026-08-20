@@ -1,9 +1,9 @@
 import { Globe2, Grid2x2, Map } from 'lucide-react';
 
 const MODES = [
-  { id: 'studio', label: 'Tile', Icon: Grid2x2 },
-  { id: 'infinite', label: 'Infinite World', Icon: Map },
-  { id: 'planet', label: 'Planet', Icon: Globe2 },
+  { id: 'studio', label: '타일', Icon: Grid2x2 },
+  { id: 'infinite', label: '무한 세계', Icon: Map },
+  { id: 'planet', label: '행성', Icon: Globe2 },
 ];
 
 /**

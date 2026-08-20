@@ -5,12 +5,12 @@
 import { setWaterDebugMode } from './RealisticWaterMaterial.js';
 
 export const WATER_DEBUG_VIEWS = [
-  { value: 'off', label: 'Off' },
+  { value: 'off', label: '꺼짐' },
   { value: 'depth', label: 'Depth Map' },
   { value: 'shoreline', label: 'Shoreline Mask' },
   { value: 'foam', label: 'Foam Mask' },
   { value: 'mask', label: 'Water Mask' },
-  { value: 'normal', label: 'Surface Normal' },
+  { value: 'normal', label: '표면 법선' },
   { value: 'opticalDepth', label: 'Optical Depth' },
   { value: 'transmittance', label: 'Transmittance' },
   { value: 'fresnel', label: 'Fresnel' },

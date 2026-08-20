@@ -9,7 +9,7 @@ const PLAYER_STATE_LABELS = {
   grounded: 'Grounded',
   falling: 'Falling',
   swimming: 'Swimming',
-  underwater: 'Underwater',
+  underwater: '수중',
   flying: 'Flying',
   stalling: 'Stalling',
 };

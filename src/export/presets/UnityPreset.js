@@ -9,7 +9,7 @@ export const UnityPreset = {
     exportWaterMask: true, exportWaterMetadata: true,
   },
   layout: {
-    root: 'Terrain', heightmapRawPath: 'Terrain/heightmap.raw',
+    root: '지형', heightmapRawPath: 'Terrain/heightmap.raw',
     paths: {
       'terrain.glb': 'Terrain/terrain.glb', 'terrain.obj': 'Terrain/terrain.obj',
       'collision.glb': 'Terrain/collision.glb',

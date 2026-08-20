@@ -24,7 +24,7 @@ export const TERRAIN_GRADIENT_PRESETS = Object.freeze({
     macroScale: 0.5,
   }),
   volcanic: Object.freeze({
-    label: 'Volcanic field',
+    label: '화산 지대',
     description: 'Basalt lowlands, charcoal lava, oxidized scoria, and ash-grey ridges.',
     colors: Object.freeze(['#171a18', '#2d302c', '#55443a', '#928b7f']),
     points: Object.freeze([0, 0.32, 0.64, 0.9]),

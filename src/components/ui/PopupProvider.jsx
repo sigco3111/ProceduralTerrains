@@ -80,7 +80,7 @@ function PopupDialog({ dialog, onClose }) {
         )}
         {dialog.kind === 'choice' ? (
           <footer>
-            <button type="button" className="app-popup-cancel" onClick={() => onClose(null)}>{dialog.cancelLabel || 'Cancel'}</button>
+            <button type="button" className="app-popup-cancel" onClick={() => onClose(null)}>{dialog.cancelLabel || '취소'}</button>
             {(dialog.actions ?? []).map((action, index) => (
               <button key={action.value} ref={index === 0 ? inputRef : undefined} type="button" className={`app-popup-confirm${action.danger ? ' danger' : ''}`} onClick={() => onClose(action.value)}>
                 {action.label}
@@ -89,9 +89,9 @@ function PopupDialog({ dialog, onClose }) {
           </footer>
         ) : (
           <footer>
-            <button type="button" className="app-popup-cancel" onClick={() => onClose(cancelValue)}>{dialog.cancelLabel || 'Cancel'}</button>
+            <button type="button" className="app-popup-cancel" onClick={() => onClose(cancelValue)}>{dialog.cancelLabel || '취소'}</button>
             <button ref={dialog.kind === 'prompt' ? undefined : inputRef} type="submit" className={`app-popup-confirm${dialog.danger ? ' danger' : ''}`}>
-              {dialog.confirmLabel || (dialog.kind === 'prompt' ? 'Save' : 'Confirm')}
+              {dialog.confirmLabel || (dialog.kind === 'prompt' ? '저장' : '확인')}
             </button>
           </footer>
         )}

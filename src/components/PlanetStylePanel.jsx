@@ -38,7 +38,7 @@ export default function PlanetStylePanel({
 
   const content = paletteOnly ? palettePanel : (
     <>
-      <ControlSection id="planet-preset" title="Preset" defaultOpen settingId="planet.section.preset">
+      <ControlSection id="planet-preset" title="프리셋" defaultOpen settingId="planet.section.preset">
         <PlanetPresetPanel
           planetPreset={planetPreset}
           onSelect={onPlanetPreset}
@@ -46,7 +46,7 @@ export default function PlanetStylePanel({
         />
       </ControlSection>
 
-      <ControlSection id="planet-palette" title="Palette" defaultOpen settingId="planet.section.palette">
+      <ControlSection id="planet-palette" title="팔레트" defaultOpen settingId="planet.section.palette">
         {palettePanel}
       </ControlSection>
     </>

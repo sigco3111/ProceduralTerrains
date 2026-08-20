@@ -230,7 +230,7 @@ async function requestOverpass(bbox, { signal } = {}) {
         }
       });
     } catch (error) {
-      if (signal?.aborted || error?.name === 'AbortError') throw error;
+      if (signal?.aborted || error?.name === '중단 오류') throw error;
       lastError = error;
       if (error?.status === 400 || attempt === MAX_REQUEST_ATTEMPTS - 1) break;
       await waitForRetry(350 * Math.pow(2, attempt), signal);
@@ -281,7 +281,7 @@ async function fetchSubdividedBbox(bbox, options, depth) {
     .map((part) => part.value);
   if (!loaded.length) {
     const failed = parts.find((part) => part.status === 'rejected');
-    throw failed?.reason ?? new Error('All subdivided Overpass requests failed');
+    throw failed?.reason ?? new Error('모든 분할된 Overpass 요청 실패');
   }
   return {
     buildings: mergeBuildings(loaded.map((part) => part.buildings)),

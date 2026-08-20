@@ -43,13 +43,13 @@ export default function BottomToolbar({ camMode, onTopDown, onAngled, onResetCam
   };
 
   return (
-    <div className="viewport-camera-bar" role="toolbar" aria-label="Camera views">
+    <div className="viewport-camera-bar" role="toolbar" aria-label="카메라 보기">
       <button
         type="button"
         className={`camera-bar-btn${camMode === 'topdown' ? ' active' : ''}`}
         onClick={onTopDown}
-        aria-label="Top-down view"
-        title="Top-down view"
+        aria-label="위에서 보기"
+        title="위에서 보기"
       >
         <svg viewBox="0 0 16 16" fill="none">
           <rect x="3" y="3" width="10" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
@@ -61,8 +61,8 @@ export default function BottomToolbar({ camMode, onTopDown, onAngled, onResetCam
         type="button"
         className={`camera-bar-btn${camMode !== 'topdown' ? ' active' : ''}`}
         onClick={onAngled}
-        aria-label="Angled view"
-        title="Angled view"
+        aria-label="비스듬한 시점"
+        title="비스듬한 시점"
       >
         <svg viewBox="0 0 16 16" fill="none">
           <path d="M2 11 8 4l6 7z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
@@ -74,8 +74,8 @@ export default function BottomToolbar({ camMode, onTopDown, onAngled, onResetCam
         type="button"
         className="camera-bar-btn"
         onClick={onResetCamera}
-        aria-label="Reset camera"
-        title="Reset camera"
+        aria-label="카메라 초기화"
+        title="카메라 초기화"
       >
         <svg viewBox="0 0 16 16" fill="none">
           <circle cx="8" cy="8" r="5.5" stroke="currentColor" strokeWidth="1.2" />
@@ -90,10 +90,10 @@ export default function BottomToolbar({ camMode, onTopDown, onAngled, onResetCam
           type="button"
           className={`camera-bar-btn explore-menu-trigger${exploring ? ' active' : ''}`}
           onClick={() => setOpen((v) => !v)}
-          aria-label="Explore mode"
+          aria-label="탐험 모드"
           aria-haspopup="menu"
           aria-expanded={open}
-          title="Explore terrain by walking or flying a plane"
+          title="걷기 또는 비행기로 지형 탐험"
         >
           <Compass aria-hidden size={14} strokeWidth={1.9} />
           <span className="camera-bar-label">Explore</span>
@@ -105,7 +105,7 @@ export default function BottomToolbar({ camMode, onTopDown, onAngled, onResetCam
             className="explore-menu"
             style={{ left: menuStyle.left, bottom: menuStyle.bottom }}
             role="menu"
-            aria-label="Explore modes"
+            aria-label="탐험 모드"
           >
             <button
               type="button"

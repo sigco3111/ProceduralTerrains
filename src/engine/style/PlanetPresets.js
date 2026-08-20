@@ -81,7 +81,7 @@ export const PLANET_PRESETS = {
     },
   },
   volcanic: {
-    label: 'Volcanic Planet',
+    label: '화성 행성',
     palettePreset: 'volcanic',
     noisePreset: 'rugged',
     params: { ridge: 0.88, moistBias: -0.35, tempBias: 0.5, heightScale: 620 },

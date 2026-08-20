@@ -3,39 +3,39 @@ export const SURFACE_TEXTURE_VARIANT_COUNT = 4;
 export const SURFACE_TEXTURE_ROLE_GROUPS = [
   {
     id: 'beach',
-    label: 'Beach',
+    label: '해변',
     roles: [
-      { id: 'sand', label: 'Sand', tiling: 18 },
+      { id: 'sand', label: '모래', tiling: 18 },
       { id: 'dune', label: 'Dune', tiling: 20 },
     ],
   },
   {
     id: 'vegetation',
-    label: 'Vegetation',
+    label: '식생',
     roles: [
       { id: 'dryGrass', label: 'Dry Grass', tiling: 14 },
-      { id: 'grass', label: 'Grass', tiling: 12 },
-      { id: 'forest', label: 'Forest', tiling: 11 },
-      { id: 'jungle', label: 'Jungle', tiling: 10 },
+      { id: 'grass', label: '잔디', tiling: 12 },
+      { id: 'forest', label: '숲', tiling: 11 },
+      { id: 'jungle', label: '정글', tiling: 10 },
       { id: 'swamp', label: 'Swamp', tiling: 9 },
-      { id: 'tundra', label: 'Tundra', tiling: 13 },
+      { id: 'tundra', label: '툰드라', tiling: 13 },
     ],
   },
   {
     id: 'rock',
-    label: 'Rock',
+    label: '바위',
     roles: [
       { id: 'redRock', label: 'Red Rock', tiling: 7 },
       { id: 'redRock2', label: 'Red Rock B', tiling: 7 },
-      { id: 'rock', label: 'Rock', tiling: 6 },
+      { id: 'rock', label: '바위', tiling: 6 },
       { id: 'rockHi', label: 'High Rock', tiling: 6 },
     ],
   },
   {
     id: 'snow',
-    label: 'Snow',
+    label: '눈',
     roles: [
-      { id: 'snow', label: 'Snow', tiling: 10 },
+      { id: 'snow', label: '눈', tiling: 10 },
     ],
   },
 ];

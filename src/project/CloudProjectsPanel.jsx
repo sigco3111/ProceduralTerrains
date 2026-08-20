@@ -112,7 +112,7 @@ export default function CloudProjectsPanel({ localProjects, onOpen, refreshToken
   };
 
   const rename = async (cloudProject) => {
-    const name = (await showPrompt({ title: 'Rename cloud project', inputLabel: 'Project name', initialValue: cloudProject.name, confirmLabel: 'Rename', maxLength: 120 }))?.trim();
+    const name = (await showPrompt({ title: 'Rename cloud project', inputLabel: 'Project name', initialValue: cloudProject.name, confirmLabel: '이름 변경', maxLength: 120 }))?.trim();
     if (!name || name === cloudProject.name) return;
     setBusy(cloudProject.id);
     try {
@@ -198,7 +198,7 @@ export default function CloudProjectsPanel({ localProjects, onOpen, refreshToken
                   <button type="button" onClick={() => openCloud(project)} disabled={disabled} title="Open as a local copy" aria-label={`Open ${project.name}`}><FolderOpen size={13} /></button>
                   <button type="button" onClick={() => copyText(project.shareCode).then(() => showPopup(`Copied ${project.shareCode}.`, { type: 'success' })).catch((copyError) => showPopup(copyError.message, { type: 'error' }))} disabled={disabled || project.visibility === 'private'} title={project.visibility === 'private' ? 'Make the project unlisted or public to share it' : 'Copy sharing code'} aria-label={`Copy sharing code for ${project.name}`}><Copy size={13} /></button>
                   <button type="button" onClick={() => rotateCode(project)} disabled={disabled} title="Replace sharing code" aria-label={`Replace sharing code for ${project.name}`}><KeyRound size={13} /></button>
-                  <button type="button" onClick={() => rename(project)} disabled={disabled} title="Rename" aria-label={`Rename ${project.name}`}><Pencil size={13} /></button>
+                  <button type="button" onClick={() => rename(project)} disabled={disabled} title="이름 변경" aria-label={`Rename ${project.name}`}><Pencil size={13} /></button>
                   <button type="button" className="danger" onClick={() => remove(project)} disabled={disabled} title="Delete cloud project" aria-label={`Delete ${project.name}`}><Trash2 size={13} /></button>
                 </div>
               </article>

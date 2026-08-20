@@ -312,8 +312,8 @@ export default function PropsAssetLibrary({ value, onChange }) {
             </label>
             <MiniSlider label="Mix weight" value={selected.density} min={0} max={2} step={0.05} onChange={(density) => patchSelected({ density })} />
             <MiniSlider label="Overall scale" value={selected.scale} min={0.25} max={2.5} step={0.05} onChange={(scale) => patchSelected({ scale })} />
-            <MiniSlider label="Width" value={selected.width} min={0.5} max={1.6} step={0.01} onChange={(width) => patchSelected({ width })} />
-            <MiniSlider label="Height" value={selected.height} min={0.5} max={1.6} step={0.01} onChange={(height) => patchSelected({ height })} />
+            <MiniSlider label="너비" value={selected.width} min={0.5} max={1.6} step={0.01} onChange={(width) => patchSelected({ width })} />
+            <MiniSlider label="높이" value={selected.height} min={0.5} max={1.6} step={0.01} onChange={(height) => patchSelected({ height })} />
           </div>
         </>
       )}

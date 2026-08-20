@@ -5,10 +5,10 @@
 // ============================================================================
 
 export const WATER_MODES = [
-  { value: 'off', label: 'Off' },
+  { value: 'off', label: '꺼짐' },
   { value: 'legacy', label: 'Legacy / Low' },
   { value: 'realistic', label: 'Realistic / Medium' },
-  { value: 'volumetric', label: 'Volumetric / High' },
+  { value: 'volumetric', label: '볼류메트릭 / 높음' },
   { value: 'cinematic', label: 'Cinematic / Ultra' },
 ];
 
@@ -18,9 +18,9 @@ export const WATER_QUALITY_PRESETS = [
   { value: 'tropical', label: 'Clear Tropical' },
   { value: 'cartoon', label: 'Cartoon Water' },
   { value: 'ocean', label: 'Deep Ocean' },
-  { value: 'lake', label: 'Mountain Lake' },
+  { value: 'lake', label: '산 속 호수' },
   { value: 'swamp', label: 'Swamp Water' },
-  { value: 'alien', label: 'Alien Water' },
+  { value: 'alien', label: '에일리언 물' },
   { value: 'volumetric', label: 'High Volumetric' },
   { value: 'cinematic', label: 'Cinematic Screenshot' },
 ];
@@ -63,10 +63,10 @@ export const WATER_LIGHTING_PARAM_KEYS = [
 // ----------------------------------------------------------------------------
 
 export const UNDERWATER_MODES = [
-  { value: 'off', label: 'Off' },
-  { value: 'lite', label: 'Lite' },
-  { value: 'high', label: 'High' },
-  { value: 'auto', label: 'Auto' },
+  { value: 'off', label: '꺼짐' },
+  { value: 'lite', label: '라이트' },
+  { value: 'high', label: '높음' },
+  { value: 'auto', label: '자동' },
 ];
 
 /** Resolve the effective underwater quality ('off' | 'lite' | 'high'). */

@@ -7,14 +7,14 @@ import { colorToHex, parseColor } from '../../engine/style/ColorPalette.js';
 import { CLOUD_DEFAULT_PARAMS } from '../../engine/sky/CloudSettings.js';
 
 const SHAPE_SLIDERS = [
-  { key: 'cloudCoverage', label: 'Coverage', min: 0, max: 1, step: 0.01, digits: 2, info: 'Fraction of the sky covered by clouds.' },
-  { key: 'cloudDensity', label: 'Density', min: 0.1, max: 3, step: 0.05, digits: 2, info: 'Overall opacity / optical thickness of the clouds.' },
-  { key: 'cloudSoftness', label: 'Softness', min: 0.01, max: 0.6, step: 0.01, digits: 2, info: 'Softness of the cloud edges where coverage cuts in.' },
+  { key: 'cloudCoverage', label: '범위', min: 0, max: 1, step: 0.01, digits: 2, info: 'Fraction of the sky covered by clouds.' },
+  { key: 'cloudDensity', label: '밀도', min: 0.1, max: 3, step: 0.05, digits: 2, info: 'Overall opacity / optical thickness of the clouds.' },
+  { key: 'cloudSoftness', label: '부드러움', min: 0.01, max: 0.6, step: 0.01, digits: 2, info: 'Softness of the cloud edges where coverage cuts in.' },
 ];
 
 const SHELL_SLIDERS = [
-  { key: 'cloudAltitude', label: 'Altitude', min: 0, max: 1500, step: 5, info: 'Height of the cloud layer base. In studio this is an absolute height (0 = ground level), so clouds can sit right at the surface.' },
-  { key: 'cloudThickness', label: 'Thickness', min: 80, max: 2500, step: 10, info: 'Vertical thickness of the cloud layer.' },
+  { key: 'cloudAltitude', label: '고도', min: 0, max: 1500, step: 5, info: 'Height of the cloud layer base. In studio this is an absolute height (0 = ground level), so clouds can sit right at the surface.' },
+  { key: 'cloudThickness', label: '두께', min: 80, max: 2500, step: 10, info: 'Vertical thickness of the cloud layer.' },
 ];
 
 const NOISE_SLIDERS = [
@@ -22,22 +22,22 @@ const NOISE_SLIDERS = [
   { key: 'cloudDetailScale', label: 'Detail Scale', min: 2, max: 24, step: 0.5, digits: 1, info: 'Frequency of the mid-scale billows.' },
   { key: 'cloudDetailStrength', label: 'Detail Strength', min: 0, max: 1, step: 0.02, digits: 2, info: 'How strongly detail noise modulates the shapes.' },
   { key: 'cloudErosionScale', label: 'Erosion Scale', min: 4, max: 40, step: 0.5, digits: 1, info: 'Frequency of the worley erosion that carves wispy edges.' },
-  { key: 'cloudErosionStrength', label: 'Erosion Strength', min: 0, max: 1, step: 0.02, digits: 2, info: 'How aggressively erosion eats into the clouds.' },
+  { key: 'cloudErosionStrength', label: 'Erosion Strength', min: 0, max: 1, step: 0.02, digits: 2, info: '침식이 구름을 얼마나 공격적으로 파고드는지.' },
 ];
 
 const MOTION_SLIDERS = [
   { key: 'cloudWindDir', label: 'Wind Direction', min: 0, max: 360, step: 1, unit: '°', info: 'Heading the cloud field drifts toward.' },
   { key: 'cloudWindSpeed', label: 'Wind Speed', min: 0, max: 4, step: 0.05, digits: 2, info: 'Speed of the cloud drift.' },
-  { key: 'cloudRotationSpeed', label: 'Rotation', min: 0, max: 3, step: 0.05, digits: 2, info: 'Slow rotation of the cloud field around the planet axis.' },
+  { key: 'cloudRotationSpeed', label: '회전', min: 0, max: 3, step: 0.05, digits: 2, info: 'Slow rotation of the cloud field around the planet axis.' },
   { key: 'cloudEvolveSpeed', label: 'Evolve', min: 0, max: 4, step: 0.05, digits: 2, info: 'How fast clouds form, morph and dissipate in place (0 = static shapes that only drift).' },
 ];
 
 const LIGHT_SLIDERS = [
-  { key: 'cloudLightAbsorption', label: 'Light Absorption', min: 0.1, max: 3, step: 0.05, digits: 2, info: 'How much the clouds absorb sunlight (contrast of shading).' },
+  { key: 'cloudLightAbsorption', label: 'Light Absorption', min: 0.1, max: 3, step: 0.05, digits: 2, info: '구름이 햇빛을 얼마나 흡수하는지 (셰이딩 대비).' },
   { key: 'cloudShadowStrength', label: 'Shadow Strength', min: 0, max: 1, step: 0.02, digits: 2, info: 'Darkness of self-shadowed cloud regions.' },
-  { key: 'cloudScatteringStrength', label: 'Scattering', min: 0, max: 2, step: 0.05, digits: 2, info: 'Brightness of light scattered toward the camera.' },
+  { key: 'cloudScatteringStrength', label: '산란', min: 0, max: 2, step: 0.05, digits: 2, info: 'Brightness of light scattered toward the camera.' },
   { key: 'cloudAtmosphereInfluence', label: 'Sky Influence', min: 0, max: 1, step: 0.02, digits: 2, info: 'How strongly the active sky, sun and atmosphere color the clouds. Zero restores the legacy independent lighting.' },
-  { key: 'cloudSunResponse', label: 'Sun Response', min: 0, max: 2, step: 0.05, digits: 2, info: 'Strength of direct sunlight received by the clouds.' },
+  { key: 'cloudSunResponse', label: '태양 반응', min: 0, max: 2, step: 0.05, digits: 2, info: 'Strength of direct sunlight received by the clouds.' },
   { key: 'cloudAmbientResponse', label: 'Ambient Response', min: 0, max: 2, step: 0.05, digits: 2, info: 'Strength of zenith, horizon and ground-bounce lighting.' },
   { key: 'cloudSilverLining', label: 'Silver Lining', min: 0, max: 1, step: 0.01, digits: 2, info: 'Directional glow when looking toward the sun through cloud edges.' },
 ];
@@ -47,13 +47,13 @@ const RESOLUTION_OPTIONS = [
   { value: 'medium', label: 'Medium (24 steps)' },
   { value: 'high', label: 'High (40 steps)' },
   { value: 'ultra', label: 'Ultra (72 steps)' },
-  { value: 'custom', label: 'Custom' },
+  { value: 'custom', label: '사용자 지정' },
 ];
 
 const FALLBACK_OPTIONS = [
-  { value: 'none', label: 'Full' },
+  { value: 'none', label: '전체' },
   { value: 'lite', label: 'Lite (weak GPU)' },
-  { value: 'off', label: 'Off' },
+  { value: 'off', label: '꺼짐' },
 ];
 
 const RENDER_SCALE_OPTIONS = [
@@ -126,10 +126,10 @@ export default function CloudPanel({
         <>
           <ControlSection
             id={`${id}-shape`}
-            title="Shape"
+            title="형태"
             defaultOpen
             settingId="clouds.section.shape"
-            forceOpen={forceSection('clouds.section.shape', 'Shape', ['clouds.cloudCoverage', 'clouds.cloudDensity', 'clouds.cloudSoftness'])}
+            forceOpen={forceSection('clouds.section.shape', '형태', ['clouds.cloudCoverage', 'clouds.cloudDensity', 'clouds.cloudSoftness'])}
           >
             {SHAPE_SLIDERS.map((def) => (
               <SliderCtl key={def.key} def={def} value={val(params, def.key)} onChange={(v) => onParam(def.key, v)} settingId={`clouds.${def.key}`} />
@@ -150,10 +150,10 @@ export default function CloudPanel({
 
           <ControlSection
             id={`${id}-noise`}
-            title="Noise"
+            title="노이즈"
             defaultOpen={false}
             settingId="clouds.section.noise"
-            forceOpen={forceSection('clouds.section.noise', 'Noise', ['clouds.cloudScale', 'clouds.cloudDetail', 'clouds.cloudErosion'])}
+            forceOpen={forceSection('clouds.section.noise', '노이즈', ['clouds.cloudScale', 'clouds.cloudDetail', 'clouds.cloudErosion'])}
           >
             {NOISE_SLIDERS.map((def) => (
               <SliderCtl key={def.key} def={def} value={val(params, def.key)} onChange={(v) => onParam(def.key, v)} settingId={`clouds.${def.key}`} />
@@ -162,10 +162,10 @@ export default function CloudPanel({
 
           <ControlSection
             id={`${id}-motion`}
-            title="Motion"
+            title="동작"
             defaultOpen={false}
             settingId="clouds.section.motion"
-            forceOpen={forceSection('clouds.section.motion', 'Motion', ['clouds.cloudWind', 'clouds.cloudRotation', 'clouds.cloudEvolve'])}
+            forceOpen={forceSection('clouds.section.motion', '동작', ['clouds.cloudWind', 'clouds.cloudRotation', 'clouds.cloudEvolve'])}
           >
             {MOTION_SLIDERS.map((def) => (
               <SliderCtl key={def.key} def={def} value={val(params, def.key)} onChange={(v) => onParam(def.key, v)} settingId={`clouds.${def.key}`} />
@@ -174,10 +174,10 @@ export default function CloudPanel({
 
           <ControlSection
             id={`${id}-lighting`}
-            title="Lighting"
+            title="조명"
             defaultOpen={false}
             settingId="clouds.section.lighting"
-            forceOpen={forceSection('clouds.section.lighting', 'Lighting', ['clouds.cloudLight', 'clouds.cloudShadow', 'clouds.cloudScattering', 'clouds.cloudColor', 'performance.cloudSelfShadow'])}
+            forceOpen={forceSection('clouds.section.lighting', '조명', ['clouds.cloudLight', 'clouds.cloudShadow', 'clouds.cloudScattering', 'clouds.cloudColor', 'performance.cloudSelfShadow'])}
           >
             {LIGHT_SLIDERS.map((def) => (
               <SliderCtl key={def.key} def={def} value={val(params, def.key)} onChange={(v) => onParam(def.key, v)} settingId={`clouds.${def.key}`} />
@@ -204,13 +204,13 @@ export default function CloudPanel({
 
           <ControlSection
             id={`${id}-performance`}
-            title="Performance"
+            title="성능 우선"
             defaultOpen={false}
             settingId="clouds.section.performance"
-            forceOpen={forceSection('clouds.section.performance', 'Performance', ['performance.cloudSteps', 'performance.cloudFallback', 'performance.cloudMaxDistance'])}
+            forceOpen={forceSection('clouds.section.performance', '성능 우선', ['performance.cloudSteps', 'performance.cloudFallback', 'performance.cloudMaxDistance'])}
           >
             <SelectRow
-              label="Resolution"
+              label="해상도"
               value={resolutionName}
               options={RESOLUTION_OPTIONS}
               onChange={handleResolutionChange}

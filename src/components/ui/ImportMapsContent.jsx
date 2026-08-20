@@ -10,7 +10,7 @@ import {
 const RealWorldMapPicker = lazy(() => import('./RealWorldMapPicker.jsx'));
 
 const IMPORT_MODE_OPTIONS = [
-  { value: 'disabled', label: 'Disabled' },
+  { value: 'disabled', label: '비활성화됨' },
   { value: 'preview', label: 'Preview Only' },
   { value: 'replace', label: 'Replace Procedural' },
   { value: 'blend', label: 'Blend With Procedural' },
@@ -23,14 +23,14 @@ const IMAGERY_STYLE_OPTIONS = Object.values(IMAGERY_STYLES).map((s) => ({
 
 const MAP_META = {
   noise: { label: 'Noise Map', icon: <Waves size={15} strokeWidth={1.75} />, defaultOpen: false, filePick: true },
-  height: { label: 'Height Map', icon: <Mountain size={15} strokeWidth={1.75} />, defaultOpen: true, filePick: true },
+  height: { label: '하이맵', icon: <Mountain size={15} strokeWidth={1.75} />, defaultOpen: true, filePick: true },
   biome: { label: 'Biome Map', icon: <Palette size={15} strokeWidth={1.75} />, defaultOpen: false, filePick: true },
   imagery: { label: 'Map Texture', icon: <Map size={15} strokeWidth={1.75} />, defaultOpen: true, filePick: false },
 };
 
 function FilePicker({ fileName, onPick }) {
   const inputRef = useRef(null);
-  const label = fileName ? 'Replace file' : 'Choose file';
+  const label = fileName ? 'Replace file' : '파일 선택';
 
   return (
     <div className="file-picker">
@@ -136,7 +136,7 @@ function ImportMapSection({ type, map, ctx, forceOpen = false }) {
       )}
       {!isImagery && (
         <>
-          <ToggleRow label="Invert" value={!!settings.invert} onChange={(v) => set('invert', v)} />
+          <ToggleRow label="반전" value={!!settings.invert} onChange={(v) => set('invert', v)} />
           <ToggleRow label="Normalize" value={!!settings.normalize} onChange={(v) => set('normalize', v)} />
         </>
       )}
@@ -258,8 +258,8 @@ function syncCustomAreaDraft(spec, coordText) {
 }
 
 const CUSTOM_AREA_SLIDERS = {
-  lat: { label: 'Latitude', ...CUSTOM_AREA_LIMITS.lat, digits: 2, unit: '°' },
-  lon: { label: 'Longitude', ...CUSTOM_AREA_LIMITS.lon, digits: 2, unit: '°' },
+  lat: { label: '위도', ...CUSTOM_AREA_LIMITS.lat, digits: 2, unit: '°' },
+  lon: { label: '경도', ...CUSTOM_AREA_LIMITS.lon, digits: 2, unit: '°' },
   sizeKm: { label: 'Area Size', ...CUSTOM_AREA_LIMITS.sizeKm, digits: 0, unit: ' km' },
   zoom: { label: 'Detail (Zoom)', ...CUSTOM_AREA_LIMITS.zoom, digits: 0 },
 };

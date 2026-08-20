@@ -134,7 +134,7 @@ export const WATER_PRESETS = {
     },
   },
   lake: {
-    label: 'Mountain Lake',
+    label: '산 속 호수',
     patch: {
       waterMode: 'realistic',
       waterQualityPreset: 'lake',
@@ -184,7 +184,7 @@ export const WATER_PRESETS = {
     },
   },
   alien: {
-    label: 'Alien Water',
+    label: '에일리언 물',
     patch: {
       waterMode: 'volumetric',
       waterQualityPreset: 'alien',

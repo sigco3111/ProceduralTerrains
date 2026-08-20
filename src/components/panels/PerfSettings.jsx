@@ -52,20 +52,20 @@ const PERF_SLIDERS = {
 };
 
 const WATER_QUALITY_OPTIONS = [
-  { value: 0, label: 'Low' },
-  { value: 1, label: 'Medium' },
-  { value: 2, label: 'High' },
+  { value: 0, label: '낮음' },
+  { value: 1, label: '중간' },
+  { value: 2, label: '높음' },
 ];
 
 const TERRAIN_DETAIL_OPTIONS = [
-  { value: 0, label: 'Off' },
-  { value: 1, label: 'Low' },
-  { value: 2, label: 'Medium' },
-  { value: 3, label: 'High' },
+  { value: 0, label: '꺼짐' },
+  { value: 1, label: '낮음' },
+  { value: 2, label: '중간' },
+  { value: 3, label: '높음' },
 ];
 
 const GPU_PREFERENCE_OPTIONS = [
-  { value: 'default', label: 'Default' },
+  { value: 'default', label: '기본' },
   { value: 'high-performance', label: 'High Performance' },
   { value: 'low-power', label: 'Low Power' },
 ];
@@ -76,12 +76,12 @@ const RESOLUTION_DENOISE_OPTIONS = [
 ];
 
 const TABS = [
-  { id: 'overview', label: 'Overview' },
+  { id: 'overview', label: '개요' },
   { id: 'lod', label: 'LOD' },
   { id: 'streaming', label: 'Streaming' },
-  { id: 'water', label: 'Water' },
-  { id: 'fog', label: 'Fog' },
-  { id: 'clouds', label: 'Clouds' },
+  { id: 'water', label: '물' },
+  { id: 'fog', label: '안개' },
+  { id: 'clouds', label: '구름' },
 ];
 
 function LodMultiSlider({ segments, onChange }) {
@@ -173,7 +173,7 @@ function GpuRendererSection({ perf, rendererInfo, onPerfSetting }) {
   const caps = rendererInfo?.capabilities || fallbackCaps;
   const webgpuSupported = !!caps.webgpu?.supported;
   const backendOptions = [
-    { value: 'auto', label: 'Auto' },
+    { value: 'auto', label: '자동' },
     { value: 'webgl', label: 'WebGL' },
     {
       value: 'webgpu',
@@ -221,11 +221,11 @@ function GpuRendererSection({ perf, rendererInfo, onPerfSetting }) {
         <div className="gpu-cap-list">
           <CapabilityRow label="Detected Renderer" value={rendererInfo?.activeBackendLabel || caps.detectedRenderer} />
           <CapabilityRow label="Detected GPU" value={gpuInfo} title={caps.detectedGpu} />
-          <CapabilityRow label="GPU Timing" value={caps.gpuTiming?.supported ? 'Available' : 'Unavailable'} />
+          <CapabilityRow label="GPU Timing" value={caps.gpuTiming?.supported ? '사용 가능' : '사용 불가'} />
           <CapabilityRow label="Power Preference" value={labelGpuPreference(activeGpuPreference)} />
-          <CapabilityRow label="Worker Renderer" value={rendererInfo?.workerActive ? 'Active' : 'Inactive'} />
+          <CapabilityRow label="Worker Renderer" value={rendererInfo?.workerActive ? '활성' : '비활성'} />
           {perf.rendererBackend === 'webgpu' && !webgpuSupported && (
-            <CapabilityRow label="WebGPU" value={caps.webgpu?.reason || 'Unavailable'} />
+            <CapabilityRow label="WebGPU" value={caps.webgpu?.reason || '사용 불가'} />
           )}
         </div>
         {reloadRequired ? (
@@ -245,7 +245,7 @@ function GpuRendererSection({ perf, rendererInfo, onPerfSetting }) {
 
 // Terrain texture / close-range material sliders — surfaced in the Terrain
 // panel's Surface > Properties tab (extracted from the old Performance
-// panel's "Terrain" tab, since these describe material look, not budget).
+// panel's "지형" tab, since these describe material look, not budget).
 export function SurfacePropertiesSettings({ perf, onPerfSetting }) {
   if (!perf) return <p className="settings-empty">Performance settings are loading…</p>;
   const groupProps = { search: '', activeTab: 'terrain' };
@@ -307,7 +307,7 @@ export default function PerfSettings({ perf, rendererInfo, onPerfPreset, onPerfS
 
   const presetOptions = useMemo(() => [
     ...getPerfPresetKeys().map((k) => ({ value: k, label: PERF_PRESETS[k].label })),
-    { value: 'custom', label: 'Custom' },
+    { value: 'custom', label: '사용자 지정' },
   ], []);
 
   if (!perf) return <p className="settings-empty">Performance settings are loading…</p>;
@@ -395,7 +395,7 @@ function renderSettings({
   return (
     <>
       <SettingGroup tab="overview" label="Performance Preset" keywords="preset quality profile" {...groupProps}>
-        <SelectRow label="Preset" value={perf.preset} options={presetOptions} onChange={onPerfPreset} settingId="performance.preset" />
+        <SelectRow label="프리셋" value={perf.preset} options={presetOptions} onChange={onPerfPreset} settingId="performance.preset" />
       </SettingGroup>
 
       <SettingGroup tab="overview" label="GPU Renderer" keywords="gpu renderer backend webgl webgpu power preference dedicated low power timing" {...groupProps}>
@@ -539,8 +539,8 @@ function renderSettings({
         <PerfSlider perf={perf} id="waterWaves" onPerfSetting={onPerfSetting} settingId="performance.waterWaves" />
       </SettingGroup>
 
-      <SettingGroup tab="water" label="Underwater Effect" keywords="underwater submerged camera dive fog tint" {...groupProps}>
-        <ToggleRow label="Underwater Effect" value={perf.underwaterEffect !== false} onChange={(v) => onPerfSetting('underwaterEffect', v)} settingId="performance.underwaterEffect" />
+      <SettingGroup tab="water" label="수중 효과" keywords="underwater submerged camera dive fog tint" {...groupProps}>
+        <ToggleRow label="수중 효과" value={perf.underwaterEffect !== false} onChange={(v) => onPerfSetting('underwaterEffect', v)} settingId="performance.underwaterEffect" />
       </SettingGroup>
 
       <SettingGroup tab="water" label="Water Distance" keywords="extent range fade" {...groupProps}>
@@ -552,7 +552,7 @@ function renderSettings({
       </SettingGroup>
 
       <SettingGroup tab="clouds" label="Fallback Mode" keywords="clouds performance quality fallback mode" {...groupProps}>
-        <SelectRow label="Fallback Mode" value={perf.cloudFallback} options={[{ value: 'none', label: 'Full' }, { value: 'lite', label: 'Lite (weak GPU)' }, { value: 'off', label: 'Off' }]} onChange={(v) => onPerfSetting('cloudFallback', v)} settingId="performance.cloudFallback" />
+        <SelectRow label="Fallback Mode" value={perf.cloudFallback} options={[{ value: 'none', label: '전체' }, { value: 'lite', label: 'Lite (weak GPU)' }, { value: 'off', label: '꺼짐' }]} onChange={(v) => onPerfSetting('cloudFallback', v)} settingId="performance.cloudFallback" />
       </SettingGroup>
 
       <SettingGroup tab="clouds" label="Raymarch Steps" keywords="clouds step raymarch resolution quality steps" {...groupProps}>

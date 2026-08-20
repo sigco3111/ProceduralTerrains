@@ -1,6 +1,6 @@
 // Single source of truth for the app version. Display it everywhere from here.
 export const APP_VERSION = '1.5.2';
-export const APP_NAME = 'Procedural Terrains';
+export const APP_NAME = '절차적 지형';
 export const GITHUB_REPO_URL = 'https://github.com/ZyFou/ProceduralTerrains';
 export const AUTHOR_NAME = 'ZyFod';
 export const AUTHOR_X_URL = 'https://x.com/zy_fou';

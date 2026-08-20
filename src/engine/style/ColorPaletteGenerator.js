@@ -5,13 +5,13 @@ import { PALETTE_KEYS, clonePalette, EARTH_PALETTE } from './ColorPalette.js';
 // ============================================================================
 
 export const PLANET_GEN_TYPES = [
-  { key: 'random', label: 'Random' },
+  { key: 'random', label: '무작위' },
   { key: 'earth', label: 'Earth-like' },
-  { key: 'alien', label: 'Alien' },
-  { key: 'desert', label: 'Desert' },
+  { key: 'alien', label: '에일리언' },
+  { key: 'desert', label: '사막' },
   { key: 'ice', label: 'Ice' },
   { key: 'toxic', label: 'Toxic' },
-  { key: 'volcanic', label: 'Volcanic' },
+  { key: 'volcanic', label: '화산성' },
   { key: 'fungal', label: 'Fungal' },
 ];
 

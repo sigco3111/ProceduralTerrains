@@ -13,7 +13,7 @@ export default function ShortcutHint({ shortcut, className = '' }) {
         : <span>Ctrl</span>}
       <span aria-hidden>+</span>
       {shortcut.shiftKey && <><span>Shift</span><span aria-hidden>+</span></>}
-      {shortcut.altKey && <><span>{mac ? 'Option' : 'Alt'}</span><span aria-hidden>+</span></>}
+      {shortcut.altKey && <><span>{mac ? '옵션' : 'Alt'}</span><span aria-hidden>+</span></>}
       <span>{displayKey}</span>
     </span>
   );

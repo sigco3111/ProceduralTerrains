@@ -42,7 +42,7 @@ export async function buildWaterMaskFiles({
 /**
  * Build a simple water plane mesh for GLB export (separate named object).
  */
-export function buildExportWaterPlane({ size, seaLevel, name = 'Water' }) {
+export function buildExportWaterPlane({ size, seaLevel, name = '물' }) {
   const geo = new THREE.PlaneGeometry(size, size);
   geo.rotateX(-Math.PI / 2);
   const mat = new THREE.MeshStandardMaterial({

@@ -11,17 +11,17 @@ import { usePopup } from '../components/ui/PopupProvider.jsx';
 
 const normalizeCode = (value) => String(value ?? '').toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, '').slice(0, 10);
 const COMMUNITY_TYPES = [
-  { id: 'procedural', label: 'Procedural' },
-  { id: 'nodes', label: 'Nodes' },
-  { id: 'manual', label: 'Manual' },
+  { id: 'procedural', label: '절차적' },
+  { id: 'nodes', label: '노드' },
+  { id: 'manual', label: '매뉴얼' },
 ];
 const COMMUNITY_ICONS = [
-  { id: 'mountain', label: 'Mountain', Icon: Mountain },
-  { id: 'boxes', label: 'Nodes', Icon: Boxes },
-  { id: 'hand', label: 'Manual', Icon: Hand },
-  { id: 'waves', label: 'Waves', Icon: Waves },
-  { id: 'orbit', label: 'Orbit', Icon: Orbit },
-  { id: 'route', label: 'Route', Icon: Route },
+  { id: 'mountain', label: '산', Icon: Mountain },
+  { id: 'boxes', label: '노드', Icon: Boxes },
+  { id: 'hand', label: '매뉴얼', Icon: Hand },
+  { id: 'waves', label: '물결', Icon: Waves },
+  { id: 'orbit', label: '궤도', Icon: Orbit },
+  { id: 'route', label: '경로', Icon: Route },
 ];
 const ICON_BY_ID = new Map(COMMUNITY_ICONS.map((option) => [option.id, option]));
 const DEFAULT_ICON_BY_TYPE = { procedural: 'mountain', nodes: 'boxes', manual: 'hand' };
@@ -52,7 +52,7 @@ function shareLinkFor(code) {
 }
 
 function typeLabel(type) {
-  return COMMUNITY_TYPES.find((option) => option.id === type)?.label ?? 'Terrain';
+  return COMMUNITY_TYPES.find((option) => option.id === type)?.label ?? '지형';
 }
 
 function iconForProject(project) {
@@ -182,7 +182,7 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
       title: 'Rename community terrain',
       inputLabel: 'Terrain name',
       initialValue: project.name,
-      confirmLabel: 'Rename',
+      confirmLabel: '이름 변경',
       maxLength: 120,
     }))?.trim();
     if (!name || name === project.name) return;
@@ -244,7 +244,7 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
                 </div>
                 <div className="community-card-body">
                   <div className="community-card-title-row"><h3>{project.name}</h3>{isOwner && <span className="community-owner-badge">Your terrain</span>}</div>
-                  <p>{project.description || `A shared ${typeLabel(project.editorMode)} Terrains project.`}</p>
+                  <p>{project.description || `공유된 ${typeLabel(project.editorMode)} 지형 프로젝트.`}</p>
                   <div className="community-author">
                     <span>{avatarUrl(project.author) ? <img src={avatarUrl(project.author)} alt="" /> : <UserRound size={13} />}</span>
                     <strong>{project.author.displayName || project.author.username}</strong>
@@ -259,7 +259,7 @@ export default function CommunityPage({ onBack, onOpen, ready = true }) {
                       <div className="community-owner-panel-head"><strong>Manage terrain</strong><button type="button" onClick={() => setEditingId('')} aria-label="Close terrain settings"><X size={13} /></button></div>
                       <div className="community-owner-actions">
                         <button type="button" className="lp-secondary sm" onClick={() => rename(project)} disabled={disabled}><Pencil size={13} /> Rename</button>
-                        <label className="community-visibility-select"><span>Visibility</span><span className="community-select-wrap">{project.visibility === 'public' ? <Globe2 size={12} /> : project.visibility === 'unlisted' ? <Eye size={12} /> : <Lock size={12} />}<select value={project.visibility} onChange={(event) => updateOwnerProject(project, { visibility: event.target.value }, `Visibility changed to ${event.target.value}.`)} disabled={disabled} aria-label={`Visibility for ${project.name}`}><option value="private">Private</option><option value="unlisted">Unlisted</option><option value="public">Public</option></select></span></label>
+                        <label className="community-visibility-select"><span>Visibility</span><span className="community-select-wrap">{project.visibility === 'public' ? <Globe2 size={12} /> : project.visibility === 'unlisted' ? <Eye size={12} /> : <Lock size={12} />}<select value={project.visibility} onChange={(event) => updateOwnerProject(project, { visibility: event.target.value }, `가시성을 ${event.target.value}(으)로 변경했습니다.`)} disabled={disabled} aria-label={`Visibility for ${project.name}`}><option value="private">Private</option><option value="unlisted">Unlisted</option><option value="public">Public</option></select></span></label>
                       </div>
                       <div className="community-icon-picker"><span>Card icon</span><div>{COMMUNITY_ICONS.map((option) => { const OptionIcon = option.Icon; return <button type="button" key={option.id} className={selectedCommunityIcon === option.id ? 'active' : ''} onClick={() => updateOwnerProject(project, { communityIcon: option.id }, `${option.label} icon selected.`)} disabled={disabled} title={option.label} aria-label={`Use ${option.label} icon`}><OptionIcon size={14} /></button>; })}</div></div>
                     </div>

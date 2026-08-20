@@ -8,7 +8,7 @@ export const UnrealPreset = {
     exportWaterMask: true, exportWaterMetadata: true,
   },
   layout: {
-    root: 'Landscape', heightmapRawPath: 'Landscape/heightmap.r16',
+    root: '풍경', heightmapRawPath: 'Landscape/heightmap.r16',
     paths: {
       'terrain.glb': 'Landscape/terrain.glb', 'terrain.obj': 'Landscape/terrain.obj',
       'collision.glb': 'Landscape/collision.glb',

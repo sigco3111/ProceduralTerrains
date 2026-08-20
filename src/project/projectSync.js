@@ -17,13 +17,13 @@ export function getProjectSyncState({ localProject = null, cloudProject = null, 
 export const syncPresentation = {
   'local-only': { label: 'On this device', action: 'Sync to cloud' },
   'cloud-missing': { label: 'Cloud copy was removed', action: 'Sync to cloud' },
-  'cloud-only': { label: 'Only in the cloud', action: 'Download' },
+  'cloud-only': { label: 'Only in the cloud', action: '다운로드' },
   'needs-review': { label: 'Needs sync review', action: 'Review sync' },
-  synced: { label: 'Synced', action: 'Sync' },
+  synced: { label: 'Synced', action: '동기화' },
   'local-changes': { label: 'Changes on this device', action: 'Upload changes' },
   'cloud-changes': { label: 'Changes in the cloud', action: 'Download changes' },
   conflict: { label: 'Conflict: choose a version', action: 'Resolve conflict' },
-  unknown: { label: 'Sync status unavailable', action: 'Sync' },
+  unknown: { label: 'Sync status unavailable', action: '동기화' },
 };
 
 function latestActivity(item) {

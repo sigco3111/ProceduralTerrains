@@ -11,10 +11,10 @@ import { RENDER_SLIDERS } from '../panels/defs.jsx';
 const slider = (key, label, min, max, step, opts = {}) => ({ key, label, min, max, step, ...opts });
 
 const POST_SLIDERS = [
-  slider('visualsExposure', 'Exposure', 0.5, 1.8, 0.02, { digits: 2 }),
-  slider('visualsContrast', 'Contrast', 0.75, 1.45, 0.02, { digits: 2 }),
-  slider('visualsSaturation', 'Saturation', 0.4, 1.6, 0.02, { digits: 2 }),
-  slider('visualsVignette', 'Vignette', 0, 0.65, 0.01, { digits: 2 }),
+  slider('visualsExposure', '노출', 0.5, 1.8, 0.02, { digits: 2 }),
+  slider('visualsContrast', '대비', 0.75, 1.45, 0.02, { digits: 2 }),
+  slider('visualsSaturation', '채도', 0.4, 1.6, 0.02, { digits: 2 }),
+  slider('visualsVignette', '비네트', 0, 0.65, 0.01, { digits: 2 }),
   slider('visualsBloomStrength', 'Bloom Strength', 0, 0.9, 0.02, { digits: 2 }),
   slider('visualsBloomThreshold', 'Bloom Threshold', 0.35, 1.2, 0.02, { digits: 2 }),
 ];
@@ -31,7 +31,7 @@ const TERRAIN_SLIDERS = [
   slider('visualsWetShoreStrength', 'Wet Shore Strength', 0, 1.2, 0.02, { digits: 2 }),
   slider('visualsRockDetail', 'Rock Detail', 0, 1, 0.02, { digits: 2 }),
   slider('visualsSoilDetail', 'Soil Detail', 0, 1, 0.02, { digits: 2 }),
-  slider('visualsSandDetail', 'Sand Detail', 0, 1, 0.02, { digits: 2 }),
+  slider('visualsSandDetail', '모래 디테일', 0, 1, 0.02, { digits: 2 }),
 ];
 
 const SHORE_SLIDERS = [
@@ -45,17 +45,17 @@ const VISUALS_TABS = [
   { id: 'sky', label: 'HDR Sky' },
   { id: 'terrain', label: 'Terrain Surface' },
   { id: 'shoreline', label: 'Shoreline' },
-  { id: 'camera', label: 'Camera Shaders' },
+  { id: 'camera', label: '카메라 셰이더' },
 ];
 
 const CAMERA_SLIDERS = {
-  pixelResolution: slider('visualsPixelResolution', 'Virtual Resolution', 120, 720, 8, { unit: 'p' }),
+  pixelResolution: slider('visualsPixelResolution', '가상 해상도', 120, 720, 8, { unit: 'p' }),
   ditheringStrength: slider('visualsDitheringStrength', 'Dithering Strength', 0, 1, 0.02, { digits: 2 }),
   ditheringLevels: slider('visualsDitheringLevels', 'Color Levels', 2, 32, 1),
   ditheringScale: slider('visualsDitheringScale', 'Pattern Scale', 1, 6, 1, { unit: ' px' }),
-  crtStrength: slider('visualsCrtStrength', 'CRT Strength', 0, 1, 0.02, { digits: 2 }),
+  crtStrength: slider('visualsCrtStrength', 'CRT 강도', 0, 1, 0.02, { digits: 2 }),
   crtLensBend: slider('visualsCrtLensBend', 'Lens Bend', 0, 1, 0.02, { digits: 2 }),
-  crtLineWidth: slider('visualsCrtLineWidth', 'Scanline Width', 1, 6, 0.25, { digits: 2, unit: ' px' }),
+  crtLineWidth: slider('visualsCrtLineWidth', '스캔라인 너비', 1, 6, 0.25, { digits: 2, unit: ' px' }),
   chromaticStrength: slider('visualsChromaticAberrationStrength', 'Chromatic Offset', 0, 8, 0.1, { digits: 1, unit: ' px' }),
 };
 

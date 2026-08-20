@@ -5,7 +5,7 @@
 
 export const NOISE_PRESETS = {
   default: {
-    label: 'Default',
+    label: '기본',
     params: {},
   },
   smooth: {
@@ -51,7 +51,7 @@ export const NOISE_PRESETS = {
     },
   },
   alien: {
-    label: 'Alien Terrain',
+    label: '에일리언 지형',
     params: {
       ridge: 0.55, warp: 2.0, persistence: 0.58, lacunarity: 2.7,
       noiseScale: 48, biomeScale: 1.4, moistBias: 0.1,

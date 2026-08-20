@@ -4,14 +4,14 @@ import SidePanel from '../panels/SidePanel.jsx';
 import PaintToolbar, { PAINT_TOOLS } from './PaintToolbar.jsx';
 
 const BIOME_OPTIONS = [
-  { value: 'desert', label: 'Desert' },
-  { value: 'canyon', label: 'Canyon' },
+  { value: 'desert', label: '사막' },
+  { value: 'canyon', label: '협곡' },
   { value: 'wetland', label: 'Wetland' },
-  { value: 'mountains', label: 'Mountains' },
+  { value: 'mountains', label: '산맥' },
 ];
 
 const BRUSH_SHAPE_OPTIONS = [
-  { value: 'round', label: 'Round' },
+  { value: 'round', label: '라운드' },
   { value: 'ellipse', label: 'Ellipse' },
   { value: 'organic', label: 'Organic' },
   { value: 'scatter', label: 'Scatter' },
@@ -20,14 +20,14 @@ const BRUSH_SHAPE_OPTIONS = [
 
 const PROP_OPTIONS = [
   { value: 'mixed', label: 'Mixed Grass + Flowers' },
-  { value: 'grass', label: 'Grass' },
+  { value: 'grass', label: '잔디' },
   { value: 'flowers', label: 'Flowers' },
   { value: 'eraseProps', label: 'Erase Props' },
 ];
 
 const SCULPT_DIRECTION_OPTIONS = [
   { value: 'raise', label: 'Raise' },
-  { value: 'lower', label: 'Lower' },
+  { value: 'lower', label: '더 낮음' },
 ];
 
 const BASE_MODE_OPTIONS = [
@@ -37,8 +37,8 @@ const BASE_MODE_OPTIONS = [
 
 const defs = {
   brushSize: { label: 'Brush Size', min: 4, max: 900, step: 1, digits: 0, unit: ' u' },
-  strength: { label: 'Strength', min: 0.01, max: 1, step: 0.01, digits: 2 },
-  falloff: { label: 'Falloff', min: 0, max: 1, step: 0.01, digits: 2 },
+  strength: { label: '세기', min: 0.01, max: 1, step: 0.01, digits: 2 },
+  falloff: { label: '감쇠', min: 0, max: 1, step: 0.01, digits: 2 },
   brushRotation: { label: 'Brush Rotation', min: -180, max: 180, step: 1, digits: 0, unit: ' deg' },
   brushScatter: { label: 'Scatter Amount', min: 0.05, max: 1, step: 0.01, digits: 2 },
   brushSpacing: { label: 'Stroke Spacing', min: 0.08, max: 1, step: 0.01, digits: 2 },
@@ -98,7 +98,7 @@ export default function PaintPanel({ paintState, onSetting, onClear, onSetBaseMo
         <SidePanel title={meta.title} description={meta.description} onClose={onExit}>
           {activeTool === 'sculpt' && (
             <div className="paint-section">
-              <SelectRow label="Direction" value={state.tool === 'lower' ? 'lower' : 'raise'} options={SCULPT_DIRECTION_OPTIONS} onChange={set('tool')} />
+              <SelectRow label="방향" value={state.tool === 'lower' ? 'lower' : 'raise'} options={SCULPT_DIRECTION_OPTIONS} onChange={set('tool')} />
               <SliderCtl def={defs.strength} value={state.strength ?? 0.35} onChange={set('strength')} />
             </div>
           )}
@@ -126,14 +126,14 @@ export default function PaintPanel({ paintState, onSetting, onClear, onSetBaseMo
 
           {activeTool === 'biome' && (
             <div className="paint-section">
-              <SelectRow label="Biome" value={state.biome ?? 'desert'} options={BIOME_OPTIONS} onChange={set('biome')} />
+              <SelectRow label="생태계" value={state.biome ?? 'desert'} options={BIOME_OPTIONS} onChange={set('biome')} />
               <SliderCtl def={defs.strength} value={state.strength ?? 0.35} onChange={set('strength')} />
             </div>
           )}
 
           {activeTool === 'mask' && (
             <div className="paint-section">
-              <SelectRow label="Mask" value={state.propType ?? 'mixed'} options={PROP_OPTIONS} onChange={set('propType')} />
+              <SelectRow label="마스크" value={state.propType ?? 'mixed'} options={PROP_OPTIONS} onChange={set('propType')} />
               <SliderCtl def={defs.strength} value={state.strength ?? 0.35} onChange={set('strength')} />
             </div>
           )}
@@ -146,7 +146,7 @@ export default function PaintPanel({ paintState, onSetting, onClear, onSetBaseMo
               </div>
               <div className="paint-section">
                 <div className="subsection-label">Terrain Base</div>
-                <SelectRow label="Base" value={state.baseMode ?? 'generated'} options={BASE_MODE_OPTIONS} onChange={onSetBaseMode} />
+                <SelectRow label="기본" value={state.baseMode ?? 'generated'} options={BASE_MODE_OPTIONS} onChange={onSetBaseMode} />
                 <button className="wide-btn danger" type="button" onClick={onStartEmpty}>Start Empty Terrain</button>
                 <p className="section-hint">
                   <b>Base</b> swaps what you're painting on top of without touching existing strokes.

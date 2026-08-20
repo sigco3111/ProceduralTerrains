@@ -1,9 +1,9 @@
 const TYPES = ['grass', 'flower', 'rock', 'broadleaf', 'conifer'];
 
 export const PROP_ASSET_TYPES = Object.freeze([
-  { id: 'grass', label: 'Grass' },
+  { id: 'grass', label: '잔디' },
   { id: 'flower', label: 'Flowers' },
-  { id: 'rock', label: 'Rocks' },
+  { id: 'rock', label: '바위' },
   { id: 'broadleaf', label: 'Broadleaf trees' },
   { id: 'conifer', label: 'Conifer trees' },
 ]);
@@ -16,7 +16,7 @@ export const PROP_ASSET_PRESETS = Object.freeze([
   { id: 'lavender', name: 'Lavender', type: 'flower', color: '#a58ada', scale: 1, width: 0.82, height: 1.2 },
   { id: 'golden-flowers', name: 'Golden Flowers', type: 'flower', color: '#e6bd59', scale: 1, width: 1.05, height: 0.9 },
   { id: 'granite-rock', name: 'Granite Rock', type: 'rock', color: '#77756f', scale: 1, width: 1, height: 1 },
-  { id: 'sandstone-rock', name: 'Sandstone Rock', type: 'rock', color: '#a96f49', scale: 1, width: 1.18, height: 0.82 },
+  { id: 'sandstone-rock', name: '사암', type: 'rock', color: '#a96f49', scale: 1, width: 1.18, height: 0.82 },
   { id: 'basalt-rock', name: 'Basalt Rock', type: 'rock', color: '#4f5558', scale: 1, width: 0.82, height: 1.22 },
   { id: 'oak-tree', name: 'Oak Tree', type: 'broadleaf', color: '#5f8d4e', scale: 1, width: 1.12, height: 0.94 },
   { id: 'birch-tree', name: 'Birch Tree', type: 'broadleaf', color: '#83a95d', scale: 1, width: 0.8, height: 1.16 },

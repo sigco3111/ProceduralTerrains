@@ -12,27 +12,27 @@ import { ColorInput, SliderCtl } from './controls.jsx';
 const COLOR_GROUPS = [
   {
     id: 'water',
-    label: 'Water',
+    label: '물',
     keys: ['deep', 'shallow', 'foam'],
   },
   {
     id: 'beach',
-    label: 'Beach',
+    label: '해변',
     keys: ['sand', 'dune'],
   },
   {
     id: 'vegetation',
-    label: 'Vegetation',
+    label: '식생',
     keys: ['dryGrass', 'grass', 'forest', 'jungle', 'swamp', 'tundra'],
   },
   {
     id: 'rock',
-    label: 'Rock',
+    label: '바위',
     keys: ['redRock', 'redRock2', 'rock', 'rockHi'],
   },
   {
     id: 'snow',
-    label: 'Snow',
+    label: '눈',
     keys: ['snow'],
   },
 ];
@@ -40,26 +40,26 @@ const COLOR_GROUPS = [
 const COLOR_LABELS = {
   deep: 'Deep Water',
   shallow: 'Shallow',
-  sand: 'Sand',
+  sand: '모래',
   dune: 'Dune',
   dryGrass: 'Dry Grass',
-  grass: 'Grass',
-  forest: 'Forest',
-  jungle: 'Jungle',
+  grass: '잔디',
+  forest: '숲',
+  jungle: '정글',
   swamp: 'Swamp',
-  tundra: 'Tundra',
+  tundra: '툰드라',
   redRock: 'Red Rock',
   redRock2: 'Red Rock B',
-  rock: 'Rock',
+  rock: '바위',
   rockHi: 'High Rock',
-  snow: 'Snow',
-  foam: 'Foam',
+  snow: '눈',
+  foam: '거품',
 };
 
 const TUNING_SCHEMA = [
   {
     key: 'paletteSaturation',
-    label: 'Saturation',
+    label: '채도',
     min: 0,
     max: 2,
     step: 0.05,
@@ -74,12 +74,12 @@ const TUNING_SCHEMA = [
   },
   {
     key: 'paletteContrast',
-    label: 'Contrast',
+    label: '대비',
     min: 0.5,
     max: 1.8,
     step: 0.05,
     digits: 2,
-    info: 'Adjust contrast between color transitions',
+    info: '색상 전환 간 대비 조정',
     icon: (
       <svg viewBox="0 0 16 16" fill="none">
         <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" />
@@ -326,9 +326,9 @@ export default function ColorPalettePanel({
               type="text"
               value={genSeed}
               onChange={(e) => handleSeedChange(e.target.value)}
-              placeholder="Seed"
+              placeholder="시드"
             />
-            <button type="button" className="icon-btn" onClick={randomizeSeed} title="Random seed">
+            <button type="button" className="icon-btn" onClick={randomizeSeed} title="난수 시드">
               <svg viewBox="0 0 16 16" fill="none">
                 <rect x="1.5" y="1.5" width="13" height="13" rx="2" stroke="currentColor" strokeWidth="1.2" />
                 <circle cx="5" cy="5" r="0.9" fill="currentColor" />
@@ -414,7 +414,7 @@ export default function ColorPalettePanel({
 
       {/* Import / Export */}
       <div className="palette-io">
-        <button type="button" className="action-btn" onClick={onExport} data-tooltip="Save the current custom planet styling to a JSON file">
+        <button type="button" className="action-btn" onClick={onExport} data-tooltip="현재 사용자 지정 행성 스타일을 JSON 파일로 저장">
           <svg viewBox="0 0 16 16" fill="none">
             <path d="M8 2v8M5 7l3 3 3-3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
             <path d="M3 13h10" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />

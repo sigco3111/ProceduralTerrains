@@ -34,7 +34,7 @@ export default function WorldPanel({ params, worldMode, onParam }) {
             )}
           />
           <SelectRow
-            label="Surface Detail"
+            label="표면 디테일"
             value={params.planetFaceGrid}
             options={[6, 8, 10, 12].map((v) => ({ value: v, label: `${v} × ${v} / face` }))}
             onChange={(v) => onParam('planetFaceGrid', parseFloat(v))}

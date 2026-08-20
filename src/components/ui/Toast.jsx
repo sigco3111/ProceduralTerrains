@@ -105,7 +105,7 @@ export default function NotificationCenter({ recent = [], notificationsIgnored =
               onClick={onToggleIgnore}
               aria-pressed={notificationsIgnored}
             >
-              {notificationsIgnored ? 'Enable logging' : 'Ignore'}
+              {notificationsIgnored ? 'Enable logging' : '무시'}
             </button>
           </div>
         </div>

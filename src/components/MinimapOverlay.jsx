@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 const MAP_MODES = [
-  ['color', 'Color'],
-  ['height', 'Height Map'],
+  ['color', '색상'],
+  ['height', '하이맵'],
   ['biome', 'Biome Map'],
   ['noise', 'Noise Map'],
   ['water', 'Water Mask'],
@@ -54,7 +54,7 @@ export default function MinimapOverlay({
   }, [mode, zoom, showChunkGrid, onConfigChange]);
 
   const modeLabel = useMemo(
-    () => MAP_MODES.find(([value]) => value === mode)?.[1] ?? 'Color',
+    () => MAP_MODES.find(([value]) => value === mode)?.[1] ?? '색상',
     [mode],
   );
 
@@ -125,8 +125,8 @@ export default function MinimapOverlay({
               type="button"
               className="minimap-toggle-btn"
               onClick={() => setCollapsed((value) => !value)}
-              title={collapsed ? 'Expand minimap' : 'Collapse minimap'}
-              aria-label={collapsed ? 'Expand minimap' : 'Collapse minimap'}
+              title={collapsed ? '미니맵 확장' : 'Collapse minimap'}
+              aria-label={collapsed ? '미니맵 확장' : 'Collapse minimap'}
             >
               {collapsed ? (
                 <svg viewBox="0 0 16 16" width="10" height="10" fill="none" aria-hidden>

@@ -11,10 +11,10 @@ export const CUSTOM_SURFACE_VARIANT_PREFIX = 'custom:v';
 export const SURFACE_LIBRARY_CHANGE_EVENT = 'terrain-surface-library-change';
 
 export const MAP_SLOT_LABELS = {
-  diffuse: 'Diffuse',
-  displacement: 'Displacement',
+  diffuse: '확산',
+  displacement: '변위',
   normalDX: 'Normal DX',
-  roughness: 'Roughness',
+  roughness: '거칠기',
   ao: 'AO',
 };
 

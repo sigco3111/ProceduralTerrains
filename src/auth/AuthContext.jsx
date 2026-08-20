@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
       setStatus(result.user ? 'authenticated' : 'guest');
       return result.user;
     } catch (error) {
-      if (error?.name === 'AbortError') return null;
+      if (error?.name === '중단 오류') return null;
       setUser(null);
       setStatus('unavailable');
       return null;

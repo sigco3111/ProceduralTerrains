@@ -54,7 +54,7 @@ import {
 import { applyGraphColorPreset, createBlankGraph, setGraphColorEnabled } from './engine/terrain/graph/GraphDocument.js';
 import { getWaterBaselineScene } from './engine/water/WaterBaseline.js';
 
-const MODE_LABEL = { studio: 'Tile', infinite: 'Infinite World', planet: 'Planet' };
+const MODE_LABEL = { studio: '타일', infinite: '무한 세계', planet: '행성' };
 const NODE_PANEL_IDS = ['planet', 'water', 'clouds', 'visuals', 'skybox', 'lighting', 'export', 'performance', 'debug'];
 const REAL_TERRAIN_PANEL_IDS = ['terrain', 'water', 'props', 'clouds', 'visuals', 'skybox', 'lighting', 'export', 'performance', 'history', 'debug'];
 const PerformanceOverlay = lazy(() => import('./components/perf/PerformanceOverlay.jsx'));
@@ -76,7 +76,7 @@ const loadManualLibraryHeight = () => {
 };
 
 const hex = (rgb) => colorToHex(Array.isArray(rgb) ? rgb : [0.5, 0.5, 0.5]);
-const yesNo = (value) => (value ? 'On' : 'Off');
+const yesNo = (value) => (value ? '켜짐' : '꺼짐');
 const num = (value, digits = 2, suffix = '') => {
   if (!Number.isFinite(value)) return '—';
   return `${Number(value).toFixed(digits)}${suffix}`;
@@ -100,9 +100,9 @@ const historyActionLabel = (beforeSnapshot, afterSnapshot) => {
     if (JSON.stringify(before.creatorTools) !== JSON.stringify(after.creatorTools)) return 'Edited creator tools';
     if (JSON.stringify(before.manualTerrain) !== JSON.stringify(after.manualTerrain)) return 'Edited manual terrain';
     if (JSON.stringify(before.terrainGraph) !== JSON.stringify(after.terrainGraph)) return 'Edited terrain graph';
-    if (before.timeOfDay !== after.timeOfDay) return 'Adjusted time of day';
-    if (JSON.stringify(before.perf) !== JSON.stringify(after.perf)) return 'Adjusted performance settings';
-    if (JSON.stringify(before.params) !== JSON.stringify(after.params)) return 'Adjusted terrain settings';
+    if (before.timeOfDay !== after.timeOfDay) return '시간대 조정됨';
+    if (JSON.stringify(before.perf) !== JSON.stringify(after.perf)) return '성능 설정 조정됨';
+    if (JSON.stringify(before.params) !== JSON.stringify(after.params)) return '지형 설정 조정됨';
   } catch { /* A generic label is still preferable to hiding a valid undo entry. */ }
   return 'Updated terrain';
 };
@@ -113,7 +113,7 @@ export default function App() {
   const minimapOverlayRef = useRef(null);
   const engineRef = useRef(null);
   const activeProjectRef = useRef(null);
-  const projectNameRef = useRef('Untitled terrain');
+  const projectNameRef = useRef('이름 없는 지형');
   const liveMetricsRef = useRef(null);
   if (!liveMetricsRef.current) {
     const count = DEFAULT_PARAMS.chunkCount;
@@ -222,7 +222,7 @@ export default function App() {
   const [settingsTarget, setSettingsTarget] = useState(null);
   const [webglError, setWebglError] = useState(null);
   const [activeProject, setActiveProject] = useState(null);
-  const [projectName, setProjectName] = useState('Untitled terrain');
+  const [projectName, setProjectName] = useState('이름 없는 지형');
   const [projectMode, setProjectMode] = useState('procedural');
   const [manualImportDialog, setManualImportDialog] = useState({
     open: false,
@@ -485,7 +485,7 @@ export default function App() {
   const setCurrentProject = useCallback((project) => {
     activeProjectRef.current = project;
     setActiveProject(project);
-    const nextName = project?.metadata?.name ?? 'Untitled terrain';
+    const nextName = project?.metadata?.name ?? '이름 없는 지형';
     projectNameRef.current = nextName;
     setProjectName(nextName);
   }, []);
@@ -499,11 +499,11 @@ export default function App() {
   const saveCurrentProject = useCallback(async (metadata = null) => {
     const eng = engineRef.current;
     const current = activeProjectRef.current;
-    const name = String(metadata?.name ?? projectNameRef.current ?? current?.metadata?.name ?? 'Untitled terrain').trim() || 'Untitled terrain';
+    const name = String(metadata?.name ?? projectNameRef.current ?? current?.metadata?.name ?? '이름 없는 지형').trim() || '이름 없는 지형';
     if (!eng) {
       const message = `Could not save ${name}: the terrain editor is not ready.`;
       showToast(message, 'error');
-      showPopup(message, { type: 'error', title: 'Save failed' });
+      showPopup(message, { type: 'error', title: '저장 실패' });
       return null;
     }
 
@@ -528,13 +528,13 @@ export default function App() {
       const saved = await projectStore.save(project);
       setCurrentProject(saved);
       showToast(`Saved ${saved.metadata.name}`, 'success');
-      showPopup(`${saved.metadata.name} was saved successfully.`, { type: 'success', title: 'Project saved' });
+      showPopup(`${saved.metadata.name} was saved successfully.`, { type: 'success', title: '프로젝트가 저장되었습니다' });
       return saved;
     } catch (saveError) {
       const detail = saveError instanceof Error ? saveError.message.trim() : '';
       const message = `Could not save ${name}${detail ? `: ${detail}` : '.'}`;
       showToast(message, 'error');
-      showPopup(message, { type: 'error', title: 'Save failed' });
+      showPopup(message, { type: 'error', title: '저장 실패' });
       return null;
     }
   }, [setCurrentProject, showPopup, showToast]);
@@ -552,7 +552,7 @@ export default function App() {
     return loadingRef.current.run('project-load', {
       blocking: true,
       label: `Loading ${name}…`,
-      detail: 'Preparing terrain…',
+      detail: '지형 준비 중…',
     }, async (update) => {
       blockingUpdateRef.current = update;
       const previousWorldMode = worldModeRef.current;
@@ -1039,7 +1039,7 @@ export default function App() {
     const label = MODE_LABEL[next] ?? next;
     if (!panelAvailable(activePanel, next)) setActivePanel(null);
 
-    return loading.run('mode', { blocking: true, label: `Switching to ${label} mode…`, detail: 'Preparing scene…' }, async (update) => {
+    return loading.run('mode', { blocking: true, label: `Switching to ${label} mode…`, detail: '씬 준비 중…' }, async (update) => {
       blockingUpdateRef.current = update;
       update({ detail: BUILD_STEP[next] ?? 'Building scene…' });
       // yield so the overlay paints the build message before the sync build

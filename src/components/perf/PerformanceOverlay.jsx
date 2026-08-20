@@ -64,10 +64,10 @@ export default function PerformanceOverlay({
   const [copied, setCopied] = useState('');
   if (!snapshot) {
     return (
-      <div className="perf-overlay perf-overlay-loading" role="dialog" aria-label="Performance overlay">
+      <div className="perf-overlay perf-overlay-loading" role="dialog" aria-label="성능 오버레이">
         <div className="perf-overlay-head">
           <span className="perf-title">Performance</span>
-          <button type="button" className="perf-x" onClick={onClose} aria-label="Close">✕</button>
+          <button type="button" className="perf-x" onClick={onClose} aria-label="닫기">✕</button>
         </div>
         <div className="perf-loading-body">
           <span className="perf-loading-dot" />
@@ -98,17 +98,17 @@ export default function PerformanceOverlay({
   const lod = diag?.lod?.counts || [];
 
   return (
-    <div className="perf-overlay" role="dialog" aria-label="Performance overlay">
+    <div className="perf-overlay" role="dialog" aria-label="성능 오버레이">
       <div className="perf-overlay-head">
         <span className="perf-title">Performance</span>
         <div className="perf-head-actions">
           <button type="button" className={`perf-chip${copied === 'text' ? ' ok' : ''}`} onClick={() => copy('text')}>
-            {copied === 'text' ? 'Copied' : 'Copy'}
+            {copied === 'text' ? '복사됨' : '복사'}
           </button>
           <button type="button" className={`perf-chip${copied === 'json' ? ' ok' : ''}`} onClick={() => copy('json')}>
-            {copied === 'json' ? 'Copied' : 'JSON'}
+            {copied === 'json' ? '복사됨' : 'JSON'}
           </button>
-          <button type="button" className="perf-x" onClick={onClose} aria-label="Close">✕</button>
+          <button type="button" className="perf-x" onClick={onClose} aria-label="닫기">✕</button>
         </div>
       </div>
 
@@ -149,7 +149,7 @@ export default function PerformanceOverlay({
             />
           </GraphCard>
 
-          <GraphCard label="Frame time" hint="CPU ms">
+          <GraphCard label="프레임 시간" hint="CPU ms">
             <PerfSparkline
               data={history?.frameMs}
               color="var(--accent)"
@@ -158,12 +158,12 @@ export default function PerformanceOverlay({
               maxY={Math.max(33, ...(history?.frameMs || []))}
               reference={16.67}
               referenceLabel="16.7 ms"
-              unit=" ms"
+              unit=" 밀리초"
             />
           </GraphCard>
 
           <div className="perf-graph-duo">
-            <GraphCard label="Draw calls">
+            <GraphCard label="드로우 콜">
               <PerfSparkline
                 data={history?.drawCalls}
                 color="var(--accent)"
@@ -171,7 +171,7 @@ export default function PerformanceOverlay({
                 minY={0}
               />
             </GraphCard>
-            <GraphCard label="Triangles" hint="×1000">
+            <GraphCard label="삼각형" hint="×1000">
               <PerfSparkline
                 data={history?.triangles}
                 color="var(--text-muted)"
@@ -186,30 +186,30 @@ export default function PerformanceOverlay({
         <Section id="summary" title="Summary" collapsed={collapsed.summary} onToggle={onToggleSection}>
           <Row label="FPS" value={fps} warn={fps > 0 && fps < 45} />
           <Row label="Avg FPS" value={snapshot.fpsAvg} />
-          <Row label="Frame" value={fmtMs(frame?.avg)} warn={frame?.avg > 22} />
+          <Row label="프레임" value={fmtMs(frame?.avg)} warn={frame?.avg > 22} />
           <Row label="Frame min/max" value={`${fmtMs(frame?.min)} / ${fmtMs(frame?.max)}`} />
-          <Row label="Mode" value={diag?.mode || '–'} />
-          <Row label="State" value={diag?.state || '–'} />
-          <Row label="Quality" value={diag?.qualityPreset || '–'} />
+          <Row label="최빈값" value={diag?.mode || '–'} />
+          <Row label="상태" value={diag?.state || '–'} />
+          <Row label="품질 우선" value={diag?.qualityPreset || '–'} />
           <Row label="Pixel ratio" value={diag?.pixelRatio?.toFixed(2) ?? '–'} warn={diag?.pixelRatio > 2.5} />
           <Row label="Render size" value={diag?.drawingBuffer ? `${diag.drawingBuffer.w}×${diag.drawingBuffer.h}` : '–'} />
-          <Row label="Camera" value={cam ? `${cam.x.toFixed(0)}, ${cam.y.toFixed(0)}, ${cam.z.toFixed(0)}` : '–'} />
+          <Row label="카메라" value={cam ? `${cam.x.toFixed(0)}, ${cam.y.toFixed(0)}, ${cam.z.toFixed(0)}` : '–'} />
         </Section>
 
         <Section id="rendering" title="Rendering" collapsed={collapsed.rendering} onToggle={onToggleSection}>
           {render ? (
             <>
-              <Row label="Draw calls" value={render.calls} warn={render.calls > 1500} />
-              <Row label="Triangles" value={fmtNum(render.triangles)} warn={render.triangles > 3e6} />
-              <Row label="Points" value={render.points} />
+              <Row label="드로우 콜" value={render.calls} warn={render.calls > 1500} />
+              <Row label="삼각형" value={fmtNum(render.triangles)} warn={render.triangles > 3e6} />
+              <Row label="점들" value={render.points} />
               <Row label="Lines" value={render.lines} />
-              <Row label="Geometries" value={render.geometries} />
-              <Row label="Textures" value={render.textures} warn={render.textures > 120} />
+              <Row label="지오메트리" value={render.geometries} />
+              <Row label="텍스처" value={render.textures} warn={render.textures > 120} />
               <Row label="Programs" value={render.programs} />
-              <Row label="Shadows" value={diag?.shadowsEnabled ? 'on' : 'off'} />
+              <Row label="그림자" value={diag?.shadowsEnabled ? 'on' : 'off'} />
               <Row label="Underwater pass" value={diag?.postProcessing?.underwater ? 'active' : 'inactive'} />
             </>
-          ) : <Row label="Renderer" value="collecting…" />}
+          ) : <Row label="렌더러" value="collecting…" />}
         </Section>
 
         <Section id="timing" title="Frame timing (CPU)" collapsed={collapsed.timing} onToggle={onToggleSection}>
@@ -220,7 +220,7 @@ export default function PerformanceOverlay({
 
         <Section id="gpu" title="GPU / Renderer" collapsed={collapsed.gpu} onToggle={onToggleSection}>
           <Row label="Renderer backend" value={diag?.renderer?.requestedBackendLabel || 'â€“'} />
-          <Row label="Active renderer" value={diag?.renderer?.activeBackendLabel || 'â€“'} warn={diag?.renderer?.reloadRequired} />
+          <Row label="활성 렌더러" value={diag?.renderer?.activeBackendLabel || 'â€“'} warn={diag?.renderer?.reloadRequired} />
           <Row label="GPU preference" value={diag?.renderer?.requestedGpuPreferenceLabel || 'â€“'} />
           <Row label="Applied preference" value={diag?.renderer?.activeGpuPreferenceLabel || 'â€“'} warn={diag?.renderer?.reloadRequired} />
           <Row label="Detected GPU" value={diag?.renderer?.capabilities?.detectedGpu || diag?.gpuName || 'â€“'} warn={diag?.renderer?.capabilities?.gpuInfoAvailable === false} />
@@ -229,13 +229,13 @@ export default function PerformanceOverlay({
             <>
               <Row label="Frame GPU" value={fmtMs(gpu.frameMs)} />
               <Row label="Per-pass" value="whole-frame only" />
-              {gpu.disjoint && <Row label="Note" value="disjoint — result unreliable" warn />}
+              {gpu.disjoint && <Row label="메모" value="disjoint — result unreliable" warn />}
             </>
           ) : <Row label="GPU timing" value="unavailable on this browser/device" />}
           {diag?.renderer?.reloadRequired && <Row label="Apply required" value="reload renderer" warn />}
         </Section>
 
-        <Section id="memory" title="Memory" collapsed={collapsed.memory} onToggle={onToggleSection}>
+        <Section id="memory" title="메모리" collapsed={collapsed.memory} onToggle={onToggleSection}>
           {memory && memory.supported ? (
             <>
               <Row label="JS heap used" value={mb(memory.usedJSHeap)} warn={memory.usedJSHeap / memory.jsHeapLimit > 0.85} />
@@ -243,11 +243,11 @@ export default function PerformanceOverlay({
               <Row label="JS heap limit" value={mb(memory.jsHeapLimit)} />
             </>
           ) : <Row label="Memory API" value="unavailable" />}
-          <Row label="Textures" value={render?.textures ?? '–'} />
-          <Row label="Geometries" value={render?.geometries ?? '–'} />
+          <Row label="텍스처" value={render?.textures ?? '–'} />
+          <Row label="지오메트리" value={render?.geometries ?? '–'} />
         </Section>
 
-        <Section id="loading" title="Loading" collapsed={collapsed.loading} onToggle={onToggleSection}>
+        <Section id="loading" title="불러오는 중" collapsed={collapsed.loading} onToggle={onToggleSection}>
           {tasks && tasks.length ? tasks.map((t) => (
             <Row
               key={t.id}
@@ -258,13 +258,13 @@ export default function PerformanceOverlay({
           )) : <Row label="No active tasks" value="idle" />}
         </Section>
 
-        <Section id="terrain" title="Terrain" collapsed={collapsed.terrain} onToggle={onToggleSection}>
+        <Section id="terrain" title="지형" collapsed={collapsed.terrain} onToggle={onToggleSection}>
           {diag && renderTerrain(diag)}
         </Section>
 
         <Section id="culling" title="Culling & LOD" collapsed={collapsed.culling} onToggle={onToggleSection}>
           <Row label="Total chunks" value={cull.total ?? '–'} />
-          <Row label="Visible" value={cull.visible ?? '–'} />
+          <Row label="표시됨" value={cull.visible ?? '–'} />
           <Row label="Culled" value={cull.culled ?? '–'} />
           {lod.map((c, i) => <Row key={i} label={`LOD${i}`} value={c} />)}
         </Section>
@@ -275,26 +275,26 @@ export default function PerformanceOverlay({
               <Row label="Quality tier" value={diag.props.quality ?? '–'} />
               <Row label="Grass / flowers" value={`${fmtNum(diag.props.instances?.grass || 0)} / ${fmtNum(diag.props.instances?.flowers || 0)}`} />
               <Row label="Rocks / trees" value={`${fmtNum(diag.props.instances?.rocks || 0)} / ${fmtNum(diag.props.instances?.trees || 0)}`} />
-              <Row label="Draw calls" value={diag.props.drawCalls ?? 0} warn={diag.props.drawCalls > 9} />
-              <Row label="Triangles" value={fmtNum(diag.props.triangles || 0)} warn={diag.props.triangles > 65000} />
+              <Row label="드로우 콜" value={diag.props.drawCalls ?? 0} warn={diag.props.drawCalls > 9} />
+              <Row label="삼각형" value={fmtNum(diag.props.triangles || 0)} warn={diag.props.triangles > 65000} />
               <Row label="Sectors / queued" value={`${diag.props.sectors || 0} / ${diag.props.queuedSectors || 0}`} />
               <Row label="Last update" value={fmtMs(diag.props.buildMs)} warn={diag.props.buildMs > 8} />
-              <Row label="Surface readbacks" value={diag.props.surfaceReadbacks || 0} />
+              <Row label="표면 읽기" value={diag.props.surfaceReadbacks || 0} />
             </>
-          ) : <Row label="Props" value="unavailable" />}
+          ) : <Row label="소품" value="unavailable" />}
         </Section>
 
-        <Section id="clouds" title="Clouds" collapsed={collapsed.clouds} onToggle={onToggleSection}>
+        <Section id="clouds" title="구름" collapsed={collapsed.clouds} onToggle={onToggleSection}>
           {diag?.clouds && (
             <>
-              <Row label="Enabled" value={diag.clouds.enabled ? 'yes' : 'no'} />
-              <Row label="Mode" value={diag.clouds.mode} />
-              <Row label="Layers" value={diag.clouds.layers} />
+              <Row label="활성화됨" value={diag.clouds.enabled ? 'yes' : 'no'} />
+              <Row label="최빈값" value={diag.clouds.mode} />
+              <Row label="레이어" value={diag.clouds.layers} />
               <Row label="Raymarch steps" value={diag.clouds.steps} warn={diag.clouds.steps > 64} />
               <Row label="Light steps" value={diag.clouds.lightSteps} />
-              <Row label="Octaves" value={`${diag.clouds.octaves} + ${diag.clouds.detailOctaves} detail`} />
-              <Row label="Coverage" value={fmtMaybe(diag.clouds.coverage)} />
-              <Row label="Density" value={fmtMaybe(diag.clouds.density)} />
+              <Row label="옥타브" value={`${diag.clouds.octaves} + ${diag.clouds.detailOctaves} detail`} />
+              <Row label="범위" value={fmtMaybe(diag.clouds.coverage)} />
+              <Row label="밀도" value={fmtMaybe(diag.clouds.density)} />
               <Row label="Wind / evolve" value={`${fmtMaybe(diag.clouds.windSpeed)} / ${fmtMaybe(diag.clouds.evolveSpeed)}`} />
               <Row label="Culling" value={diag.clouds.cullingMode} />
               <Row label="LOD" value={diag.clouds.lod} />
@@ -303,17 +303,17 @@ export default function PerformanceOverlay({
           )}
         </Section>
 
-        <Section id="water" title="Water" collapsed={collapsed.water} onToggle={onToggleSection}>
+        <Section id="water" title="물" collapsed={collapsed.water} onToggle={onToggleSection}>
           {diag?.water && (
             <>
-              <Row label="Enabled" value={diag.water.enabled ? 'yes' : 'no'} />
-              <Row label="Mode" value={diag.water.mode} />
-              <Row label="Quality" value={diag.water.quality} />
-              <Row label="Reflection" value={fmtMaybe(diag.water.reflection)} />
-              <Row label="Detail" value={fmtMaybe(diag.water.detail)} />
-              <Row label="Waves" value={fmtMaybe(diag.water.waves)} />
-              <Row label="Sea level" value={fmtMaybe(diag.water.seaLevel)} />
-              <Row label="Underwater" value={diag.water.underwater ? 'active' : 'inactive'} />
+              <Row label="활성화됨" value={diag.water.enabled ? 'yes' : 'no'} />
+              <Row label="최빈값" value={diag.water.mode} />
+              <Row label="품질 우선" value={diag.water.quality} />
+              <Row label="반사" value={fmtMaybe(diag.water.reflection)} />
+              <Row label="디테일" value={fmtMaybe(diag.water.detail)} />
+              <Row label="물결" value={fmtMaybe(diag.water.waves)} />
+              <Row label="해수면" value={fmtMaybe(diag.water.seaLevel)} />
+              <Row label="수중" value={diag.water.underwater ? 'active' : 'inactive'} />
               {diag.water.performanceCost && (() => {
                 const cost = diag.water.performanceCost;
                 const surface = cost.surface || {};
@@ -322,15 +322,15 @@ export default function PerformanceOverlay({
                 return (
                   <>
                     <Row
-                      label="Surface geometry"
+                      label="표면 지오메트리"
                       value={`${surface.mode || '–'} · ${fmtNum(surface.vertices || 0)} verts · ${fmtNum(surface.triangles || 0)} tris`}
                     />
                     <Row
-                      label="Surface CPU submit"
+                      label="표면 CPU 제출"
                       value={fmtMs(surface.surfaceSubmitAvgMs)}
                     />
                     <Row
-                      label="Surface GPU"
+                      label="표면 GPU"
                       value={gpu?.supported
                         ? `${fmtMs(gpu.frameMs)} whole frame`
                         : 'whole-frame timer unavailable'}
@@ -358,19 +358,19 @@ export default function PerformanceOverlay({
           )}
         </Section>
 
-        <Section id="underwater" title="Underwater" collapsed={collapsed.underwater} onToggle={onToggleSection}>
+        <Section id="underwater" title="수중" collapsed={collapsed.underwater} onToggle={onToggleSection}>
           {diag?.underwater && (
             <>
-              <Row label="Active" value={diag.underwater.active ? 'yes' : 'no'} />
-              <Row label="Mode" value={diag.underwater.mode} />
+              <Row label="활성" value={diag.underwater.active ? 'yes' : 'no'} />
+              <Row label="최빈값" value={diag.underwater.mode} />
               {diag.underwater.fellBackToLite && (
                 <Row label="Requested" value={`${diag.underwater.requestedMode} → lite`} />
               )}
-              <Row label="Blend" value={fmtMaybe(diag.underwater.blend, 2)} />
+              <Row label="혼합" value={fmtMaybe(diag.underwater.blend, 2)} />
               <Row label="Depth below" value={fmtMaybe(diag.underwater.depth, 1)} />
-              <Row label="Caustics" value={diag.underwater.causticsEnabled ? 'on' : 'off'} />
+              <Row label="반사광" value={diag.underwater.causticsEnabled ? 'on' : 'off'} />
               <Row label="Light shafts" value={diag.underwater.lightShaftsEnabled ? 'on' : 'off'} />
-              <Row label="Particles" value={diag.underwater.particlesEnabled ? 'on' : 'off'} />
+              <Row label="파티클" value={diag.underwater.particlesEnabled ? 'on' : 'off'} />
               <Row label="Cost estimate" value={diag.underwater.costEstimate} />
               {diag.underwater.postProcessApplies === false && (
                 <Row label="Post-process" value="n/a (planet)" />
@@ -438,12 +438,12 @@ function renderTerrain(diag) {
   }
   return (
     <>
-      <Row label="Resolution" value={fmtMaybe(t.resolution)} />
+      <Row label="해상도" value={fmtMaybe(t.resolution)} />
       <Row label="Board size" value={fmtMaybe(t.boardSize)} />
-      <Row label="Tiles" value={fmtMaybe(t.tiles)} />
+      <Row label="타일" value={fmtMaybe(t.tiles)} />
       <Row label="Height scale" value={fmtMaybe(t.heightScale)} />
-      <Row label="Octaves" value={fmtMaybe(t.octaves)} />
-      <Row label="Noise layers" value={fmtMaybe(t.noiseLayers)} />
+      <Row label="옥타브" value={fmtMaybe(t.octaves)} />
+      <Row label="노이즈 레이어" value={fmtMaybe(t.noiseLayers)} />
       <Row label="Baked height tex" value={t.bakedHeightTex ? 'yes' : 'no'} />
       <Row label="Last bake" value={t.lastBakeMs != null ? `${t.lastBakeMs.toFixed(1)} ms` : '–'} />
     </>
