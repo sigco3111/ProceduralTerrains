@@ -26,7 +26,7 @@ const PROP_OPTIONS = [
 ];
 
 const SCULPT_DIRECTION_OPTIONS = [
-  { value: 'raise', label: 'Raise' },
+  { value: 'raise', label: '올리기' },
   { value: 'lower', label: '더 낮음' },
 ];
 
@@ -43,9 +43,9 @@ const defs = {
   brushScatter: { label: '산포 양', min: 0.05, max: 1, step: 0.01, digits: 2 },
   brushSpacing: { label: '스트로크 간격', min: 0.08, max: 1, step: 0.01, digits: 2 },
   targetHeight: { label: '타겟 높이', min: -120, max: 900, step: 1, digits: 0, unit: ' u' },
-  riverDepth: { label: 'River Depth', min: 1, max: 220, step: 1, digits: 0, unit: ' u' },
+  riverDepth: { label: '강 깊이', min: 1, max: 220, step: 1, digits: 0, unit: ' u' },
   riverBankSoftness: { label: '둑 부드러움', min: 0.05, max: 1, step: 0.01, digits: 2 },
-  layerOpacity: { label: 'Layer Opacity', min: 0, max: 1, step: 0.01, digits: 2 },
+  layerOpacity: { label: '레이어 불투명도', min: 0, max: 1, step: 0.01, digits: 2 },
 };
 
 // Which paint tab a given PaintModeManager `tool` value belongs to, so

@@ -90,7 +90,7 @@ export const CURATED_LOCATIONS = [
     bbox: { minLat: 43.58, maxLat: 43.92, minLon: -110.98, maxLon: -110.62 }, zoom: 11 },
   { id: 'crater-lake', name: '분화구 호수', blurb: '캘데라, 오리건 USA',
     bbox: { minLat: 42.83, maxLat: 43.07, minLon: -122.27, maxLon: -121.97 }, zoom: 11 },
-  { id: 'yosemite', name: '요세미티 계곡', blurb: 'Sierra Nevada, California USA',
+  { id: 'yosemite', name: '요세미티 계곡', blurb: '캘리포니아 시에라네바다, 미국',
     bbox: { minLat: 37.62, maxLat: 37.88, minLon: -119.70, maxLon: -119.40 }, zoom: 11 },
   { id: 'big-island', name: '하와이 (빅 아일랜드)', blurb: '마우나로아 & 마우나케아',
     bbox: { minLat: 19.30, maxLat: 19.90, minLon: -155.90, maxLon: -155.20 }, zoom: 10 },
@@ -112,7 +112,7 @@ export const CURATED_LOCATIONS = [
     bbox: { minLat: 63.92, maxLat: 64.10, minLon: -19.20, maxLon: -18.95 }, zoom: 11 },
   { id: 'askja', name: '아스캬', blurb: '캘데라 & 용암 사막, 아이슬란드 고원',
     bbox: { minLat: 65.00, maxLat: 65.12, minLon: -16.85, maxLon: -16.65 }, zoom: 11 },
-  { id: 'snaefellsjokull', name: 'Snæfellsjökull', blurb: 'Glacier-capped volcano, W Iceland',
+  { id: 'snaefellsjokull', name: 'Snæfellsjökull', blurb: '서부 아이슬란드 빙하 화산',
     bbox: { minLat: 64.74, maxLat: 64.86, minLon: -23.88, maxLon: -23.70 }, zoom: 11 },
 
   // --- New Zealand (geothermal & alpine) ---
@@ -126,7 +126,7 @@ export const CURATED_LOCATIONS = [
   // --- Patagonia ---
   { id: 'fitz-roy', name: '몬테 피츠로이', blurb: '화강암 첨탑, 파타고니아, 아르헨티나',
     bbox: { minLat: -49.36, maxLat: -49.20, minLon: -73.10, maxLon: -72.92 }, zoom: 11 },
-  { id: 'torres-del-paine', name: '토레스 델 파이네', blurb: 'Massif & lakes, Chilean Patagonia',
+  { id: 'torres-del-paine', name: '토레스 델 파이네', blurb: '산괴 및 호수, 칠레 파타고니아',
     bbox: { minLat: -51.10, maxLat: -50.90, minLon: -73.10, maxLon: -72.80 }, zoom: 11 },
 
   // --- Other famous ranges & volcanoes ---

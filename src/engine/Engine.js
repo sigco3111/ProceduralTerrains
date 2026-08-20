@@ -1498,7 +1498,7 @@ export class Engine {
    */
   async loadRealWorldLocation(locationId, { onProgress } = {}) {
     const loc = getLocation(locationId);
-    if (!loc) { this.cb.onToast('Unknown location.'); return false; }
+    if (!loc) { this.cb.onToast('알 수 없는 위치.'); return false; }
     return this._loadRealWorldHeightmap(loc, { onProgress });
   }
 
@@ -1633,7 +1633,7 @@ export class Engine {
       console.error(e);
       const error = e?.name === '중단 오류'
         ? '불러오기 취소됨.'
-        : 'Could not load elevation data (network or CORS blocked).';
+        : '고도 데이터를 불러올 수 없음 (네트워크 또는 CORS 차단).';
       this._setImportState('height', { loading: false, error });
       this._setImportState('imagery', { loading: false });
       this.cb.onToast(error);
@@ -2411,7 +2411,7 @@ export class Engine {
         ? '새 노드 지형'
         : this.projectMode === 'manual'
           ? '새 수동 지형'
-          : 'New procedural terrain';
+          : '새 프로시저럴 지형';
       this.cb.onToast(label);
     }
   }
@@ -2638,7 +2638,7 @@ export class Engine {
   importPlanetStyleJSON(json) {
     const parsed = parsePlanetStyleJSON(json);
     if (!parsed || !this.planetStyle.importJSON({ planetStyle: parsed })) {
-      this.cb.onToast('Invalid planet style file');
+      this.cb.onToast('잘못된 행성 스타일 파일');
       return;
     }
     this._notifyPlanetStyle();
@@ -2703,10 +2703,10 @@ export class Engine {
         updated = true;
       } else if (value > 0.05) {
         next.layers.push(makeLayer('ridged', {
-          name: 'Ridged Mountains (Auto)',
+          name: '능선 산맥 (자동)',
           strength: value,
         }));
-        toast = 'Ridged Mountains layer added to stack';
+        toast = '스택에 능선 산맥 레이어 추가됨';
         updated = true;
       }
     } else {
@@ -3170,7 +3170,7 @@ export class Engine {
       this._markTerrainFieldDirty();
       this._applyUniforms();
     }
-    if (!silent) this.cb.onToast?.(next === 'graph' ? '노드가 이제 타일 지형을 구동합니다' : 'Classic Noise Stack restored');
+    if (!silent) this.cb.onToast?.(next === 'graph' ? '노드가 이제 타일 지형을 구동합니다' : '클래식 노이즈 스택 복원됨');
   }
 
   setGraphView(view) {
@@ -4920,7 +4920,7 @@ export class Engine {
         `[boot] safe placeholder ${(paintMs ?? 0).toFixed(0)}ms; `
         + `elapsed ${(performance.now() - startedAt).toFixed(0)}ms`
       );
-      this.cb.onStatus('Loading terrain detail…', true);
+      this.cb.onStatus('지형 디테일 불러오는 중…', true);
     } catch (error) {
       console.warn('초기 안전 프레임 실패', error);
     } finally {
@@ -4972,7 +4972,7 @@ export class Engine {
     await yieldFrame();
     await yieldFrame();
     if (this._disposed || !this._bootShaderPending) return;
-    this._bgWorkStart('boot-shader', 'Finishing graphics initialization…');
+    this._bgWorkStart('boot-shader', '그래픽 초기화 마무리 중…');
     const targetSnapshot = this._resolveCameraCompileTarget();
     let result = null;
     try {
@@ -5041,7 +5041,7 @@ export class Engine {
     this.studioCloud?.setInScene(false);
     this._needsRender = true;
     this.cb.onToast?.('그래픽 초기화 실패; 안전 모드로 실행 중');
-    this._completeBootIfInteractiveReady('degraded graphics mode');
+    this._completeBootIfInteractiveReady('성능 우선 그래픽 모드');
   }
 
 
@@ -5859,7 +5859,7 @@ export class Engine {
     } : null;
     if (!materialReady) {
       if (compileFailure) {
-        console.warn('Deferred water warmup failed', compileFailure);
+        console.warn('지연된 물 워밍업 실패', compileFailure);
         this._scheduleWaterWarmRetry(null, 1000);
       } else {
         console.warn(
@@ -6547,7 +6547,7 @@ export class Engine {
       }
       this._onErosionChanged();
       onProgress?.(1, 'done');
-      this.cb.onToast?.(out.backend === 'webgpu' ? 'Erosion baked (WebGPU compute).' : '침식 베이크됨.');
+      this.cb.onToast?.(out.backend === 'webgpu' ? '침식 베이크됨 (WebGPU 컴퓨트).' : '침식 베이크됨.');
       return true;
     } catch (err) {
       this.cb.onToast?.(`Erosion failed: ${err?.message || err}`);
@@ -6883,7 +6883,7 @@ export class Engine {
         sampler: this._getPlanetSampler(),
         config: { groundSampleSpread: quadSize },
       });
-      this.cb.onToast('Planet walk — click to lock mouse · Space jump · Shift run');
+      this.cb.onToast('행성 산책 — 클릭으로 마우스 잠금 · Space 점프 · Shift 달리기');
     } else {
       if (this.player) { this.player.dispose(); this.player = null; }
       // restore the orbit camera at a sensible distance
@@ -6923,7 +6923,7 @@ export class Engine {
   }
 
   clearPaintLayers() {
-    this.projectHistory?.createSnapshot('Before clearing paint', { automatic: true });
+    this.projectHistory?.createSnapshot('페인트 초기화 전', { automatic: true });
     this.paintMode?.clear();
     this._markTerrainFieldDirty();
   }
@@ -7277,7 +7277,7 @@ export class Engine {
       if (!this._publishHeightCachePreparation(cachePreparation)) return;
       success = true;
     } catch (error) {
-      console.warn('Infinite shader warmup failed', error);
+      console.warn('무한 셰이더 워밍업 실패', error);
     } finally {
       this._discardHeightCachePreparation(cachePreparation);
       this._worldWarmRetryCount ||= { infinite: 0, planet: 0 };
@@ -7369,7 +7369,7 @@ export class Engine {
     Promise.resolve(rebuildJob).then((result) => {
       if (this._disposed || this.worldMode !== 'studio') return;
       if (!result?.error) this._renderMinimapBase();
-      this.cb.onStatus(result?.error ? 'Studio terrain unavailable' : '준비', false);
+      this.cb.onStatus(result?.error ? '스튜디오 지형 사용 불가' : '준비', false);
     });
   }
 

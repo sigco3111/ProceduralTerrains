@@ -60,7 +60,7 @@ export default function SettingsSearchOverlay({
       <button
         type="button"
         className="settings-search-backdrop"
-        aria-label="Close settings search"
+        aria-label="설정 검색 닫기"
         onClick={onClose}
       />
       <div className="settings-search-shell" role="dialog" aria-modal="false" aria-label="설정 검색">

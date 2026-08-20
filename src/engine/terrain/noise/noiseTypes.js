@@ -228,7 +228,7 @@ export const NOISE_TYPES = [
     desc: '날카로운 능선과 산맥, 알파인 지형, 캐년 가장자리.',
     scaleKey: 'scale', paKeys: ['persistence', 'lacunarity', 'sharpness'], pbKeys: ['erosion', 'warp'],
     params: [P_SCALE, P_OCT, P_PERS, P_LAC,
-      { key: 'sharpness', label: 'Ridge Sharpness', min: 0.5, max: 4, step: 0.05, default: 2.0, digits: 2 },
+      { key: 'sharpness', label: '능선 선명도', min: 0.5, max: 4, step: 0.05, default: 2.0, digits: 2 },
       P_EROSION, P_SELF_WARP],
     body2d: (l) => ridgedLoop2(clampOct(l.params.octaves)),
     body3d: (l) => ridgedLoop3(clampOct(l.params.octaves)),
@@ -240,7 +240,7 @@ export const NOISE_TYPES = [
   {
     id: 'billow', label: '물결', category: 'height',
     defaultBlend: 'add', defaultStrength: 0.4,
-    desc: 'Soft rounded noise for hills, soft dunes, and organic or cloud-like surfaces.',
+    desc: '언덕, 부드러운 사구, 유기적 또는 구름 같은 표면을 위한 부드러운 둥근 노이즈.',
     scaleKey: 'scale', paKeys: ['persistence', 'lacunarity'], pbKeys: ['erosion', 'warp'],
     params: [P_SCALE, P_OCT, P_PERS, P_LAC, P_EROSION, P_SELF_WARP],
     body2d: (l) => billowLoop2(clampOct(l.params.octaves)),
@@ -268,7 +268,7 @@ export const NOISE_TYPES = [
   {
     id: 'white', label: '�색 / 랜덤', category: 'height',
     defaultBlend: 'add', defaultStrength: 0.06,
-    desc: 'Fine random detail for micro variation, roughness, and mask breakup.',
+    desc: '미세 변화, 거칠기, 마스크 분리를 위한 정밀한 랜덤 디테일.',
     scaleKey: 'scale', paKeys: ['smoothing'], pbKeys: [],
     params: [{ ...P_SCALE, default: 8.0 },
       { key: 'smoothing', label: '스무딩', min: 0, max: 1, step: 0.01, default: 0.0, digits: 2 }],
@@ -319,7 +319,7 @@ export const NOISE_TYPES = [
   {
     id: 'crater', label: '분화구', category: 'height',
     defaultBlend: 'add', defaultStrength: 0.5,
-    desc: 'Impact craters for moons, asteroids, dead planets, and sci-fi terrain.',
+    desc: '달, 소행성, 죽은 행성, SF 지형을 위한 충돌 분화구.',
     scaleKey: 'scale', paKeys: ['density', 'depth', 'rim', 'rimWidth'], pbKeys: [],
     params: [{ ...P_SCALE, default: 1.5 },
       { key: 'density', label: '밀도', min: 0, max: 1, step: 0.01, default: 0.55, digits: 2 },
@@ -395,7 +395,7 @@ export const NOISE_TYPES = [
 
   // ---------------------------------------------------------------- terrace (modifier)
   {
-    id: 'terrace', label: 'Terrace', category: 'modifier', badge: 'MOD',
+    id: 'terrace', label: '테라스', category: 'modifier', badge: 'MOD',
     defaultBlend: 'replace', defaultStrength: 1.0,
     desc: 'Quantizes the accumulated height into stepped terraces, plateaus, cliffs, and strata.',
     modKind: 'height',

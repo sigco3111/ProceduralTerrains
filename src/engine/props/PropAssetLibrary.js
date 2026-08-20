@@ -5,24 +5,24 @@ export const PROP_ASSET_TYPES = Object.freeze([
   { id: 'flower', label: '꽃' },
   { id: 'rock', label: '바위' },
   { id: 'broadleaf', label: '활엽수' },
-  { id: 'conifer', label: 'Conifer trees' },
+  { id: 'conifer', label: '침엽수' },
 ]);
 
 export const PROP_ASSET_PRESETS = Object.freeze([
   { id: 'meadow-grass', name: '들판 풀', type: 'grass', color: '#79a95b', scale: 1, width: 1.08, height: 0.9 },
   { id: 'wild-grass', name: '야생 풀', type: 'grass', color: '#91a85b', scale: 1, width: 0.9, height: 1.28 },
   { id: 'dry-grass', name: '마른 풀', type: 'grass', color: '#b09a58', scale: 1, width: 0.98, height: 1.05 },
-  { id: 'wildflowers', name: 'Wildflowers', type: 'flower', color: '#e8899e', scale: 1, width: 1, height: 1 },
+  { id: 'wildflowers', name: '야생화', type: 'flower', color: '#e8899e', scale: 1, width: 1, height: 1 },
   { id: 'lavender', name: '라벤더', type: 'flower', color: '#a58ada', scale: 1, width: 0.82, height: 1.2 },
   { id: 'golden-flowers', name: '황금 꽃', type: 'flower', color: '#e6bd59', scale: 1, width: 1.05, height: 0.9 },
   { id: 'granite-rock', name: '화강암', type: 'rock', color: '#77756f', scale: 1, width: 1, height: 1 },
   { id: 'sandstone-rock', name: '사암', type: 'rock', color: '#a96f49', scale: 1, width: 1.18, height: 0.82 },
   { id: 'basalt-rock', name: '현무암', type: 'rock', color: '#4f5558', scale: 1, width: 0.82, height: 1.22 },
   { id: 'oak-tree', name: '참나무', type: 'broadleaf', color: '#5f8d4e', scale: 1, width: 1.12, height: 0.94 },
-  { id: 'birch-tree', name: 'Birch Tree', type: 'broadleaf', color: '#83a95d', scale: 1, width: 0.8, height: 1.16 },
-  { id: 'autumn-tree', name: 'Autumn Tree', type: 'broadleaf', color: '#b46c3d', scale: 1, width: 1.04, height: 1 },
+  { id: 'birch-tree', name: '자작나무', type: 'broadleaf', color: '#83a95d', scale: 1, width: 0.8, height: 1.16 },
+  { id: 'autumn-tree', name: '가을나무', type: 'broadleaf', color: '#b46c3d', scale: 1, width: 1.04, height: 1 },
   { id: 'pine-tree', name: '소나무', type: 'conifer', color: '#446f51', scale: 1, width: 0.88, height: 1.12 },
-  { id: 'spruce-tree', name: 'Spruce Tree', type: 'conifer', color: '#385f4c', scale: 1, width: 1.04, height: 0.98 },
+  { id: 'spruce-tree', name: '가문비나무', type: 'conifer', color: '#385f4c', scale: 1, width: 1.04, height: 0.98 },
   { id: 'snow-conifer', name: '눈 침엽수', type: 'conifer', color: '#73918a', scale: 1, width: 0.96, height: 1.08 },
 ]);
 

@@ -20,7 +20,7 @@ const POST_SLIDERS = [
 ];
 
 const SKY_SLIDERS = [
-  slider('visualsSkyIntensity', 'HDR Sky Intensity', 0.4, 2.2, 0.02, { digits: 2 }),
+  slider('visualsSkyIntensity', 'HDR 하늘 강도', 0.4, 2.2, 0.02, { digits: 2 }),
   slider('visualsSunGlow', '태양 발광', 0, 2.2, 0.02, { digits: 2 }),
   slider('visualsHorizonGlow', '지평선 글로우', 0, 1.4, 0.02, { digits: 2 }),
 ];
@@ -36,14 +36,14 @@ const TERRAIN_SLIDERS = [
 
 const SHORE_SLIDERS = [
   slider('visualsFoamBreakup', '거품 해체', 0, 1, 0.02, { digits: 2 }),
-  slider('visualsWetSandRange', 'Wet Sand Range', 2, 48, 1, { unit: 'u' }),
+  slider('visualsWetSandRange', '젖은 모래 범위', 2, 48, 1, { unit: 'u' }),
   slider('visualsShallowWaterSoftness', '얕은 물 부드러움', 0, 1, 0.02, { digits: 2 }),
 ];
 
 const VISUALS_TABS = [
-  { id: 'post', label: 'Post FX' },
+  { id: 'post', label: '포스트 FX' },
   { id: 'sky', label: 'HDR 하늘' },
-  { id: 'terrain', label: 'Terrain Surface' },
+  { id: 'terrain', label: '지형 표면' },
   { id: 'shoreline', label: '해안선' },
   { id: 'camera', label: '카메라 셰이더' },
 ];
@@ -54,7 +54,7 @@ const CAMERA_SLIDERS = {
   ditheringLevels: slider('visualsDitheringLevels', '색상 레벨', 2, 32, 1),
   ditheringScale: slider('visualsDitheringScale', '패턴 스케일', 1, 6, 1, { unit: ' px' }),
   crtStrength: slider('visualsCrtStrength', 'CRT 강도', 0, 1, 0.02, { digits: 2 }),
-  crtLensBend: slider('visualsCrtLensBend', 'Lens Bend', 0, 1, 0.02, { digits: 2 }),
+  crtLensBend: slider('visualsCrtLensBend', '렌즈 굴절', 0, 1, 0.02, { digits: 2 }),
   crtLineWidth: slider('visualsCrtLineWidth', '스캔라인 너비', 1, 6, 0.25, { digits: 2, unit: ' px' }),
   chromaticStrength: slider('visualsChromaticAberrationStrength', '색수차 오프셋', 0, 8, 0.1, { digits: 1, unit: ' px' }),
 };
@@ -72,7 +72,7 @@ function SliderList({ items, params, onParam, disabled, query = '' }) {
       value={val(params, def.key)}
       onChange={(v) => onParam(def.key, v)}
       disabled={disabled}
-      disabledTooltip="Enable this visual group to edit its settings."
+      disabledTooltip="이 시각 그룹을 활성화하여 설정을 편집합니다."
       settingId={`visuals.${def.key}`}
     />
   ));
@@ -108,7 +108,7 @@ export default function VisualsPanel({ ctx }) {
       <div className="visuals-search-wrap">
         <Search size={14} aria-hidden />
         <input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="시각 설정 검색…" aria-label="시각 설정 검색" />
-        {query && <button type="button" onClick={() => setQuery('')} aria-label="Clear visual settings search"><X size={13} /></button>}
+        {query && <button type="button" onClick={() => setQuery('')} aria-label="시각 설정 검색 지우기"><X size={13} /></button>}
       </div>
 
       <PanelTabs active={tab} onChange={setTab} tabs={VISUALS_TABS} />
@@ -120,7 +120,7 @@ export default function VisualsPanel({ ctx }) {
             value={val(params, 'visualsPostEnabled') !== false}
             onChange={(v) => onParam('visualsPostEnabled', v)}
             settingId="visuals.visualsPostEnabled"
-            info="Tile-mode color grading, bloom, vignette, and sun rays."
+            info="타일 모드 색상 보정, 블룸, 비네팅, 빛줄기."
           />
           <SliderList items={POST_SLIDERS} params={params} onParam={onParam} disabled={enabled.post === false} query={query} />
         </>
@@ -141,11 +141,11 @@ export default function VisualsPanel({ ctx }) {
         </>
       ))}
 
-      {group('terrain', 'Terrain Surface', '지형 표면 색상 변화 높이 디테일 바위 토양 모래 렌더', (
+      {group('terrain', '지형 표면', '지형 표면 색상 변화 높이 디테일 바위 토양 모래 렌더', (
         <>
           <SliderList items={TERRAIN_SLIDERS} params={params} onParam={onParam} disabled={enabled.terrain === false} query={query} />
           {RENDER_SLIDERS.map((def) => (
-            (!normalizedQuery || `${def.label} ${def.key}`.toLowerCase().includes(normalizedQuery)) && <SliderCtl key={def.key} def={def} value={params[def.key]} onChange={(v) => onParam(def.key, v)} disabled={enabled.terrain === false} disabledTooltip="Enable this visual group to edit its settings." settingId={`visuals.${def.key}`} />
+            (!normalizedQuery || `${def.label} ${def.key}`.toLowerCase().includes(normalizedQuery)) && <SliderCtl key={def.key} def={def} value={params[def.key]} onChange={(v) => onParam(def.key, v)} disabled={enabled.terrain === false} disabledTooltip="이 시각 그룹을 활성화하여 설정을 편집합니다." settingId={`visuals.${def.key}`} />
           ))}
         </>
       ))}
@@ -244,7 +244,7 @@ export default function VisualsPanel({ ctx }) {
         </>
       )}
 
-      <PanelResetButton label="Reset Visual Settings" onClick={() => ctx.onResetPanel?.('visuals')} settingId="visuals.reset" />
+      <PanelResetButton label="시각 설정 초기화" onClick={() => ctx.onResetPanel?.('visuals')} settingId="visuals.reset" />
     </>
   );
 }

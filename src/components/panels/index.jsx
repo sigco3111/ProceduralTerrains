@@ -63,12 +63,12 @@ function SeedRow({ seed, onParam, onRandomizeSeed }) {
 }
 
 const RandomizeTerrainButton = ({ onRandomize }) => (
-  <button type="button" className="action-btn primary" onClick={onRandomize} title="Pick a new seed and rebuild the terrain">
+  <button type="button" className="action-btn primary" onClick={onRandomize} title="새 시드를 선택하고 지형을 다시 만듭니다">
     <Dices size={14} strokeWidth={1.75} aria-hidden />지형 무작위화</button>
 );
 
 const SURFACE_TABS = [
-  { id: 'general', label: 'General Settings' },
+  { id: 'general', label: '일반 설정' },
   { id: 'textures', label: '텍스처' },
 ];
 
@@ -352,11 +352,11 @@ const PROP_SLIDERS = {
   propsGrass: { label: '풀 높이', min: 0.05, max: 2, step: 0.05, digits: 2 },
   propsRocks: { label: '바위 밀도', min: 0, max: 2, step: 0.05, digits: 2 },
   propsRockScale: { label: '바위 스케일', min: 0.05, max: 2.5, step: 0.05, digits: 2 },
-  propsTreeDensity: { label: 'Tree Density', min: 0, max: 2, step: 0.05, digits: 2 },
+  propsTreeDensity: { label: '나무 밀도', min: 0, max: 2, step: 0.05, digits: 2 },
   propsTreeScale: { label: '나무 스케일', min: 0.25, max: 2.5, step: 0.05, digits: 2 },
   propsWind: { label: '바람', min: 0, max: 1.5, step: 0.05, digits: 2 },
   propsWindSpeed: { label: '애니메이션 속도', min: 0, max: 4, step: 0.05, digits: 2 },
-  propsGust: { label: 'Gust Motion', min: 0, max: 1.5, step: 0.05, digits: 2 },
+  propsGust: { label: '돌풍 모션', min: 0, max: 1.5, step: 0.05, digits: 2 },
   propsFlowers: { label: '꽃 밀도', min: 0, max: 1, step: 0.01, digits: 2 },
   propsCullDistance: { label: '컬링 거리', min: 120, max: 1800, step: 20, digits: 0, unit: ' u' },
   propsLodDistance: { label: 'LOD 거리', min: 60, max: 900, step: 10, digits: 0, unit: ' u' },
@@ -438,7 +438,7 @@ function CloudsPanel({ ctx }) {
         worldMode={ctx.worldMode}
         settingsTarget={ctx.settingsTarget}
       />
-      <PanelResetButton label="Reset Cloud Settings" onClick={() => ctx.onResetPanel?.('clouds')} settingId="clouds.reset" />
+      <PanelResetButton label="구름 설정 초기화" onClick={() => ctx.onResetPanel?.('clouds')} settingId="clouds.reset" />
     </SidePanel>
   );
 }
@@ -970,7 +970,7 @@ function TilesContent({ ctx }) {
             ? `Hover near a board edge and click the highlighted square to add a tile. Placement is limited to a ${grid}×${grid} grid centred on the origin.`
             : (ctx.diskRadiusCells < extent
               ? 'Hover around the circular edge and click the highlighted ring to expand the disk.'
-              : 'The circular terrain has reached its maximum radius.')}
+              : '원형 지형이 최대 반경에 도달했습니다.')}
           {' '}Tiles share the same noise field and export together.
         </div>
         <SelectRow label="형태" value={shape}
@@ -1008,7 +1008,7 @@ function TilesContent({ ctx }) {
 function NoiseLayersPanelWrapper({ ctx }) {
   return (
     <NoiseLayersPanel ctx={ctx}>
-      <PanelResetButton label="Reset Noise Layers" onClick={() => ctx.onResetPanel?.('noiseLayers')} settingId="noiseLayers.reset" />
+      <PanelResetButton label="노이즈 레이어 초기화" onClick={() => ctx.onResetPanel?.('noiseLayers')} settingId="noiseLayers.reset" />
     </NoiseLayersPanel>
   );
 }

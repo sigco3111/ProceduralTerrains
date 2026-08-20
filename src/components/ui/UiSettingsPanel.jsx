@@ -1,7 +1,7 @@
 import { Settings, X } from 'lucide-react';
 
 const MODE_DISPLAY_OPTIONS = [
-  { id: 'both', label: 'Icons + names' },
+  { id: 'both', label: '아이콘 + 이름' },
   { id: 'icons', label: '아이콘만' },
   { id: 'labels', label: '이름만' },
 ];
@@ -46,7 +46,7 @@ export default function UiSettingsPanel({ open, prefs, onChange, onClose }) {
 
           <section className="ui-settings-section">
             <h3 className="ui-settings-section-title">월드 모드</h3>
-            <div className="ui-settings-choice-group" role="radiogroup" aria-label="Mode button display">
+            <div className="ui-settings-choice-group" role="radiogroup" aria-label="모드 버튼 표시">
               {MODE_DISPLAY_OPTIONS.map((opt) => (
                 <button
                   key={opt.id}

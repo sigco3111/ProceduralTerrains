@@ -385,7 +385,7 @@ export class ManualTerrainModeManager {
     if (!silent) {
       this.onToast?.(next
         ? '수동 조각 — 왼쪽 드래그 조각하기 · Alt + 왼쪽 드래그 팬 · 오른쪽 드래그 궤도 회전'
-        : 'Exited Manual Sculpt');
+        : '수동 스컬프트 종료');
     }
   }
 
@@ -461,8 +461,8 @@ export class ManualTerrainModeManager {
     this.surfaceField.clear();
     this._surfaceRevision++;
     this.cursor.setVisible(false);
-    this._emit({ documentChanged: true, surfaceChanged: true, label: 'Cleared terrain textures' });
-    this.onStableAction?.('Cleared terrain textures');
+    this._emit({ documentChanged: true, surfaceChanged: true, label: '지형 텍스처 지워짐' });
+    this.onStableAction?.('지형 텍스처 지워짐');
     return true;
   }
 
@@ -726,7 +726,7 @@ export class ManualTerrainModeManager {
     this._surfaceRevision++;
     this._rebuildTerrain();
     this._syncVisuals();
-    if (emit) this._emit({ terrainChanged: true, label: 'Loaded manual terrain' });
+    if (emit) this._emit({ terrainChanged: true, label: '수동 지형 불러옴' });
     return true;
   }
 

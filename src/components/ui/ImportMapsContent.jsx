@@ -11,9 +11,9 @@ const RealWorldMapPicker = lazy(() => import('./RealWorldMapPicker.jsx'));
 
 const IMPORT_MODE_OPTIONS = [
   { value: 'disabled', label: '비활성화됨' },
-  { value: 'preview', label: 'Preview Only' },
+  { value: 'preview', label: '미리보기 전용' },
   { value: 'replace', label: '절차적 대체' },
-  { value: 'blend', label: 'Blend With Procedural' },
+  { value: 'blend', label: '프로시저럴과 혼합' },
 ];
 
 const IMAGERY_STYLE_OPTIONS = Object.values(IMAGERY_STYLES).map((s) => ({
@@ -24,8 +24,8 @@ const IMAGERY_STYLE_OPTIONS = Object.values(IMAGERY_STYLES).map((s) => ({
 const MAP_META = {
   noise: { label: '노이즈 맵', icon: <Waves size={15} strokeWidth={1.75} />, defaultOpen: false, filePick: true },
   height: { label: '하이맵', icon: <Mountain size={15} strokeWidth={1.75} />, defaultOpen: true, filePick: true },
-  biome: { label: 'Biome Map', icon: <Palette size={15} strokeWidth={1.75} />, defaultOpen: false, filePick: true },
-  imagery: { label: 'Map Texture', icon: <Map size={15} strokeWidth={1.75} />, defaultOpen: true, filePick: false },
+  biome: { label: '바이옴 맵', icon: <Palette size={15} strokeWidth={1.75} />, defaultOpen: false, filePick: true },
+  imagery: { label: '맵 텍스처', icon: <Map size={15} strokeWidth={1.75} />, defaultOpen: true, filePick: false },
 };
 
 function FilePicker({ fileName, onPick }) {

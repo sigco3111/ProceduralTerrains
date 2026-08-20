@@ -265,7 +265,7 @@ async function readBack(device, encoderQueue, src, staging, byteLength) {
  * protocol (plus this returns `delta` computed here). Throws on any failure.
  */
 export async function erodeWebGPU({ width, height, heightmap, params, onProgress }) {
-  if (!isWebGPUErosionSupported()) throw new Error('WebGPU not available');
+  if (!isWebGPUErosionSupported()) throw new Error('WebGPU 사용 불가');
   const p = { ...DEFAULT_SIM_PARAMS, ...params };
   const N = width * height;
   const droplets = Math.max(0, Math.round(p.droplets));

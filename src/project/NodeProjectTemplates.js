@@ -5,12 +5,12 @@ import {
 export const NODE_PROJECT_TEMPLATES = Object.freeze([
   { id: 'nodes-blank', name: '빈 그래프', description: '지형 출력만 있는 평평한 슬랩.', icon: 'boxes', colorsEnabled: false, colorPreset: 'alpine' },
   { id: 'nodes-geological-hybrid', name: '지질 하이브리드', description: 'An editable noise recipe with eroded FBM mass, organic warp, weathered terraces, rock ridges, and fine geological detail.', icon: 'layers', colorsEnabled: true, colorPreset: 'alpine' },
-  { id: 'nodes-alpine', name: 'Alpine ridges', description: 'A staged massif with shaped body, broken strata, scree, drainage, and alpine surface color.', icon: 'mountain', colorsEnabled: true, colorPreset: 'alpine' },
+  { id: 'nodes-alpine', name: '고산 능선', description: 'A staged massif with shaped body, broken strata, scree, drainage, and alpine surface color.', icon: 'mountain', colorsEnabled: true, colorPreset: 'alpine' },
   { id: 'nodes-highlands', name: '층층이 쌓인 고지대', description: 'Broad combined landforms with mass shaping, strata, thermal weathering, and temperate color.', icon: 'layers', colorsEnabled: true, colorPreset: 'temperate' },
   { id: 'nodes-dunes', name: '바람 모래언덕', description: 'Asymmetric dune seas with slip faces, macro undulation, sand ripples, and warm desert grading.', icon: 'waves', colorsEnabled: true, colorPreset: 'dunes' },
   { id: 'nodes-canyon', name: '강 협곡', description: 'A drainage-led canyon with a meandering slot, branching gullies, eroded strata, and sandstone color.', icon: 'route', colorsEnabled: true, colorPreset: 'canyon' },
   { id: 'nodes-craters', name: '분화구 분지', description: '현무암, 스코리아, 재 색상의 침식된 충돌 지형.', icon: 'orbit', colorsEnabled: true, colorPreset: 'volcanic' },
-  { id: 'nodes-rivers', name: 'River valleys', description: 'A continuous river trunk, converging tributaries, floodplain shaping, and damp valley color.', icon: 'route', colorsEnabled: true, colorPreset: 'river' },
+  { id: 'nodes-rivers', name: '강 계곡', description: 'A continuous river trunk, converging tributaries, floodplain shaping, and damp valley color.', icon: 'route', colorsEnabled: true, colorPreset: 'river' },
 ]);
 
 export function nodeTemplatePreviewCacheKey(id) {

@@ -4,9 +4,9 @@ const ICON_SIZE = 19;
 const ICON_STROKE = 1.75;
 
 export const PAINT_TOOLS = [
-  { id: 'sculpt', label: 'Sculpt', icon: Mountain, title: 'Sculpt', description: '지형 높이를 직접 올리거나 낮춥니다.' },
+  { id: 'sculpt', label: '스컬프트', icon: Mountain, title: '스컬프트', description: '지형 높이를 직접 올리거나 낮춥니다.' },
   { id: 'smooth', label: '부드러움', icon: Waves, title: '부드러움', description: '이웃 지형을 향해 높이를 혼합하여 디테일을 부드럽게 합니다.' },
-  { id: 'flatten', label: '평탄화', icon: Minus, title: '평탄화', description: 'Blend height toward a fixed target elevation.' },
+  { id: 'flatten', label: '평탄화', icon: Minus, title: '평탄화', description: '고도를 고정된 목표 고도로 혼합합니다.' },
   { id: 'river', label: '강', icon: Droplet, title: '강 깎기', description: 'Carve a river bed with soft banks.' },
   { id: 'biome', label: '생태계', icon: Palette, title: '생태계', description: 'Paint biome influence onto the terrain.' },
   { id: 'mask', label: '마스크', icon: Sprout, title: '마스크', description: 'Paint grass and flower density.' },

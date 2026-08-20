@@ -47,7 +47,7 @@ function ErrorState({ message, onRetry }) {
 function Pagination({ page, pages, onPage }) {
   if (pages <= 1) return null;
   return (
-    <nav className="admin-pagination" aria-label="Results pages">
+    <nav className="admin-pagination" aria-label="결과 페이지">
       <button type="button" onClick={() => onPage(page - 1)} disabled={page <= 1}><ChevronLeft size={14} /> 이전</button>
       <span>페이지<strong>{page}</strong> of {pages}</span>
       <button type="button" onClick={() => onPage(page + 1)} disabled={page >= pages}>다음<ChevronRight size={14} /></button>
@@ -119,14 +119,14 @@ function RangeSelector({ value, onChange, label = '보고 기간' }) {
 function Overview({ data, onNavigate, rangeDays, onRangeChange }) {
   const rangeLabel = REPORTING_RANGES.find((range) => range.value === rangeDays)?.label.toLowerCase() || `${rangeDays} days`;
   const stats = [
-    { label: 'Total users', value: data.counts.users, meta: `${number.format(data.counts.activeUsers)} active`, icon: UsersRound, tone: 'blue' },
+    { label: '전체 사용자', value: data.counts.users, meta: `${number.format(data.counts.activeUsers)} active`, icon: UsersRound, tone: 'blue' },
     { label: '오늘 방문', value: data.counts.visitsToday, meta: `${number.format(data.counts.uniqueToday)} unique`, icon: Activity, tone: 'green' },
     { label: '지형들', value: data.counts.terrains, meta: '모든 사용자', icon: FolderKanban, tone: 'violet' },
-    { label: '세션 열기', value: data.counts.openSessions, meta: 'Unexpired sessions', icon: KeyRound, tone: 'amber' },
+    { label: '세션 열기', value: data.counts.openSessions, meta: '만료되지 않은 세션', icon: KeyRound, tone: 'amber' },
   ];
   return (
     <div className="admin-overview">
-      <section className="admin-stat-grid" aria-label="Service overview">
+      <section className="admin-stat-grid" aria-label="서비스 개요">
         {stats.map(({ label, value, meta, icon: Icon, tone }) => (
           <article className={`admin-stat ${tone}`} key={label}>
             <span className="admin-stat-icon"><Icon size={18} /></span>
@@ -159,7 +159,7 @@ function Overview({ data, onNavigate, rangeDays, onRangeChange }) {
           </div>
         </section>
         <section className="admin-panel">
-          <header><div><span className="admin-eyebrow">책임성</span><h2>관리자 활동</h2></div><button type="button" className="admin-icon-button" onClick={() => onNavigate('audit')} aria-label="View audit log"><ChevronRight size={15} /></button></header>
+          <header><div><span className="admin-eyebrow">책임성</span><h2>관리자 활동</h2></div><button type="button" className="admin-icon-button" onClick={() => onNavigate('audit')} aria-label="감사 로그 보기"><ChevronRight size={15} /></button></header>
           <div className="admin-compact-list audit">
             {data.recentAudit.length === 0 && <p className="admin-empty">아직 기록된 관리자 변경 사항이 없습니다.</p>}
             {data.recentAudit.map((event) => (
@@ -201,7 +201,7 @@ function UsersPanel({ currentUser }) {
     const isSuspend = patch.status === 'suspended';
     const isDemote = patch.role === 'user';
     const confirmed = await showConfirm({
-      title: isSuspend ? '이 계정을 정지하시겠습니까?' : isDemote ? 'Remove administrator access?' : '계정 변경 확인',
+      title: isSuspend ? '이 계정을 정지하시겠습니까?' : isDemote ? '관리자 권한을 제거하시겠습니까?' : '계정 변경 확인',
       message: isSuspend
         ? `${target.username} will be signed out everywhere and unable to sign in until reactivated.`
         : isDemote ? `${target.username} will immediately lose access to administration data.`
@@ -258,7 +258,7 @@ function UsersPanel({ currentUser }) {
         <select value={terrains} onChange={(event) => { setPage(1); setTerrains(event.target.value); }} aria-label="지형 소유권 필터링">
           <option value="">모든 지형 활동</option><option value="has">지형 있음</option><option value="none">지형 없음</option>
         </select>
-        <select value={activity} onChange={(event) => { setPage(1); setActivity(event.target.value); }} aria-label="Filter recent activity">
+        <select value={activity} onChange={(event) => { setPage(1); setActivity(event.target.value); }} aria-label="최근 활동 필터">
           <option value="">마지막 접속 무관</option><option value="7d">7일 내 접속</option><option value="30d">30일 내 접속</option><option value="never">접속 기록 없음</option>
         </select>
         <select value={sessions} onChange={(event) => { setPage(1); setSessions(event.target.value); }} aria-label="활성 세션 필터링">

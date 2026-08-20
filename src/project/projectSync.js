@@ -15,14 +15,14 @@ export function getProjectSyncState({ localProject = null, cloudProject = null, 
 }
 
 export const syncPresentation = {
-  'local-only': { label: 'On this device', action: '클라우드에 동기화' },
-  'cloud-missing': { label: 'Cloud copy was removed', action: '클라우드에 동기화' },
-  'cloud-only': { label: 'Only in the cloud', action: '다운로드' },
-  'needs-review': { label: '동기화 검토 필요', action: 'Review sync' },
+  'local-only': { label: '이 기기에서', action: '클라우드에 동기화' },
+  'cloud-missing': { label: '구름 복사본이 제거됨', action: '클라우드에 동기화' },
+  'cloud-only': { label: '클라우드에서만', action: '다운로드' },
+  'needs-review': { label: '동기화 검토 필요', action: '동기화 검토' },
   synced: { label: '동기화됨', action: '동기화' },
-  'local-changes': { label: '이 디바이스의 변경사항', action: 'Upload changes' },
-  'cloud-changes': { label: 'Changes in the cloud', action: '변경 사항 다운로드' },
-  conflict: { label: 'Conflict: choose a version', action: '충돌 해결' },
+  'local-changes': { label: '이 디바이스의 변경사항', action: '변경 사항 업로드' },
+  'cloud-changes': { label: '구름의 변화', action: '변경 사항 다운로드' },
+  conflict: { label: '충돌: 버전 선택', action: '충돌 해결' },
   unknown: { label: '동기화 상태 사용 불가', action: '동기화' },
 };
 

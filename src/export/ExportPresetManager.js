@@ -5,7 +5,7 @@ import { BlenderPreset } from './presets/BlenderPreset.js';
 import { ThreePreset } from './presets/ThreePreset.js';
 
 export const EXPORT_PRESETS = [UnityPreset, UnrealPreset, GodotPreset, BlenderPreset, ThreePreset];
-export const EXPORT_PRESET_OPTIONS = [{ value: 'custom', label: 'Custom export' }, ...EXPORT_PRESETS.map(({ id, label }) => ({ value: id, label }))];
+export const EXPORT_PRESET_OPTIONS = [{ value: 'custom', label: '사용자 지정 내보내기' }, ...EXPORT_PRESETS.map(({ id, label }) => ({ value: id, label }))];
 
 export function getExportPreset(id) {
   return EXPORT_PRESETS.find((preset) => preset.id === id) ?? null;
@@ -30,7 +30,7 @@ export function createProductionFiles(options, context) {
     app: '절차적 지형', version: 1, preset: preset.id,
     generatedAt: new Date().toISOString(), seed: context.seed,
     worldSizeMeters: terrainSize, heightRangeMeters: Number(context.heightScale) || 0,
-    coordinateSystem: preset.id === 'unreal' ? '언리얼 센티미터 (Z-up 가져오기)' : 'Y-up meters',
+    coordinateSystem: preset.id === 'unreal' ? '언리얼 센티미터 (Z-up 가져오기)' : 'Y-up 미터',
     files: preset.layout.paths,
   };
   const readme = `${preset.label}\n\nImport the files in this folder using your engine's terrain import workflow.\nWorld size: ${terrainSize} m. Height range: ${metadata.heightRangeMeters} m.\n`;

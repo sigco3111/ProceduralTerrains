@@ -22,7 +22,7 @@ export default function SplinesPanel({ ctx }) {
   const create = () => ctx.onCreateSpline(type);
   const creating = state.creatingType === type;
 
-  return <SidePanel title="스플라인" description="Draw and refine terrain routes." onClose={ctx.onClose}>
+  return <SidePanel title="스플라인" description="지형 경로를 그리고 다듬습니다." onClose={ctx.onClose}>
     <PanelTabs active={type} onChange={setType} tabs={[{ id: 'road', label: '도로' }, { id: 'river', label: '강' }]} />
     <div className={`spline-create-card${creating ? ' creating' : ''}`}>
       <div className="spline-create-copy"><TypeIcon size={17} aria-hidden /><div><strong>{creating ? `Drawing ${meta.singular}` : `Create ${meta.singular}`}</strong><span>{creating ? `${state.draftPointCount} points placed · click terrain to add more` : 'Click terrain to add points'}</span></div></div>
@@ -48,7 +48,7 @@ export default function SplinesPanel({ ctx }) {
       {sliders.map((def) => <SliderCtl key={def.key} def={def} value={selected[def.key]} onChange={(v) => ctx.onUpdateSpline(selected.id, { [def.key]: v })} />)}
       {selected.type === 'road' && <SelectRow label="지형 모드" value={selected.heightMode} options={[{ value: 'flatten', label: '국소 평탄화' }, { value: 'follow', label: '지형 따라가기' }, { value: 'fixed', label: '고정 표고' }]} onChange={(v) => ctx.onUpdateSpline(selected.id, { heightMode: v })} />}
       {selected.type === 'river' && <>
-        <SliderCtl def={{ key: 'depth', label: 'Channel Depth', min: 1, max: 120, step: 1, digits: 0 }} value={selected.depth} onChange={(v) => ctx.onUpdateSpline(selected.id, { depth: v })} />
+        <SliderCtl def={{ key: 'depth', label: '채널 깊이', min: 1, max: 120, step: 1, digits: 0 }} value={selected.depth} onChange={(v) => ctx.onUpdateSpline(selected.id, { depth: v })} />
         <SliderCtl def={{ key: 'bankWidth', label: '둑 너비', min: 0, max: 120, step: 1, digits: 0 }} value={selected.bankWidth} onChange={(v) => ctx.onUpdateSpline(selected.id, { bankWidth: v })} />
       </>}
       <div className="spline-toggle-grid">

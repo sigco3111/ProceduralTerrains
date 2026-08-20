@@ -7,7 +7,7 @@ import { colorToHex, parseColor } from '../../engine/style/ColorPalette.js';
 import { CLOUD_DEFAULT_PARAMS } from '../../engine/sky/CloudSettings.js';
 
 const SHAPE_SLIDERS = [
-  { key: 'cloudCoverage', label: '범위', min: 0, max: 1, step: 0.01, digits: 2, info: 'Fraction of the sky covered by clouds.' },
+  { key: 'cloudCoverage', label: '범위', min: 0, max: 1, step: 0.01, digits: 2, info: '구름으로 덮인 하늘의 비율.' },
   { key: 'cloudDensity', label: '밀도', min: 0.1, max: 3, step: 0.05, digits: 2, info: '구름의 전체 불투명도 / 광학 두께.' },
   { key: 'cloudSoftness', label: '부드러움', min: 0.01, max: 0.6, step: 0.01, digits: 2, info: '커버리지 컷인 위치의 구름 가장자리 부드러움.' },
 ];
@@ -21,7 +21,7 @@ const NOISE_SLIDERS = [
   { key: 'cloudScale', label: '구름 스케일', min: 0.3, max: 8, step: 0.1, digits: 1, info: '큰 구름 모양의 크기 (값이 낮을수록 더 큼).' },
   { key: 'cloudDetailScale', label: '디테일 스케일', min: 2, max: 24, step: 0.5, digits: 1, info: '중간 스케일 물결의 빈도.' },
   { key: 'cloudDetailStrength', label: '디테일 세기', min: 0, max: 1, step: 0.02, digits: 2, info: '디테일 노이즈가 셰이프를 변조하는 강도.' },
-  { key: 'cloudErosionScale', label: '침식 스케일', min: 4, max: 40, step: 0.5, digits: 1, info: 'Frequency of the worley erosion that carves wispy edges.' },
+  { key: 'cloudErosionScale', label: '침식 스케일', min: 4, max: 40, step: 0.5, digits: 1, info: '섬세한 가장자리를 깎아내는 워레이 침식의 빈도.' },
   { key: 'cloudErosionStrength', label: '침식 세기', min: 0, max: 1, step: 0.02, digits: 2, info: '침식이 구름을 얼마나 공격적으로 파고드는지.' },
 ];
 
@@ -87,10 +87,10 @@ export default function CloudPanel({
     ? '카메라가 이만큼의 행성 반지름보다 멀 때 구름을 숨깁니다.'
     : '카메라가 이만큼의 보드 너비보다 멀리 있을 때 구름을 숨깁니다.';
   const enableInfo = worldMode === 'planet'
-    ? 'Show the volumetric cloud shell around the planet.'
+    ? '행성 주위의 볼류메트릭 구름 셸을 표시합니다.'
     : (worldMode === 'infinite'
       ? 'Show a bounded volumetric cloud layer that follows the camera across the infinite world.'
-      : 'Show the volumetric cloud slab above the tile assembly.');
+      : '타일 어셈블리 위의 볼류메트릭 구름 슬랩을 표시합니다.');
   const p = perf ?? {};
   const currentSteps = p.cloudSteps ?? 12;
   let resolutionName = 'custom';

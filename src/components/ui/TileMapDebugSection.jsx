@@ -6,7 +6,7 @@ const DEBUG_VIEW_OPTIONS = [
   { value: 'off', label: '꺼짐' },
   { value: 'noise', label: '노이즈 텍스처' },
   { value: 'height', label: '하이맵' },
-  { value: 'biome', label: 'Biome Map' },
+  { value: 'biome', label: '바이옴 맵' },
 ];
 
 const BIOME_LEGEND = [

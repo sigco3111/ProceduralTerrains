@@ -232,7 +232,7 @@ export default function ProjectLibrary({
       await refreshCloud();
       showPopup(`${projectName(entry)} is now ${visibility}.`, { type: 'success' });
     } catch (error) {
-      showPopup(error.message || 'Could not change project visibility.', { type: 'error' });
+      showPopup(error.message || '프로젝트 공개 상태를 변경할 수 없습니다.', { type: 'error' });
     } finally {
       setBusyId('');
       setMenuFor(null);

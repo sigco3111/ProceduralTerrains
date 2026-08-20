@@ -23,7 +23,7 @@ export const NOISE_PRESETS = {
     },
   },
   eroded: {
-    label: 'Eroded Badlands',
+    label: '침식된 악지',
     params: {
       ridge: 0.35, warp: 2.2, persistence: 0.48, lacunarity: 2.5,
       moistBias: -0.4, tempBias: 0.3,

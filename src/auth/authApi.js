@@ -40,7 +40,7 @@ export async function apiRequest(path, { method = 'GET', body, signal } = {}) {
   if (response.status === 204) return null;
   const payload = await response.json().catch(() => null);
   if (!response.ok) {
-    throw new AuthApiError(payload?.error?.message ?? 'The request could not be completed.', {
+    throw new AuthApiError(payload?.error?.message ?? '요청을 완료할 수 없습니다.', {
       code: payload?.error?.code,
       status: response.status,
       fields: payload?.error?.fields,

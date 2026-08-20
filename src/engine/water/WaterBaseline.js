@@ -9,7 +9,7 @@
 export const WATER_BASELINE_SCENES = [
   {
     value: 'deep-ocean-midday',
-    label: '1 · Deep Ocean — Midday',
+    label: '1 · 심해 — 정오',
     worldMode: 'studio',
     terrainPreset: 'archipelago',
     waterPreset: 'ocean',
@@ -105,7 +105,7 @@ export const WATER_BASELINE_SCENES = [
   },
   {
     value: 'surface-transition-below',
-    label: '6B · Surface Transition — Below',
+    label: '6B · 표면 전환 — 아래',
     worldMode: 'studio',
     terrainPreset: 'archipelago',
     waterPreset: 'balanced',

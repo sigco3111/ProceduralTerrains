@@ -16,7 +16,7 @@ export const TERRAIN_GRADIENT_PRESETS = Object.freeze({
     macroScale: 0.36,
   }),
   arid: Object.freeze({
-    label: 'Arid plateau',
+    label: '건조 고원',
     description: '먼지가 낀 분지 퇴적물, 황토색 선반, 철분이 풍부한 암석, 햇볕에 바랜 봉우리.',
     colors: Object.freeze(['#6b5844', '#927055', '#8a5841', '#c0aa8b']),
     points: Object.freeze([0, 0.3, 0.63, 0.9]),
@@ -40,7 +40,7 @@ export const TERRAIN_GRADIENT_PRESETS = Object.freeze({
     macroScale: 0.38,
   }),
   river: Object.freeze({
-    label: 'River valley',
+    label: '강 계곡',
     description: 'Dark wet channels, silty banks, muted floodplain vegetation, and cool weathered uplands.',
     colors: Object.freeze(['#183a38', '#536448', '#81745a', '#9b9b91']),
     points: Object.freeze([0, 0.22, 0.58, 0.88]),
