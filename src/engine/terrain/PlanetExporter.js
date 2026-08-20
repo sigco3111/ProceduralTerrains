@@ -317,6 +317,6 @@ export class PlanetExporter {
       setTimeout(() => URL.revokeObjectURL(url), 5000);
     }
 
-    onToast('Planet export complete!');
+    onToast('행성 내보내기 완료!');
   }
 }

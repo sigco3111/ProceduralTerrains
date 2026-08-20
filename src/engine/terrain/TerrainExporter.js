@@ -729,11 +729,11 @@ export class TerrainExporter {
 
     if (includeMesh && separateTileExport) {
       for (const tile of tilePackages) {
-        onToast(`Packaging tile ${tile.cell.cx}, ${tile.cell.cz}...`);
+        onToast(`타일 ${tile.cell.cx}, ${tile.cell.cz} 패키징 중...`);
         tile.model = await serializeModel(tile.group);
       }
     } else if (includeMesh) {
-      onToast(`Packaging primary ${format.toUpperCase()}...`);
+      onToast(`기본 ${format.toUpperCase()} 패키징 중...`);
       exportedModel = await serializeModel(exportGroup);
     }
 

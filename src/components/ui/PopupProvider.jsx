@@ -176,6 +176,6 @@ export function PopupProvider({ children }) {
 
 export function usePopup() {
   const context = useContext(PopupContext);
-  if (!context) throw new Error('usePopup must be used inside PopupProvider.');
+  if (!context) throw new Error('usePopup은 PopupProvider 내부에서 사용해야 합니다.');
   return context;
 }

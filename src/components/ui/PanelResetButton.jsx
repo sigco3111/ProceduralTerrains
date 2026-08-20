@@ -1,6 +1,6 @@
 import { RotateCcw } from 'lucide-react';
 
-export default function PanelResetButton({ label = 'Reset Settings', onClick, settingId }) {
+export default function PanelResetButton({ label = '설정 초기화', onClick, settingId }) {
   if (!onClick) return null;
   return (
     <div className="panel-reset-footer">

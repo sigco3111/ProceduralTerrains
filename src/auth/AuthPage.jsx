@@ -75,7 +75,7 @@ export default function AuthPage({ mode, onBack, onSwitch, onSuccess }) {
           <div>
             <small>{APP_NAME}</small>
             <h1 id="auth-title">{isRegister ? '계정을 만드세요' : '다시 오신 것을 환영합니다'}</h1>
-            <p>{isRegister ? 'Keep your identity ready for cloud projects and sharing.' : '계정에 액세스하려면 로그인하세요. 로컬 프로젝트는 이 기기에 남아 있습니다.'}</p>
+            <p>{isRegister ? '클라우드 프로젝트와 공유를 위해 신원을 준비해 두세요.' : '계정에 액세스하려면 로그인하세요. 로컬 프로젝트는 이 기기에 남아 있습니다.'}</p>
           </div>
         </header>
 

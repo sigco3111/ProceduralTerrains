@@ -17,7 +17,7 @@ const LOW_HINTS = [
   'mali', 'adreno 3', 'adreno 4', 'adreno 5',             // older mobile
   'powervr', 'videocore', 'tegra',
   '인텔 HD 그래픽스', '인텔(R) HD 그래픽스',            // older Intel iGPUs
-  'uhd graphics 6',                                        // entry UHD 6xx
+  'UHD 그래픽스 6',                                        // entry UHD 6xx
 ];
 
 // Substrings that indicate a clearly HIGH-END, modern GPU. Kept deliberately
@@ -57,7 +57,7 @@ export function detectGpuTier(gl) {
   const r = readRendererString(gl).toLowerCase();
 
   // Capability tiebreakers: tiny texture limits / no high-precision floats in
-  // the fragment shader are a strong "weak GPU" signal regardless of name.
+  // the fragment shader are a strong "저성능 GPU" signal regardless of name.
   let maxTex = 4096;
   try { maxTex = gl.getParameter(gl.MAX_TEXTURE_SIZE) || 4096; } catch { /* ignore */ }
   let highpOk = true;

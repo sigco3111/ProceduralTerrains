@@ -173,7 +173,7 @@ class PerformanceProfiler {
 
   // ----------------------------------------------------------- loading tasks
   // A central place engine systems can report long async work so the overlay
-  // can show "what is currently happening" instead of an apparent freeze.
+  // can show "현재 진행 중인 작업" instead of an apparent freeze.
 
   registerLoadingTask(task = {}) {
     const id = task.id || `task-${++this._taskSeq}`;

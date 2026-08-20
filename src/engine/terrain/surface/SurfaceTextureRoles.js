@@ -17,7 +17,7 @@ export const SURFACE_TEXTURE_ROLE_GROUPS = [
       { id: 'grass', label: '잔디', tiling: 12 },
       { id: 'forest', label: '숲', tiling: 11 },
       { id: 'jungle', label: '정글', tiling: 10 },
-      { id: 'swamp', label: 'Swamp', tiling: 9 },
+      { id: 'swamp', label: '늪지', tiling: 9 },
       { id: 'tundra', label: '툰드라', tiling: 13 },
     ],
   },
@@ -25,10 +25,10 @@ export const SURFACE_TEXTURE_ROLE_GROUPS = [
     id: 'rock',
     label: '바위',
     roles: [
-      { id: 'redRock', label: 'Red Rock', tiling: 7 },
-      { id: 'redRock2', label: 'Red Rock B', tiling: 7 },
+      { id: 'redRock', label: '붉은 바위', tiling: 7 },
+      { id: 'redRock2', label: '붉은 바위 B', tiling: 7 },
       { id: 'rock', label: '바위', tiling: 6 },
-      { id: 'rockHi', label: 'High Rock', tiling: 6 },
+      { id: 'rockHi', label: '높은 바위', tiling: 6 },
     ],
   },
   {

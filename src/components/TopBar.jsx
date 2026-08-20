@@ -160,7 +160,7 @@ export default function TopBar({
   return (
     <header id="topbar" className={anyMenuOpen ? 'file-menu-open' : ''}>
       <div className="tb-group tb-left">
-        <button type="button" className="tb-group tb-brand tb-brand-button tb-btn" onClick={onOpenProjects} title="Return to main menu">
+        <button type="button" className="tb-group tb-brand tb-brand-button tb-btn" onClick={onOpenProjects} title="메인 메뉴로 돌아가기">
           <svg className="logo" viewBox="0 0 24 24" fill="none">
             <path d="M3 18 L9 7 L13 13 L16 9 L21 18 Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
             <circle cx="17.5" cy="5.5" r="1.6" fill="currentColor" />
@@ -292,7 +292,7 @@ export default function TopBar({
                 role="menuitemcheckbox"
                 aria-checked={nodeToolsVisible}
                 className={nodeToolsVisible ? 'active' : ''}
-                title="Show water, colors, clouds, lighting, export, and other standard tools"
+                title="물, 색상, 구름, 조명, 내보내기 및 기타 표준 도구 표시"
                 onClick={() => runMenuAction(setViewMenuOpen, onToggleNodeTools)}
               >
                 {nodeToolsVisible ? <Eye size={14} strokeWidth={1.75} aria-hidden /> : <EyeOff size={14} strokeWidth={1.75} aria-hidden />}
@@ -345,7 +345,7 @@ export default function TopBar({
             type="button"
             className={`tb-btn tb-search-btn${settingsSearchOpen ? ' active' : ''}`}
             onClick={onOpenSettingsSearch}
-            title={`Search settings (${shortcutText(SEARCH_SETTINGS_SHORTCUT)})`}
+            title={`설정 검색 (${shortcutText(SEARCH_SETTINGS_SHORTCUT)})`}
             aria-pressed={settingsSearchOpen}
           >
             <Search size={13} strokeWidth={1.75} aria-hidden />
@@ -365,12 +365,12 @@ export default function TopBar({
         <button
           className={`tb-btn primary${activePanel === 'export' ? ' active' : ''}`}
           onClick={() => onOpenPanel('export')}
-          title="Export the scene"
+          title="씬 내보내기"
         >
           <Download size={14} strokeWidth={1.75} aria-hidden />
           <span className="tb-text">내보내기</span>
         </button>
-        <button className="tb-btn tb-icon-btn" onClick={onToggleHelp} title="Show controls help" aria-label="도움말">
+        <button className="tb-btn tb-icon-btn" onClick={onToggleHelp} title="컨트롤 도움말 표시" aria-label="도움말">
           <HelpCircle size={14} strokeWidth={1.75} aria-hidden />
         </button>
         <span className="app-version">v{APP_VERSION}</span>

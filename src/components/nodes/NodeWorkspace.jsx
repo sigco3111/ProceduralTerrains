@@ -96,8 +96,8 @@ function NodePalette({
       </div>
       <label className="node-palette-filter">
         <Search size={12} aria-hidden />
-        <input value={paletteQuery} onChange={(event) => onPaletteQuery(event.target.value)} placeholder="Find a node…" aria-label={`Find ${graphMode} nodes`} />
-        {paletteQuery ? <button type="button" onClick={() => onPaletteQuery('')} title="Clear node filter"><X size={11} /></button> : null}
+        <input value={paletteQuery} onChange={(event) => onPaletteQuery(event.target.value)} placeholder="노드 찾기…" aria-label={`${graphMode} 노드 찾기`} />
+        {paletteQuery ? <button type="button" onClick={() => onPaletteQuery('')} title="노드 필터 지우기"><X size={11} /></button> : null}
       </label>
       <div className="node-palette-scroll">
         {[...paletteGroups].map(([category, items]) => {
@@ -131,7 +131,7 @@ function NodePalette({
 
 function TerrainNode({ data, selected }) {
   const { node, invalid, compiling } = data;
-  const definition = data.definition || { label: node.type, description: 'This node type is unavailable in this version.', color: 'amber', inputs: [], outputs: [] };
+  const definition = data.definition || { label: node.type, description: '이 노드 유형은 이 버전에서 사용할 수 없습니다.', color: 'amber', inputs: [], outputs: [] };
   const NodeIcon = definition.outputs?.some((port) => port.type === ANALYTIC_COLOR) ? Palette : Boxes;
   const updateNodeInternals = useUpdateNodeInternals();
   useEffect(() => {
@@ -273,11 +273,11 @@ function InspectorField({ field, value, onChange }) {
           onChange={(event) => onChange(Number(event.target.value), !!field.structural)}
           onDoubleClick={() => onChange(field.default, !!field.structural)}
           aria-label={field.label}
-          title="Double-click to reset"
+          title="더블 클릭하여 초기화"
         />
         <input type="number" min={field.min} max={field.max} step={field.step} value={numeric} onChange={(event) => onChange(Number(event.target.value), !!field.structural)} />
         {field.control === 'seed' || field.key === 'seed' ? (
-          <button type="button" className="node-inspector-randomize" onClick={() => onChange(Math.floor(Math.random() * 1000000), true)} title="Generate another deterministic seed"><Sparkles size={13} /><span>새 시드</span></button>
+          <button type="button" className="node-inspector-randomize" onClick={() => onChange(Math.floor(Math.random() * 1000000), true)} title="다른 결정론적 시드 생성"><Sparkles size={13} /><span>새 시드</span></button>
         ) : null}
       </div>
       {help}
@@ -292,7 +292,7 @@ function NodeInspector({
   const [propertyQuery, setPropertyQuery] = useState('');
   const [openSections, setOpenSections] = useState({});
   const definition = node ? (getGraphNodeDefinition(node.type) || {
-    label: `Unknown: ${node.type}`, description: 'This node type is unavailable in this version.', inspector: [], permanent: false,
+    label: `알 수 없음: ${node.type}`, description: '이 노드 유형은 이 버전에서 사용할 수 없습니다.', inspector: [], permanent: false,
   }) : null;
   useEffect(() => { setPropertyQuery(''); }, [node?.id, group?.id]);
   const inspectorSections = definition?.inspector?.reduce((sections, field) => {
@@ -358,9 +358,9 @@ function NodeInspector({
             <input
               type="search" value={propertyQuery}
               onChange={(event) => setPropertyQuery(event.target.value)}
-              placeholder="Search settings…" aria-label={`Search ${title} settings`}
+              placeholder="설정 검색…" aria-label={`${title} 설정 검색`}
             />
-            {propertyQuery ? <button type="button" onClick={() => setPropertyQuery('')} title="Clear settings search"><X size={14} /></button> : null}
+            {propertyQuery ? <button type="button" onClick={() => setPropertyQuery('')} title="설정 검색 지우기"><X size={14} /></button> : null}
           </div>
           <div className="node-inspector__body">
             <label className="node-inspector-field node-name-field">

@@ -73,7 +73,7 @@ function TrendChart({ data = [], valueKey = 'visits', days: requestedDays = 14, 
   const shouldLabel = (index) => index === 0 || index === points.length - 1 || index % labelStep === 0;
   const [activeIndex, setActiveIndex] = useState(null);
   return (
-    <div className="admin-chart" role="group" aria-label={`Daily ${valueLabel} over the last ${days} days`}>
+    <div className="admin-chart" role="group" aria-label={`최근 ${days}일간의 일별 ${valueLabel}`}>
       <div className="admin-chart-grid" aria-hidden="true"><i /><i /><i /></div>
       <div className="admin-chart-bars">
         {points.map((item, index) => (
@@ -205,7 +205,7 @@ function UsersPanel({ currentUser }) {
       message: isSuspend
         ? `${target.username} will be signed out everywhere and unable to sign in until reactivated.`
         : isDemote ? `${target.username} will immediately lose access to administration data.`
-          : `Apply this change to ${target.username}?`,
+          : `${target.username}에게 이 변경 사항을 적용하시겠습니까?`,
       confirmLabel: isSuspend ? '계정 정지' : '변경 사항 적용',
       danger: isSuspend || isDemote,
     });
@@ -222,7 +222,7 @@ function UsersPanel({ currentUser }) {
 
   const revoke = async (target) => {
     const confirmed = await showConfirm({
-      title: 'Revoke all sessions?',
+      title: '모든 세션을 취소하시겠습니까?',
       message: `${target.username} will be signed out on every device. Their password will not change.`,
       confirmLabel: '세션 취소',
       danger: true,
@@ -245,7 +245,7 @@ function UsersPanel({ currentUser }) {
         <button type="button" className="admin-refresh" onClick={load}><RefreshCw size={13} />새로 고침</button>
       </header>
       <form className="admin-filters users-filters" onSubmit={(event) => { event.preventDefault(); setPage(1); setQuery(search); }}>
-        <label className="admin-search"><Search size={14} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search name, username, or email" aria-label="사용자 검색" /></label>
+        <label className="admin-search"><Search size={14} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="이름, 사용자명 또는 이메일 검색" aria-label="사용자 검색" /></label>
         <select value={status} onChange={(event) => { setPage(1); setStatus(event.target.value); }} aria-label="사용자 상태 필터">
           <option value="">모든 상태</option><option value="active">활성</option><option value="suspended">일시 중단됨</option>
         </select>
@@ -317,14 +317,14 @@ function VisitsPanel() {
     catch (nextError) { setError(nextError.message); }
   }, [page, days]);
   useEffect(() => { load(); }, [load]);
-  const DeviceIcon = ({ device }) => device === '모바일' ? <Smartphone size={13} /> : device === 'Tablet' ? <Tablet size={13} /> : <Laptop size={13} />;
+  const DeviceIcon = ({ device }) => device === '모바일' ? <Smartphone size={13} /> : device === '태블릿' ? <Tablet size={13} /> : <Laptop size={13} />;
   return (
     <div className="admin-stack">
       {data && <section className="admin-panel admin-trend-panel"><header><div><span className="admin-eyebrow">대상</span><h2>방문 및 순 방문자</h2></div><RangeSelector value={days} onChange={(value) => { setPage(1); setDays(value); }} /></header><div className="admin-inline-metrics"><div><strong>{number.format(data.summary?.visits ?? data.total)}</strong><span>총 방문</span></div><div><strong>{number.format(data.summary?.uniqueVisitors ?? 0)}</strong><span>순 방문자</span></div><div><strong>{number.format(data.summary?.averagePerDay ?? 0)}</strong><span>일 평균</span></div></div><TrendChart data={data.trend} days={days} valueLabel="페이지 방문" /><div className="admin-chart-legend"><span><i className="blue" />페이지 방문</span><span><i className="green" />정확한 수치는 날짜에 마우스를 올리면 확인됩니다</span></div></section>}
       <section className="admin-panel admin-data-panel">
         <header className="admin-data-head"><div><span className="admin-eyebrow">최근 트래픽</span><h2>방문 로그</h2><p>원시 네트워크 주소는 절대 표시되거나 저장되지 않습니다.</p></div><button type="button" className="admin-refresh" onClick={load}><RefreshCw size={13} />새로 고침</button></header>
         {!data && !error && <LoadingState />}{error && <ErrorState message={error} onRetry={load} />}
-        {data && <><div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>시간</th><th>경로</th><th>방문자</th><th>디바이스</th><th>리퍼러</th></tr></thead><tbody>{data.visits.map((visit) => <tr key={visit.id}><td><span className="admin-muted">{formatDate(visit.createdAt)}</span></td><td><code>{visit.path}</code></td><td>{visit.username ? `@${visit.username}` : <span className="admin-muted">익명</span>}</td><td><span className="admin-device"><DeviceIcon device={visit.device} />{visit.device}</span></td><td><span className="admin-muted">{visit.referrerHost || 'Direct'}</span></td></tr>)}</tbody></table>{data.visits.length === 0 && <p className="admin-empty">이 기간에 방문이 없습니다.</p>}</div><footer className="admin-results-footer"><span>{number.format(data.total)} visits</span><Pagination page={data.page} pages={data.pages} onPage={setPage} /></footer></>}
+        {data && <><div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>시간</th><th>경로</th><th>방문자</th><th>디바이스</th><th>리퍼러</th></tr></thead><tbody>{data.visits.map((visit) => <tr key={visit.id}><td><span className="admin-muted">{formatDate(visit.createdAt)}</span></td><td><code>{visit.path}</code></td><td>{visit.username ? `@${visit.username}` : <span className="admin-muted">익명</span>}</td><td><span className="admin-device"><DeviceIcon device={visit.device} />{visit.device}</span></td><td><span className="admin-muted">{visit.referrerHost || '직접'}</span></td></tr>)}</tbody></table>{data.visits.length === 0 && <p className="admin-empty">이 기간에 방문이 없습니다.</p>}</div><footer className="admin-results-footer"><span>{number.format(data.total)} visits</span><Pagination page={data.page} pages={data.pages} onPage={setPage} /></footer></>}
       </section>
     </div>
   );
@@ -346,9 +346,9 @@ function TerrainsPanel() {
   return (
     <section className="admin-panel admin-data-panel">
       <header className="admin-data-head"><div><span className="admin-eyebrow">클라우드 라이브러리</span><h2>최근 지형</h2><p>Metadata only; private terrain content is not exposed here.</p></div><button type="button" className="admin-refresh" onClick={load}><RefreshCw size={13} />새로 고침</button></header>
-      <form className="admin-filters" onSubmit={(event) => { event.preventDefault(); setPage(1); setQuery(search); }}><label className="admin-search"><Search size={14} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search terrain or owner" aria-label="지형 검색" /></label><select value={visibility} onChange={(event) => { setPage(1); setVisibility(event.target.value); }} aria-label="지형 가시성 필터"><option value="">모든 공개 범위</option><option value="private">비공개</option><option value="unlisted">비공개(링크 보유자만)</option><option value="public">공개</option></select><button type="submit">검색</button></form>
+      <form className="admin-filters" onSubmit={(event) => { event.preventDefault(); setPage(1); setQuery(search); }}><label className="admin-search"><Search size={14} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="지형 또는 소유자 검색" aria-label="지형 검색" /></label><select value={visibility} onChange={(event) => { setPage(1); setVisibility(event.target.value); }} aria-label="지형 가시성 필터"><option value="">모든 공개 범위</option><option value="private">비공개</option><option value="unlisted">비공개(링크 보유자만)</option><option value="public">공개</option></select><button type="submit">검색</button></form>
       {!data && !error && <LoadingState />}{error && <ErrorState message={error} onRetry={load} />}
-      {data && <><div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>지형</th><th>소유자</th><th>가시성</th><th>리비전</th><th>생성됨</th><th>최종 업데이트</th></tr></thead><tbody>{data.terrains.map((terrain) => <tr key={terrain.id}><td><span className="admin-terrain-cell"><span className="admin-list-icon"><FolderKanban size={14} /></span><span><strong>{terrain.name}</strong><small>{terrain.description || 'No description'}</small></span></span></td><td>@{terrain.owner.username}</td><td><span className={`admin-badge ${terrain.visibility}`}>{terrain.visibility}</span></td><td>v{terrain.contentRevision}</td><td><span className="admin-muted">{formatDate(terrain.createdAt)}</span></td><td><span className="admin-muted">{formatDate(terrain.updatedAt)}</span></td></tr>)}</tbody></table>{data.terrains.length === 0 && <p className="admin-empty">이 필터와 일치하는 지형이 없습니다.</p>}</div><footer className="admin-results-footer"><span>{number.format(data.total)} terrains</span><Pagination page={data.page} pages={data.pages} onPage={setPage} /></footer></>}
+      {data && <><div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>지형</th><th>소유자</th><th>가시성</th><th>리비전</th><th>생성됨</th><th>최종 업데이트</th></tr></thead><tbody>{data.terrains.map((terrain) => <tr key={terrain.id}><td><span className="admin-terrain-cell"><span className="admin-list-icon"><FolderKanban size={14} /></span><span><strong>{terrain.name}</strong><small>{terrain.description || '설명 없음'}</small></span></span></td><td>@{terrain.owner.username}</td><td><span className={`admin-badge ${terrain.visibility}`}>{terrain.visibility}</span></td><td>v{terrain.contentRevision}</td><td><span className="admin-muted">{formatDate(terrain.createdAt)}</span></td><td><span className="admin-muted">{formatDate(terrain.updatedAt)}</span></td></tr>)}</tbody></table>{data.terrains.length === 0 && <p className="admin-empty">이 필터와 일치하는 지형이 없습니다.</p>}</div><footer className="admin-results-footer"><span>{number.format(data.total)} terrains</span><Pagination page={data.page} pages={data.pages} onPage={setPage} /></footer></>}
     </section>
   );
 }
@@ -368,7 +368,7 @@ function AuditPanel() {
   return (
     <section className="admin-panel admin-data-panel">
       <header className="admin-data-head"><div><span className="admin-eyebrow">책임성</span><h2>관리자 감사 로그</h2><p>보안에 민감한 관리자 작업은 작업자와 대상과 함께 기록됩니다.</p></div><button type="button" className="admin-refresh" onClick={load}><RefreshCw size={13} />새로 고침</button></header>
-      <form className="admin-filters compact" onSubmit={(event) => { event.preventDefault(); setPage(1); setQuery(search); }}><label className="admin-search"><Search size={14} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search action, actor, or target ID" aria-label="감사 로그 검색" /></label><button type="submit">검색</button></form>
+      <form className="admin-filters compact" onSubmit={(event) => { event.preventDefault(); setPage(1); setQuery(search); }}><label className="admin-search"><Search size={14} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="액션, 액터 또는 타겟 ID 검색" aria-label="감사 로그 검색" /></label><button type="submit">검색</button></form>
       {!data && !error && <LoadingState />}{error && <ErrorState message={error} onRetry={load} />}
       {data && <><div className="admin-audit-list">{data.events.map((event) => <article key={event.id}><span className="admin-audit-mark"><FileClock size={14} /></span><div><header><strong>{actionLabel(event.action)}</strong><span>{formatDate(event.createdAt)}</span></header><p><b>{event.actor}</b> changed {event.targetType}{event.targetId ? ` ${event.targetId}` : ''}.</p>{event.metadata?.changes && <div className="admin-change-chips">{Object.entries(event.metadata.changes).map(([key, value]) => <span key={key}>{key}: <strong>{String(value)}</strong></span>)}</div>}</div></article>)}{data.events.length === 0 && <p className="admin-empty">이 검색과 일치하는 감사 이벤트가 없습니다.</p>}</div><footer className="admin-results-footer"><span>{number.format(data.total)} audit events</span><Pagination page={data.page} pages={data.pages} onPage={setPage} /></footer></>}
     </section>
@@ -396,7 +396,7 @@ function SecurityPanel() {
     <div className="admin-stack">
       <section className="admin-security-grid">{stats.map(({ label, value, icon: Icon, danger }) => <article className={danger ? 'danger' : ''} key={label}><Icon size={18} /><span><strong>{number.format(value)}</strong><small>{label}</small></span></article>)}</section>
       <section className="admin-panel admin-security-note"><LockKeyhole size={19} /><div><strong>보안 제어가 활성화됨</strong><p>서버 측 역할 검사, 정확한 출처 강제, HTTP 전용 쿠키, 요청 제한, 개인정보 보호 식별자, 비밀번호 해싱, 관리자 감사 이벤트가 이 영역을 보호합니다.</p></div></section>
-      <section className="admin-panel admin-data-panel"><header className="admin-data-head"><div><span className="admin-eyebrow">인증</span><h2>최근 보안 이벤트</h2><p>식별자와 네트워크 주소는 노출되지 않습니다.</p></div><button type="button" className="admin-refresh" onClick={load}><RefreshCw size={13} />새로 고침</button></header><div className="admin-security-events">{data.events.map((event) => <div key={event.id}><span className={`admin-event-icon ${event.outcome}`}>{event.outcome === 'success' ? <CheckCircle2 size={14} /> : <ShieldAlert size={14} />}</span><span><strong>{actionLabel(event.type)}</strong><small>{event.username ? `@${event.username}` : 'Unknown account'} · {formatDate(event.createdAt)}</small></span><span className={`admin-status ${event.outcome}`}><i />{event.outcome}</span></div>)}{data.events.length === 0 && <p className="admin-empty">아직 기록된 보안 이벤트가 없습니다.</p>}</div></section>
+      <section className="admin-panel admin-data-panel"><header className="admin-data-head"><div><span className="admin-eyebrow">인증</span><h2>최근 보안 이벤트</h2><p>식별자와 네트워크 주소는 노출되지 않습니다.</p></div><button type="button" className="admin-refresh" onClick={load}><RefreshCw size={13} />새로 고침</button></header><div className="admin-security-events">{data.events.map((event) => <div key={event.id}><span className={`admin-event-icon ${event.outcome}`}>{event.outcome === 'success' ? <CheckCircle2 size={14} /> : <ShieldAlert size={14} />}</span><span><strong>{actionLabel(event.type)}</strong><small>{event.username ? `@${event.username}` : '알 수 없는 계정'} · {formatDate(event.createdAt)}</small></span><span className={`admin-status ${event.outcome}`}><i />{event.outcome}</span></div>)}{data.events.length === 0 && <p className="admin-empty">아직 기록된 보안 이벤트가 없습니다.</p>}</div></section>
     </div>
   );
 }

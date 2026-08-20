@@ -234,16 +234,16 @@ export function LodPanel({
       </div>
       <div className="culling-controls" style={{ marginTop: '12px', borderTop: '1px solid var(--border-subtle)', paddingTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
         <ToggleRow
-          label="Frustum Culling"
+          label="프러스텀 컬링"
           value={cullingEnabled}
           onChange={onCullingEnabled}
-          info="Hide chunks outside the camera's field of view to save performance"
+          info="성능 절약을 위해 카메라 시야 밖의 청크 숨기기"
         />
         <ToggleRow
-          label="Back Culling"
+          label="백 컬링"
           value={behindCameraCulling}
           onChange={onBehindCameraCulling}
-          info="Hide chunks behind the camera view to boost performance"
+          info="성능 향상을 위해 카메라 시점 뒤쪽 청크 숨기기"
         />
       </div>
     </>
@@ -283,7 +283,7 @@ export function MinimapPanel({ boardSize, baseRef, overlayRef, embedded }) {
         <canvas className="minimap-base" width="256" height="256" ref={baseRef} />
         <canvas className="minimap-overlay" width="256" height="256" ref={overlayRef} />
       </div>
-      <div className="minimap-caption" data-tooltip="Total map dimensions in terrain coordinate units">
+      <div className="minimap-caption" data-tooltip="지형 좌표 단위 기준 전체 맵 크기">
         <svg viewBox="0 0 16 16" fill="none" width="12" height="12" style={{ marginRight: '6px', verticalAlign: 'middle', color: 'var(--accent)' }}>
           <path d="M1 3l4.5-2v12L1 15V3zM5.5 1l5 2v12l-5-2V1zM10.5 3L15 1v12l-4.5 2V3z" stroke="currentColor" strokeWidth="1.2" />
         </svg>

@@ -257,7 +257,7 @@ function ErosionTabFooter({ erosion }) {
   return (
     <div className="side-panel-quick" style={{ width: '100%' }}>
       <button type="button" className="action-btn primary" onClick={bake} disabled={busy} style={{ flex: 2 }}>
-        {busy ? `${EROSION_PHASE_LABEL[phase] || 'Baking…'} ${pct}%` : (baked ? 'Re-bake Erosion' : '침식 베이크')}
+        {busy ? `${EROSION_PHASE_LABEL[phase] || 'Baking…'} ${pct}%` : (baked ? '침식 재베이크' : '침식 베이크')}
       </button>
       <button type="button" className="action-btn" onClick={reset} disabled={busy || !baked} style={{ flex: 1 }}>초기화</button>
     </div>
@@ -288,10 +288,10 @@ function ErosionTabContent({ ctx, erosion }) {
 
       <SelectRow label="프리셋" value={params.erosionPreset ?? 'natural'} settingId="erosion.erosionPreset"
         options={Object.entries(EROSION_PRESETS).map(([key, p]) => ({ value: key, label: p.label }))}
-        onChange={(v) => ctx.onErosionPreset(v)} info="Erosion style. Editing any slider switches to Custom." />
+        onChange={(v) => ctx.onErosionPreset(v)} info="침식 스타일입니다. 슬라이더를 편집하면 사용자 지정으로 전환됩니다." />
       <SelectRow label="품질 우선" value={params.erosionQuality ?? 'balanced'} settingId="erosion.erosionQuality"
         options={Object.entries(EROSION_QUALITY).map(([key, q]) => ({ value: key, label: `${q.label} (${q.res}²)` }))}
-        onChange={(v) => onParam('erosionQuality', v)} info="Grid resolution of the bake. Higher = finer channels but slower." />
+        onChange={(v) => onParam('erosionQuality', v)} info="베이크 그리드 해상도. 값이 높을수록 채널이 정밀해지지만 속도가 느려집니다." />
 
       {EROSION_MAIN.map((def) => (
         <SliderCtl key={def.key} def={def} value={params[def.key]} onChange={(v) => setKnob(def.key, v)} settingId={`erosion.${def.key}`} />
@@ -315,10 +315,10 @@ function BiomesPanel({ ctx }) {
       {BIOME_SLIDERS.map((def) => (
         <SliderCtl key={def.key} def={def} value={params[def.key]} onChange={(v) => onParam(def.key, v)} settingId={`biomes.${def.key}`} />
       ))}
-      <ToggleRow label="Biome Debug" value={params.biomeDebug} onChange={(v) => onParam('biomeDebug', v)}
+      <ToggleRow label="생태계 디버그" value={params.biomeDebug} onChange={(v) => onParam('biomeDebug', v)}
         settingId="biomes.biomeDebug"
-        info="Color-code biomes directly on the terrain surface for inspection." />
-      <PanelResetButton label="Reset Biome Settings" onClick={() => ctx.onResetPanel?.('biomes')} settingId="biomes.reset" />
+        info="검토를 위해 지형 표면에 생태계를 색상으로 직접 표시합니다." />
+      <PanelResetButton label="바이옴 설정 초기화" onClick={() => ctx.onResetPanel?.('biomes')} settingId="biomes.reset" />
     </SidePanel>
   );
 }
@@ -421,7 +421,7 @@ function PropsPanel({ ctx }) {
       {subTab === 'settings' && !enabled && (
         <p className="section-hint">절차적 소품을 활성화하여 분포, 모양, 성능 설정을 조정하세요.</p>
       )}
-      <PanelResetButton label="Reset Props Settings" onClick={() => ctx.onResetPanel?.('props')} settingId="props.reset" />
+      <PanelResetButton label="소품 설정 초기화" onClick={() => ctx.onResetPanel?.('props')} settingId="props.reset" />
     </SidePanel>
   );
 }
@@ -464,8 +464,8 @@ function TimeOfDayControl({ timeOfDay, onTimeOfDay, settingId }) {
 }
 
 const SKYBOX_SLIDERS = {
-  skyboxBrightness: { key: 'skyboxBrightness', label: '하늘 밝기', min: 0.2, max: 2.5, step: 0.05, digits: 2, info: 'Overall brightness of the sky dome and sun glow.' },
-  skyboxHaze: { key: 'skyboxHaze', label: '지평선 연무', min: 0, max: 1.2, step: 0.05, digits: 2, info: 'Strength of the atmospheric haze band blended around the horizon.' },
+  skyboxBrightness: { key: 'skyboxBrightness', label: '하늘 밝기', min: 0.2, max: 2.5, step: 0.05, digits: 2, info: '스카이 돔과 태양 광휘의 전체 밝기.' },
+  skyboxHaze: { key: 'skyboxHaze', label: '지평선 연무', min: 0, max: 1.2, step: 0.05, digits: 2, info: '지평선 주변에 블렌드되는 대기 헤이즈 밴드의 강도.' },
   skyboxCycleSpeed: { key: 'skyboxCycleSpeed', label: '주기 속도', min: 0.05, max: 12, step: 0.05, digits: 2, unit: 'x', info: 'Day/night animation speed. 1x is one full cycle in about two minutes.' },
 };
 
@@ -480,17 +480,17 @@ function SkyboxPanel({ ctx }) {
 
       <ControlSection id="skybox-time" title="시간대" defaultOpen settingId="skybox.section.time">
         <TimeOfDayControl timeOfDay={ctx.timeOfDay} onTimeOfDay={ctx.onTimeOfDay} settingId="skybox.timeOfDay" />
-        <ToggleRow label="Day/Night Cycle" value={!!params.skyboxDayNightCycle}
+        <ToggleRow label="낮/밤 사이클" value={!!params.skyboxDayNightCycle}
           onChange={(v) => onParam('skyboxDayNightCycle', v)}
           settingId="skybox.skyboxDayNightCycle"
-          info="Animate the time of day while the procedural sky is active." />
+          info="절차적 하늘이 활성화된 동안 하루 중 시간대를 애니메이션화합니다." />
         <SliderCtl def={SKYBOX_SLIDERS.skyboxCycleSpeed} value={params.skyboxCycleSpeed ?? 1}
           onChange={(v) => onParam('skyboxCycleSpeed', v)} settingId="skybox.skyboxCycleSpeed" />
         <p className="section-hint">하늘 색상, 태양 위치, 대기를 제어합니다. 타일 뷰와 무한 세계에서 공유됩니다.</p>
       </ControlSection>
 
       {enabled && (
-        <ControlSection id="skybox-appearance" title="Appearance" defaultOpen settingId="skybox.section.appearance">
+        <ControlSection id="skybox-appearance" title="외관" defaultOpen settingId="skybox.section.appearance">
           <SliderCtl def={SKYBOX_SLIDERS.skyboxBrightness} value={params.skyboxBrightness ?? 1}
             onChange={(v) => onParam('skyboxBrightness', v)} settingId="skybox.skyboxBrightness" />
           <SliderCtl def={SKYBOX_SLIDERS.skyboxHaze} value={params.skyboxHaze ?? 0.55}
@@ -498,10 +498,10 @@ function SkyboxPanel({ ctx }) {
           <ToggleRow label="밤 별" value={params.skyboxStars !== false}
             onChange={(v) => onParam('skyboxStars', v)}
             settingId="skybox.skyboxStars"
-            info="Show the procedural star field when the sun is below the horizon." />
+            info="태양이 지평선 아래에 있을 때 프로시저럴 별 필드를 표시합니다." />
         </ControlSection>
       )}
-      <PanelResetButton label="Reset Skybox Settings" onClick={() => ctx.onResetPanel?.('skybox')} settingId="skybox.reset" />
+      <PanelResetButton label="스카이박스 설정 초기화" onClick={() => ctx.onResetPanel?.('skybox')} settingId="skybox.reset" />
     </SidePanel>
   );
 }
@@ -516,14 +516,14 @@ function LightingPanel({ ctx }) {
       )}
       <EnvironmentPanelInner params={params} planetStyle={params.planetStyle}
         onParam={ctx.onParam} onTuning={ctx.onStyleTuning} settingsTarget={ctx.settingsTarget} />
-      <PanelResetButton label="Reset Lighting Settings" onClick={() => ctx.onResetPanel?.('lighting')} settingId="lighting.reset" />
+      <PanelResetButton label="조명 설정 초기화" onClick={() => ctx.onResetPanel?.('lighting')} settingId="lighting.reset" />
     </SidePanel>
   );
 }
 
 function VisualsPanel({ ctx }) {
   return (
-    <SidePanel title="비주얼" description="Post effects, global camera shaders, HDR sky and surface polish." onClose={ctx.onClose}>
+    <SidePanel title="비주얼" description="포스트 이펙트, 글로벌 카메라 셰이더, HDR 하늘 및 표면 마감." onClose={ctx.onClose}>
       <VisualsPanelInner ctx={ctx} />
     </SidePanel>
   );
@@ -532,7 +532,7 @@ function VisualsPanel({ ctx }) {
 function PerformancePanel({ ctx }) {
   const { stats } = useLiveMetrics(ctx.liveMetrics);
   return (
-    <SidePanel title="성능 우선" description="GPU, water, fog and cloud budgets." onClose={ctx.onClose}>
+    <SidePanel title="성능 우선" description="GPU, 물, 안개, 구름 예산." onClose={ctx.onClose}>
       <PerformanceStats stats={stats} gpu={ctx.gpu} />
       <PerfSettings perf={ctx.perf} rendererInfo={ctx.rendererInfo} onPerfPreset={ctx.onPerfPreset}
         onPerfSetting={ctx.onPerfSetting} onPerfReset={ctx.onPerfReset}
@@ -655,18 +655,18 @@ function TerrainOverlayOptions({ ctx }) {
   const isStudio = worldMode === 'studio';
   const detailDebugOptions = [
     { value: 'off', label: '꺼짐' },
-    { value: 'slope', label: 'Slope Mask' },
-    { value: 'rock', label: 'Rock Mask' },
+    { value: 'slope', label: '경사 마스크' },
+    { value: 'rock', label: '암석 마스크' },
     { value: 'shoreline', label: '해안선 마스크' },
-    { value: 'detailFade', label: 'Close Detail Fade' },
-    { value: 'detail', label: 'Detail Noise' },
-    { value: 'albedo', label: 'Final Albedo' },
-    { value: 'normal', label: 'Final Normal' },
+    { value: 'detailFade', label: '근접 디테일 페이드' },
+    { value: 'detail', label: '디테일 노이즈' },
+    { value: 'albedo', label: '최종 알베도' },
+    { value: 'normal', label: '최종 노멀' },
   ];
 
   return (
     <CollapsibleGroup
-      title="Terrain Overlays"
+      title="지형 오버레이"
       icon={<Eye size={15} strokeWidth={1.75} />}
       defaultOpen
     >
@@ -674,17 +674,17 @@ function TerrainOverlayOptions({ ctx }) {
         label="와이어프레임"
         value={params.wireframe}
         onChange={(v) => onParam('wireframe', v)}
-        info="Draw the terrain as wire mesh lines instead of solid triangles."
+        info="지형을 솔리드 삼각형 대신 와이어 메쉬 라인으로 그립니다."
       />
       <ToggleRow
-        label="LOD Debug"
+        label="LOD 디버그"
         value={params.lodDebug}
         onChange={(v) => onParam('lodDebug', v)}
         info="Tint chunks by their active level-of-detail (red = highest detail → blue = lowest)."
       />
       {isStudio && (
         <ToggleRow
-          label="Chunk Grid"
+          label="청크 그리드"
           value={params.chunkGrid}
           onChange={(v) => onParam('chunkGrid', v)}
           info="Overlay borders along chunk boundaries. Lines turn green over merged chunk groups and magenta over the macro proxy."
@@ -698,10 +698,10 @@ function TerrainOverlayOptions({ ctx }) {
         settingId="debug.mergeDebug"
       />
       <ToggleRow
-        label="Biome Debug"
+        label="생태계 디버그"
         value={params.biomeDebug}
         onChange={(v) => onParam('biomeDebug', v)}
-        info="Color-code biomes directly on the terrain surface for inspection."
+        info="검토를 위해 지형 표면에 생태계를 색상으로 직접 표시합니다."
       />
       <SelectRow
         label="지형 재질 디버그"
@@ -801,7 +801,7 @@ function EngineDebugOptions({ ctx }) {
 
 // ------------------------------------------------------------- export panel
 const FORMAT_OPTIONS = [
-  { value: 'glb', label: 'GLB / GLTF (Recommended)' },
+  { value: 'glb', label: 'GLB / GLTF (권장)' },
   { value: 'obj', label: 'OBJ (Wavefront)' },
 ];
 const RES_OPTIONS = [
@@ -854,7 +854,7 @@ function ExportPanel({ ctx }) {
       onClose={ctx.onClose}
       footer={(
         <button type="button" className="action-btn primary" onClick={doExport} disabled={busy || exportBlocked}>
-          {busy ? '내보내는 중…' : `Export ${ctx.worldMode === 'planet' ? 'Planet' : 'Terrain'}`}
+          {busy ? '내보내는 중…' : `${ctx.worldMode === 'planet' ? '행성' : '지형'} 내보내기`}
         </button>
       )}>
       <div className="side-panel-quick">
@@ -878,13 +878,13 @@ function ExportPanel({ ctx }) {
       </ControlSection>
 
       {multiTile && !circleTiles && (
-        <ControlSection id="export-tile-assembly" title="Tile Assembly" defaultOpen settingId="export.section.tileAssembly">
+        <ControlSection id="export-tile-assembly" title="타일 어셈블리" defaultOpen settingId="export.section.tileAssembly">
           <SelectRow
-            label="Tile Export"
+            label="타일 내보내기"
             value={opt.exportTileMode}
             options={[
-              { value: 'merged', label: 'One terrain (merged)' },
-              { value: 'separate', label: 'Separate tiles' },
+              { value: 'merged', label: '하나의 지형 (병합됨)' },
+              { value: 'separate', label: '분리된 타일' },
             ]}
             onChange={(v) => set('exportTileMode', v)}
           />
@@ -895,53 +895,53 @@ function ExportPanel({ ctx }) {
         </ControlSection>
       )}
 
-      <ControlSection id="export-format" title="Format & Resolution" defaultOpen settingId="export.section.format">
+      <ControlSection id="export-format" title="포맷 및 해상도" defaultOpen settingId="export.section.format">
         <SelectRow label="형식" value={opt.format} options={FORMAT_OPTIONS} onChange={(v) => set('format', v)} />
-        <ToggleRow label="Include Terrain Mesh" value={opt.includeMesh} onChange={(v) => set('includeMesh', v)} />
+        <ToggleRow label="지형 메쉬 포함" value={opt.includeMesh} onChange={(v) => set('includeMesh', v)} />
         {opt.includeMesh && (
           <>
-            <SelectRow label="Mesh Resolution" value={opt.meshRes} options={RES_OPTIONS} onChange={(v) => set('meshRes', v)} />
-            <ToggleRow label="Include Side Skirts" value={opt.includeSkirts} onChange={(v) => set('includeSkirts', v)} />
+            <SelectRow label="메쉬 해상도" value={opt.meshRes} options={RES_OPTIONS} onChange={(v) => set('meshRes', v)} />
+            <ToggleRow label="사이드 스커트 포함" value={opt.includeSkirts} onChange={(v) => set('includeSkirts', v)} />
             {opt.includeSkirts && (
-              <ToggleRow label="Include Base Slab" value={opt.includeBase} onChange={(v) => set('includeBase', v)} />
+              <ToggleRow label="베이스 슬랩 포함" value={opt.includeBase} onChange={(v) => set('includeBase', v)} />
             )}
           </>
         )}
       </ControlSection>
 
-      <ControlSection id="export-textures" title="Texture Baking" defaultOpen settingId="export.section.textures">
-        <ToggleRow label="Bake Color Texture" value={opt.bakeColor} onChange={(v) => set('bakeColor', v)} />
+      <ControlSection id="export-textures" title="텍스처 베이크" defaultOpen settingId="export.section.textures">
+        <ToggleRow label="색상 텍스처 베이크" value={opt.bakeColor} onChange={(v) => set('bakeColor', v)} />
         {opt.bakeColor && (
-          <ToggleRow label="Bake Lighting into Color" value={opt.bakeLighting} onChange={(v) => set('bakeLighting', v)} />
+          <ToggleRow label="조명을 색상에 베이크" value={opt.bakeLighting} onChange={(v) => set('bakeLighting', v)} />
         )}
-        <ToggleRow label="Bake Normal Map" value={opt.bakeNormal} onChange={(v) => set('bakeNormal', v)} />
+        <ToggleRow label="법선 맵 베이크" value={opt.bakeNormal} onChange={(v) => set('bakeNormal', v)} />
         {showTex && (
-          <SelectRow label="Texture Size" value={opt.texRes} options={TEX_OPTIONS} onChange={(v) => set('texRes', v)} />
+          <SelectRow label="텍스처 크기" value={opt.texRes} options={TEX_OPTIONS} onChange={(v) => set('texRes', v)} />
         )}
       </ControlSection>
 
       <ControlSection id="export-assets" title="추가 자산" defaultOpen={false} settingId="export.section.assets">
         <ToggleRow label="하이맵 내보내기" value={opt.exportHeightmap} onChange={(v) => set('exportHeightmap', v)} />
         {opt.exportHeightmap && (
-          <ToggleRow label="Include Biome Splat Map" value={opt.exportSplat} onChange={(v) => set('exportSplat', v)} />
+          <ToggleRow label="바이옴 스플랫 맵 포함" value={opt.exportSplat} onChange={(v) => set('exportSplat', v)} />
         )}
         <ToggleRow label="충돌 메쉬 내보내기" value={opt.exportCollision} onChange={(v) => set('exportCollision', v)} />
         {opt.exportCollision && (
-          <SelectRow label="Collision Resolution" value={opt.collisionRes} options={COLL_OPTIONS} onChange={(v) => set('collisionRes', v)} />
+          <SelectRow label="충돌 해상도" value={opt.collisionRes} options={COLL_OPTIONS} onChange={(v) => set('collisionRes', v)} />
         )}
-        <ToggleRow label="Include Water Plane" value={opt.exportWater} onChange={(v) => set('exportWater', v)} />
-        {ctx.worldMode === 'studio' && <ToggleRow label="Export Spline Masks" value={opt.exportSplineMasks} onChange={(v) => set('exportSplineMasks', v)} />}
+        <ToggleRow label="물 평면 포함" value={opt.exportWater} onChange={(v) => set('exportWater', v)} />
+        {ctx.worldMode === 'studio' && <ToggleRow label="스플라인 마스크 내보내기" value={opt.exportSplineMasks} onChange={(v) => set('exportSplineMasks', v)} />}
         {opt.exportWater && (
-          <ToggleRow label="Exclude Water from Export" value={opt.excludeWaterFromExport} onChange={(v) => set('excludeWaterFromExport', v)} />
+          <ToggleRow label="내보낼 때 물 제외" value={opt.excludeWaterFromExport} onChange={(v) => set('excludeWaterFromExport', v)} />
         )}
       </ControlSection>
 
-      <ControlSection id="export-water-maps" title="Water Maps" defaultOpen={false} settingId="export.section.waterMaps">
-        <ToggleRow label="Export Water Mask" value={opt.exportWaterMask} onChange={(v) => setMask('exportWaterMask', v)} />
+      <ControlSection id="export-water-maps" title="물 맵" defaultOpen={false} settingId="export.section.waterMaps">
+        <ToggleRow label="물 마스크 내보내기" value={opt.exportWaterMask} onChange={(v) => setMask('exportWaterMask', v)} />
         <ToggleRow label="깊이 맵 내보내기" value={opt.exportDepthMap} onChange={(v) => setMask('exportDepthMap', v)} />
-        <ToggleRow label="Export Shoreline Mask" value={opt.exportShorelineMask} onChange={(v) => setMask('exportShorelineMask', v)} />
+        <ToggleRow label="해안선 마스크 내보내기" value={opt.exportShorelineMask} onChange={(v) => setMask('exportShorelineMask', v)} />
         <ToggleRow label="거품 마스크 내보내기" value={opt.exportFoamMask} onChange={(v) => setMask('exportFoamMask', v)} />
-        <ToggleRow label="Include Water Material Metadata" value={opt.exportWaterMetadata} onChange={(v) => set('exportWaterMetadata', v)} />
+        <ToggleRow label="물 머티리얼 메타데이터 포함" value={opt.exportWaterMetadata} onChange={(v) => set('exportWaterMetadata', v)} />
         <ToggleRow label="프리셋 내보내기 (JSON)" value={opt.exportPreset} onChange={(v) => set('exportPreset', v)} />
       </ControlSection>
     </SidePanel>
@@ -992,7 +992,7 @@ function TilesContent({ ctx }) {
                 key={`${t.cx},${t.cz}`}
                 type="button"
                 className="action-btn"
-                title={`Remove tile (${t.cx}, ${t.cz})`}
+                title={`타일 제거 (${t.cx}, ${t.cz})`}
                 onClick={() => ctx.onRemoveTile?.(t.cx, t.cz)}
               >
                 {t.cx === 0 && t.cz === 0 ? 'origin' : `${t.cx}, ${t.cz}`} ✕

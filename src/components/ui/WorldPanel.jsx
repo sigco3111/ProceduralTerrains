@@ -56,7 +56,7 @@ export default function WorldPanel({ params, worldMode, onParam }) {
             options={[8, 12, 16, 20, 24].map((v) => ({ value: v, label: `${v} × ${v}` }))}
             onChange={(v) => onParam('chunkCount', parseFloat(v))}
             settingId="world.chunkCount"
-            info="Dimensions of the grid of chunks around the camera (e.g. 16x16)"
+            info="카메라 주변 청크 그리드의 크기 (예: 16x16)"
             icon={(
               <svg viewBox="0 0 16 16" fill="none">
                 <rect x="2" y="2" width="12" height="12" rx="1" stroke="currentColor" strokeWidth="1.2" />
@@ -70,7 +70,7 @@ export default function WorldPanel({ params, worldMode, onParam }) {
             options={[64, 128, 192, 256].map((v) => ({ value: v, label: String(v) }))}
             onChange={(v) => onParam('chunkSize', parseFloat(v))}
             settingId="world.chunkSize"
-            info="Number of vertices per side of each grid patch (higher = more detailed)"
+            info="각 그리드 패시의 한 변당 정점 수 (값이 클수록 더 정밀)"
             icon={(
               <svg viewBox="0 0 16 16" fill="none">
                 <path d="M2 2v12h12M5 11l6-6M7 5h4v4" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
@@ -78,11 +78,11 @@ export default function WorldPanel({ params, worldMode, onParam }) {
             )}
           />
           <ToggleRow
-            label="Chunk Grid"
+            label="청크 그리드"
             value={params.chunkGrid}
             onChange={(v) => onParam('chunkGrid', v)}
             settingId="world.chunkGrid"
-            info="Render borders around individual chunk boundaries"
+            info="개별 청크 경계 주변에 테두리를 렌더링합니다"
             icon={(
               <svg viewBox="0 0 16 16" fill="none">
                 <rect x="3" y="3" width="10" height="10" rx="1" stroke="currentColor" strokeWidth="1.2" strokeDasharray="2 2" />

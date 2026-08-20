@@ -64,7 +64,7 @@ export async function listVariants(material, { force = false } = {}) {
   let variants;
   try {
     const res = await fetch(`${VARIANTS_API}?material=${encodeURIComponent(material.id)}`);
-    if (!res.ok) throw new Error(`variants ${res.status}`);
+    if (!res.ok) throw new Error(`변형 ${res.status}`);
     const body = await res.json();
     variants = Array.isArray(body.variants) && body.variants.length ? body.variants : ['base'];
   } catch {
@@ -85,7 +85,7 @@ export async function createVariant(material, name) {
     body: JSON.stringify({ material: material.id, name }),
   });
   const body = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(body.error || `Could not create variant (${res.status})`);
+  if (!res.ok) throw new Error(body.error || `변형본을 만들 수 없습니다 (${res.status})`);
   const variants = [...body.variants].sort((a, b) => (a === 'base' ? -1 : b === 'base' ? 1 : a.localeCompare(b)));
   variantsCache.set(material.id, variants);
   return variants;

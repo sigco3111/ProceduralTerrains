@@ -27,44 +27,44 @@ const NOISE_SLIDERS = [
 
 const MOTION_SLIDERS = [
   { key: 'cloudWindDir', label: '바람 방향', min: 0, max: 360, step: 1, unit: '°', info: 'Heading the cloud field drifts toward.' },
-  { key: 'cloudWindSpeed', label: 'Wind Speed', min: 0, max: 4, step: 0.05, digits: 2, info: 'Speed of the cloud drift.' },
+  { key: 'cloudWindSpeed', label: '바람 속도', min: 0, max: 4, step: 0.05, digits: 2, info: '구름 흐름 속도.' },
   { key: 'cloudRotationSpeed', label: '회전', min: 0, max: 3, step: 0.05, digits: 2, info: 'Slow rotation of the cloud field around the planet axis.' },
-  { key: 'cloudEvolveSpeed', label: 'Evolve', min: 0, max: 4, step: 0.05, digits: 2, info: 'How fast clouds form, morph and dissipate in place (0 = static shapes that only drift).' },
+  { key: 'cloudEvolveSpeed', label: '진화', min: 0, max: 4, step: 0.05, digits: 2, info: 'How fast clouds form, morph and dissipate in place (0 = static shapes that only drift).' },
 ];
 
 const LIGHT_SLIDERS = [
-  { key: 'cloudLightAbsorption', label: 'Light Absorption', min: 0.1, max: 3, step: 0.05, digits: 2, info: '구름이 햇빛을 얼마나 흡수하는지 (셰이딩 대비).' },
-  { key: 'cloudShadowStrength', label: 'Shadow Strength', min: 0, max: 1, step: 0.02, digits: 2, info: 'Darkness of self-shadowed cloud regions.' },
+  { key: 'cloudLightAbsorption', label: '광 흡수', min: 0.1, max: 3, step: 0.05, digits: 2, info: '구름이 햇빛을 얼마나 흡수하는지 (셰이딩 대비).' },
+  { key: 'cloudShadowStrength', label: '그림자 강도', min: 0, max: 1, step: 0.02, digits: 2, info: '자체 그림자가 있는 구름 영역의 어두움입니다.' },
   { key: 'cloudScatteringStrength', label: '산란', min: 0, max: 2, step: 0.05, digits: 2, info: 'Brightness of light scattered toward the camera.' },
-  { key: 'cloudAtmosphereInfluence', label: 'Sky Influence', min: 0, max: 1, step: 0.02, digits: 2, info: 'How strongly the active sky, sun and atmosphere color the clouds. Zero restores the legacy independent lighting.' },
-  { key: 'cloudSunResponse', label: '태양 반응', min: 0, max: 2, step: 0.05, digits: 2, info: 'Strength of direct sunlight received by the clouds.' },
-  { key: 'cloudAmbientResponse', label: '주변광 반응', min: 0, max: 2, step: 0.05, digits: 2, info: 'Strength of zenith, horizon and ground-bounce lighting.' },
-  { key: 'cloudSilverLining', label: 'Silver Lining', min: 0, max: 1, step: 0.01, digits: 2, info: 'Directional glow when looking toward the sun through cloud edges.' },
+  { key: 'cloudAtmosphereInfluence', label: '하늘 영향', min: 0, max: 1, step: 0.02, digits: 2, info: 'How strongly the active sky, sun and atmosphere color the clouds. Zero restores the legacy independent lighting.' },
+  { key: 'cloudSunResponse', label: '태양 반응', min: 0, max: 2, step: 0.05, digits: 2, info: '구름이 받는 직사광의 강도.' },
+  { key: 'cloudAmbientResponse', label: '주변광 반응', min: 0, max: 2, step: 0.05, digits: 2, info: '천정, 지평선, 지면 반사 조명의 강도.' },
+  { key: 'cloudSilverLining', label: '실버 라이닝', min: 0, max: 1, step: 0.01, digits: 2, info: '구름 가장자리를 통해 태양을 바라볼 때 나타나는 방향성 글로우입니다.' },
 ];
 
 const RESOLUTION_OPTIONS = [
-  { value: 'low', label: 'Low (12 steps)' },
-  { value: 'medium', label: 'Medium (24 steps)' },
-  { value: 'high', label: 'High (40 steps)' },
-  { value: 'ultra', label: 'Ultra (72 steps)' },
+  { value: 'low', label: '낮음 (12단계)' },
+  { value: 'medium', label: '중간 (24단계)' },
+  { value: 'high', label: '높음 (40단계)' },
+  { value: 'ultra', label: '울트라 (72 스텝)' },
   { value: 'custom', label: '사용자 지정' },
 ];
 
 const FALLBACK_OPTIONS = [
   { value: 'none', label: '전체' },
-  { value: 'lite', label: 'Lite (weak GPU)' },
+  { value: 'lite', label: '라이트 (저사양 GPU)' },
   { value: 'off', label: '꺼짐' },
 ];
 
 const RENDER_SCALE_OPTIONS = [
   { value: '1', label: 'Full res' },
-  { value: '0.5', label: 'Half res (denoise)' },
-  { value: '0.25', label: 'Quarter res' },
+  { value: '0.5', label: '절반 해상도 (디노이즈)' },
+  { value: '0.25', label: '4분의 1 해상도' },
 ];
 
 const COLOR_FIELDS = [
-  { key: 'cloudColor', label: '구름 색상', info: 'Cloud albedo multiplied by sunlight and sky lighting.', def: [1, 1, 1] },
-  { key: 'cloudShadowColor', label: 'Shadow Color', info: 'Artistic tint applied only to self-shadowed cloud regions.', def: [0.42, 0.47, 0.6] },
+  { key: 'cloudColor', label: '구름 색상', info: '구름 알베도에 태양광과 하늘 조명을 곱한 값입니다.', def: [1, 1, 1] },
+  { key: 'cloudShadowColor', label: '그림자 색상', info: '자체 그림자가 있는 구름 영역에만 적용되는 예술적 색조입니다.', def: [0.42, 0.47, 0.6] },
 ];
 
 function val(params, key) {
@@ -226,7 +226,7 @@ export default function CloudPanel({
               settingId="performance.cloudRenderScale"
             />
             <SelectRow
-              label="Fallback Mode"
+              label="폴백 모드"
               value={p.cloudFallback ?? 'none'}
               options={FALLBACK_OPTIONS}
               onChange={(v) => onPerfSetting('cloudFallback', v)}

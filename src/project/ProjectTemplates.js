@@ -1,7 +1,7 @@
 export const PROJECT_TEMPLATES = [
   { id: 'blank', name: '빈 지형', description: '깔끔한 지형 캔버스.', preset: 'highlands' },
   { id: 'island', name: '섬', description: 'Ocean, beaches, and a dramatic core.', preset: 'archipelago' },
-  { id: 'mountain', name: 'Mountain range', description: 'Sharp peaks, snow, and valleys.', preset: 'alpine' },
+  { id: 'mountain', name: '산맥', description: '날카로운 봉우리, 눈, 계곡.', preset: 'alpine' },
   {
     id: 'geological-hybrid',
     name: '지질 하이브리드',

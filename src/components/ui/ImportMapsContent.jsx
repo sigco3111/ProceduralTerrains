@@ -64,7 +64,7 @@ function ImageryStyleSelect({ ctx }) {
   return (
     <>
       <SelectRow
-        label="Texture Style"
+        label="텍스처 스타일"
         value={style.id}
         options={IMAGERY_STYLE_OPTIONS}
         onChange={(v) => ctx.onRealWorldImageryStyle?.(v)}
@@ -122,14 +122,14 @@ function ImportMapSection({ type, map, ctx, forceOpen = false }) {
       {map?.error && <p className="section-hint import-map-error">{map.error}</p>}
       {map?.warning && <p className="section-hint">{map.warning}</p>}
       <SelectRow
-        label="Usage Mode"
+        label="사용 모드"
         value={settings.mode}
         options={IMPORT_MODE_OPTIONS}
         onChange={(v) => set('mode', v)}
       />
       {settings.mode === 'blend' && (
         <SliderCtl
-          def={{ label: 'Blend Strength', min: 0, max: 1, step: 0.01, digits: 2 }}
+          def={{ label: '블렌드 강도', min: 0, max: 1, step: 0.01, digits: 2 }}
           value={settings.blend}
           onChange={(v) => set('blend', v)}
         />
@@ -137,18 +137,18 @@ function ImportMapSection({ type, map, ctx, forceOpen = false }) {
       {!isImagery && (
         <>
           <ToggleRow label="반전" value={!!settings.invert} onChange={(v) => set('invert', v)} />
-          <ToggleRow label="Normalize" value={!!settings.normalize} onChange={(v) => set('normalize', v)} />
+          <ToggleRow label="정규화" value={!!settings.normalize} onChange={(v) => set('normalize', v)} />
         </>
       )}
       {type === 'height' && (
         <>
           <SliderCtl
-            def={{ label: 'Height Strength', min: 0, max: 2, step: 0.01, digits: 2 }}
+            def={{ label: '높이 강도', min: 0, max: 2, step: 0.01, digits: 2 }}
             value={settings.heightStrength}
             onChange={(v) => set('heightStrength', v)}
           />
           <SliderCtl
-            def={{ label: 'Height Offset', min: -500, max: 500, step: 1, digits: 0, unit: 'm' }}
+            def={{ label: '높이 오프셋', min: -500, max: 500, step: 1, digits: 0, unit: 'm' }}
             value={settings.heightOffset}
             onChange={(v) => set('heightOffset', v)}
           />
@@ -202,7 +202,7 @@ function RealWorldBrowser({ ctx }) {
         <input
           type="search"
           className="settings-search-input"
-          placeholder="Search locations…"
+          placeholder="위치 검색…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -260,8 +260,8 @@ function syncCustomAreaDraft(spec, coordText) {
 const CUSTOM_AREA_SLIDERS = {
   lat: { label: '위도', ...CUSTOM_AREA_LIMITS.lat, digits: 2, unit: '°' },
   lon: { label: '경도', ...CUSTOM_AREA_LIMITS.lon, digits: 2, unit: '°' },
-  sizeKm: { label: 'Area Size', ...CUSTOM_AREA_LIMITS.sizeKm, digits: 0, unit: ' km' },
-  zoom: { label: 'Detail (Zoom)', ...CUSTOM_AREA_LIMITS.zoom, digits: 0 },
+  sizeKm: { label: '영역 크기', ...CUSTOM_AREA_LIMITS.sizeKm, digits: 0, unit: ' km' },
+  zoom: { label: '디테일 (확대)', ...CUSTOM_AREA_LIMITS.zoom, digits: 0 },
 };
 
 function CustomAreaPicker({ ctx }) {
@@ -297,7 +297,7 @@ function CustomAreaPicker({ ctx }) {
     if (!parsed) {
       const current = formatCoordinateDisplay(spec);
       if (coordText.trim() && coordText.trim() !== current) {
-        setCoordError('Use e.g. 46.07621°N, 6.96224°E');
+        setCoordError('예: 46.07621°N, 6.96224°E 형식 사용');
         return null;
       }
       return spec;
@@ -407,7 +407,7 @@ function CustomAreaPicker({ ctx }) {
       )}
       <button type="button" className="file-picker-btn" disabled={busy} onClick={() => load()}>
         <Download size={15} strokeWidth={1.75} aria-hidden />
-        <span>{busy ? `Loading… ${Math.round(progress * 100)}%` : 'Load This Area'}</span>
+        <span>{busy ? `Loading… ${Math.round(progress * 100)}%` : '이 영역 불러오기'}</span>
       </button>
       {mapOpen && (
         <Suspense fallback={(

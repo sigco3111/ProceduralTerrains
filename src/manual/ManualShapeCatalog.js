@@ -40,7 +40,7 @@ export const MANUAL_SHAPE_CATALOG = Object.freeze([
   },
   {
     id: 'sharp-peak',
-    name: 'Sharp Peak',
+    name: '날카로운 봉우리',
     category: '산맥',
     description: '큰 산괴 위로 잘 겹쳐지는 가파른 정상.',
     size: { x: 280, z: 280 },
@@ -51,15 +51,15 @@ export const MANUAL_SHAPE_CATALOG = Object.freeze([
     id: 'ridge',
     name: '산등성이',
     category: '산맥',
-    description: 'An elongated mountain spine controlled by rotation and scale.',
+    description: '회전과 스케일로 제어되는 길쭉한 산맥 능선입니다.',
     size: { x: 650, z: 180 },
     height: 210,
     detail: 0.48,
   },
   {
     id: 'valley',
-    name: 'Wide Valley',
-    category: 'Valleys',
+    name: '넓은 계곡',
+    category: '계곡',
     description: '넓은 통로와 분지를 위한 부드러운 음각 지형.',
     size: { x: 600, z: 360 },
     height: -170,
@@ -68,7 +68,7 @@ export const MANUAL_SHAPE_CATALOG = Object.freeze([
   {
     id: 'canyon',
     name: '협곡',
-    category: 'Valleys',
+    category: '계곡',
     description: '완만하게 넓어지는 둑을 가진 좁고 깊은 골짜기.',
     size: { x: 720, z: 145 },
     height: -230,
@@ -77,7 +77,7 @@ export const MANUAL_SHAPE_CATALOG = Object.freeze([
   {
     id: 'plateau',
     name: '고원',
-    category: 'Plateaus',
+    category: '고원',
     description: '제어 가능한 깨진 림을 가진 평상부 메사.',
     size: { x: 460, z: 390 },
     height: 190,
@@ -101,8 +101,8 @@ export const MAX_MANUAL_SHAPE_LAYERS = 8;
 export const MANUAL_SHAPE_LAYER_CATALOG = Object.freeze([
   {
     id: 'detail',
-    name: 'Noise Detail',
-    description: 'Adds deterministic multi-scale relief inside the selected shape.',
+    name: '노이즈 디테일',
+    description: '선택한 도형 내부에 결정론적 다중 스케일 지형을 추가합니다.',
     params: { strength: 0.22, scale: 6, roughness: 0.55 },
     controls: [
       { id: 'strength', label: '세기', min: 0, max: 1, step: 0.01, digits: 2 },
@@ -113,18 +113,18 @@ export const MANUAL_SHAPE_LAYER_CATALOG = Object.freeze([
   {
     id: 'ridges',
     name: '바위 능선',
-    description: 'Breaks the silhouette into deterministic radial rock spines.',
+    description: '실루엣을 결정론적 방사형 암석 능선으로 분해합니다.',
     params: { strength: 0.24, frequency: 7, sharpness: 2.1 },
     controls: [
       { id: 'strength', label: '세기', min: 0, max: 1, step: 0.01, digits: 2 },
-      { id: 'frequency', label: 'Ridge Count', min: 2, max: 18, step: 1, digits: 0, integer: true },
+      { id: 'frequency', label: '능선 개수', min: 2, max: 18, step: 1, digits: 0, integer: true },
       { id: 'sharpness', label: '선예도', min: 0.5, max: 5, step: 0.05, digits: 2 },
     ],
   },
   {
     id: 'terraces',
     name: '테라스',
-    description: 'Quantizes the current profile into shelves while preserving later detail layers.',
+    description: '이후 디테일 레이어를 보존하면서 현재 프로필을 선반 단위로 양자화합니다.',
     params: { strength: 0.8, steps: 7, softness: 0.16 },
     controls: [
       { id: 'strength', label: '세기', min: 0, max: 1, step: 0.01, digits: 2 },
@@ -135,12 +135,12 @@ export const MANUAL_SHAPE_LAYER_CATALOG = Object.freeze([
   {
     id: 'weathering',
     name: '풍화',
-    description: 'Carves broken drainage channels into exposed parts of the shape.',
+    description: '도형의 노출된 부분에 끊어진 배수 채널을 깎아냅니다.',
     params: { strength: 0.34, scale: 4, channels: 0.58 },
     controls: [
       { id: 'strength', label: '세기', min: 0, max: 1, step: 0.01, digits: 2 },
       { id: 'scale', label: '피처 스케일', min: 1, max: 14, step: 0.25, digits: 2 },
-      { id: 'channels', label: 'Channels', min: 0, max: 1, step: 0.01, digits: 2 },
+      { id: 'channels', label: '채널', min: 0, max: 1, step: 0.01, digits: 2 },
     ],
   },
 ]);

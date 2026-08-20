@@ -88,7 +88,7 @@ function ThrottleQuadrant({ throttle = 0 }) {
   const leverBottom = `${throttle * 100}%`;
 
   return (
-    <div className="plane-throttle" aria-label={`Throttle ${pct} percent`}>
+    <div className="plane-throttle" aria-label={`스로틀 ${pct}%`}>
       <div className="plane-throttle-header">THR</div>
       <div className="plane-throttle-body">
         <div className="plane-throttle-track">
@@ -163,7 +163,7 @@ export default function PlaneHUD({ liveMetrics }) {
             <span className="plane-gauge-unit">m</span>
           </div>
           <div className="plane-gauge">
-            <span className="plane-gauge-label" title="Vertical speed — rate of climb or descent in metres per second">V/S</span>
+            <span className="plane-gauge-label" title="수직 속도 — 초당 미터 단위 상승/하강 속도">V/S</span>
             <span className={`plane-gauge-val${plane.verticalSpeed < -5 ? ' plane-gauge-warn' : ''}`}>
               {fmtVs(plane.verticalSpeed)}
             </span>

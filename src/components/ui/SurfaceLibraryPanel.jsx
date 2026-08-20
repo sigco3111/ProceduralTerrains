@@ -202,7 +202,7 @@ function FileSlotRow({ role, variantIndex, slot, onChanged }) {
           }}
         />
         {resolved && (
-          <button type="button" className="file-picker-btn surface-slot-reset" onClick={reset} title="Clear upload">
+          <button type="button" className="file-picker-btn surface-slot-reset" onClick={reset} title="업로드 지우기">
             <RotateCcw size={13} strokeWidth={1.75} aria-hidden />
           </button>
         )}
@@ -388,7 +388,7 @@ function RoleCard({ role, mapSlots, targetId, atlasLayer, palette, onMaterialCha
                 type="button"
                 className="file-picker-btn surface-card-reset"
                 onClick={resetMaterial}
-                title="Clear this role's custom uploads"
+                title="이 역할의 사용자 업로드 지우기"
               >
                 <RotateCcw size={13} strokeWidth={1.8} aria-hidden />
               </button>
@@ -454,7 +454,7 @@ function SurfaceModeControls({ ctx, source, onBake, applying, status }) {
         value={source}
         options={[
           { value: SURFACE_TEXTURE_SOURCE.PROCEDURAL, label: '절차적' },
-          { value: SURFACE_TEXTURE_SOURCE.CUSTOM, label: 'Custom Materials' },
+          { value: SURFACE_TEXTURE_SOURCE.CUSTOM, label: '사용자 지정 머티리얼' },
         ]}
         onChange={(value) => onParam('surfaceTextureSource', value)}
         settingId="surface.mode"

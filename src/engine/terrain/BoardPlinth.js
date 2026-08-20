@@ -3,7 +3,7 @@ import * as THREE from 'three';
 // Clean diorama base for the studio board: four outward walls + flat bottom.
 // Sits slightly outside the terrain perimeter so chunk skirts never overlap it.
 //
-// The terrain's own outer-edge skirt drops to this plinth's base and is shaded
+// The terrain'의 자체 외곽 스커트가 이 베이스까지 내려옵니다's base and is shaded
 // with the plinth colour (see TerrainMaterial), forming the contoured wall that
 // masks the under-the-map view. This box just closes off the bottom and the
 // below-water sides with a clean rectangular silhouette.

@@ -44,10 +44,10 @@ export default function TileMapDebugSection({ tileDebug, onTileDebug }) {
         value={dbg.view}
         options={DEBUG_VIEW_OPTIONS}
         onChange={(v) => onTileDebug({ view: v })}
-        info="Overlays noise, height or biome data directly on the terrain mesh."
+        info="노이즈, 고도, 바이옴 데이터를 지형 메시에 직접 오버레이합니다."
       />
       <ToggleRow
-        label="Show Legend"
+        label="범례 표시"
         value={!!dbg.showLegend}
         onChange={(v) => onTileDebug({ showLegend: v })}
       />

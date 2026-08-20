@@ -22,7 +22,7 @@ export function probeWebGL() {
     }
     return { ok: true };
   } catch (e) {
-    return { ok: false, reason: e?.message || 'WebGL probe failed.' };
+    return { ok: false, reason: e?.message || 'WebGL 프로브 실패.' };
   }
 }
 

@@ -21,7 +21,7 @@ export class GraphValidationError extends Error {
 
 export function makeGraphNode(type, position = { x: 0, y: 0 }, overrides = {}) {
   const definition = getGraphNodeDefinition(type);
-  if (!definition) throw new GraphValidationError('unknown-node', `Unknown terrain node type “${type}”.`);
+  if (!definition) throw new GraphValidationError('unknown-node', `알 수 없는 지형 노드 유형 “${type}”.`);
   const id = overrides.id || (type === 'terrainOutput' ? TERRAIN_OUTPUT_ID : uid('node'));
   return {
     id, type,
@@ -76,7 +76,7 @@ export function migrateGraphDocument(raw, fallbackStack = defaultLegacyStack()) 
           : { ...nodeDefaults(node.type), ...(node.params || {}) },
       })
       : {
-        id: node.id, type: node.type, label: node.label || `Unknown: ${node.type}`,
+        id: node.id, type: node.type, label: node.label || `알 수 없음: ${node.type}`,
         position: { x: Number(node.position?.x) || 0, y: Number(node.position?.y) || 0 },
         params: clone(node.params || {}),
       });
@@ -116,7 +116,7 @@ export function migrateGraphDocument(raw, fallbackStack = defaultLegacyStack()) 
         .filter((nodeId) => idSet.has(nodeId) && !claimedNodes.has(nodeId) && claimedNodes.add(nodeId));
       return {
         id: group.id,
-        label: String(group.label || `Group ${index + 1}`),
+        label: String(group.label || `그룹 ${index + 1}`),
         position: { x: Number(group.position?.x) || 0, y: Number(group.position?.y) || 0 },
         width: Math.max(220, Number(group.width) || 420),
         height: Math.max(100, Number(group.height) || 240),
@@ -274,8 +274,8 @@ export function validateGraph(graph, { requireInputs = true, enforceCapacity = t
   let outputCount = 0;
   for (const node of graph?.nodes || []) {
     const definition = getGraphNodeDefinition(node.type);
-    if (!definition) diagnostics.push({ code: 'unknown-node', nodeId: node.id, message: `Unknown node “${node.type}”.` });
-    if (nodes.has(node.id)) diagnostics.push({ code: 'duplicate-node-id', nodeId: node.id, message: `Duplicate node id “${node.id}”.` });
+    if (!definition) diagnostics.push({ code: 'unknown-node', nodeId: node.id, message: `알 수 없는 노드 “${node.type}”.` });
+    if (nodes.has(node.id)) diagnostics.push({ code: 'duplicate-node-id', nodeId: node.id, message: `노드 ID “${node.id}”을(를) 복제합니다.` });
     nodes.set(node.id, node);
     if (node.type === 'terrainOutput') outputCount++;
   }
@@ -347,7 +347,7 @@ export function groupGraphNodes(graph, nodeIds, options = {}) {
   const id = options.id || uid('group');
   const group = {
     id,
-    label: String(options.label || `Group ${groups.length + 1}`),
+    label: String(options.label || `그룹 ${groups.length + 1}`),
     position: { x: Number(options.position?.x) || 0, y: Number(options.position?.y) || 0 },
     width: Math.max(220, Number(options.width) || 420),
     height: Math.max(100, Number(options.height) || 240),
