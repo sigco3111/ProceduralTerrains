@@ -460,7 +460,7 @@ function renderSettings({
 
       <SettingNote tab="lod" text={`Effective distances: ${distances.map((d) => d.toFixed(1)).join(' / ')} × chunk size`} {...groupProps} />
 
-      <SettingGroup tab="lod" label="청크 병합" keywords="merge chunk group draw call batch far distant tile macro proxy combine" {...groupProps}>
+      <SettingGroup tab="lod" label="청크 병합" keywords="병합 청크 그룹 드로우 콜 배치 원거리 타일 매크로 프록시 결합" {...groupProps}>
         <ToggleRow
           label="청크 병합"
           value={perf.terrainMerge !== false}
@@ -470,7 +470,7 @@ function renderSettings({
         />
       </SettingGroup>
 
-      <SettingGroup tab="lod" label="병합 거리" keywords="merge fold distance quadtree aggressiveness near far block size threshold" {...groupProps}>
+      <SettingGroup tab="lod" label="병합 거리" keywords="병합 접기 거리 쿼드트리 강도 근접 원거리 블록 크기 임계값" {...groupProps}>
         <SliderCtl
           def={{ label: '병합 거리', min: PERF_LIMITS.terrainMergeDistance.min, max: PERF_LIMITS.terrainMergeDistance.max, step: 0.5, digits: 1, unit: '× 차단' }}
           value={perf.terrainMergeDistance ?? 4}
