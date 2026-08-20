@@ -98,7 +98,7 @@ const SETTINGS_INDEX = [
   { panelId: 'performance', tabId: 'overview', settingId: 'performance.autoPerf', label: '자동 성능 모드', keywords: '자동 FPS 성능' },
   { panelId: 'performance', tabId: 'overview', settingId: 'performance.onDemandStudio', label: '유휴 시 일시 정지', keywords: 'idle redraw battery performance' },
   { panelId: 'performance', tabId: 'overview', settingId: 'performance.renderScale', label: '렌더 스케일', keywords: 'resolution pixel dpr scale' },
-  { panelId: 'performance', tabId: 'overview', settingId: 'performance.resolutionDenoiseMode', label: '해상도 재구성', keywords: 'denoise clean pixelated nearest upscale ps1' },
+  { panelId: 'performance', tabId: 'overview', settingId: 'performance.resolutionDenoiseMode', label: '해상도 재구성', keywords: '디노이즈 (깔끔 / 픽셀화 / 가장 가까움 / 업스케일 / PS1)' },
   { panelId: 'performance', tabId: 'lod', settingId: 'performance.resolutionScale', label: '지형 해상도', keywords: 'lod mesh detail' },
   { panelId: 'performance', tabId: 'lod', settingId: 'performance.lodDistanceScale', label: 'LOD 거리 스케일', keywords: 'lod distance scale' },
   { panelId: 'performance', tabId: 'lod', settingId: 'performance.terrainMerge', label: '청크 병합', keywords: 'merge chunk quadtree fold draw call batch far distant combine tile performance' },
