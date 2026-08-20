@@ -17,7 +17,7 @@ export const PANEL_META = {
     modes: ['planet', 'studio', 'infinite'],
   },
   biomes: { label: '생태계들', title: '생태계들', desc: '기후 분포 및 마스크.', icon: PANEL_ICONS.biomes },
-  water: { label: '물', title: '물', desc: 'Ocean surface, quality modes and volumetric settings.', icon: PANEL_ICONS.water },
+  water: { label: '물', title: '물', desc: '바다 표면, 품질 모드, 볼류메트릭 설정.', icon: PANEL_ICONS.water },
   props: { label: '소품', title: '소품', desc: 'Biome-aware grass, flowers, rocks and trees.', icon: PANEL_ICONS.props },
   clouds: { label: '구름', title: '구름', desc: '볼류메트릭 구름 레이어.', icon: PANEL_ICONS.clouds },
   visuals: { label: '비주얼', title: '비주얼', desc: '타일의 포스트 이펙트, HDR 하늘, 지형 표면 마감을 처리합니다.', icon: PANEL_ICONS.visuals, modes: ['studio'] },

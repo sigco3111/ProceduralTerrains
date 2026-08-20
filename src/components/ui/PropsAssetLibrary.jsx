@@ -178,7 +178,7 @@ function Preview({ asset }) {
 
   return (
     <div ref={hostRef} className="prop-asset-preview" aria-label={`3D preview of ${asset?.name || 'prop'}`}>
-      <button type="button" className="prop-preview-reset" onClick={resetView} title="Reset preview rotation" aria-label="Reset preview rotation">
+      <button type="button" className="prop-preview-reset" onClick={resetView} title="미리보기 회전 초기화" aria-label="미리보기 회전 초기화">
         <RotateCcw size={14} strokeWidth={1.8} aria-hidden />
       </button>
     </div>
@@ -238,7 +238,7 @@ export default function PropsAssetLibrary({ value, onChange }) {
   };
   const commitName = () => {
     if (!selected) return;
-    const name = nameDraft.trim() || 'Untitled asset';
+    const name = nameDraft.trim() || '제목 없는 에셋';
     setNameDraft(name);
     patchSelected({ name });
   };
@@ -248,13 +248,13 @@ export default function PropsAssetLibrary({ value, onChange }) {
       <div className="prop-library-toolbar">
         <button type="button" className="action-btn primary" onClick={() => setPickerMode('add')}>
           <Plus size={13} aria-hidden /> 에셋 추가</button>
-        <button type="button" className="icon-btn" disabled={!selected} onClick={() => setPickerMode('replace')} title="Replace selected asset">
+        <button type="button" className="icon-btn" disabled={!selected} onClick={() => setPickerMode('replace')} title="선택한 에셋 교체">
           <RefreshCw size={14} aria-hidden />
         </button>
-        <button type="button" className="icon-btn" disabled={!selected} onClick={duplicate} title="Duplicate selected asset">
+        <button type="button" className="icon-btn" disabled={!selected} onClick={duplicate} title="선택한 에셋 복제">
           <Copy size={14} aria-hidden />
         </button>
-        <button type="button" className="icon-btn danger" disabled={!selected} onClick={remove} title="Remove selected asset">
+        <button type="button" className="icon-btn danger" disabled={!selected} onClick={remove} title="선택한 에셋 제거">
           <Trash2 size={14} aria-hidden />
         </button>
       </div>
@@ -262,7 +262,7 @@ export default function PropsAssetLibrary({ value, onChange }) {
       {pickerMode && (
         <div className="prop-preset-picker">
           <div className="prop-preset-picker-head">
-            <strong>{pickerMode === 'replace' ? 'Replace asset' : 'Add asset'}</strong>
+            <strong>{pickerMode === 'replace' ? '에셋 교체' : '자산 추가'}</strong>
             <button type="button" onClick={() => setPickerMode(null)}>취소</button>
           </div>
           <div className="prop-preset-grid">
@@ -277,7 +277,7 @@ export default function PropsAssetLibrary({ value, onChange }) {
         </div>
       )}
 
-      <div className="prop-asset-strip" role="listbox" aria-label="Terrain prop assets">
+      <div className="prop-asset-strip" role="listbox" aria-label="지형 소품 에셋">
         {assets.map((asset) => (
           <button key={asset.id} type="button" role="option" aria-selected={asset.id === selected?.id}
             className={`prop-asset-card${asset.id === selected?.id ? ' active' : ''}${asset.enabled ? '' : ' disabled'}`}

@@ -421,7 +421,7 @@ export default function AdminDashboard({ user, onBack }) {
   return (
     <section className="admin-dashboard" aria-labelledby="admin-title">
       <aside className="admin-sidebar">
-        <div className="admin-sidebar-heading"><span className="admin-shield"><ShieldCheck size={18} /></span><span><strong>관리자 콘솔</strong><small>Three Terrain</small></span></div>
+        <div className="admin-sidebar-heading"><span className="admin-shield"><ShieldCheck size={18} /></span><span><strong>관리자 콘솔</strong><small>3개 지형</small></span></div>
         <nav aria-label="관리">
           {TABS.map(({ id, label, icon: Icon }) => <button type="button" key={id} className={tab === id ? 'active' : ''} onClick={() => setTab(id)}><Icon size={15} /><span>{label}</span></button>)}
         </nav>

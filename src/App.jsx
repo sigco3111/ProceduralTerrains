@@ -304,14 +304,14 @@ export default function App() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) {
-      setWebglError('Viewport canvas is not available.');
+      setWebglError('뷰포트 캔버스를 사용할 수 없습니다.');
       bootedRef.current = true;
       loadingRef.current.done('boot');
       landingRef.current?.setBootReady(true);
       return undefined;
     }
 
-    loadingRef.current.start('boot', { blocking: true, label: 'Loading Terrain Studio…', detail: 'Initializing engine' });
+    loadingRef.current.start('boot', { blocking: true, label: '지형 스튜디오 로딩 중…', detail: '엔진 초기화 중' });
 
     let engine = null;
     let bootTimer = null;
@@ -333,7 +333,7 @@ export default function App() {
     bootTimer = setTimeout(() => {
       if (bootedRef.current || cancelled) return;
       loadingRef.current.update('boot', {
-        detail: 'Finalizing terrain mesh, materials and water…',
+        detail: '지형 메시, 머티리얼, 물 마무리 중…',
       });
     }, 15000);
 
@@ -652,11 +652,11 @@ export default function App() {
     if (!eng || worldModeRef.current !== 'studio' || realTerrainMode
         || !['procedural', 'nodes'].includes(projectMode)) return false;
     const sourceMode = projectMode;
-    const sourceName = String(projectNameRef.current || 'Untitled terrain').trim() || 'Untitled terrain';
+    const sourceName = String(projectNameRef.current || '이름 없는 지형').trim() || '이름 없는 지형';
     const confirmed = await showConfirm({
-      title: 'Open in Manual Terrain?',
+      title: '수동 지형에서 열기?',
       message: `A new independent Manual copy of “${sourceName}” will be created. The ${sourceMode === 'nodes' ? 'Nodes graph' : 'Procedural generator'} and all current Tile edits will remain editable.`,
-      confirmLabel: 'Create Manual copy',
+      confirmLabel: '수동 복사본 만들기',
     });
     if (!confirmed) return false;
 
@@ -680,7 +680,7 @@ export default function App() {
       if (createdProject?.id) {
         try { await projectStore.remove(createdProject.id); } catch { /* best effort */ }
       }
-      showToast(error instanceof Error ? error.message : 'Could not create the Manual copy', 'error');
+      showToast(error instanceof Error ? error.message : '수동 사본을 만들 수 없습니다.', 'error');
       return false;
     }
   }, [loadProjectJSON, projectMode, realTerrainMode, showConfirm, showToast]);
@@ -703,7 +703,7 @@ export default function App() {
       setManualImportDialog({ open: true, loading: false, busy: false, projects });
     } catch (error) {
       setManualImportDialog((current) => ({ ...current, open: false, loading: false }));
-      showToast(error instanceof Error ? error.message : 'Could not load terrain projects', 'error');
+      showToast(error instanceof Error ? error.message : '지형 프로젝트를 불러올 수 없음', 'error');
     }
   }, [projectMode, realTerrainMode, showToast]);
 
@@ -716,7 +716,7 @@ export default function App() {
       id: activeProjectRef.current?.id,
       metadata: {
         ...(activeProjectRef.current?.metadata || {}),
-        name: String(projectNameRef.current || 'Untitled terrain').trim() || 'Untitled terrain',
+        name: String(projectNameRef.current || '이름 없는 지형').trim() || '이름 없는 지형',
       },
       terrain: currentPayload,
     });
@@ -728,7 +728,7 @@ export default function App() {
         sourceProject,
       );
     } catch (error) {
-      showToast(error instanceof Error ? error.message : 'This terrain cannot be imported', 'error');
+      showToast(error instanceof Error ? error.message : '이 지형은 가져올 수 없음', 'error');
       return false;
     }
 
@@ -778,7 +778,7 @@ export default function App() {
     reader.readAsText(file);
   }, [loadProjectJSON]);
 
-  const hasFileDrag = (e) => Array.from(e.dataTransfer?.types ?? []).includes('Files');
+  const hasFileDrag = (e) => Array.from(e.dataTransfer?.types ?? []).includes('파일');
 
   const onFileDragEnter = useCallback((e) => {
     if (!hasFileDrag(e)) return;
@@ -813,7 +813,7 @@ export default function App() {
     const eng = engineRef.current;
     if (!eng) return;
     const current = activeProjectRef.current;
-    const name = String(projectNameRef.current ?? current?.metadata?.name ?? 'Untitled terrain').trim() || 'Untitled terrain';
+    const name = String(projectNameRef.current ?? current?.metadata?.name ?? '이름 없는 지형').trim() || '이름 없는 지형';
     const project = normalizeProject({
       id: current?.id,
       metadata: { ...current?.metadata, name },
@@ -843,12 +843,12 @@ export default function App() {
     const template = nextMode === 'nodes'
       ? getNodeProjectTemplate(templateId)
       : nextMode === 'manual'
-        ? { id: 'manual-blank', name: 'Manual Terrain', description: 'Build a terrain by composing editable procedural landforms.' }
+        ? { id: 'manual-blank', name: '수동 지형', description: '편집 가능한 절차적 지형 요소를 조합하여 지형을 만듭니다.' }
         : getProjectTemplate(templateId);
     const created = await loadingRef.current.run('project-create', {
       blocking: true,
       label: `Creating ${template.name}…`,
-      detail: 'Building terrain…',
+      detail: '지형 빌드 중…',
     }, async (update) => {
       blockingUpdateRef.current = update;
       try {
@@ -876,7 +876,7 @@ export default function App() {
         // the id of whichever project was previously open.
         setCurrentProject(null);
         if (nextMode === 'nodes') {
-          update({ detail: 'Compiling terrain graph…' });
+          update({ detail: '지형 그래프 컴파일 중…' });
           let templateGraph = createNodeTemplateGraph(template.id);
           if (typeof nodeColorsEnabled === 'boolean') {
             templateGraph = nodeColorsEnabled
@@ -886,18 +886,18 @@ export default function App() {
           const graphResult = eng.setTerrainGraph(templateGraph, { structural: true, silent: true, atomic: true });
           const result = await graphResult?.ready;
           if (!graphResult?.ok || result?.error) {
-            throw result?.error ?? new Error('Terrain graph could not be compiled');
+            throw result?.error ?? new Error('지형 그래프를 컴파일할 수 없습니다');
           }
         } else if (nextMode === 'procedural') {
           const result = await eng.rebuildActiveHeightProgram({
-            label: 'Loading procedural terrain',
+            label: '절차적 지형 불러오는 중',
             atomic: true,
             terrainDirtyOnSwap: true,
           });
           if (result?.error) throw result.error;
         } else {
           const result = await eng.rebuildActiveHeightProgram({
-            label: 'Loading manual terrain',
+            label: '수동 지형 불러오는 중',
             atomic: true,
             terrainDirtyOnSwap: true,
           });
@@ -924,17 +924,17 @@ export default function App() {
           setHistState({ canUndo: false, canRedo: false });
         } catch { /* history is best effort */ }
         const metadata = realPreset
-          ? { name: 'Real Terrain', description: 'Real-world geographic terrain import.', tags: ['real-terrain', 'geographic'] }
+          ? { name: '실제 지형', description: '실제 지리적 지형 가져오기.', tags: ['real-terrain', 'geographic'] }
           : nextMode === 'nodes'
           ? {
-            name: template.id === 'nodes-blank' ? 'Nodes Terrain' : template.name,
+            name: template.id === 'nodes-blank' ? '노드 지형' : template.name,
             description: template.description,
             tags: ['nodes', template.id],
           }
           : nextMode === 'manual'
-            ? { name: 'Manual Terrain', description: template.description, tags: ['manual', 'terrain-shapes'] }
+            ? { name: '수동 지형', description: template.description, tags: ['manual', 'terrain-shapes'] }
             : { name: template.name, description: template.description, tags: [template.id] };
-        update({ detail: 'Saving project…' });
+        update({ detail: '프로젝트 저장 중…' });
         const project = await saveCurrentProject(metadata);
         if (project) showToast(`${template.name} project created`, 'success');
         return project;
@@ -978,8 +978,8 @@ export default function App() {
   // shader compile (same pattern as a mode switch).
   const HEAVY_PARAMS = new Set(['planetRadius', 'planetFaceGrid', 'chunkCount', 'chunkSize']);
   const HEAVY_LABEL = {
-    planetRadius: 'Resizing planet…', planetFaceGrid: 'Rebuilding planet…',
-    chunkCount: 'Rebuilding board…', chunkSize: 'Rebuilding board…',
+    planetRadius: '행성 크기 조정 중…', planetFaceGrid: '행성 재구성 중…',
+    chunkCount: '보드 재구축 중…', chunkSize: '보드 재구축 중…',
   };
   const onParam = (key, value) => {
     const eng = engine();
@@ -1067,14 +1067,14 @@ export default function App() {
     }).then(() => {
       if (!silent) {
         showToast(`Switched to ${label} mode`, 'success');
-        if (next === 'infinite') { setHelpVisible(false); showToast('Click to lock mouse', 'info'); }
+        if (next === 'infinite') { setHelpVisible(false); showToast('마우스 잠그려면 클릭', 'info'); }
         else if (next === 'planet') { setHelpVisible(false); }
       } else if (next !== 'studio') {
         setHelpVisible(false);
       }
     }).catch((e) => {
       console.error(e);
-      if (!silent) showToast('Mode switch failed', 'error');
+      if (!silent) showToast('모드 전환 실패', 'error');
     }).finally(() => {
       blockingUpdateRef.current = null;
       modeLockRef.current = false;
@@ -1160,7 +1160,7 @@ export default function App() {
       }
       return JSON.stringify(state);
     } catch (err) {
-      console.warn('History snapshot failed', err);
+      console.warn('기록 스냅샷 실패', err);
       return null;
     }
   }, []);
@@ -1286,7 +1286,7 @@ export default function App() {
       if (live) historyRef.current.present = live;
       return true;
     } catch (err) {
-      console.warn('History restore failed', err);
+      console.warn('기록 복원 실패', err);
       if (worldModeRef.current !== previousWorldMode) {
         await runModeSwitchRef.current(previousWorldMode, { silent: true });
       }
@@ -1417,7 +1417,7 @@ export default function App() {
   // ---- export: blocking overlay, button disabled via panel busy state ----
   const onExport = (options) => {
     exportFailedRef.current = false;
-    return loading.run('export', { blocking: true, label: 'Exporting…', detail: 'Preparing scene…' }, async (update) => {
+    return loading.run('export', { blocking: true, label: '내보내는 중…', detail: '씬 준비 중…' }, async (update) => {
       blockingUpdateRef.current = update;
       try {
         const exported = await engine().export3DTerrain(options);
@@ -1426,7 +1426,7 @@ export default function App() {
         blockingUpdateRef.current = null;
       }
     }).then(() => {
-      if (!exportFailedRef.current) showToast('Export complete', 'success');
+      if (!exportFailedRef.current) showToast('내보내기 완료', 'success');
     });
   };
 
@@ -1541,7 +1541,7 @@ export default function App() {
     const confirmed = await showConfirm({
       title: `Load ${template.name}?`,
       message: 'This replaces the current terrain graph with the selected recipe. You can undo the change from History.',
-      confirmLabel: 'Replace graph',
+      confirmLabel: '그래프 교체',
     });
     if (!confirmed) return false;
 
@@ -1569,7 +1569,7 @@ export default function App() {
     });
     const result = await graphResult?.ready;
     if (!graphResult?.ok || result?.error) {
-      const error = result?.error ?? new Error('Terrain graph could not be compiled');
+      const error = result?.error ?? new Error('지형 그래프를 컴파일할 수 없습니다');
       showToast(error.message, 'error');
       return false;
     }
@@ -1665,7 +1665,7 @@ export default function App() {
       case 'performance.autoPerf': return yesNo(perf?.autoPerf);
       case 'performance.onDemandStudio': return yesNo(perf?.onDemandStudio);
       case 'performance.renderScale': return num(perf?.renderScale, 2, 'x');
-      case 'performance.resolutionDenoiseMode': return perf?.resolutionDenoiseMode === 'pixelated' ? 'Pixelated Denoise' : 'Clean Denoise';
+      case 'performance.resolutionDenoiseMode': return perf?.resolutionDenoiseMode === 'pixelated' ? '픽셀화 디노이즈' : '깨끗한 디노이즈';
       case 'performance.resolutionScale': return num(perf?.resolutionScale, 2, 'x');
       case 'performance.lodDistanceScale': return num(perf?.lodDistanceScale, 2, 'x');
       case 'performance.viewRadius': return `${perf?.viewRadius ?? '—'} chunks`;
@@ -1673,7 +1673,7 @@ export default function App() {
       case 'performance.triangleBudget': return `${num((perf?.triangleBudget ?? 0) / 1e6, 1)}M`;
       case 'performance.cullingAggressiveness': return num(perf?.cullingAggressiveness, 1);
       case 'performance.waterQuality':
-        return ({ 0: 'Low', 1: 'Medium', 2: 'High' }[perf?.waterQuality] ?? 'Custom');
+        return ({ 0: 'Low', 1: '중간', 2: 'High' }[perf?.waterQuality] ?? '사용자 지정');
       case 'performance.waterReflection': return num(perf?.waterReflection, 2, 'x');
       case 'performance.waterDetail': return num(perf?.waterDetail, 2, 'x');
       case 'performance.waterWaves': return num(perf?.waterWaves, 2, 'x');
@@ -1681,7 +1681,7 @@ export default function App() {
       case 'performance.waterDistance': return num(perf?.waterDistance, 2, 'x');
       case 'performance.fogDistance': return num(perf?.fogDistance, 2, 'x');
       case 'performance.terrainDetailQuality':
-        return ({ 0: 'Off', 1: 'Low', 2: 'Medium', 3: 'High' }[perf?.terrainDetailQuality] ?? 'High');
+        return ({ 0: 'Off', 1: 'Low', 2: '중간', 3: 'High' }[perf?.terrainDetailQuality] ?? 'High');
       case 'performance.terrainDetailScale': return num(perf?.terrainDetailScale, 2, 'x');
       case 'performance.terrainDetailStrength': return num(perf?.terrainDetailStrength, 2, 'x');
       case 'performance.terrainDetailNormal': return num(perf?.terrainDetailNormal, 2, 'x');
@@ -1755,7 +1755,7 @@ export default function App() {
 
       case 'export.format': return 'GLB / GLTF';
       default:
-        if (item?.isSection) return 'Section';
+        if (item?.isSection) return '섹션';
         return 'Set';
     }
   }, [params, perf, timeOfDay, debugFlags]);

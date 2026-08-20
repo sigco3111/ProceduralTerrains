@@ -170,7 +170,7 @@ function splitBbox(bbox) {
 function waitForRetry(ms, signal) {
   return new Promise((resolve, reject) => {
     if (signal?.aborted) {
-      reject(new DOMException('Aborted', 'AbortError'));
+      reject(new DOMException('중단됨', '중단 오류'));
       return;
     }
     const finish = () => {
@@ -179,7 +179,7 @@ function waitForRetry(ms, signal) {
     };
     const abort = () => {
       clearTimeout(timer);
-      reject(new DOMException('Aborted', 'AbortError'));
+      reject(new DOMException('중단됨', '중단 오류'));
     };
     const timer = setTimeout(finish, ms);
     signal?.addEventListener('abort', abort, { once: true });
@@ -190,11 +190,11 @@ async function requestOverpass(bbox, { signal } = {}) {
   const endpointOffset = nextEndpoint++;
   let lastError = null;
   for (let attempt = 0; attempt < MAX_REQUEST_ATTEMPTS; attempt++) {
-    if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
+    if (signal?.aborted) throw new DOMException('중단됨', '중단 오류');
     const endpoint = OVERPASS_ENDPOINTS[(endpointOffset + attempt) % OVERPASS_ENDPOINTS.length];
     try {
       return await runQueued(async () => {
-        if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
+        if (signal?.aborted) throw new DOMException('중단됨', '중단 오류');
         const controller = new AbortController();
         const abort = () => controller.abort();
         signal?.addEventListener('abort', abort, { once: true });

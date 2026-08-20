@@ -184,7 +184,7 @@ export function LodPanel({
   const body = (
     <>
       {LOD_LEVELS.map((level, i) => (
-        <div className="lod-row" key={level.name} data-tooltip={`${level.name === 'LOD 0 High' ? 'Maximum geometric resolution for chunks close to the camera' : level.name === 'LOD 1 Medium' ? 'Balanced resolution for medium-distance terrain' : level.name === 'LOD 2 Low' ? 'Low resolution for far terrain chunks to save memory' : 'Minimal grid density for chunks near the horizon'}`}>
+        <div className="lod-row" key={level.name} data-tooltip={`${level.name === 'LOD 0 고해상도' ? '카메라에 가까운 청크의 최대 기하 해상도' : level.name === 'LOD 1 중간' ? '중거리 지형을 위한 균형 잡힌 해상도' : level.name === 'LOD 2 낮음' ? '메모리 절약을 위해 먼 지형 청크의 해상도를 낮춥니다' : '지평선 근처 청크의 최소 그리드 밀도'}`}>
           <span className="lod-dot" style={{ background: level.color }} />
           <span className="lod-name">{level.name}</span>
           <span className="lod-count">{lodLabel(lodCounts[i])}</span>

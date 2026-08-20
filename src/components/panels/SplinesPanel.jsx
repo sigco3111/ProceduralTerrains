@@ -56,7 +56,7 @@ export default function SplinesPanel({ ctx }) {
         <ToggleRow label="활성화됨" value={selected.enabled} onChange={(v) => ctx.onUpdateSpline(selected.id, { enabled: v })} />
         <ToggleRow label="소품 지우기" value={selected.clearProps} onChange={(v) => ctx.onUpdateSpline(selected.id, { clearProps: v })} />
       </div>
-      <div className="side-panel-quick"><button type="button" className="action-btn" onClick={() => ctx.onDuplicateSpline(selected.id)}>복제</button><button type="button" className="action-btn danger" onClick={() => ctx.onDeleteSpline(selected.id)}>Delete</button></div>
+      <div className="side-panel-quick"><button type="button" className="action-btn" onClick={() => ctx.onDuplicateSpline(selected.id)}>복제</button><button type="button" className="action-btn danger" onClick={() => ctx.onDeleteSpline(selected.id)}>삭제</button></div>
     </section>}
   </SidePanel>;
 }

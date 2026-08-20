@@ -274,7 +274,7 @@ const definitions = [
   },
   {
     id: 'shaper', label: '셰이퍼', category: '조정', color: 'violet',
-    description: 'Adds or removes large-scale body before erosion while retaining the source terrain\'s fine structure.',
+    description: 'Adds or removes large-scale body before erosion while retaining the source terrain\'의 미세 구조.',
     executionKind: 'analytical', inputs: [input('source', '소스')], outputs: [output()],
     inspector: [
       number('shape', '형태', -1, 1, 0.01, 0.38, { section: '매스', tier: 'essential', help: '양수 값은 봉우리를 키우고, 음수 값은 질량을 깎아냅니다.' }),

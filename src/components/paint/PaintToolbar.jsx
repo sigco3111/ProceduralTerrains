@@ -19,7 +19,7 @@ export const PAINT_TOOLS = [
 // instead of the global panel registry.
 export default function PaintToolbar({ activeTool, onSelect }) {
   return (
-    <nav className="paint-toolbar" aria-label="Paint Tools">
+    <nav className="paint-toolbar" aria-label="페인트 도구">
       {PAINT_TOOLS.map(({ id, label, icon: Icon }) => (
         <button
           key={id}

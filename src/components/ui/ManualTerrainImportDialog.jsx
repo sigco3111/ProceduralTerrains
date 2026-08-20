@@ -115,7 +115,7 @@ export default function ManualTerrainImportDialog({
 
         <div className="manual-import-projects" role="listbox" aria-label={`${mode === 'nodes' ? 'Nodes' : 'Procedural'} terrain projects`}>
           {loading ? (
-            <div className="manual-import-empty"><LoaderCircle className="spin" size={22} aria-hidden /><strong>Loading projects…</strong></div>
+            <div className="manual-import-empty"><LoaderCircle className="spin" size={22} aria-hidden /><strong>프로젝트 불러오는 중…</strong></div>
           ) : visibleProjects.length ? visibleProjects.map((project) => {
             const selected = project.id === selectedId;
             const tileCount = Array.isArray(project.terrain?.tiles) ? project.terrain.tiles.length : 1;

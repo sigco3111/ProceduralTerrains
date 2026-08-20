@@ -9,10 +9,10 @@
 // ============================================================================
 
 export const MASK_TYPES = [
-  { id: 'height', label: 'Height' },
-  { id: 'noise', label: 'Noise' },
-  { id: 'slope', label: 'Slope' },
-  { id: 'biome', label: 'Biome', soon: true },
+  { id: 'height', label: '높이' },
+  { id: 'noise', label: '노이즈' },
+  { id: 'slope', label: '경사' },
+  { id: 'biome', label: '생태계', soon: true },
 ];
 
 export function defaultMask(type) {
@@ -63,7 +63,7 @@ float maskNoise3(vec3 pw, vec4 b) {
 }
 `;
 
-/** GLSL expression (string) for this layer's mask product, or '1.0' if none. */
+/** GLSL expression (string) for this layer'의 마스크 곱, 또는 '1.0' if none. */
 export function evalMaskGlsl(layer, slot, is3d, slopeExpr = '0.0') {
   const masks = (layer.masks || []).filter((m) => m.enabled !== false);
   if (masks.length === 0) return '1.0';

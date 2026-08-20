@@ -68,7 +68,7 @@ export function LoadingProvider({ children }) {
 
 export function useLoading() {
   const ctx = useContext(LoadingContext);
-  if (!ctx) throw new Error('useLoading must be used within a LoadingProvider');
+  if (!ctx) throw new Error('useLoading은 LoadingProvider 내에서 사용되어야 합니다');
   return ctx;
 }
 

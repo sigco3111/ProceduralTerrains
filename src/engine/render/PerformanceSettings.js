@@ -73,7 +73,7 @@ export const PERF_LIMITS = {
 // the renderer's historical defaults so default visuals are unchanged.
 export const PERF_PRESETS = {
   performance: {
-    label: 'Performance',
+    label: '성능 우선',
     onDemandStudio: true,
     renderScale: 0.65, resolutionScale: 0.5, lodDistanceScale: 0.5,
     viewRadius: 6, maxCreatesPerFrame: 0, triangleBudget: 500_000,
@@ -92,7 +92,7 @@ export const PERF_PRESETS = {
     cloudLightMode: 1, cloudStepLOD: true, cloudRenderScale: 0.5,
   },
   balanced: {
-    label: 'Balanced',
+    label: '균형',
     onDemandStudio: true,
     renderScale: 0.8, resolutionScale: 0.75, lodDistanceScale: 0.75,
     viewRadius: 10, maxCreatesPerFrame: 0, triangleBudget: 900_000,
@@ -130,7 +130,7 @@ export const PERF_PRESETS = {
     cloudLightMode: 1, cloudStepLOD: true, cloudRenderScale: 0.67,
   },
   ultra: {
-    label: 'Ultra',
+    label: '울트라',
     onDemandStudio: true,
     renderScale: 1.0, resolutionScale: 1.25, lodDistanceScale: 1.4,
     viewRadius: 16, maxCreatesPerFrame: 0, triangleBudget: 2_600_000,
