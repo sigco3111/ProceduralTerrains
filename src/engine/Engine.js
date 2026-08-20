@@ -3837,7 +3837,7 @@ export class Engine {
       // build() starts every chunk at the coarse base LOD; resolve per-chunk
       // LOD + culling NOW so the first rendered frame already shows the finished
       // terrain at full detail. Without this the throttled updateLOD (~150ms
-      // later) causes a visible "coarse → detailed" pop when a preset loads.
+      // later) causes a visible "거친 → 상세" pop when a preset loads.
       this._refreshStudioChunkView();
     }
 

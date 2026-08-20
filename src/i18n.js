@@ -3889,17 +3889,17 @@ const DICT = {
   "admin-panel admin-data-panel": "admin-panel admin-data-panel"
   "admin-panel admin-security-note": "admin-panel admin-security-note"
   "admin-panel admin-trend-panel": "admin-panel admin-trend-panel"
-  "adreno 3": "adreno 3"
-  "adreno 4": "adreno 4"
-  "adreno 5": "adreno 5"
+  "adreno 3": "Adreno 3"
+  "adreno 4": "Adreno 4"
+  "adreno 5": "Adreno 5"
   "all clear": "모두 정상"
   "ambient sky bounce lighting": "앰비언트 하늘 반사 라이팅"
-  "apple m1": "apple m1"
-  "apple m2": "apple m2"
-  "apple m3": "apple m3"
-  "apple m4": "apple m4"
-  "arc a": "arc a"
-  "arc b": "arc b"
+  "apple m1": "Apple M1"
+  "apple m2": "Apple M2"
+  "apple m3": "Apple M3"
+  "apple m4": "Apple M4"
+  "arc a": "Arc A"
+  "arc b": "Arc B"
   "atmosphere fog ambient bounce lighting": "atmosphere fog ambient bounce lighting"
   "automatic dynamic fps": "자동 동적 fps"
   "automatic fps performance": "자동 FPS 성능"
@@ -3955,7 +3955,7 @@ const DICT = {
   "clouds shadow lighting steps": "구름 그림자 라이팅 스텝"
   "clouds shadow self lighting": "구름 그림자 자기 라이팅"
   "clouds step raymarch resolution quality steps": "구름 스텝 레이마치 해상도 품질 스텝"
-  "coarse → detailed": "coarse → detailed"
+  "coarse → detailed": "거친 → 상세"
   "create spawn streaming budget tile new cells add chunks": "생성 스폰 스트리밍 버짓 타일 새 셀 추가 청크"
   "crt scanline lens bend analog noise": "crt 스캔라인 렌즈 벤드 아날로그 노이즈"
   "ctl-val lod-multi-val": "ctl-val lod-multi-val"
@@ -3966,7 +3966,7 @@ const DICT = {
   "debug render fps": "디버그 렌더 FPS"
   "debug terrain detail slope rock shoreline normal albedo": "디버그 지형 디테일 경사 암석 해안선 노멀 알베도"
   "degraded graphics mode": "성능 우선 그래픽 모드"
-  "denoise clean pixelated nearest upscale ps1": "denoise clean pixelated nearest upscale ps1"
+  "denoise clean pixelated nearest upscale ps1": "디노이즈 (깔끔 / 픽셀화 / 가장 가까움 / 업스케일 / PS1)"
   "disjoint — result unreliable": "분리됨 — 결과 신뢰할 수 없음"
   "distance step-LOD": "거리 단계 LOD"
   "dither pattern color levels strength scale": "디더 패턴 색상 단계 강도 스케일"
@@ -4009,8 +4009,8 @@ const DICT = {
   "fps-perf-header fps-perf-header-desktop": "fps-perf-header fps-perf-header-desktop"
   "frustum behind camera cull": "시야각 카메라 뒤 컬링"
   "frustum behind camera cull streaming": "시야각 카메라 뒤 컬링 스트리밍"
-  "gdi generic": "gdi generic"
-  "geforce gtx": "geforce gtx"
+  "gdi generic": "GDI Generic"
+  "geforce gtx": "GeForce GTX"
   "global-tooltip-arrow left": "global-tooltip-arrow left"
   "global-tooltip-arrow right": "global-tooltip-arrow right"
   "gpu renderer backend webgl webgpu auto graphics": "GPU 렌더러 백엔드 WebGL WebGPU 자동 그래픽"
@@ -4145,7 +4145,7 @@ const DICT = {
   "quadro rtx": "quadro rtx"
   "quality profile performance": "quality profile performance"
   "quality upgrades ready": "품질 업그레이드 준비 완료"
-  "radeon pro": "radeon pro"
+  "radeon pro": "Radeon Pro"
   "real world earth latitude coordinates custom area import": "real world earth latitude coordinates custom area import"
   "real world earth longitude coordinates custom area import": "real world earth longitude coordinates custom area import"
   "reload renderer": "렌더러 새로 고침"
@@ -6611,6 +6611,17 @@ const DICT = {
   "visuals post processing effects bloom vignette exposure contrast saturation": "비주얼 포스트 프로세싱 이펙트 블룸 비네트 노출 대비 채도",
   "water legacy realistic volumetric cinematic quality cartoon tropical ocean lake": "물 레거시 리얼리스틱 볼류메트릭 시네마틱 품질 카툰 열대 해양 호수",
   "~24 s": "~24초",
+
+  "adreno 6": "Adreno 6",
+  "adreno 7": "Adreno 7",
+  "geforce rtx": "GeForce RTX",
+  "geforce gt": "GeForce GT",
+  "radeon rx": "Radeon RX",
+  "radeon vega": "Radeon Vega",
+  "intel iris": "Intel Iris",
+  "intel uhd": "Intel UHD",
+  "mali-g": "Mali-G",
+  "nvidia": "NVIDIA",
 
 };
 
