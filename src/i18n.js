@@ -6410,6 +6410,31 @@ const DICT = {
   "wrong event specified:": "잘못된 이벤트가 지정됨:",
   "wrong listener type: ": "잘못된 리스너 유형: ",
 
+  "  Detected GPU: ${((n=s.rendererBackend.capabilities)==null?void 0:n.detectedGpu)||\"unavailable\"}": "  감지된 GPU: ${((n=s.rendererBackend.capabilities)==null?void 0:n.detectedGpu)||\"unavailable\"}",
+  "\" attribute exists among all geometries, or in none of them.": "\" 속성은 모든 지오메트리에 존재하거나 아무것에도 존재하지 않아야 합니다.",
+  "\"string\" type argument expected": "\"string\" 타입 인자가 필요합니다",
+  "${$.mode||\"–\"} · ${y($.vertices||0)} verts · ${y($.triangles||0)} tris": "${$.mode||\"–\"} · ${y($.vertices||0)} 정점 · ${y($.triangles||0)} 삼각형",
+  "${((d=n.params)==null?void 0:d.preset)||\"alpine\"} terrain gradient": "${((d=n.params)==null?void 0:d.preset)||\"alpine\"} 지형 그라데이션",
+  "${((k=p[0])==null?void 0:k.name)||\"ZIP\"} import failed": "${((k=p[0])==null?void 0:k.name)||\"ZIP\"} 가져오기 실패",
+  "${((m=i.meta)==null?void 0:m.name)||\"Real-world\"} (${t.shortLabel})": "${((m=i.meta)==null?void 0:m.name)||\"실제 세계\"} (${t.shortLabel})",
+  "${de.revoked} session${de.revoked===1?\"\":\"s\"} revoked.": "${de.revoked} 개 세션${de.revoked===1?\"\":\"이\"} 해제되었습니다.",
+  "${e.type===\"river\"?\"River\":\"Road\"} ${t+1}": "${e.type===\"river\"?\"강\":\"도로\"} ${t+1}",
+  "${e===\"river\"?\"River\":\"Road\"}: click terrain to place points": "${e===\"river\"?\"강\":\"도로\"}: 지형을 클릭하여 점 배치",
+  "${g?\"Disable\":\"Enable\"} ${a}": "${a} ${g?\"비활성화\":\"활성화\"}",
+  "${o===\"nodes\"?\"Nodes\":\"Procedural\"} terrain projects": "${o===\"nodes\"?\"노드\":\"프로시저럴\"} 지형 프로젝트",
+  "${r===\"terrain\"?\"Terrain\":\"Noise\"} nodes": "${r===\"terrain\"?\"지형\":\"노이즈\"} 노드",
+  "${u.label} accepts ${u.type===je?\"Color\":\"Height\"} cables": "${u.label} 은(는) ${u.type===je?\"색상\":\"높이\"} 케이블을 허용합니다",
+  "${u.requestedGpuPreferenceLabel||\"GPU\"} preference requested; browser may ignore it": "${u.requestedGpuPreferenceLabel||\"GPU\"} 환경설정 요청됨; 브라우저가 무시할 수 있음",
+  ". All geometries must have compatible attributes; make sure \"": ". 모든 지오메트리는 호환되는 속성을 가져야 합니다. 다음을 확인하세요: \"",
+  "Imported ${((ja=p.metadata)==null?void 0:ja.name)||\"terrain\"} into Manual Terrain": "${((ja=p.metadata)==null?void 0:ja.name)||\"terrain\"}을(를) 수동 지형으로 가져왔습니다",
+  "Load \"${t.label}\" before capturing it": "캡처하기 전에 \"${t.label}\"을(를) 로드하세요",
+  "THREE.GLTFExporter: Could not export animation track \"%s\".": "THREE.GLTFExporter: 애니메이션 트랙 \"%s\"을(를) 내보낼 수 없습니다.",
+  "THREE.TransformControls: The second parameter \"domElement\" is now mandatory.": "THREE.TransformControls: 이제 두 번째 매개변수 \"domElement\"가 필수입니다.",
+  "THREE.WebGLRenderer: Shader chunk \"%s\" has been deprecated. Use \"%s\" instead.": "THREE.WebGLRenderer: 셰이더 청크 \"%s\"이(가) 더 이상 사용되지 않습니다. 대신 \"%s\"을(를) 사용하세요.",
+  "Transformed ${((m=this.selectedShape)==null?void 0:m.name)??\"terrain shape\"}": "${((m=this.selectedShape)==null?void 0:m.name)??\"terrain shape\"} 변형됨",
+  "Unsupported working color space, \"${i}\".": "지원되지 않는 작업 색상 공간, \"${i}\".",
+  "Water baseline \"${e}\" requires ${t.worldMode} mode": "물 기준 \"${e}\"에는 ${t.worldMode} 모드가 필요합니다",
+
 };
 
 // 사전에 키가 없으면 원본 그대로 반환
