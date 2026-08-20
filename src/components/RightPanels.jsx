@@ -60,7 +60,7 @@ export function CameraPanel({ camInfo, camMode, onMode, onFov, onFocusCenter, em
               <path d="M1 8s3-5 7-5 7 5 7 5-3 5-7 5-7-5-7-5z" stroke="currentColor" strokeWidth="1.2" />
             </svg>
           </span>
-          <span className="setting-label">Mode</span>
+          <span className="setting-label">최빈값</span>
           <span className="info-icon-trigger">
             <svg viewBox="0 0 16 16" fill="none" width="10" height="10" style={{ marginLeft: '4px' }}>
               <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" />
@@ -69,8 +69,8 @@ export function CameraPanel({ camInfo, camMode, onMode, onFov, onFocusCenter, em
           </span>
         </div>
         <select value={camMode} onChange={(e) => onMode(e.target.value)}>
-          <option value="orbit">Orbit</option>
-          <option value="topdown">Top-down</option>
+          <option value="orbit">궤도</option>
+          <option value="topdown">위에서 보기</option>
         </select>
       </div>
       <div className="row">
@@ -80,7 +80,7 @@ export function CameraPanel({ camInfo, camMode, onMode, onFov, onFocusCenter, em
               <path d="M2 14l6-6-6-6M14 2v12" stroke="currentColor" strokeWidth="1.2" />
             </svg>
           </span>
-          <span className="setting-label">FOV</span>
+          <span className="setting-label">시야각</span>
           <span className="info-icon-trigger">
             <svg viewBox="0 0 16 16" fill="none" width="10" height="10" style={{ marginLeft: '4px' }}>
               <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" />
@@ -107,7 +107,7 @@ export function CameraPanel({ camInfo, camMode, onMode, onFov, onFocusCenter, em
               <path d="M8 8l4.5-4.5" stroke="currentColor" strokeWidth="1.2" />
             </svg>
           </span>
-          <span className="setting-label">Angle</span>
+          <span className="setting-label">각도</span>
           <span className="info-icon-trigger">
             <svg viewBox="0 0 16 16" fill="none" width="10" height="10" style={{ marginLeft: '4px' }}>
               <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" />
@@ -124,7 +124,7 @@ export function CameraPanel({ camInfo, camMode, onMode, onFov, onFocusCenter, em
               <path d="M1 8h14M3 5l-2 3 2 3M13 5l2 3-2 3" stroke="currentColor" strokeWidth="1.2" />
             </svg>
           </span>
-          <span className="setting-label">Distance</span>
+          <span className="setting-label">거리</span>
           <span className="info-icon-trigger">
             <svg viewBox="0 0 16 16" fill="none" width="10" height="10" style={{ marginLeft: '4px' }}>
               <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" />
@@ -138,9 +138,7 @@ export function CameraPanel({ camInfo, camMode, onMode, onFov, onFocusCenter, em
         <svg viewBox="0 0 16 16" className="bic">
           <circle cx="8" cy="8" r="2" fill="currentColor" />
           <path d="M8 1.5v2.6M8 11.9v2.6M1.5 8h2.6M11.9 8h2.6" stroke="currentColor" strokeWidth="1.2" />
-        </svg>
-        Focus Center
-      </button>
+        </svg>포커스 중앙</button>
     </>
   );
 
@@ -164,7 +162,7 @@ export function CameraPanel({ camInfo, camMode, onMode, onFov, onFocusCenter, em
 
   return (
     <section className="panel" id="camera-panel">
-      <div className="panel-header"><span>CAMERA</span></div>
+      <div className="panel-header"><span>카메라</span></div>
       <div className="panel-body">{body}</div>
     </section>
   );
@@ -200,7 +198,7 @@ export function LodPanel({
               <circle cx="8" cy="8" r="2.5" stroke="currentColor" strokeWidth="1.2" />
             </svg>
           </span>
-          <span className="setting-label">Visible Chunks</span>
+          <span className="setting-label">표시 중인 청크</span>
         </div>
         <span className="stat-value stat-mono">{visibleChunks} / {total}</span>
       </div>
@@ -211,7 +209,7 @@ export function LodPanel({
               <path d="M2.5 13.5l11-11M1.5 8s3-5 7-5 7 5 7 5-3 5-7 5-7-5-7-5z" stroke="currentColor" strokeWidth="1.2" />
             </svg>
           </span>
-          <span className="setting-label">Culled Chunks</span>
+          <span className="setting-label">컬링된 청크</span>
         </div>
         <span className={`stat-value stat-mono${culledChunks > 0 ? ' fps-info-culled' : ''}`}>{culledChunks}</span>
       </div>
@@ -222,7 +220,7 @@ export function LodPanel({
               <path d="M2 2h4v4H2zM10 2h4v4h-4zM2 10h4v4H2zM10 10h4v4h-4z" stroke="currentColor" strokeWidth="1.2" />
             </svg>
           </span>
-          <span className="setting-label">Active Grid</span>
+          <span className="setting-label">활성 그리드</span>
         </div>
         <span className="stat-value stat-mono">{chunkCount} × {chunkCount}</span>
       </div>
@@ -230,9 +228,7 @@ export function LodPanel({
         <LodDonut counts={lodCounts} />
         <div className="lod-total" data-tooltip="메모리에 로드된 총 청크 수">
           <div className="lod-total-num">{total}</div>
-          <div className="lod-total-label">
-            Total Chunks
-            <span className="lod-grid-label">({chunkCount} × {chunkCount})</span>
+          <div className="lod-total-label">총 청크 수<span className="lod-grid-label">({chunkCount} × {chunkCount})</span>
           </div>
         </div>
       </div>
@@ -274,7 +270,7 @@ export function LodPanel({
 
   return (
     <section className="panel" id="lod-panel">
-      <div className="panel-header"><span>LOD INFORMATION</span></div>
+      <div className="panel-header"><span>LOD 정보</span></div>
       <div className="panel-body">{body}</div>
     </section>
   );
@@ -316,7 +312,7 @@ export function MinimapPanel({ boardSize, baseRef, overlayRef, embedded }) {
 
   return (
     <section className="panel" id="minimap-panel">
-      <div className="panel-header"><span>MINIMAP</span></div>
+      <div className="panel-header"><span>미니맵</span></div>
       <div className="panel-body">{body}</div>
     </section>
   );

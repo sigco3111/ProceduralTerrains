@@ -80,8 +80,8 @@ export default function ManualTerrainImportDialog({
         <header className="manual-import-header">
           <span className="manual-import-header-icon"><Shapes size={20} aria-hidden /></span>
           <span>
-            <h2 id="manual-import-title">Import terrain</h2>
-            <p>Choose a Tile project to use as the editable base of this Manual terrain.</p>
+            <h2 id="manual-import-title">지형 가져오기</h2>
+            <p>이 수동 지형의 편집 가능한 기반으로 사용할 타일 프로젝트를 선택하세요.</p>
           </span>
           <button type="button" onClick={onClose} disabled={busy} aria-label="지형 가져오기 닫기">
             <X size={16} aria-hidden />
@@ -97,7 +97,7 @@ export default function ManualTerrainImportDialog({
             onClick={() => setMode('procedural')}
           >
             <Mountain size={16} aria-hidden />
-            <span><strong>Procedural</strong><small>Noise Stack and seed</small></span>
+            <span><strong>절차적</strong><small>노이즈 스택 및 시드</small></span>
             <em>{counts.procedural}</em>
           </button>
           <button
@@ -108,7 +108,7 @@ export default function ManualTerrainImportDialog({
             onClick={() => setMode('nodes')}
           >
             <Boxes size={16} aria-hidden />
-            <span><strong>Nodes</strong><small>Graph and viewport</small></span>
+            <span><strong>노드</strong><small>그래프 및 뷰포트</small></span>
             <em>{counts.nodes}</em>
           </button>
         </div>
@@ -144,7 +144,7 @@ export default function ManualTerrainImportDialog({
             <div className="manual-import-empty">
               {mode === 'nodes' ? <Boxes size={24} aria-hidden /> : <Mountain size={24} aria-hidden />}
               <strong>No {mode === 'nodes' ? '노드' : '절차적'} Tile projects</strong>
-              <span>Create or save one first, then return here to import it.</span>
+              <span>먼저 프로젝트를 만들거나 저장한 다음 여기로 돌아와서 가져오세요.</span>
             </div>
           )}
         </div>
@@ -154,9 +154,9 @@ export default function ManualTerrainImportDialog({
         </div>
 
         <footer>
-          <button type="button" className="manual-import-cancel" onClick={onClose} disabled={busy}>Cancel</button>
+          <button type="button" className="manual-import-cancel" onClick={onClose} disabled={busy}>취소</button>
           <button type="submit" className="manual-import-confirm" disabled={!selectedProject || loading || busy}>
-            {busy ? <><LoaderCircle className="spin" size={14} aria-hidden /> Importing…</> : '선택한 지형 가져오기'}
+            {busy ? <><LoaderCircle className="spin" size={14} aria-hidden /> 가져오는 중…</> : '선택한 지형 가져오기'}
           </button>
         </footer>
       </form>

@@ -54,7 +54,7 @@ export default function StatusBar({
         {worldMode === 'planet' && (
           <>
             <span className="sb-sep sb-desktop-only" aria-hidden="true" />
-            <span className="sb-desktop-only">Planet</span>
+            <span className="sb-desktop-only">행성</span>
             {infiniteStats && (
               <>
                 <span className="sb-sep sb-desktop-only" aria-hidden="true" />

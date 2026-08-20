@@ -136,7 +136,7 @@ export default function SettingsSearchOverlay({
               ))}
             </div>
           ) : (
-            <div className="settings-search-empty">No settings match this search.</div>
+            <div className="settings-search-empty">이 검색과 일치하는 설정이 없습니다.</div>
           )}
         </div>
       </div>

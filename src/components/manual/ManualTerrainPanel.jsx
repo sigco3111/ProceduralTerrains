@@ -401,27 +401,25 @@ export default function ManualTerrainPanel({
         />
         <header className="manual-dock-header">
           <div className="node-dock-heading">
-            <span className="node-dock-kicker">Manual</span>
-            <strong>Shape Library</strong>
+            <span className="node-dock-kicker">매뉴얼</span>
+            <strong>도형 라이브러리</strong>
           </div>
-          <span>Drag a shape onto the terrain, or click then place.</span>
+          <span>지형 위에 모양을 드래그하거나 클릭한 후 배치하세요.</span>
           {state?.placementType ? (
-            <button type="button" className="manual-cancel-place" onClick={() => onPlacementType(null)}>
-              Cancel placement
-            </button>
+            <button type="button" className="manual-cancel-place" onClick={() => onPlacementType(null)}>배치 취소</button>
           ) : null}
         </header>
 
         <div className="manual-dock-body">
           <section className="manual-hierarchy">
             <div className="manual-dock-section-title">
-              <strong>Terrain Shapes</strong>
+              <strong>지형 모양</strong>
               <span>{shapes.length}</span>
             </div>
             {shapes.length === 0 ? (
               <div className="manual-empty-state">
                 <MousePointer2 size={16} aria-hidden />
-                <span>Place a shape to begin.</span>
+                <span>시작하려면 도형을 배치하세요.</span>
               </div>
             ) : (
               <div className="manual-shape-list">
@@ -493,7 +491,7 @@ export default function ManualTerrainPanel({
         <aside className="manual-inspector-dock" style={inspectorStyle} aria-label="지형 모양 인스펙터">
           <header className="node-dock-header manual-inspector-header">
             <div className="node-dock-heading">
-              <span className="node-dock-kicker">Manual terrain</span>
+              <span className="node-dock-kicker">수동 지형</span>
               <strong>{state?.texturePaint?.enabled
                 ? (state.texturePaint.mode === 'props' ? '프롭 페인트' : '텍스처 페인트')
                 : state?.sculpt?.enabled ? 'Sculpt' : selected?.name || '셰이프 인스펙터'}</strong>
@@ -518,7 +516,7 @@ export default function ManualTerrainPanel({
                   : 'Paint the shipped terrain materials directly onto the final surface. Soft weights and triplanar projection keep transitions continuous.'}
               </p>
               <section className="manual-inspector-section">
-                <h3>Paint Layer</h3>
+                <h3>페인트 레이어</h3>
                 <div className="manual-sculpt-tool-grid manual-texture-tool-grid manual-paint-layer-grid" role="tablist" aria-label="수동 페인트 레이어">
                   <button
                     type="button"
@@ -527,7 +525,7 @@ export default function ManualTerrainPanel({
                     aria-selected={state.texturePaint.mode === 'surface'}
                     role="tab"
                   >
-                    <Palette size={14} aria-hidden /><span>Surface</span>
+                    <Palette size={14} aria-hidden /><span>표면</span>
                   </button>
                   <button
                     type="button"
@@ -536,7 +534,7 @@ export default function ManualTerrainPanel({
                     aria-selected={state.texturePaint.mode === 'props'}
                     role="tab"
                   >
-                    <Sprout size={14} aria-hidden /><span>Props</span>
+                    <Sprout size={14} aria-hidden /><span>소품</span>
                   </button>
                 </div>
               </section>
@@ -568,7 +566,7 @@ export default function ManualTerrainPanel({
               </section>
               {state.texturePaint.tool === 'paint' && state.texturePaint.mode === 'surface' ? (
                 <section className="manual-inspector-section">
-                  <h3>Material</h3>
+                  <h3>재질</h3>
                   <div className="manual-material-grid" role="listbox" aria-label="지형 머티리얼">
                     {MANUAL_SURFACE_MATERIALS.map((material) => (
                       <button
@@ -587,7 +585,7 @@ export default function ManualTerrainPanel({
                 </section>
               ) : state.texturePaint.tool === 'paint' ? (
                 <section className="manual-inspector-section">
-                  <h3>Prop Type</h3>
+                  <h3>소품 타입</h3>
                   <div className="manual-sculpt-tool-grid manual-texture-tool-grid manual-prop-type-grid" role="listbox" aria-label="지형 소품 유형">
                     {PROP_PAINT_TYPES.map(({ id, label, Icon, color }) => (
                       <button
@@ -607,16 +605,16 @@ export default function ManualTerrainPanel({
                 </section>
               ) : null}
               <section className="manual-inspector-section manual-inspector-controls">
-                <h3>Brush</h3>
+                <h3>브러시</h3>
                 <SliderCtl def={textureBrushSize} value={state.texturePaint.brushSize} onChange={(value) => onTexturePaintSetting('brushSize', value)} />
                 <SliderCtl def={textureStrength} value={state.texturePaint.strength} onChange={(value) => onTexturePaintSetting('strength', value)} />
                 <SliderCtl def={textureFalloff} value={state.texturePaint.falloff} onChange={(value) => onTexturePaintSetting('falloff', value)} />
               </section>
               <div className="manual-sculpt-help">
-                <span>Left drag: apply tool</span>
-                <span>Alt + left drag: pan</span>
-                <span>Shift + wheel: brush size</span>
-                <span>Right drag: orbit</span>
+                <span>좌측 드래그: 도구 적용</span>
+                <span>Alt + 왼쪽 드래그: 팬</span>
+                <span>Shift + 휠: 브러시 크기</span>
+                <span>우측 드래그: 궤도 회전</span>
               </div>
               <button
                 type="button"
@@ -629,9 +627,9 @@ export default function ManualTerrainPanel({
             </div>
           ) : state?.sculpt?.enabled ? (
             <div className="manual-inspector-body">
-              <p className="manual-inspector-description">Paint non-destructive terrain detail over the procedural shape stack.</p>
+              <p className="manual-inspector-description">절차적 셰이프 스택 위에 비파괴적인 지형 디테일을 페인트하세요.</p>
               <section className="manual-inspector-section">
-                <h3>Sculpt Tool</h3>
+                <h3>스컬프트 도구</h3>
                 <div className="manual-sculpt-tool-grid" role="toolbar" aria-label="Sculpt tools">
                   {SCULPT_TOOLS.map(({ id, label, Icon }) => (
                     <button
@@ -649,20 +647,20 @@ export default function ManualTerrainPanel({
                 <p className="manual-sculpt-tool-description">{activeSculptTool.description}</p>
               </section>
               <section className="manual-inspector-section manual-inspector-controls">
-                <h3>Brush</h3>
+                <h3>브러시</h3>
                 <SliderCtl def={brushSize} value={state.sculpt.brushSize} onChange={(value) => onSculptSetting('brushSize', value)} />
                 <SliderCtl def={brushStrength} value={state.sculpt.strength} onChange={(value) => onSculptSetting('strength', value)} />
                 <SliderCtl def={brushFalloff} value={state.sculpt.falloff} onChange={(value) => onSculptSetting('falloff', value)} />
               </section>
               {state.sculpt.tool === 'flatten' ? (
                 <section className="manual-inspector-section manual-inspector-controls">
-                  <h3>Flatten</h3>
+                  <h3>평탄화</h3>
                   <SliderCtl def={targetHeight} value={state.sculpt.targetHeight} onChange={(value) => onSculptSetting('targetHeight', value)} />
                 </section>
               ) : null}
               {state.sculpt.tool === 'erode' ? (
                 <section className="manual-inspector-section manual-inspector-controls">
-                  <h3>Hydraulic Erosion</h3>
+                  <h3>수력 침식</h3>
                   <SliderCtl def={erosionIterations} value={state.sculpt.erosionIterations} onChange={(value) => onSculptSetting('erosionIterations', value)} />
                   <SliderCtl def={erosionDeposition} value={state.sculpt.erosionDeposition} onChange={(value) => onSculptSetting('erosionDeposition', value)} />
                   <SliderCtl def={erosionTalus} value={state.sculpt.erosionTalus} onChange={(value) => onSculptSetting('erosionTalus', value)} />
@@ -676,11 +674,11 @@ export default function ManualTerrainPanel({
               ) : null}
               {state.sculpt.tool === 'detail' ? (
                 <section className="manual-inspector-section manual-inspector-controls">
-                  <h3>Relief Detail</h3>
+                  <h3>지형 디테일</h3>
                   <SliderCtl def={detailScale} value={state.sculpt.detailScale} onChange={(value) => onSculptSetting('detailScale', value)} />
                   <SliderCtl def={detailRoughness} value={state.sculpt.detailRoughness} onChange={(value) => onSculptSetting('detailRoughness', value)} />
                   <label className="manual-name-field">
-                    <span>Detail Seed</span>
+                    <span>디테일 시드</span>
                     <span className="manual-seed-row">
                       <input
                         type="number"
@@ -698,32 +696,31 @@ export default function ManualTerrainPanel({
               ) : null}
               {state.sculpt.tool === 'terrace' ? (
                 <section className="manual-inspector-section manual-inspector-controls">
-                  <h3>Terraces</h3>
+                  <h3>테라스</h3>
                   <SliderCtl def={terraceStep} value={state.sculpt.terraceStep} onChange={(value) => onSculptSetting('terraceStep', value)} />
                 </section>
               ) : null}
               <div className="manual-sculpt-help">
-                <span>Left drag: sculpt</span>
-                <span>Alt + left drag: pan</span>
-                <span>Shift + wheel: brush size</span>
-                <span>Right drag: orbit</span>
+                <span>왼쪽 드래그: 조각</span>
+                <span>Alt + 왼쪽 드래그: 팬</span>
+                <span>Shift + 휠: 브러시 크기</span>
+                <span>우측 드래그: 궤도 회전</span>
               </div>
               <button type="button" className="manual-clear-sculpt" onClick={onClearSculpt} disabled={!state.sculpt.hasData}>
-                <Trash2 size={14} aria-hidden /> Clear sculpt layer
-              </button>
+                <Trash2 size={14} aria-hidden />스컬프트 레이어 지우기</button>
             </div>
           ) : selected ? (
             <div className="manual-inspector-body">
               <p className="manual-inspector-description">{getManualShapeDefinition(selected.type).description}</p>
               <section className="manual-inspector-section">
-                <h3>Shape</h3>
+                <h3>형태</h3>
                 <label className="manual-toggle-field">
-                  <span>Enabled</span>
+                  <span>활성화됨</span>
                   <input type="checkbox" checked={selected.enabled !== false} onChange={(event) => onUpdate(selected.id, { enabled: event.target.checked })} />
                 </label>
                 <SliderCtl def={height} value={selected.height} onChange={(value) => onUpdate(selected.id, { height: value })} />
                 <label className="manual-name-field">
-                  <span>Name</span>
+                  <span>이름</span>
                   <input
                     value={selected.name}
                     maxLength={80}
@@ -732,9 +729,9 @@ export default function ManualTerrainPanel({
                 </label>
               </section>
               <section className="manual-inspector-section manual-inspector-controls">
-                <h3>Layer Blend</h3>
+                <h3>레이어 블렌드</h3>
                 <label className="manual-select-field">
-                  <span>Blend Mode</span>
+                  <span>혼합 모드</span>
                   <select value={selected.blendMode} onChange={(event) => onUpdate(selected.id, { blendMode: event.target.value })}>
                     {MANUAL_BLEND_MODES.map((mode) => <option value={mode.id} key={mode.id}>{mode.name}</option>)}
                   </select>
@@ -742,7 +739,7 @@ export default function ManualTerrainPanel({
                 <SliderCtl def={opacity} value={selected.opacity} onChange={(value) => onUpdate(selected.id, { opacity: value })} />
               </section>
               <section className="manual-inspector-section manual-inspector-controls">
-                <h3>Transform</h3>
+                <h3>변환</h3>
                 <SliderCtl def={positionX} value={selected.position.x} onChange={(value) => onUpdate(selected.id, { position: { x: value } })} />
                 <SliderCtl def={positionZ} value={selected.position.z} onChange={(value) => onUpdate(selected.id, { position: { z: value } })} />
                 <SliderCtl def={rotation} value={selected.rotation * 180 / Math.PI} onChange={(value) => onUpdate(selected.id, { rotation: value * Math.PI / 180 })} />
@@ -750,12 +747,12 @@ export default function ManualTerrainPanel({
                 <SliderCtl def={scaleZ} value={selected.scale.z} onChange={(value) => onUpdate(selected.id, { scale: { z: value } })} />
               </section>
               <section className="manual-inspector-section manual-inspector-controls">
-                <h3>Terrain Shape</h3>
+                <h3>지형 셰이프</h3>
                 <SliderCtl def={detail} value={selected.detail} onChange={(value) => onUpdate(selected.id, { detail: value })} />
                 <SliderCtl def={sharpness} value={selected.sharpness} onChange={(value) => onUpdate(selected.id, { sharpness: value })} />
                 <SliderCtl def={terraces} value={selected.terraces} onChange={(value) => onUpdate(selected.id, { terraces: value })} />
                 <label className="manual-name-field">
-                  <span>Seed</span>
+                  <span>시드</span>
                   <span className="manual-seed-row">
                     <input
                       type="number"
@@ -773,7 +770,7 @@ export default function ManualTerrainPanel({
               <section className="manual-inspector-section manual-shape-layer-stack">
                 <div className="manual-shape-layer-title">
                   <span>
-                    <h3>Shape Layers</h3>
+                    <h3>셰이프 레이어</h3>
                     <small>{selected.layers.length} / {MAX_MANUAL_SHAPE_LAYERS}</small>
                   </span>
                   <label title="이 셰이프에 모디파이어 레이어 추가">
@@ -787,7 +784,7 @@ export default function ManualTerrainPanel({
                         if (layer?.id) setExpandedLayerId(layer.id);
                       }}
                     >
-                      <option value="">Add layer</option>
+                      <option value="">레이어 추가</option>
                       {MANUAL_SHAPE_LAYER_CATALOG.map((definition) => (
                         <option key={definition.id} value={definition.id}>{definition.name}</option>
                       ))}
@@ -822,7 +819,7 @@ export default function ManualTerrainPanel({
                             <div className="manual-shape-layer-editor manual-inspector-controls">
                               <p>{definition.description}</p>
                               <label className="manual-name-field">
-                                <span>Layer Name</span>
+                                <span>레이어 이름</span>
                                 <input value={layer.name} maxLength={80} onChange={(event) => onUpdateShapeLayer?.(selected.id, layer.id, { name: event.target.value })} />
                               </label>
                               <SliderCtl def={layerOpacity} value={layer.opacity} onChange={(value) => onUpdateShapeLayer?.(selected.id, layer.id, { opacity: value })} />
@@ -835,7 +832,7 @@ export default function ManualTerrainPanel({
                                 />
                               ))}
                               <label className="manual-name-field">
-                                <span>Seed Offset</span>
+                                <span>시드 오프셋</span>
                                 <span className="manual-seed-row">
                                   <input type="number" min="0" max="2147483647" value={layer.seedOffset} onChange={(event) => onUpdateShapeLayer?.(selected.id, layer.id, { seedOffset: Number(event.target.value) || 0 })} />
                                   <button type="button" onClick={() => onUpdateShapeLayer?.(selected.id, layer.id, { seedOffset: Math.floor(Math.random() * 0x7fffffff) })} title="Randomize layer seed" aria-label={`Randomize ${layer.name} seed`}><Dices size={14} aria-hidden /></button>
@@ -850,14 +847,14 @@ export default function ManualTerrainPanel({
                 ) : (
                   <div className="manual-shape-layer-empty">
                     <Layers3 size={16} aria-hidden />
-                    <span>Add procedural detail that stays attached to this shape.</span>
+                    <span>이 도형에 부착된 절차적 디테일을 추가하세요.</span>
                   </div>
                 )}
               </section>
               <section className="manual-inspector-section manual-inspector-controls">
-                <h3>Shape Mask</h3>
+                <h3>셰이프 마스크</h3>
                 <label className="manual-select-field">
-                  <span>Mask</span>
+                  <span>마스크</span>
                   <select value={selected.mask.type} onChange={(event) => onUpdate(selected.id, { mask: { type: event.target.value } })}>
                     {MANUAL_MASK_TYPES.map((mask) => <option value={mask.id} key={mask.id}>{mask.name}</option>)}
                   </select>
@@ -867,7 +864,7 @@ export default function ManualTerrainPanel({
                     <SliderCtl def={maskFeather} value={selected.mask.feather} onChange={(value) => onUpdate(selected.id, { mask: { feather: value } })} />
                     <SliderCtl def={maskStrength} value={selected.mask.strength} onChange={(value) => onUpdate(selected.id, { mask: { strength: value } })} />
                     <label className="manual-toggle-field">
-                      <span>Invert Mask</span>
+                      <span>마스크 반전</span>
                       <input type="checkbox" checked={selected.mask.invert} onChange={(event) => onUpdate(selected.id, { mask: { invert: event.target.checked } })} />
                     </label>
                   </>
@@ -877,8 +874,8 @@ export default function ManualTerrainPanel({
           ) : (
             <div className="manual-inspector-empty">
               <MousePointer2 size={22} aria-hidden />
-              <strong>No shape selected</strong>
-              <span>Select a terrain shape in the viewport or hierarchy to edit its settings.</span>
+              <strong>셰이프 선택 안 됨</strong>
+              <span>뷰포트 또는 계층 구조에서 지형 모양을 선택해 설정을 편집하세요.</span>
             </div>
           )}
         </aside>

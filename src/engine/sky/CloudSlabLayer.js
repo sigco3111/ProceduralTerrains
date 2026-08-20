@@ -44,7 +44,7 @@ export class CloudSlabLayer {
   /**
    * @param {THREE.Scene} scene
    * @param {object} opts
-   * @param {(mats: THREE.Material[]) => Promise<void>} [opts.compile] warmup hook
+   * @param {(mats: THREE.Material[]) =>약속<void>} [opts.compile] warmup hook
    */
   constructor(scene, opts = {}) {
     this.scene = scene;

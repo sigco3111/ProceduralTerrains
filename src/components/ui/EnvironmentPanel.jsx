@@ -142,7 +142,7 @@ export default function EnvironmentPanel({ params, planetStyle, onParam, onTunin
                 <path d="M8 2c-2.5 4-5 5-5 8a5 5 0 0 0 10 0c0-3-2.5-4-5-8z" stroke="currentColor" strokeWidth="1.2" />
               </svg>
             </span>
-            <span className="setting-label">Sun Color</span>
+            <span className="setting-label">태양 색상</span>
             <span className="info-icon-trigger">
               <svg viewBox="0 0 16 16" fill="none" width="10" height="10" style={{ marginLeft: '4px' }}>
                 <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" />

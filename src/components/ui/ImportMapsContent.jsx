@@ -114,7 +114,7 @@ function ImportMapSection({ type, map, ctx, forceOpen = false }) {
         />
       )}
       <div className="stat-row">
-        <span className="stat-label">Resolution</span>
+        <span className="stat-label">해상도</span>
         <span className="stat-value stat-mono">
           {map ? `${map.width}×${map.height}` : '—'}
         </span>
@@ -351,7 +351,7 @@ function CustomAreaPicker({ ctx }) {
       settingId="terrain.realWorldCustom"
     >
       <div className="stat-row">
-        <span className="stat-label">Coordinates</span>
+        <span className="stat-label">좌표</span>
       </div>
       <div className="seed-input-wrap">
         <input
@@ -378,26 +378,26 @@ function CustomAreaPicker({ ctx }) {
       {coordError && <p className="section-hint import-map-error">{coordError}</p>}
       <button type="button" className="realworld-map-open" onClick={() => setMapOpen(true)}>
         <MapPinned size={15} strokeWidth={1.75} aria-hidden />
-        <span>Select Area on Map</span>
+        <span>지도에서 영역 선택</span>
       </button>
       <SliderCtl def={CUSTOM_AREA_SLIDERS.lat} value={spec.lat} onChange={set('lat')} settingId="terrain.realWorldLat" />
       <SliderCtl def={CUSTOM_AREA_SLIDERS.lon} value={spec.lon} onChange={set('lon')} settingId="terrain.realWorldLon" />
       <SliderCtl def={CUSTOM_AREA_SLIDERS.sizeKm} value={spec.sizeKm} onChange={set('sizeKm')} settingId="terrain.realWorldSize" />
       <SliderCtl def={CUSTOM_AREA_SLIDERS.zoom} value={spec.zoom} onChange={set('zoom')} settingId="terrain.realWorldZoom" />
       <div className="stat-row">
-        <span className="stat-label">Effective zoom</span>
+        <span className="stat-label">유효 줌</span>
         <span className="stat-value stat-mono">z{info.zoom}</span>
       </div>
       <div className="stat-row">
-        <span className="stat-label">Tiles fetched</span>
+        <span className="stat-label">가져온 타일</span>
         <span className="stat-value stat-mono">{info.tilesX}×{info.tilesY}</span>
       </div>
       <div className="stat-row">
-        <span className="stat-label">Output resolution</span>
+        <span className="stat-label">출력 해상도</span>
         <span className="stat-value stat-mono">{info.outW}×{info.outH}</span>
       </div>
       <div className="stat-row">
-        <span className="stat-label">Ground resolution</span>
+        <span className="stat-label">지표 해상도</span>
         <span className="stat-value stat-mono">≈{info.metersPerPixel < 10 ? info.metersPerPixel.toFixed(1) : Math.round(info.metersPerPixel)} m/px</span>
       </div>
       {info.zoomClamped && (

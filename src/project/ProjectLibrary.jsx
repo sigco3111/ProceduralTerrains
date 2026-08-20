@@ -244,7 +244,7 @@ export default function ProjectLibrary({
     const confirmed = await showConfirm({
       title: 'Remove cloud copy?',
       message: `Remove “${projectName(entry)}” from the cloud? Your local project will remain available.`,
-      confirmLabel: 'Remove cloud copy',
+      confirmLabel: '클라우드 사본 제거',
       danger: true,
     });
     if (!confirmed) return;
@@ -273,8 +273,8 @@ export default function ProjectLibrary({
           <input type="search" placeholder="프로젝트 검색…" value={query} onChange={(event) => setQuery(event.target.value)} aria-label="프로젝트 검색" />
         </div>
         <div className="lp-head-actions">
-          <button type="button" className="lp-secondary sm" onClick={() => fileInputRef.current?.click()} disabled={!bootReady || exiting}><Upload size={13} /> Import</button>
-          <button type="button" className="lp-primary sm" onClick={onCreate} disabled={!bootReady || exiting}><Plus size={14} /> New terrain</button>
+          <button type="button" className="lp-secondary sm" onClick={() => fileInputRef.current?.click()} disabled={!bootReady || exiting}><Upload size={13} /> 가져오기</button>
+          <button type="button" className="lp-primary sm" onClick={onCreate} disabled={!bootReady || exiting}><Plus size={14} />새 지형</button>
         </div>
       </div>
 
@@ -282,19 +282,19 @@ export default function ProjectLibrary({
         <div className="project-cloud-note">
           <Cloud size={16} aria-hidden />
           <span>{authStatus === 'unavailable' ? 'Cloud sync is unavailable right now. Your local projects are safe on this device.' : '로그인하여 프로젝트를 동기화하고 클라우드 사본을 다운로드하며 공유 가시성을 관리하세요.'}</span>
-          {authStatus !== 'unavailable' && <button type="button" onClick={onSignIn}>Sign in</button>}
+          {authStatus !== 'unavailable' && <button type="button" onClick={onSignIn}>로그인</button>}
         </div>
       )}
-      {user && cloudStatus === 'loading' && <div className="프로젝트 클라우드 노트 확인 중"><RefreshCw size={15} className="spin" aria-hidden /><span>Checking your cloud projects…</span></div>}
-      {user && cloudStatus === 'error' && <div className="프로젝트 클라우드 노트 오류"><AlertTriangle size={16} aria-hidden /><span>Cloud projects could not be checked. Local projects remain available.</span><button type="button" onClick={refreshCloud}>Try again</button></div>}
+      {user && cloudStatus === 'loading' && <div className="프로젝트 클라우드 노트 확인 중"><RefreshCw size={15} className="spin" aria-hidden /><span>클라우드 프로젝트 확인 중…</span></div>}
+      {user && cloudStatus === 'error' && <div className="프로젝트 클라우드 노트 오류"><AlertTriangle size={16} aria-hidden /><span>클라우드 프로젝트를 확인할 수 없습니다. 로컬 프로젝트는 계속 사용할 수 있습니다.</span><button type="button" onClick={refreshCloud}>다시 시도</button></div>}
 
       {empty ? (
         query.trim() ? <p className="lp-no-results">No project matches “{query.trim()}”.</p> : (
           <div className="lp-empty project-library-empty">
             <FolderOpen size={24} />
-            <strong>No projects yet</strong>
-            <span>Create a terrain, import a project file, or download a project from the cloud.</span>
-            <button type="button" className="lp-primary" onClick={onCreate} disabled={!bootReady || exiting}><Plus size={15} /> Create terrain</button>
+            <strong>아직 프로젝트가 없습니다</strong>
+            <span>지형을 만들거나, 프로젝트 파일을 가져오거나, 클라우드에서 프로젝트를 다운로드하세요.</span>
+            <button type="button" className="lp-primary" onClick={onCreate} disabled={!bootReady || exiting}><Plus size={15} /> 지형 만들기</button>
           </div>
         )
       ) : (
@@ -334,19 +334,19 @@ export default function ProjectLibrary({
                 {menuFor === entry.id && (
                   <div className="project-library-menu" role="menu" onPointerDown={(event) => event.stopPropagation()}>
                     {localProject && <>
-                      <button type="button" role="menuitem" onClick={() => { setMenuFor(null); openEntry(entry); }} disabled={!bootReady || exiting}><FolderOpen size={13} /> Open</button>
-                      <button type="button" role="menuitem" onClick={() => { setMenuFor(null); onRename(localProject); }} disabled={projectActionBusy}><Pencil size={13} /> Rename</button>
-                      <button type="button" role="menuitem" onClick={() => { setMenuFor(null); onDuplicate(localProject); }} disabled={projectActionBusy}><Copy size={13} /> Duplicate</button>
+                      <button type="button" role="menuitem" onClick={() => { setMenuFor(null); openEntry(entry); }} disabled={!bootReady || exiting}><FolderOpen size={13} /> 열기</button>
+                      <button type="button" role="menuitem" onClick={() => { setMenuFor(null); onRename(localProject); }} disabled={projectActionBusy}><Pencil size={13} /> 이름 변경</button>
+                      <button type="button" role="menuitem" onClick={() => { setMenuFor(null); onDuplicate(localProject); }} disabled={projectActionBusy}><Copy size={13} /> 복제</button>
                     </>}
                     {cloudProject && <>
-                      <span className="project-library-menu-label">Cloud visibility</span>
+                      <span className="project-library-menu-label">구름 가시성</span>
                       <div className="project-library-visibility-actions" role="group" aria-label={`Cloud visibility for ${name}`}>
                         {Object.entries(visibilityIcons).map(([visibility, Icon]) => <button key={visibility} type="button" className={cloudProject.visibility === visibility ? 'active' : ''} onClick={() => changeVisibility(entry, visibility)} disabled={isBusy} title={visibility}><Icon size={13} /><span>{visibility}</span></button>)}
                       </div>
-                      {cloudProject.visibility !== 'private' && <button type="button" role="menuitem" onClick={() => copyText(cloudProject.shareCode).then(() => showPopup(`Copied ${cloudProject.shareCode}.`, { type: 'success' })).catch((error) => showPopup(error.message, { type: 'error' }))}><Copy size={13} /> Copy sharing code</button>}
-                      <button type="button" role="menuitem" className="danger" onClick={() => removeCloudCopy(entry)} disabled={isBusy}><Cloud size={13} /> Remove cloud copy</button>
+                      {cloudProject.visibility !== 'private' && <button type="button" role="menuitem" onClick={() => copyText(cloudProject.shareCode).then(() => showPopup(`Copied ${cloudProject.shareCode}.`, { type: 'success' })).catch((error) => showPopup(error.message, { type: 'error' }))}><Copy size={13} />공유 코드 복사</button>}
+                      <button type="button" role="menuitem" className="danger" onClick={() => removeCloudCopy(entry)} disabled={isBusy}><Cloud size={13} />클라우드 사본 제거</button>
                     </>}
-                    {localProject && <button type="button" role="menuitem" className="danger" onClick={() => { setMenuFor(null); onDelete(localProject); }} disabled={projectActionBusy}><Trash2 size={13} /> Delete local project</button>}
+                    {localProject && <button type="button" role="menuitem" className="danger" onClick={() => { setMenuFor(null); onDelete(localProject); }} disabled={projectActionBusy}><Trash2 size={13} />로컬 프로젝트 삭제</button>}
                   </div>
                 )}
               </article>

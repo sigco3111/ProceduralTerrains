@@ -38,9 +38,7 @@ export default function TileMapDebugSection({ tileDebug, onTileDebug }) {
       icon={<Map size={15} strokeWidth={1.75} />}
       defaultOpen={dbg.view !== 'off'}
     >
-      <p className="section-hint">
-        Preview internal terrain maps on the Tile surface without changing saved terrain data.
-      </p>
+      <p className="section-hint">저장된 지형 데이터를 변경하지 않고 타일 표면에 내부 지형 맵을 미리 봅니다.</p>
       <SelectRow
         label="디버그 보기"
         value={dbg.view}

@@ -22,8 +22,8 @@ export default function UiSettingsPanel({ open, prefs, onChange, onClose }) {
           <div className="ui-settings-heading">
             <Settings size={16} strokeWidth={1.75} aria-hidden className="ui-settings-heading-icon" />
             <div>
-              <h2 className="ui-settings-title">Settings</h2>
-              <p className="ui-settings-desc">Interface appearance and chrome density.</p>
+              <h2 className="ui-settings-title">설정</h2>
+              <p className="ui-settings-desc">인터페이스 모양 및 UI 밀도.</p>
             </div>
           </div>
           <button type="button" className="side-panel-close" onClick={onClose} aria-label="닫기" title="닫기 (Esc)">
@@ -33,9 +33,9 @@ export default function UiSettingsPanel({ open, prefs, onChange, onClose }) {
 
         <div className="ui-settings-body">
           <section className="ui-settings-section">
-            <h3 className="ui-settings-section-title">Tools toolbar</h3>
+            <h3 className="ui-settings-section-title">도구 �바</h3>
             <label className="ui-settings-row">
-              <span className="ui-settings-row-label">Show tool names</span>
+              <span className="ui-settings-row-label">도구 이름 표시</span>
               <input
                 type="checkbox"
                 checked={!!prefs.toolbarLabels}
@@ -45,7 +45,7 @@ export default function UiSettingsPanel({ open, prefs, onChange, onClose }) {
           </section>
 
           <section className="ui-settings-section">
-            <h3 className="ui-settings-section-title">World modes</h3>
+            <h3 className="ui-settings-section-title">월드 모드</h3>
             <div className="ui-settings-choice-group" role="radiogroup" aria-label="Mode button display">
               {MODE_DISPLAY_OPTIONS.map((opt) => (
                 <button
@@ -63,9 +63,9 @@ export default function UiSettingsPanel({ open, prefs, onChange, onClose }) {
           </section>
 
           <section className="ui-settings-section">
-            <h3 className="ui-settings-section-title">Viewport</h3>
+            <h3 className="ui-settings-section-title">뷰포트</h3>
             <label className="ui-settings-row">
-              <span className="ui-settings-row-label">Show camera controls</span>
+              <span className="ui-settings-row-label">카메라 컨트롤 표시</span>
               <input
                 type="checkbox"
                 checked={prefs.cameraControls !== false}

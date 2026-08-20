@@ -247,8 +247,7 @@ export default function PropsAssetLibrary({ value, onChange }) {
     <div className="prop-asset-library" data-setting-id="props.assetLibrary">
       <div className="prop-library-toolbar">
         <button type="button" className="action-btn primary" onClick={() => setPickerMode('add')}>
-          <Plus size={13} aria-hidden /> Add asset
-        </button>
+          <Plus size={13} aria-hidden /> 에셋 추가</button>
         <button type="button" className="icon-btn" disabled={!selected} onClick={() => setPickerMode('replace')} title="Replace selected asset">
           <RefreshCw size={14} aria-hidden />
         </button>
@@ -264,7 +263,7 @@ export default function PropsAssetLibrary({ value, onChange }) {
         <div className="prop-preset-picker">
           <div className="prop-preset-picker-head">
             <strong>{pickerMode === 'replace' ? 'Replace asset' : 'Add asset'}</strong>
-            <button type="button" onClick={() => setPickerMode(null)}>Cancel</button>
+            <button type="button" onClick={() => setPickerMode(null)}>취소</button>
           </div>
           <div className="prop-preset-grid">
             {PROP_ASSET_PRESETS.map((preset) => (
@@ -288,25 +287,25 @@ export default function PropsAssetLibrary({ value, onChange }) {
             <small>{PROP_ASSET_TYPES.find((type) => type.id === asset.type)?.label}</small>
           </button>
         ))}
-        {!assets.length && <p className="prop-library-empty">No assets. Add a preset to populate the terrain.</p>}
+        {!assets.length && <p className="prop-library-empty">에셋이 없습니다. 프리셋을 추가하여 지형을 채워보세요.</p>}
       </div>
 
       {selected && (
         <>
           <Preview asset={selected} />
-          <p className="prop-preview-hint"><Move3D size={11} aria-hidden /> Drag vertically and horizontally to rotate</p>
+          <p className="prop-preview-hint"><Move3D size={11} aria-hidden />수직 및 수평으로 드래그하여 회전</p>
           <div className="prop-asset-editor">
             <label className="prop-asset-name">
-              <span>Name</span>
+              <span>이름</span>
               <input value={nameDraft} maxLength={48} onChange={(event) => setNameDraft(event.target.value)}
                 onBlur={commitName} onKeyDown={(event) => event.key === 'Enter' && event.currentTarget.blur()} />
             </label>
             <label className="prop-asset-enabled">
               <input type="checkbox" checked={selected.enabled} onChange={(event) => patchSelected({ enabled: event.target.checked })} />
-              <span>Use in terrain scattering</span>
+              <span>지형 스캐터링에 사용</span>
             </label>
             <label className="prop-asset-color">
-              <span>Tint</span>
+              <span>색조</span>
               <input type="color" value={selected.color} onChange={(event) => patchSelected({ color: event.target.value })} />
               <code>{selected.color.toUpperCase()}</code>
             </label>

@@ -540,7 +540,7 @@ export default function App() {
   }, [setCurrentProject, showPopup, showToast]);
 
   const loadProjectJSON = useCallback(async (json) => {
-    if (!json) return showToast('Could not parse project file', 'error');
+    if (!json) return showToast('프로젝트 파일을 구문 분석할 수 없음', 'error');
     const project = json.terrain ? normalizeProject(json) : null;
     const terrain = project?.terrain ?? normalizeProject({ terrain: json }).terrain;
     const name = project?.metadata?.name ?? '지형 프로젝트';
@@ -2160,7 +2160,7 @@ export default function App() {
               <path d="M12 3v11M12 3 8.2 6.8M12 3l3.8 3.8" stroke="currentColor" fill="none" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
               <path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15" stroke="currentColor" fill="none" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <span>Drop terrain file to load</span>
+            <span>지형 파일을 드롭하여 로드</span>
           </div>
         </div>
       )}
@@ -2258,15 +2258,13 @@ export default function App() {
           <canvas id="viewport" ref={canvasRef} className={webglError ? 'viewport-disabled' : ''} />
           {webglError && (
             <div className="webgl-error-overlay" role="alert">
-              <h2>WebGL unavailable</h2>
+              <h2>WebGL 사용 불가</h2>
               <p>{webglError}</p>
               <p className="webgl-error-hint">
                 Close other 3D tabs, reload the page, or enable hardware acceleration in your browser settings
                 (Chrome: Settings → System → &quot;Use graphics acceleration when available&quot;).
               </p>
-              <button type="button" onClick={() => window.location.reload()}>
-                Reload
-              </button>
+              <button type="button" onClick={() => window.location.reload()}>다시 불러오기</button>
             </div>
           )}
           {showToolPanels && settingsSearchOpen && (
@@ -2409,7 +2407,7 @@ export default function App() {
           {exploreMode === 'plane' && <PlaneHUD liveMetrics={liveMetrics} />}
 
           {nodesWorkspaceActive && terrainGraph ? (
-            <Suspense fallback={<div className="nodes-workspace-loading">Loading node editor…</div>}>
+            <Suspense fallback={<div className="nodes-workspace-loading">노드 에디터 불러오는 중…</div>}>
               <NodeWorkspace
                 graph={terrainGraph}
                 graphView={graphView}

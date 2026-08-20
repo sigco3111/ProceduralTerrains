@@ -29,7 +29,7 @@ export default function PlanetSummaryCard({ params }) {
               <path d="M2 10c2.5-1 9.5-1 12 0" stroke="currentColor" strokeWidth="1.2" />
             </svg>
           </span>
-          <span className="setting-label">Planet Style</span>
+          <span className="setting-label">행성 스타일</span>
         </div>
         <span className="stat-value">{planetLabel}</span>
       </div>
@@ -43,7 +43,7 @@ export default function PlanetSummaryCard({ params }) {
               <circle cx="9.5" cy="9.5" r="1.1" fill="currentColor" />
             </svg>
           </span>
-          <span className="setting-label">Palette</span>
+          <span className="setting-label">팔레트</span>
         </div>
         <span className="stat-value">{paletteLabel}</span>
       </div>
@@ -54,7 +54,7 @@ export default function PlanetSummaryCard({ params }) {
               <path d="M1.5 12l4-7 3.5 5 2.5-3.5 3 5.5h-13z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
             </svg>
           </span>
-          <span className="setting-label">Terrain Type</span>
+          <span className="setting-label">지형 유형</span>
         </div>
         <span className="stat-value">{terrainLabel}</span>
       </div>
@@ -65,7 +65,7 @@ export default function PlanetSummaryCard({ params }) {
               <path d="M1 9c1.5-1 2.5-1 4 0s2.5 1 4 0 2.5-1 4 0 2.5 1 3 0" stroke="currentColor" strokeWidth="1.2" />
             </svg>
           </span>
-          <span className="setting-label">Sea Level</span>
+          <span className="setting-label">해수면</span>
         </div>
         <span className="stat-value stat-mono">{params.seaLevel} m</span>
       </div>
@@ -76,7 +76,7 @@ export default function PlanetSummaryCard({ params }) {
               <path d="M1 9c2.5-3 3.5-3 5 0s2.5 3 5 0 2.5-3 4 0" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
             </svg>
           </span>
-          <span className="setting-label">Noise Style</span>
+          <span className="setting-label">노이즈 스타일</span>
         </div>
         <span className="stat-value">{params.noisePreset ?? 'default'}</span>
       </div>

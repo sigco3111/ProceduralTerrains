@@ -39,7 +39,7 @@ export class PlanetCloudLayer {
    * @param {THREE.Scene} scene
    * @param {object} opts
    * @param {number} opts.planetRadius
-   * @param {(mats: THREE.Material[]) => Promise<void>} [opts.compile] background warmup hook
+   * @param {(mats: THREE.Material[]) =>약속<void>} [opts.compile] background warmup hook
    */
   constructor(scene, opts = {}) {
     this.scene = scene;

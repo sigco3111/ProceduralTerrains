@@ -131,7 +131,7 @@ export default function VisualsPanel({ ctx }) {
           <SliderList items={SKY_SLIDERS} params={params} onParam={onParam} disabled={enabled.sky === false} query={query} />
           <div className="color-field" data-setting-id="visuals.visualsAtmosphereTint">
             <div className="label-with-icon" data-tooltip="절차적 하늘 환경에 적용되는 틴트.">
-              <span className="setting-label">Atmosphere Tint</span>
+              <span className="setting-label">대기 색조</span>
             </div>
             <ColorInput
               value={colorToHex(tint)}

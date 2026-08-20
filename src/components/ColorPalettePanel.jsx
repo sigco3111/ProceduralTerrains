@@ -227,8 +227,8 @@ export default function ColorPalettePanel({
       <section className="terrain-palette-picker" aria-labelledby="terrain-palette-title">
         <div className="terrain-palette-picker-head">
           <div>
-            <strong id="terrain-palette-title">Terrain palettes</strong>
-            <span>Same color presets as Nodes</span>
+            <strong id="terrain-palette-title">지형 팔레트</strong>
+            <span>노드와 동일한 색상 프리셋</span>
           </div>
           <span className="terrain-palette-picker-count">{TERRAIN_COLOR_PALETTE_OPTIONS.length}</span>
         </div>
@@ -268,7 +268,7 @@ export default function ColorPalettePanel({
         aria-expanded={advancedVisible}
       >
         <span>
-          <strong>Advanced colors</strong>
+          <strong>고급 색상</strong>
           <small>Generator, custom biomes &amp; legacy palettes</small>
         </span>
         <svg viewBox="0 0 16 16" aria-hidden>
@@ -280,7 +280,7 @@ export default function ColorPalettePanel({
       {/* Procedural generator */}
       <div className="palette-generator">
         <div className="palette-generator-head">
-          <span className="palette-generator-title">Procedural Generator</span>
+          <span className="palette-generator-title">절차적 생성기</span>
         </div>
         <div className="row">
           <div className="label-with-icon" data-tooltip="The style guidelines used by the procedural color generator (e.g. Desert, Lush, Toxic)">
@@ -290,7 +290,7 @@ export default function ColorPalettePanel({
                 <ellipse cx="8" cy="8" rx="2.5" ry="5.5" stroke="currentColor" strokeWidth="0.9" />
               </svg>
             </span>
-            <span className="setting-label">Color Theme</span>
+            <span className="setting-label">색상 테마</span>
             <span className="info-icon-trigger">
               <svg viewBox="0 0 16 16" fill="none" width="10" height="10" style={{ marginLeft: '4px' }}>
                 <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" />
@@ -312,7 +312,7 @@ export default function ColorPalettePanel({
                 <path d="M8 1v2M8 13v2M1 8h2M13 8h2" stroke="currentColor" strokeWidth="1.2" />
               </svg>
             </span>
-            <span className="setting-label">Color Seed</span>
+            <span className="setting-label">색상 시드</span>
             <span className="info-icon-trigger">
               <svg viewBox="0 0 16 16" fill="none" width="10" height="10" style={{ marginLeft: '4px' }}>
                 <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" />
@@ -344,9 +344,7 @@ export default function ColorPalettePanel({
           <svg viewBox="0 0 16 16" fill="none">
             <path d="M8 2v4M8 10v4M2 8h4M10 8h4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
             <circle cx="8" cy="8" r="2.5" stroke="currentColor" strokeWidth="1.2" />
-          </svg>
-          Generate Custom Palette
-        </button>
+          </svg>사용자 지정 팔레트 생성</button>
       </div>
 
       {/* Preset selector */}
@@ -360,7 +358,7 @@ export default function ColorPalettePanel({
               <circle cx="9.5" cy="9.5" r="1.1" fill="currentColor" />
             </svg>
           </span>
-          <span className="setting-label">Color Palette Preset</span>
+          <span className="setting-label">색상 팔레트 프리셋</span>
           <span className="info-icon-trigger">
             <svg viewBox="0 0 16 16" fill="none" width="10" height="10" style={{ marginLeft: '4px' }}>
               <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" />
@@ -379,7 +377,7 @@ export default function ColorPalettePanel({
               <option key={key} value={key}>{p.label}</option>
             ))}
           </optgroup>
-          {palettePreset === 'custom' && <option value="custom">Custom</option>}
+          {palettePreset === 'custom' && <option value="custom">사용자 지정</option>}
         </select>
       </div>
 
@@ -418,16 +416,12 @@ export default function ColorPalettePanel({
           <svg viewBox="0 0 16 16" fill="none">
             <path d="M8 2v8M5 7l3 3 3-3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
             <path d="M3 13h10" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-          </svg>
-          Export
-        </button>
+          </svg>내보내기</button>
         <button type="button" className="action-btn" onClick={handleImport} data-tooltip="JSON 파일에서 행성 스타일링 구성 불러오기">
           <svg viewBox="0 0 16 16" fill="none">
             <path d="M8 14V6M5 9l3-3 3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
             <path d="M3 3h10" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-          </svg>
-          Import
-        </button>
+          </svg> 가져오기</button>
       </div>
       </div>}
     </div>

@@ -48,7 +48,7 @@ function SeedRow({ seed, onParam, onRandomizeSeed }) {
   return (
     <div className="seed-row">
       <div className="label-with-icon" data-tooltip="절차적 높이 생성기의 기본 정수" style={{ marginBottom: '5px' }}>
-        <span className="setting-label">Seed</span><InfoDot />
+        <span className="setting-label">시드</span><InfoDot />
       </div>
       <div className="seed-input-wrap">
         <input type="text" spellCheck="false" value={text}
@@ -64,9 +64,7 @@ function SeedRow({ seed, onParam, onRandomizeSeed }) {
 
 const RandomizeTerrainButton = ({ onRandomize }) => (
   <button type="button" className="action-btn primary" onClick={onRandomize} title="Pick a new seed and rebuild the terrain">
-    <Dices size={14} strokeWidth={1.75} aria-hidden />
-    Randomize terrain
-  </button>
+    <Dices size={14} strokeWidth={1.75} aria-hidden />지형 무작위화</button>
 );
 
 const SURFACE_TABS = [
@@ -261,9 +259,7 @@ function ErosionTabFooter({ erosion }) {
       <button type="button" className="action-btn primary" onClick={bake} disabled={busy} style={{ flex: 2 }}>
         {busy ? `${EROSION_PHASE_LABEL[phase] || 'Baking…'} ${pct}%` : (baked ? 'Re-bake Erosion' : '침식 베이크')}
       </button>
-      <button type="button" className="action-btn" onClick={reset} disabled={busy || !baked} style={{ flex: 1 }}>
-        Reset
-      </button>
+      <button type="button" className="action-btn" onClick={reset} disabled={busy || !baked} style={{ flex: 1 }}>초기화</button>
     </div>
   );
 }
@@ -287,7 +283,7 @@ function ErosionTabContent({ ctx, erosion }) {
         settingId="erosion.erosionEnabled"
         info="Apply the baked erosion to the terrain. Toggle to compare Before / After. Disabled until you bake." />
       {!baked && (
-        <p className="section-hint">No erosion baked yet. Pick a preset, then press <strong>Bake Erosion</strong>. The simulation runs in the background.</p>
+        <p className="section-hint">아직 베이크된 침식이 없습니다. 프리셋을 선택한 다음 누르세요<strong>침식 베이크</strong>. The simulation runs in the background.</p>
       )}
 
       <SelectRow label="프리셋" value={params.erosionPreset ?? 'natural'} settingId="erosion.erosionPreset"
@@ -423,7 +419,7 @@ function PropsPanel({ ctx }) {
         </>
       )}
       {subTab === 'settings' && !enabled && (
-        <p className="section-hint">Enable Procedural Props to adjust distribution, look and performance settings.</p>
+        <p className="section-hint">절차적 소품을 활성화하여 분포, 모양, 성능 설정을 조정하세요.</p>
       )}
       <PanelResetButton label="Reset Props Settings" onClick={() => ctx.onResetPanel?.('props')} settingId="props.reset" />
     </SidePanel>
@@ -454,7 +450,7 @@ function TimeOfDayControl({ timeOfDay, onTimeOfDay, settingId }) {
   return (
     <div className="ctl" data-setting-id={settingId}>
       <div className="ctl-top">
-        <span className="setting-label">Time</span>
+        <span className="setting-label">시간</span>
         <span className="ctl-val" style={{ pointerEvents: 'none' }}>{formatTimeOfDay(timeOfDay)}</span>
       </div>
       <div className="slider-track-wrap">
@@ -478,7 +474,7 @@ function SkyboxPanel({ ctx }) {
   const enabled = params.skyboxEnabled !== false;
   return (
     <SidePanel title="하늘" description="Sky environment, time of day and atmosphere." onClose={ctx.onClose}>
-      <ToggleRow label="Procedural Sky" value={enabled} onChange={(v) => onParam('skyboxEnabled', v)}
+      <ToggleRow label="절차적 하늘" value={enabled} onChange={(v) => onParam('skyboxEnabled', v)}
         settingId="skybox.skyboxEnabled"
         info="Surround the scene with the procedural sky dome (Tile + Infinite World). When off, a flat backdrop and the manual Lighting sun angles are used." />
 
@@ -490,7 +486,7 @@ function SkyboxPanel({ ctx }) {
           info="Animate the time of day while the procedural sky is active." />
         <SliderCtl def={SKYBOX_SLIDERS.skyboxCycleSpeed} value={params.skyboxCycleSpeed ?? 1}
           onChange={(v) => onParam('skyboxCycleSpeed', v)} settingId="skybox.skyboxCycleSpeed" />
-        <p className="section-hint">Drives the sky colours, sun position and atmosphere. Shared across the Tile view and the Infinite World.</p>
+        <p className="section-hint">하늘 색상, 태양 위치, 대기를 제어합니다. 타일 뷰와 무한 세계에서 공유됩니다.</p>
       </ControlSection>
 
       {enabled && (
@@ -516,7 +512,7 @@ function LightingPanel({ ctx }) {
   return (
     <SidePanel title="조명" description="태양, 대기 및 안개." onClose={ctx.onClose}>
       {skyOn && (
-        <p className="section-hint">Time of day and the sky environment are configured in the <strong>Skybox</strong> tab. While the procedural sky is on, it drives the sun direction and atmosphere. Turn it off to use the manual lighting palette below.</p>
+        <p className="section-hint">시간대 및 하늘 환경은 다음에서 설정됩니다:<strong>하늘</strong>탭. 절차적 하늘이 켜져 있으면 태양 방향과 대기를 제어합니다. 끄면 아래의 수동 조명 팔레트를 사용합니다.</p>
       )}
       <EnvironmentPanelInner params={params} planetStyle={params.planetStyle}
         onParam={ctx.onParam} onTuning={ctx.onStyleTuning} settingsTarget={ctx.settingsTarget} />
@@ -626,27 +622,27 @@ function SessionInfo({ ctx }) {
       </div>
       <div className="panel-group-body">
         <div className="stat-row">
-          <span className="stat-label">World Mode</span>
+          <span className="stat-label">세계 모드</span>
           <span className="stat-value">{ctx.worldMode}</span>
         </div>
         <div className="stat-row">
-          <span className="stat-label">Seed</span>
+          <span className="stat-label">시드</span>
           <span className="stat-value stat-mono">{ctx.params.seed}</span>
         </div>
         <div className="stat-row">
-          <span className="stat-label">Board</span>
+          <span className="stat-label">보드</span>
           <span className="stat-value stat-mono">{ctx.boardSize} u</span>
         </div>
         {ctx.worldMode === 'studio' && (
           <div className="stat-row">
-            <span className="stat-label">Height Bake</span>
+            <span className="stat-label">높이 베이크</span>
             <span className="stat-value">
               {ctx.debugFlags?.disableHeightBake ? '끔 (라이브 필드)' : '활성'}
             </span>
           </div>
         )}
         <div className="stat-row">
-          <span className="stat-label">Version</span>
+          <span className="stat-label">버전</span>
           <span className="stat-value stat-mono">v{APP_VERSION}</span>
         </div>
       </div>
@@ -795,7 +791,7 @@ function EngineDebugOptions({ ctx }) {
               info="Temporarily switch to a collision-free FPS debug camera, then restore the previous explore/camera mode when disabled."
               settingId="debug.freeCamNoClip"
             />
-            <p className="section-hint">Freeze / render diagnostics apply to Tile or Planet mode.</p>
+            <p className="section-hint">프리즈/렌더 진단은 타일 또는 행성 모드에 적용됩니다.</p>
           </>
         )}
       </CollapsibleGroup>
@@ -862,8 +858,8 @@ function ExportPanel({ ctx }) {
         </button>
       )}>
       <div className="side-panel-quick">
-        <button type="button" className="action-btn" onClick={ctx.onExportScreenshot} disabled={busy}>Screenshot</button>
-        <button type="button" className="action-btn" onClick={ctx.onExportHeightmap} disabled={busy}>Heightmap</button>
+        <button type="button" className="action-btn" onClick={ctx.onExportScreenshot} disabled={busy}>스크린샷</button>
+        <button type="button" className="action-btn" onClick={ctx.onExportHeightmap} disabled={busy}>하이맵</button>
       </div>
 
       <ControlSection id="export-production-preset" title="프로덕션 프리셋" defaultOpen settingId="export.section.productionPreset">
@@ -872,7 +868,7 @@ function ExportPanel({ ctx }) {
           {selectedPreset ? selectedPreset.description : '파일, 지도, 지오메트리를 수동으로 선택하세요.'}
         </div>
         <div className="export-validation" role="status" aria-label="프로덕션 점검">
-          <strong>Production Check</strong>
+          <strong>프로덕션 검사</strong>
           {productionChecks.map((check, index) => (
             <div className={`export-validation-row ${check.status}`} key={`${check.status}-${index}`}>
               <span aria-hidden>{check.status === 'success' ? '✓' : check.status === 'warning' ? '⚠' : '×'}</span>{check.message}
@@ -981,8 +977,8 @@ function TilesContent({ ctx }) {
           options={[{ value: 'square', label: '사각형' }, { value: 'circle', label: '원' }]}
           onChange={ctx.onTileAssemblyShape} settingId="world.tileAssemblyShape"
           info="Square supports hover-to-add tiles. Circle crops the current square chunk assembly to a disk." />
-        <div className="kv-row"><span>Tiles</span><span>{tiles.length} / {maxCells}</span></div>
-        {shape === 'circle' && <div className="kv-row"><span>Disk radius</span><span>{(ctx.diskRadiusCells ?? 0).toFixed(2)} cells</span></div>}
+        <div className="kv-row"><span>타일</span><span>{tiles.length} / {maxCells}</span></div>
+        {shape === 'circle' && <div className="kv-row"><span>디스크 반경</span><span>{(ctx.diskRadiusCells ?? 0).toFixed(2)} cells</span></div>}
         {atGridEdge && (
           <div className="settings-hint">All {maxCells} available cells are occupied.</div>
         )}
