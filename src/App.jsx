@@ -1,0 +1,2507 @@
+import React, { Suspense, lazy, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { createEngineProxy } from './engine/EngineProxy.js';
+import { DEFAULT_PARAMS } from './engine/presets.js';
+import { DEFAULT_DEBUG_FLAGS, DEFAULT_TILE_DEBUG } from './engine/panelResets.js';
+import { clonePlanetStyle } from './engine/style/PlanetStyleConfig.js';
+import { buildActiveSurfaceAtlas } from './engine/terrain/surface/applyTerrainSurface.js';
+import { resetSurfaceLibraryState } from './engine/terrain/surface/SurfaceLibrary.js';
+import { normalizeSurfaceTextureSource, sourceUsesTextureAtlas } from './engine/terrain/surface/SurfaceTextureSources.js';
+import { colorToHex } from './engine/style/ColorPalette.js';
+import { formatTimeOfDay } from './engine/sky/TimeOfDay.js';
+import { useLoading, blockingTask, nonBlockingTask } from './state/loading.jsx';
+import { createLiveMetricsStore } from './state/LiveMetricsStore.js';
+import { panelAvailable, PANEL_ORDER, getPanelDisplay } from './components/panels/panelMeta.js';
+import { searchSettings } from './components/panels/settingsSearch.js';
+import TopBar from './components/TopBar.jsx';
+import LeftToolbar from './components/ui/LeftToolbar.jsx';
+import {
+  loadToolsRailLayout,
+  saveToolsRailLayout,
+  loadDrawerLayout,
+  saveDrawerLayout,
+} from './components/ui/toolsRailLayout.js';
+import { loadUiPrefs, saveUiPrefs } from './components/ui/uiPrefs.js';
+import UiSettingsPanel from './components/ui/UiSettingsPanel.jsx';
+import SettingsSearchOverlay from './components/ui/SettingsSearchOverlay.jsx';
+import ManualTerrainImportDialog from './components/ui/ManualTerrainImportDialog.jsx';
+import BottomToolbar from './components/BottomToolbar.jsx';
+import CreatorToolbar from './components/CreatorToolbar.jsx';
+import WorldModeBar from './components/WorldModeBar.jsx';
+import StatusBar from './components/StatusBar.jsx';
+import InfiniteHUD from './components/InfiniteHUD.jsx';
+import PlaneHUD from './components/PlaneHUD.jsx';
+import TouchControls from './components/TouchControls.jsx';
+import MinimapOverlay from './components/MinimapOverlay.jsx';
+import PaintPanel from './components/paint/PaintPanel.jsx';
+import ManualTerrainPanel from './components/manual/ManualTerrainPanel.jsx';
+import LoadingOverlay from './components/ui/LoadingOverlay.jsx';
+import CompileProgressChip from './components/ui/CompileProgressChip.jsx';
+import { classifyToast } from './components/ui/Toast.jsx';
+import { usePopup } from './components/ui/PopupProvider.jsx';
+import { useLanding } from './landing/landingContext.jsx';
+import { usePerfOverlay } from './components/perf/usePerfOverlay.js';
+import { labelGpuPreference, labelRendererBackend } from './engine/render/RendererCapabilities.js';
+import {
+  createManualProjectCopy,
+  importTerrainIntoManualProject,
+  normalizeProject,
+  projectStore,
+} from './project/ProjectStore.js';
+import { getProjectTemplate, PROJECT_TEMPLATES } from './project/ProjectTemplates.js';
+import {
+  NODE_PROJECT_TEMPLATES, createNodeTemplateGraph, getNodeProjectTemplate,
+} from './project/NodeProjectTemplates.js';
+import { applyGraphColorPreset, createBlankGraph, setGraphColorEnabled } from './engine/terrain/graph/GraphDocument.js';
+import { getWaterBaselineScene } from './engine/water/WaterBaseline.js';
+
+const MODE_LABEL = { studio: '타일', infinite: '무한 세계', planet: '행성' };
+const NODE_PANEL_IDS = ['planet', 'water', 'clouds', 'visuals', 'skybox', 'lighting', 'export', 'performance', 'debug'];
+const REAL_TERRAIN_PANEL_IDS = ['terrain', 'water', 'props', 'clouds', 'visuals', 'skybox', 'lighting', 'export', 'performance', 'history', 'debug'];
+const PerformanceOverlay = lazy(() => import('./components/perf/PerformanceOverlay.jsx'));
+const SideDrawer = lazy(() => import('./components/ui/SideDrawer.jsx'));
+const loadNodeWorkspace = () => import('./components/nodes/NodeWorkspace.jsx');
+const NodeWorkspace = lazy(loadNodeWorkspace);
+const MANUAL_LIBRARY_HEIGHT_KEY = 'terrain-studio:manual-library-height';
+const DEFAULT_MANUAL_LIBRARY_HEIGHT = 214;
+
+const loadManualLibraryHeight = () => {
+  try {
+    const stored = Number(window.localStorage.getItem(MANUAL_LIBRARY_HEIGHT_KEY));
+    return Number.isFinite(stored)
+      ? Math.min(520, Math.max(150, stored))
+      : DEFAULT_MANUAL_LIBRARY_HEIGHT;
+  } catch {
+    return DEFAULT_MANUAL_LIBRARY_HEIGHT;
+  }
+};
+
+const hex = (rgb) => colorToHex(Array.isArray(rgb) ? rgb : [0.5, 0.5, 0.5]);
+const yesNo = (value) => (value ? '켜짐' : '꺼짐');
+const num = (value, digits = 2, suffix = '') => {
+  if (!Number.isFinite(value)) return '—';
+  return `${Number(value).toFixed(digits)}${suffix}`;
+};
+
+// The undo stack owns the complete project state, while Creator snapshots are
+// managed separately by the engine. Give its entries useful names without
+// maintaining another, competing set of restore states.
+const historyActionLabel = (beforeSnapshot, afterSnapshot) => {
+  try {
+    const before = JSON.parse(beforeSnapshot);
+    const after = JSON.parse(afterSnapshot);
+    if (before.worldMode !== after.worldMode) return 'Changed world mode';
+    if (before.manualSurfaceRev !== after.manualSurfaceRev) return 'Painted manual terrain surface or props';
+    if (before.paintRev !== after.paintRev) return 'Painted terrain';
+    if (before.erosionRev !== after.erosionRev) return 'Updated erosion';
+    if (before.manualSculptRev !== after.manualSculptRev) return 'Sculpted manual terrain';
+    if (JSON.stringify(before.tiles) !== JSON.stringify(after.tiles)
+      || before.tileAssemblyShape !== after.tileAssemblyShape
+      || before.diskRadiusCells !== after.diskRadiusCells) return 'Edited terrain tiles';
+    if (JSON.stringify(before.creatorTools) !== JSON.stringify(after.creatorTools)) return 'Edited creator tools';
+    if (JSON.stringify(before.manualTerrain) !== JSON.stringify(after.manualTerrain)) return 'Edited manual terrain';
+    if (JSON.stringify(before.terrainGraph) !== JSON.stringify(after.terrainGraph)) return 'Edited terrain graph';
+    if (before.timeOfDay !== after.timeOfDay) return '시간대 조정됨';
+    if (JSON.stringify(before.perf) !== JSON.stringify(after.perf)) return '성능 설정 조정됨';
+    if (JSON.stringify(before.params) !== JSON.stringify(after.params)) return '지형 설정 조정됨';
+  } catch { /* A generic label is still preferable to hiding a valid undo entry. */ }
+  return 'Updated terrain';
+};
+
+export default function App() {
+  const canvasRef = useRef(null);
+  const minimapBaseRef = useRef(null);
+  const minimapOverlayRef = useRef(null);
+  const engineRef = useRef(null);
+  const activeProjectRef = useRef(null);
+  const projectNameRef = useRef('이름 없는 지형');
+  const liveMetricsRef = useRef(null);
+  if (!liveMetricsRef.current) {
+    const count = DEFAULT_PARAMS.chunkCount;
+    liveMetricsRef.current = createLiveMetricsStore({
+      chunkCount: count,
+      visibleChunks: count * count,
+    });
+  }
+  const liveMetrics = liveMetricsRef.current;
+
+  const loading = useLoading();
+  const landing = useLanding();
+  const { showPopup, showConfirm } = usePopup();
+  const landingRef = useRef(landing);
+  landingRef.current = landing;
+  const loadingRef = useRef(loading);
+  loadingRef.current = loading;
+
+  // Developer Performance Overlay (diagnostics). Toggle: Ctrl/Cmd+Shift+P or
+  // the FPS badge in the status bar. Detailed collection only while open.
+  const perfOverlay = usePerfOverlay(engineRef, loading.tasks);
+
+  const [params, setParams] = useState({ ...DEFAULT_PARAMS });
+  const [status, setStatus] = useState({ text: 'Booting…', busy: true });
+  const [bgWork, setBgWork] = useState(null);   // background shader-compile label
+  const [compileProgress, setCompileProgress] = useState(null);
+  const [boardSize, setBoardSize] = useState(DEFAULT_PARAMS.chunkCount * DEFAULT_PARAMS.chunkSize);
+  const [gpu, setGpu] = useState('–');
+
+  const [camMode, setCamMode] = useState('orbit');
+  const [helpVisible, setHelpVisible] = useState(false);
+  const [fileDragActive, setFileDragActive] = useState(false);
+  const fileDragDepthRef = useRef(0);
+  const [previewMode, setPreviewMode] = useState(false);
+  const [activePanel, setActivePanel] = useState(null);
+  const [toolsRailLayout, setToolsRailLayout] = useState(loadToolsRailLayout);
+  const [drawerLayout, setDrawerLayout] = useState(loadDrawerLayout);
+  const [uiPrefs, setUiPrefs] = useState(loadUiPrefs);
+  const [uiSettingsOpen, setUiSettingsOpen] = useState(false);
+  const appShellRef = useRef(null);
+  const [paintState, setPaintState] = useState({ enabled: false });
+  const [manualTerrainState, setManualTerrainState] = useState({
+    baseSource: 'flat',
+    enabled: false,
+    selectedId: null,
+    transformMode: 'translate',
+    placementType: null,
+    sculpt: {
+      enabled: false,
+      tool: 'raise',
+      brushSize: 110,
+      strength: 0.32,
+      falloff: 0.72,
+      targetHeight: 120,
+      creaseWidth: 0.2,
+      detailScale: 32,
+      detailRoughness: 0.55,
+      detailSeed: 1337,
+      terraceStep: 24,
+      erosionIterations: 3,
+      erosionDeposition: 0.65,
+      erosionTalus: 1.5,
+      revision: 0,
+      hasData: false,
+    },
+    texturePaint: {
+      enabled: false,
+      mode: 'surface',
+      tool: 'paint',
+      material: 'grass',
+      propType: 'grass',
+      brushSize: 110,
+      strength: 0.45,
+      falloff: 0.72,
+      revision: 0,
+      hasData: false,
+    },
+    shapes: [],
+  });
+  const [splineState, setSplineState] = useState({ enabled: false, selectedId: null, creatingType: null, draftPointCount: 0, splines: [] });
+  const [analysisState, setAnalysisState] = useState({ enabled: false, mode: 'elevation', opacity: .72 });
+  const [creatorHistory, setCreatorHistory] = useState({ actions: [], snapshots: [] });
+  const [tileDebug, setTileDebug] = useState({ view: 'off', showLegend: true, opacity: 1, showPreview: true });
+  const [tiles, setTiles] = useState([{ cx: 0, cz: 0 }]);
+  const [tileAssemblyShape, setTileAssemblyShape] = useState('square');
+  const [diskRadiusCells, setDiskRadiusCells] = useState(0);
+  const [importedMaps, setImportedMaps] = useState({ noise: null, height: null, biome: null, imagery: null });
+  const [realWorldImageryStyle, setRealWorldImageryStyle] = useState('satellite');
+  const [realWorldBuildingsVisible, setRealWorldBuildingsVisible] = useState(false);
+
+  const [worldMode, setWorldMode] = useState('studio');
+  const [realTerrainMode, setRealTerrainMode] = useState(false);
+  const [realWorldMapRequest, setRealWorldMapRequest] = useState(0);
+  const [exploreMode, setExploreMode] = useState('none');
+  const [playerMode, setPlayerMode] = useState(false);
+
+  const [qualityPreset, setQualityPreset] = useState('high');
+  const [timeOfDay, setTimeOfDay] = useState(0.38);
+  const [cullingEnabled, setCullingEnabled] = useState(true);
+  const [behindCameraCulling, setBehindCameraCulling] = useState(true);
+  const [debugFlags, setDebugFlags] = useState({ ...DEFAULT_DEBUG_FLAGS });
+  const [perf, setPerf] = useState(null);
+  const [settingsSearchOpen, setSettingsSearchOpen] = useState(false);
+  const [settingsSearchQuery, setSettingsSearchQuery] = useState('');
+  const [settingsSearchIndex, setSettingsSearchIndex] = useState(0);
+  const [settingsTarget, setSettingsTarget] = useState(null);
+  const [webglError, setWebglError] = useState(null);
+  const [activeProject, setActiveProject] = useState(null);
+  const [projectName, setProjectName] = useState('이름 없는 지형');
+  const [projectMode, setProjectMode] = useState('procedural');
+  const [manualImportDialog, setManualImportDialog] = useState({
+    open: false,
+    loading: false,
+    busy: false,
+    projects: [],
+  });
+  const [manualWorkspace, setManualWorkspace] = useState('manual');
+  const [manualLibraryHeight, setManualLibraryHeight] = useState(loadManualLibraryHeight);
+  const [terrainGraph, setTerrainGraph] = useState(null);
+  const [graphView, setGraphView] = useState({ x: 0, y: 0, zoom: 1 });
+  const [graphState, setGraphState] = useState({ valid: true, compiling: false, diagnostics: [], slotCount: 0, colorSlotCount: 0 });
+  const [nodesPreviewVisible, setNodesPreviewVisible] = useState(false);
+  const [nodePaletteDock, setNodePaletteDock] = useState({ detached: true, side: 'left', width: 208 });
+  const graphCompileTimerRef = useRef(null);
+  const graphCompileIdleRef = useRef(null);
+  const graphUniformFrameRef = useRef(null);
+  const pendingGraphRef = useRef(null);
+  const pendingGraphCompileNodesRef = useRef(new Set());
+
+  // ---- toasts ----
+  const [recentNotifications, setRecentNotifications] = useState([]);
+  const [notificationsIgnored, setNotificationsIgnored] = useState(() => {
+    try { return localStorage.getItem('terrain-studio.ignore-notifications') === 'true'; }
+    catch { return false; }
+  });
+  const notificationsIgnoredRef = useRef(notificationsIgnored);
+  notificationsIgnoredRef.current = notificationsIgnored;
+  const toastId = useRef(0);
+  const pushToast = useCallback((msg, type = 'info') => {
+    if (notificationsIgnoredRef.current) return;
+    const id = ++toastId.current;
+    const notification = { id, msg, type, timestamp: Date.now() };
+    setRecentNotifications((prev) => [notification, ...prev].slice(0, 12));
+  }, []);
+  const clearNotifications = useCallback(() => setRecentNotifications([]), []);
+  const toggleNotificationLogging = useCallback(() => {
+    setNotificationsIgnored((prev) => {
+      const next = !prev;
+      try { localStorage.setItem('terrain-studio.ignore-notifications', String(next)); } catch { /* ignore storage failures */ }
+      return next;
+    });
+  }, []);
+  const pushToastRef = useRef(pushToast);
+  pushToastRef.current = pushToast;
+  const showToast = useCallback((msg, type) => pushToast(msg, type ?? classifyToast(msg)), [pushToast]);
+
+  // refs read by stable engine callbacks
+  const blockingActiveRef = useRef(false);
+  const blockingUpdateRef = useRef(null); // current blocking task's update fn
+  const bootedRef = useRef(false);
+  const exportFailedRef = useRef(false);
+
+  // ---- undo / redo history ----
+  // Each entry is a JSON string from engine.serializeState() (every setting,
+  // minus heavy paint pixels — those are deduped by revision in paintBlobsRef).
+  // Rapid edits (dragging a slider 100→150) are coalesced by a debounce so one
+  // Ctrl+Z reverts the whole gesture back to the value before the drag (100),
+  // never the intermediate frames.
+  const historyRef = useRef({ past: [], future: [], present: null });
+  const paintBlobsRef = useRef(new Map());     // paintRev → heavy paint blob
+  const erosionBlobsRef = useRef(new Map());   // erosionRev → heavy erosion blob
+  const manualSculptBlobsRef = useRef(new Map()); // manualSculptRev → heavy sculpt delta
+  const manualSurfaceBlobsRef = useRef(new Map()); // manualSurfaceRev: heavy material weights
+  const histSuppressRef = useRef(false);       // true while applying a restore
+  const histTimerRef = useRef(null);           // pending debounced record
+  const scheduleRecordRef = useRef(null);      // late-bound for engine callbacks
+  const worldModeRef = useRef('studio');
+  const [histState, setHistState] = useState({ canUndo: false, canRedo: false });
+  // The History panel reflects this very same stack, not the smaller
+  // Creator-only journal maintained for named snapshots.
+  const nativeHistoryActionsRef = useRef([]);
+  const nativeHistoryCursorRef = useRef(-1);
+  const [nativeHistoryActions, setNativeHistoryActions] = useState([]);
+  const HISTORY_LIMIT = 100;
+
+  blockingActiveRef.current = !!blockingTask(loading.tasks);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      setWebglError('Viewport canvas is not available.');
+      bootedRef.current = true;
+      loadingRef.current.done('boot');
+      landingRef.current?.setBootReady(true);
+      return undefined;
+    }
+
+    loadingRef.current.start('boot', { blocking: true, label: 'Loading Terrain Studio…', detail: 'Initializing engine' });
+
+    let engine = null;
+    let bootTimer = null;
+    let cancelled = false;
+
+    const completeBootUi = () => {
+      if (cancelled || bootedRef.current) return;
+      bootedRef.current = true;
+      if (bootTimer) {
+        clearTimeout(bootTimer);
+        bootTimer = null;
+      }
+      loadingRef.current.done('boot');
+      landingRef.current?.setBootReady(true);
+    };
+
+    // Engine owns the bounded degraded-release policy. This UI timer only
+    // refreshes the message while the first safe interactive frame is pending.
+    bootTimer = setTimeout(() => {
+      if (bootedRef.current || cancelled) return;
+      loadingRef.current.update('boot', {
+        detail: 'Finalizing terrain mesh, materials and water…',
+      });
+    }, 15000);
+
+    const init = async () => {
+    try {
+      engine = await createEngineProxy({
+        canvas,
+        minimapBase: minimapBaseRef.current,
+        minimapOverlay: minimapOverlayRef.current,
+        initialParams: landingRef.current?.sessionSeed != null
+          ? { seed: landingRef.current.sessionSeed }
+          : undefined,
+        callbacks: {
+          onParams: (next) => {
+            setParams({
+              ...next,
+              planetStyle: next.planetStyle ? clonePlanetStyle(next.planetStyle) : next.planetStyle,
+            });
+            scheduleRecordRef.current?.();
+          },
+          onStatus: (text, busy) => {
+            setStatus({ text, busy });
+            // feed the active blocking task's detail line
+            if (busy && blockingUpdateRef.current) blockingUpdateRef.current({ detail: text });
+          },
+          onBootComplete: completeBootUi,
+          onStats: (stats) => liveMetrics.update({ stats }),
+          onBackgroundWork: setBgWork,
+          onCompileProgress: setCompileProgress,
+          onLod: (counts, count, visible, culled) => {
+            liveMetrics.update({
+              lodCounts: counts,
+              chunkCount: count,
+              visibleChunks: visible !== undefined ? visible : count * count,
+              culledChunks: culled !== undefined ? culled : 0,
+            });
+          },
+          onCamera: (camInfo) => liveMetrics.update({ camInfo }),
+          onBoard: setBoardSize,
+          onToast: (msg) => {
+            const type = classifyToast(msg);
+            if (/fail|error/i.test(msg)) exportFailedRef.current = true;
+            // suppress progress (info) toasts while a blocking overlay is up
+            if (blockingActiveRef.current && type === 'info') return;
+            pushToastRef.current(msg, type);
+          },
+          onFirstInteract: () => setHelpVisible(false),
+          onInfiniteStats: (infiniteStats) => liveMetrics.update({
+            infiniteStats,
+            playerState: infiniteStats?.playerState ?? liveMetrics.getSnapshot().playerState,
+          }),
+          onExploreMode: setExploreMode,
+          onPlayerMode: setPlayerMode,
+          onPlayerState: (playerState) => liveMetrics.update({ playerState }),
+          onQualityChange: setQualityPreset,
+          onTimeOfDayChange: (v) => { setTimeOfDay(v); scheduleRecordRef.current?.(); },
+          onPerfChange: (p) => { setPerf(p); scheduleRecordRef.current?.(); },
+          onPaintState: (s) => { setPaintState(s); scheduleRecordRef.current?.(); },
+          onManualTerrainState: (s, meta) => {
+            setManualTerrainState(s);
+            if (meta?.inspectorRequested) setActivePanel(null);
+            if (meta?.terrainChanged || meta?.documentChanged) scheduleRecordRef.current?.();
+          },
+          onSplineState: (s) => { setSplineState(s); scheduleRecordRef.current?.(); },
+          onAnalysisState: setAnalysisState,
+          onCreatorHistory: setCreatorHistory,
+          onTileDebug: (t) => { setTileDebug(t); scheduleRecordRef.current?.(); },
+          onTiles: (payload) => {
+            const list = Array.isArray(payload) ? payload : (payload?.tiles ?? [{ cx: 0, cz: 0 }]);
+            setTiles(list);
+            if (!Array.isArray(payload)) {
+              setTileAssemblyShape(payload?.tileAssemblyShape ?? 'square');
+              setDiskRadiusCells(payload?.diskRadiusCells ?? 0);
+            }
+            scheduleRecordRef.current?.();
+          },
+          onImportedMaps: setImportedMaps,
+          onRealWorldImageryStyle: setRealWorldImageryStyle,
+          onRealWorldBuildingsVisible: setRealWorldBuildingsVisible,
+          onDebugReset: () => {
+            setDebugFlags({ ...DEFAULT_DEBUG_FLAGS });
+            setTileDebug({ ...DEFAULT_TILE_DEBUG });
+          },
+          onTerrainGraph: (next) => {
+            setTerrainGraph(next);
+            scheduleRecordRef.current?.();
+          },
+          onProjectMode: setProjectMode,
+          onGraphState: setGraphState,
+          onGraphView: setGraphView,
+        },
+      });
+    } catch (err) {
+      if (cancelled) return;
+      console.error('WebGL initialization failed', err);
+      const message = err?.message || 'Could not create a WebGL context.';
+      setWebglError(message);
+      setStatus({ text: 'WebGL unavailable', busy: false });
+      completeBootUi();
+      return;
+    }
+
+    if (cancelled) {
+      engine?.dispose();
+      return;
+    }
+
+    engine.setCullingEnabled(cullingEnabled);
+    engine.setBehindCameraCulling(behindCameraCulling);
+    engineRef.current = engine;
+    // seed the undo history baseline from the freshly-built default project
+    try { historyRef.current = { past: [], future: [], present: JSON.stringify(engine.serializeState()) }; } catch { /* ignore */ }
+    nativeHistoryActionsRef.current = [];
+    nativeHistoryCursorRef.current = -1;
+    setNativeHistoryActions([]);
+    setGpu(engine.gpuName);
+    if (landingRef.current?.visible && !landingRef.current?.exiting) {
+      engine.setLandingShowcase(true);
+    }
+    if (import.meta.env.DEV) window.terrainStudio = engine;
+    };
+
+    init();
+
+    return () => {
+      cancelled = true;
+      if (bootTimer) clearTimeout(bootTimer);
+      engine?.dispose();
+      engineRef.current = null;
+      if (import.meta.env.DEV && window.terrainStudio === engine) window.terrainStudio = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!import.meta.hot) return undefined;
+    const disposeEngine = () => {
+      const e = engineRef.current;
+      if (!e) return;
+      e.dispose();
+      engineRef.current = null;
+      if (import.meta.env.DEV && window.terrainStudio === e) window.terrainStudio = null;
+    };
+    import.meta.hot.dispose(disposeEngine);
+    return disposeEngine;
+  }, []);
+
+  const engine = () => engineRef.current;
+
+  const setCurrentProject = useCallback((project) => {
+    activeProjectRef.current = project;
+    setActiveProject(project);
+    const nextName = project?.metadata?.name ?? '이름 없는 지형';
+    projectNameRef.current = nextName;
+    setProjectName(nextName);
+  }, []);
+
+  const updateProjectName = useCallback((value) => {
+    const nextName = String(value ?? '').slice(0, 120);
+    projectNameRef.current = nextName;
+    setProjectName(nextName);
+  }, []);
+
+  const saveCurrentProject = useCallback(async (metadata = null) => {
+    const eng = engineRef.current;
+    const current = activeProjectRef.current;
+    const name = String(metadata?.name ?? projectNameRef.current ?? current?.metadata?.name ?? '이름 없는 지형').trim() || '이름 없는 지형';
+    if (!eng) {
+      const message = `Could not save ${name}: the terrain editor is not ready.`;
+      showToast(message, 'error');
+      showPopup(message, { type: 'error', title: '저장 실패' });
+      return null;
+    }
+
+    try {
+      let thumbnail = null;
+      try { thumbnail = eng.capturePreviewThumbnail?.() || null; } catch { /* thumbnail capture is best effort */ }
+      if (!thumbnail) {
+        try { thumbnail = canvasRef.current?.toDataURL?.('image/webp', 0.72) || null; } catch { /* canvas capture is best effort */ }
+      }
+      thumbnail ||= current?.metadata?.thumbnail ?? null;
+      const project = normalizeProject({
+        id: current?.id,
+        metadata: {
+          ...current?.metadata,
+          ...(metadata ?? {}),
+          name,
+          thumbnail,
+        },
+        terrain: eng.createProjectPayload(),
+        exportHistory: current?.exportHistory ?? [],
+      });
+      const saved = await projectStore.save(project);
+      setCurrentProject(saved);
+      showToast(`Saved ${saved.metadata.name}`, 'success');
+      showPopup(`${saved.metadata.name} was saved successfully.`, { type: 'success', title: '프로젝트가 저장되었습니다' });
+      return saved;
+    } catch (saveError) {
+      const detail = saveError instanceof Error ? saveError.message.trim() : '';
+      const message = `Could not save ${name}${detail ? `: ${detail}` : '.'}`;
+      showToast(message, 'error');
+      showPopup(message, { type: 'error', title: '저장 실패' });
+      return null;
+    }
+  }, [setCurrentProject, showPopup, showToast]);
+
+  const loadProjectJSON = useCallback(async (json) => {
+    if (!json) return showToast('Could not parse project file', 'error');
+    const project = json.terrain ? normalizeProject(json) : null;
+    const terrain = project?.terrain ?? normalizeProject({ terrain: json }).terrain;
+    const name = project?.metadata?.name ?? 'terrain project';
+    if (terrain.editorMode === 'nodes' || terrain.manualTerrain?.baseSource === 'nodes') {
+      loadNodeWorkspace().catch(() => {});
+    }
+    setManualWorkspace('manual');
+
+    return loadingRef.current.run('project-load', {
+      blocking: true,
+      label: `Loading ${name}…`,
+      detail: '지형 준비 중…',
+    }, async (update) => {
+      blockingUpdateRef.current = update;
+      const previousWorldMode = worldModeRef.current;
+      histSuppressRef.current = true;
+      if (histTimerRef.current) {
+        clearTimeout(histTimerRef.current);
+        histTimerRef.current = null;
+      }
+      try {
+        const targetWorldMode = terrain.editorMode === 'nodes'
+          || terrain.editorMode === 'manual'
+          || terrain.realWorldSource
+          ? 'studio'
+          : (terrain.worldMode === 'infinite' || terrain.worldMode === 'planet'
+            ? terrain.worldMode
+            : 'studio');
+        if (worldModeRef.current !== targetWorldMode) {
+          await runModeSwitchRef.current(targetWorldMode, { silent: true });
+          blockingUpdateRef.current = update;
+        }
+        update({
+          detail: terrain.realWorldSource
+            ? 'Downloading elevation and imagery…'
+            : 'Building terrain…',
+        });
+        await engineRef.current?.loadSeedJSON(terrain, {
+          onRealWorldProgress: terrain.realWorldSource
+            ? (progress) => update({
+              progress,
+              detail: progress >= 1
+                ? 'Building geographic terrain…'
+                : 'Downloading elevation and imagery…',
+            })
+            : undefined,
+        });
+        setRealTerrainMode(terrain.workspacePreset === 'real-terrain');
+        const eng = engineRef.current;
+        if (eng) {
+          const baseline = eng.serializeState();
+          historyRef.current = {
+            past: [],
+            future: [],
+            present: JSON.stringify(baseline),
+          };
+          paintBlobsRef.current.clear();
+          erosionBlobsRef.current.clear();
+          manualSculptBlobsRef.current.clear();
+          manualSurfaceBlobsRef.current.clear();
+          // The compact history snapshot stores only heavy-field revision IDs.
+          // Seed the newly loaded document's corresponding blobs before history
+          // resumes, otherwise its first paint/sculpt edit would Undo to null.
+          if ((baseline.paintRev ?? 0) > 0) {
+            const blob = eng.serializePaint();
+            if (blob) paintBlobsRef.current.set(baseline.paintRev, blob);
+          }
+          if ((baseline.erosionRev ?? 0) > 0) {
+            const blob = eng.serializeErosion();
+            if (blob) erosionBlobsRef.current.set(baseline.erosionRev, blob);
+          }
+          if ((baseline.manualSculptRev ?? 0) > 0) {
+            const blob = eng.serializeManualSculpt();
+            if (blob) {
+              manualSculptBlobsRef.current.set(baseline.manualSculptRev, blob);
+            }
+          }
+          if ((baseline.manualSurfaceRev ?? 0) > 0) {
+            const blob = eng.serializeManualSurface();
+            if (blob) {
+              manualSurfaceBlobsRef.current.set(baseline.manualSurfaceRev, blob);
+            }
+          }
+          nativeHistoryActionsRef.current = [];
+          nativeHistoryCursorRef.current = -1;
+          setNativeHistoryActions([]);
+          setHistState({ canUndo: false, canRedo: false });
+        }
+        setCurrentProject(project);
+        if (project) showToast(`Opened ${name}`, 'success');
+      } catch (error) {
+        if (worldModeRef.current !== previousWorldMode) {
+          await runModeSwitchRef.current(previousWorldMode, { silent: true });
+        }
+        showToast(`Could not open ${name}`, 'error');
+        throw error;
+      } finally {
+        if (blockingUpdateRef.current === update) blockingUpdateRef.current = null;
+        // Structural shader callbacks can settle on the following task. Keep
+        // history suppressed through that hand-off so no half-loaded snapshot
+        // becomes the first Undo target.
+        setTimeout(() => { histSuppressRef.current = false; }, 60);
+      }
+    });
+  }, [setCurrentProject, showToast]);
+
+  const openInManualTerrain = useCallback(async () => {
+    const eng = engineRef.current;
+    if (!eng || worldModeRef.current !== 'studio' || realTerrainMode
+        || !['procedural', 'nodes'].includes(projectMode)) return false;
+    const sourceMode = projectMode;
+    const sourceName = String(projectNameRef.current || 'Untitled terrain').trim() || 'Untitled terrain';
+    const confirmed = await showConfirm({
+      title: 'Open in Manual Terrain?',
+      message: `A new independent Manual copy of “${sourceName}” will be created. The ${sourceMode === 'nodes' ? 'Nodes graph' : 'Procedural generator'} and all current Tile edits will remain editable.`,
+      confirmLabel: 'Create Manual copy',
+    });
+    if (!confirmed) return false;
+
+    let createdProject = null;
+    try {
+      createdProject = createManualProjectCopy(
+        {
+          ...(activeProjectRef.current || {}),
+          metadata: { ...(activeProjectRef.current?.metadata || {}), name: sourceName },
+        },
+        eng.createProjectPayload(),
+        sourceMode,
+      );
+      createdProject = await projectStore.save(createdProject);
+      await loadProjectJSON(createdProject);
+      setManualWorkspace('manual');
+      engineRef.current?.setManualWorkspaceActive(true);
+      showToast(`Created ${createdProject.metadata.name}`, 'success');
+      return true;
+    } catch (error) {
+      if (createdProject?.id) {
+        try { await projectStore.remove(createdProject.id); } catch { /* best effort */ }
+      }
+      showToast(error instanceof Error ? error.message : 'Could not create the Manual copy', 'error');
+      return false;
+    }
+  }, [loadProjectJSON, projectMode, realTerrainMode, showConfirm, showToast]);
+
+  const openManualTerrainImport = useCallback(async () => {
+    if (projectMode !== 'manual' || realTerrainMode || worldModeRef.current !== 'studio') return;
+    setManualImportDialog({ open: true, loading: true, busy: false, projects: [] });
+    try {
+      const projects = (await projectStore.list()).filter((project) => {
+        const terrain = project?.terrain;
+        const sourceMode = terrain?.editorMode;
+        const sourceWorldMode = terrain?.worldMode === 'infinite' || terrain?.worldMode === 'planet'
+          ? terrain.worldMode
+          : 'studio';
+        return ['procedural', 'nodes'].includes(sourceMode)
+          && sourceWorldMode === 'studio'
+          && !terrain?.realWorldSource
+          && terrain?.workspacePreset !== 'real-terrain';
+      });
+      setManualImportDialog({ open: true, loading: false, busy: false, projects });
+    } catch (error) {
+      setManualImportDialog((current) => ({ ...current, open: false, loading: false }));
+      showToast(error instanceof Error ? error.message : 'Could not load terrain projects', 'error');
+    }
+  }, [projectMode, realTerrainMode, showToast]);
+
+  const importTerrainIntoManual = useCallback(async (sourceProject) => {
+    const eng = engineRef.current;
+    if (!eng || projectMode !== 'manual' || !sourceProject) return false;
+    const currentPayload = eng.createProjectPayload();
+    const currentProject = normalizeProject({
+      ...(activeProjectRef.current || {}),
+      id: activeProjectRef.current?.id,
+      metadata: {
+        ...(activeProjectRef.current?.metadata || {}),
+        name: String(projectNameRef.current || 'Untitled terrain').trim() || 'Untitled terrain',
+      },
+      terrain: currentPayload,
+    });
+    let importedProject;
+    try {
+      importedProject = importTerrainIntoManualProject(
+        currentProject,
+        currentPayload,
+        sourceProject,
+      );
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'This terrain cannot be imported', 'error');
+      return false;
+    }
+
+    setManualImportDialog((current) => ({ ...current, busy: true }));
+    let importedLoaded = false;
+    try {
+      await loadProjectJSON(importedProject);
+      importedLoaded = true;
+      setManualWorkspace('manual');
+      engineRef.current?.setManualWorkspaceActive(true);
+
+      let thumbnail = importedProject.metadata.thumbnail;
+      try { thumbnail = engineRef.current?.capturePreviewThumbnail?.() || thumbnail; } catch { /* best effort */ }
+      const saved = await projectStore.save(normalizeProject({
+        ...importedProject,
+        metadata: { ...importedProject.metadata, thumbnail },
+        // Save the live document after its Manual fields have reprojected onto
+        // the imported Tile bounds.
+        terrain: engineRef.current?.createProjectPayload?.() || importedProject.terrain,
+      }));
+      setCurrentProject(saved);
+      setManualImportDialog({ open: false, loading: false, busy: false, projects: [] });
+      showToast(`Imported ${sourceProject.metadata?.name || 'terrain'} into Manual Terrain`, 'success');
+      return true;
+    } catch (error) {
+      if (importedLoaded) {
+        try {
+          await loadProjectJSON(currentProject);
+          setCurrentProject(currentProject);
+          setManualWorkspace('manual');
+          engineRef.current?.setManualWorkspaceActive(true);
+        } catch { /* loadSeedJSON already keeps its own rollback snapshot */ }
+      }
+      setManualImportDialog((current) => ({ ...current, busy: false }));
+      showToast(error instanceof Error ? error.message : 'Could not import this terrain', 'error');
+      return false;
+    }
+  }, [loadProjectJSON, projectMode, setCurrentProject, showToast]);
+
+  const loadProjectFile = useCallback((file) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try { loadProjectJSON(JSON.parse(reader.result)); }
+      catch { loadProjectJSON(null); }
+    };
+    reader.readAsText(file);
+  }, [loadProjectJSON]);
+
+  const hasFileDrag = (e) => Array.from(e.dataTransfer?.types ?? []).includes('Files');
+
+  const onFileDragEnter = useCallback((e) => {
+    if (!hasFileDrag(e)) return;
+    e.preventDefault();
+    fileDragDepthRef.current += 1;
+    setFileDragActive(true);
+  }, []);
+
+  const onFileDragOver = useCallback((e) => {
+    if (!hasFileDrag(e)) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+  }, []);
+
+  const onFileDragLeave = useCallback((e) => {
+    if (!hasFileDrag(e)) return;
+    e.preventDefault();
+    fileDragDepthRef.current = Math.max(0, fileDragDepthRef.current - 1);
+    if (fileDragDepthRef.current === 0) setFileDragActive(false);
+  }, []);
+
+  const onFileDrop = useCallback((e) => {
+    if (!hasFileDrag(e)) return;
+    e.preventDefault();
+    fileDragDepthRef.current = 0;
+    setFileDragActive(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) loadProjectFile(file);
+  }, [loadProjectFile]);
+
+  const downloadCurrentProject = useCallback(() => {
+    const eng = engineRef.current;
+    if (!eng) return;
+    const current = activeProjectRef.current;
+    const name = String(projectNameRef.current ?? current?.metadata?.name ?? 'Untitled terrain').trim() || 'Untitled terrain';
+    const project = normalizeProject({
+      id: current?.id,
+      metadata: { ...current?.metadata, name },
+      terrain: eng.createProjectPayload(),
+      exportHistory: current?.exportHistory ?? [],
+    });
+    const slug = name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'terrain';
+    const blob = new Blob([JSON.stringify(project, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${slug}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    showToast(`Downloaded ${name}`, 'success');
+  }, [showToast]);
+
+  const createProjectFromTemplate = useCallback(async (templateId = 'blank', {
+    editorMode = 'procedural', nodeColorsEnabled, nodeColorPreset,
+  } = {}) => {
+    const eng = engineRef.current;
+    if (!eng) return;
+    const realPreset = editorMode === 'real';
+    const nextMode = editorMode === 'nodes' ? 'nodes' : editorMode === 'manual' ? 'manual' : 'procedural';
+    const template = nextMode === 'nodes'
+      ? getNodeProjectTemplate(templateId)
+      : nextMode === 'manual'
+        ? { id: 'manual-blank', name: 'Manual Terrain', description: 'Build a terrain by composing editable procedural landforms.' }
+        : getProjectTemplate(templateId);
+    const created = await loadingRef.current.run('project-create', {
+      blocking: true,
+      label: `Creating ${template.name}…`,
+      detail: 'Building terrain…',
+    }, async (update) => {
+      blockingUpdateRef.current = update;
+      try {
+        if (nextMode === 'nodes') loadNodeWorkspace().catch(() => {});
+        if ((nextMode === 'nodes' || nextMode === 'manual' || realPreset) && worldModeRef.current !== 'studio') {
+          await runModeSwitchRef.current('studio', { silent: true });
+          blockingUpdateRef.current = update;
+        }
+        // Build the final document once. Seed and preset used to be applied
+        // after newProject(), causing two extra full terrain updates and a
+        // visible flash of the default/previous landscape.
+        const baseSeed = Number(landingRef.current?.sessionSeed) || ((Math.random() * 0xffffffff) >>> 0);
+        const catalog = nextMode === 'nodes' ? NODE_PROJECT_TEMPLATES : nextMode === 'manual' ? [template] : PROJECT_TEMPLATES;
+        const templateOffset = catalog.findIndex((item) => item.id === template.id) + 1;
+        const projectSeed = (baseSeed + templateOffset * 0x9e3779b9) >>> 0;
+        eng.newProject({
+          projectMode: nextMode,
+          workspacePreset: realPreset ? 'real-terrain' : null,
+          seed: projectSeed,
+          presetKey: nextMode === 'procedural' ? template.preset : null,
+          noiseStackPresetKey: nextMode === 'procedural' ? template.noiseStackPreset : null,
+        });
+        setRealTerrainMode(realPreset);
+        // A new terrain is a new document. Do not let saveCurrentProject reuse
+        // the id of whichever project was previously open.
+        setCurrentProject(null);
+        if (nextMode === 'nodes') {
+          update({ detail: 'Compiling terrain graph…' });
+          let templateGraph = createNodeTemplateGraph(template.id);
+          if (typeof nodeColorsEnabled === 'boolean') {
+            templateGraph = nodeColorsEnabled
+              ? applyGraphColorPreset(templateGraph, nodeColorPreset || template.colorPreset || 'alpine')
+              : setGraphColorEnabled(templateGraph, false);
+          }
+          const graphResult = eng.setTerrainGraph(templateGraph, { structural: true, silent: true, atomic: true });
+          const result = await graphResult?.ready;
+          if (!graphResult?.ok || result?.error) {
+            throw result?.error ?? new Error('Terrain graph could not be compiled');
+          }
+        } else if (nextMode === 'procedural') {
+          const result = await eng.rebuildActiveHeightProgram({
+            label: 'Loading procedural terrain',
+            atomic: true,
+            terrainDirtyOnSwap: true,
+          });
+          if (result?.error) throw result.error;
+        } else {
+          const result = await eng.rebuildActiveHeightProgram({
+            label: 'Loading manual terrain',
+            atomic: true,
+            terrainDirtyOnSwap: true,
+          });
+          if (result?.error) throw result.error;
+        }
+        await eng.waitForTerrainReady();
+        // A freshly-created project owns a fresh undo timeline. Without this
+        // baseline, the first edit could undo into the landing preview/default
+        // procedural document — especially visible when the first Manual edit
+        // is a sculpt stroke on an otherwise empty terrain.
+        try {
+          historyRef.current = {
+            past: [],
+            future: [],
+            present: JSON.stringify(eng.serializeState()),
+          };
+          paintBlobsRef.current.clear();
+          erosionBlobsRef.current.clear();
+          manualSculptBlobsRef.current.clear();
+          manualSurfaceBlobsRef.current.clear();
+          nativeHistoryActionsRef.current = [];
+          nativeHistoryCursorRef.current = -1;
+          setNativeHistoryActions([]);
+          setHistState({ canUndo: false, canRedo: false });
+        } catch { /* history is best effort */ }
+        const metadata = realPreset
+          ? { name: 'Real Terrain', description: 'Real-world geographic terrain import.', tags: ['real-terrain', 'geographic'] }
+          : nextMode === 'nodes'
+          ? {
+            name: template.id === 'nodes-blank' ? 'Nodes Terrain' : template.name,
+            description: template.description,
+            tags: ['nodes', template.id],
+          }
+          : nextMode === 'manual'
+            ? { name: 'Manual Terrain', description: template.description, tags: ['manual', 'terrain-shapes'] }
+            : { name: template.name, description: template.description, tags: [template.id] };
+        update({ detail: 'Saving project…' });
+        const project = await saveCurrentProject(metadata);
+        if (project) showToast(`${template.name} project created`, 'success');
+        return project;
+      } finally {
+        if (blockingUpdateRef.current === update) blockingUpdateRef.current = null;
+      }
+    });
+    if (realPreset && created) {
+      setActivePanel('terrain');
+      setSettingsTarget({ panelId: 'terrain', tabId: 'import', settingId: 'terrain.realWorldCustom' });
+      setRealWorldMapRequest((request) => request + 1);
+    }
+    return created;
+  }, [saveCurrentProject, showToast]);
+
+  useEffect(() => {
+    const onNewProject = (event) => {
+      createProjectFromTemplate(event.detail?.templateId ?? 'blank', {
+        editorMode: event.detail?.editorMode ?? 'procedural',
+        nodeColorsEnabled: event.detail?.nodeColorsEnabled,
+        nodeColorPreset: event.detail?.nodeColorPreset,
+      });
+    };
+    const onOpenProject = async (event) => {
+      const project = event.detail?.project;
+      if (!project?.terrain || !engineRef.current) return;
+      await loadProjectJSON(project);
+    };
+    window.addEventListener('terrain-project:new', onNewProject);
+    window.addEventListener('terrain-project:open', onOpenProject);
+    return () => {
+      window.removeEventListener('terrain-project:new', onNewProject);
+      window.removeEventListener('terrain-project:open', onOpenProject);
+    };
+  }, [createProjectFromTemplate, loadProjectJSON]);
+
+  // Params that rebuild the whole world geometry (planet radius / surface
+  // detail, board chunk layout). The rebuild briefly freezes the main thread,
+  // so run it behind a blocking loading overlay with a yield first — the
+  // overlay paints, then the engine rebuilds, then we wait out any background
+  // shader compile (same pattern as a mode switch).
+  const HEAVY_PARAMS = new Set(['planetRadius', 'planetFaceGrid', 'chunkCount', 'chunkSize']);
+  const HEAVY_LABEL = {
+    planetRadius: 'Resizing planet…', planetFaceGrid: 'Rebuilding planet…',
+    chunkCount: 'Rebuilding board…', chunkSize: 'Rebuilding board…',
+  };
+  const onParam = (key, value) => {
+    const eng = engine();
+    if (!eng) return;
+    if (!HEAVY_PARAMS.has(key)) { eng.setParam(key, value); return; }
+    loading.run('param-rebuild', { blocking: true, label: HEAVY_LABEL[key] ?? 'Rebuilding…', detail: 'Generating new geometry…' }, async (update) => {
+      blockingUpdateRef.current = update;
+      eng.setParam(key, value);   // synchronous geometry rebuild (overlay already painted)
+      // wait out any background shader recompile the rebuild kicked off
+      await new Promise((resolve) => {
+        const startT = performance.now();
+        const tick = () => {
+          const e = engineRef.current;
+          if (!e || e._disposed) return resolve();
+          const elapsed = performance.now() - startT;
+          if (!e._compiling && elapsed > 80) return resolve();
+          if (elapsed > 30000) return resolve();   // safety net
+          setTimeout(tick, 80);
+        };
+        setTimeout(tick, 80);
+      });
+      blockingUpdateRef.current = null;
+    });
+  };
+
+  const planetStyleProps = {
+    planetStyle: params.planetStyle,
+    planetPreset: params.planetPreset ?? 'earth',
+    palettePreset: params.palettePreset ?? 'earth',
+    terrainSeed: params.seed,
+    onPlanetPreset: (key) => engine().applyPlanetPresetByKey(key),
+    onRandomPlanet: () => engine().randomizePlanetPreset(),
+    onPalettePreset: (key) => engine().applyPalettePresetByKey(key),
+    onGeneratePalette: (opts) => engine().generatePalette(opts),
+    onColorChange: (key, rgb) => engine().setPlanetStyleColor(key, rgb),
+    onTuning: (key, v) => engine().setPlanetStyleTuning(key, v),
+    onNoisePreset: (key) => engine().applyNoisePresetByKey(key),
+    onExportStyle: () => engine().exportPlanetStyle(),
+    onImportStyle: (json) => json && engine().importPlanetStyleJSON(json),
+  };
+
+  // ---- mode switching: blocking overlay + transition lock ----
+  // The heavy part is the ASYNC shader compile the engine kicks off after the
+  // synchronous geometry build (FXC can take ~15-20s on this GPU), during which
+  // the engine skips rendering. We keep the loader up until `engine._compiling`
+  // drops back to 0 so the user always sees what's happening.
+  const modeLockRef = useRef(false);
+  const [modeLocked, setModeLocked] = useState(false);
+  const BUILD_STEP = { studio: 'Building terrain board…', infinite: 'Streaming world chunks…', planet: 'Building spherical mesh…' };
+  // Returns a promise that resolves once the (heavy, async) mode switch has
+  // finished compiling. `silent` suppresses the success/info toasts — used by
+  // the undo/redo restore path so reverting across modes is quiet.
+  const runModeSwitch = (next, { silent = false } = {}) => {
+    if (next === worldMode || modeLockRef.current) return Promise.resolve();
+    modeLockRef.current = true;
+    setModeLocked(true);
+    const label = MODE_LABEL[next] ?? next;
+    if (!panelAvailable(activePanel, next)) setActivePanel(null);
+
+    return loading.run('mode', { blocking: true, label: `Switching to ${label} mode…`, detail: '씬 준비 중…' }, async (update) => {
+      blockingUpdateRef.current = update;
+      update({ detail: BUILD_STEP[next] ?? 'Building scene…' });
+      // yield so the overlay paints the build message before the sync build
+      await new Promise((r) => setTimeout(r, 30));
+      await engine().setWorldMode(next);      // sync build; kicks off async shader compile
+      setWorldMode(next);
+
+      // wait for the engine to finish compiling shaders (it raises onStatus
+      // 'Compiling … shaders…' which feeds this task's detail line)
+      await new Promise((resolve) => {
+        const startT = performance.now();
+        const tick = () => {
+          const e = engineRef.current;
+          if (!e || e._disposed) return resolve();
+          const elapsed = performance.now() - startT;
+          if (!e._compiling && elapsed > 160) { update({ detail: 'Finalizing…' }); return resolve(); }
+          // long compiles get a reassuring message; hard cap so it never hangs forever
+          if (e._compiling && elapsed > 6000) update({ detail: 'Compiling shaders… (this can take a while on first use)' });
+          if (elapsed > 60000) return resolve();   // safety net
+          setTimeout(tick, 120);
+        };
+        setTimeout(tick, 120);
+      });
+      await new Promise((r) => setTimeout(r, 80));
+    }).then(() => {
+      if (!silent) {
+        showToast(`Switched to ${label} mode`, 'success');
+        if (next === 'infinite') { setHelpVisible(false); showToast('Click to lock mouse', 'info'); }
+        else if (next === 'planet') { setHelpVisible(false); }
+      } else if (next !== 'studio') {
+        setHelpVisible(false);
+      }
+    }).catch((e) => {
+      console.error(e);
+      if (!silent) showToast('Mode switch failed', 'error');
+    }).finally(() => {
+      blockingUpdateRef.current = null;
+      modeLockRef.current = false;
+      setModeLocked(false);
+      scheduleRecordRef.current?.();   // guarded no-op while a restore is suppressed
+    });
+  };
+
+  const selectWorldMode = async (next) => {
+    if (next === 'real') {
+      if (worldModeRef.current !== 'studio') await runModeSwitch('studio');
+      const eng = engineRef.current;
+      if (!eng || eng.worldMode !== 'studio') return;
+      eng.workspacePreset = 'real-terrain';
+      setRealTerrainMode(true);
+      setActivePanel('terrain');
+      setSettingsTarget({ panelId: 'terrain', tabId: 'import', settingId: 'terrain.realWorldCustom' });
+      setRealWorldMapRequest((request) => request + 1);
+      return;
+    }
+    if (engineRef.current) engineRef.current.workspacePreset = null;
+    setRealTerrainMode(false);
+    await runModeSwitch(next);
+  };
+  const runModeSwitchRef = useRef(runModeSwitch);
+  runModeSwitchRef.current = runModeSwitch;
+
+  const selectExploreMode = (mode) => {
+    if (exploreMode === 'freecam') {
+      engine().setDebugFlag('freeCamNoClip', false);
+      setDebugFlags((f) => ({ ...f, freeCamNoClip: false }));
+      if (mode === 'freecam') {
+        scheduleRecordRef.current?.();
+        return;
+      }
+    }
+    const next = exploreMode === mode ? 'none' : mode;
+    engine().setExploreMode(next);
+  };
+  const handleQualityChange = (key) => { engine().setQuality(key); setQualityPreset(key); };
+  const handleTimeOfDay = (value) => { engine().setTimeOfDay(value); setTimeOfDay(value); };
+  const handleBehindCameraCulling = (enabled) => { engine().setBehindCameraCulling(enabled); setBehindCameraCulling(enabled); scheduleRecordRef.current?.(); };
+  const handleCullingEnabled = (enabled) => { engine().setCullingEnabled(enabled); setCullingEnabled(enabled); scheduleRecordRef.current?.(); };
+  const handleDebugFlag = (key, value) => {
+    engine().setDebugFlag(key, value);
+    setDebugFlags((f) => ({ ...f, [key]: value }));
+    scheduleRecordRef.current?.();
+  };
+  const handleTouchInput = useCallback((input) => {
+    engineRef.current?.setTouchInput(input);
+  }, []);
+
+  // ---------------------------------------------------------- undo / redo
+  worldModeRef.current = worldMode;
+
+  const captureSnapshot = useCallback(() => {
+    const eng = engineRef.current;
+    if (!eng) return null;
+    try {
+      const state = eng.serializeState();
+      const rev = state.paintRev ?? 0;
+      // dedupe the heavy paint blob: store one copy per revision, referenced
+      // from the (tiny) snapshot string by its rev number.
+      if (rev > 0 && !paintBlobsRef.current.has(rev)) {
+        const blob = eng.serializePaint();
+        if (blob) paintBlobsRef.current.set(rev, blob);
+      }
+      // same dedupe for the heavy baked-erosion blob (delta grid + masks).
+      const erev = state.erosionRev ?? 0;
+      if (erev > 0 && !erosionBlobsRef.current.has(erev)) {
+        const blob = eng.serializeErosion();
+        if (blob) erosionBlobsRef.current.set(erev, blob);
+      }
+      const srev = state.manualSculptRev ?? 0;
+      if (srev > 0 && !manualSculptBlobsRef.current.has(srev)) {
+        const blob = eng.serializeManualSculpt();
+        if (blob) manualSculptBlobsRef.current.set(srev, blob);
+      }
+      const surfaceRev = state.manualSurfaceRev ?? 0;
+      if (surfaceRev > 0 && !manualSurfaceBlobsRef.current.has(surfaceRev)) {
+        const blob = eng.serializeManualSurface();
+        if (blob) manualSurfaceBlobsRef.current.set(surfaceRev, blob);
+      }
+      return JSON.stringify(state);
+    } catch (err) {
+      console.warn('History snapshot failed', err);
+      return null;
+    }
+  }, []);
+
+  // Drop cached paint / erosion blobs no longer referenced by any history entry
+  // so the dedupe maps can't grow without bound across many strokes / bakes.
+  const prunePaintBlobs = useCallback(() => {
+    const paintMap = paintBlobsRef.current;
+    const erosionMap = erosionBlobsRef.current;
+    const sculptMap = manualSculptBlobsRef.current;
+    const surfaceMap = manualSurfaceBlobsRef.current;
+    if (paintMap.size <= 4 && erosionMap.size <= 4 && sculptMap.size <= 4 && surfaceMap.size <= 4) return;
+    const h = historyRef.current;
+    const livePaint = new Set();
+    const liveErosion = new Set();
+    const liveSculpt = new Set();
+    const liveSurface = new Set();
+    const collect = (s) => {
+      try {
+        const snap = JSON.parse(s);
+        if (snap.paintRev) livePaint.add(snap.paintRev);
+        if (snap.erosionRev) liveErosion.add(snap.erosionRev);
+        if (snap.manualSculptRev) liveSculpt.add(snap.manualSculptRev);
+        if (snap.manualSurfaceRev) liveSurface.add(snap.manualSurfaceRev);
+      } catch { /* ignore */ }
+    };
+    h.past.forEach(collect);
+    h.future.forEach(collect);
+    if (h.present) collect(h.present);
+    // History-panel jump targets carry their own snapshots and can outlive a
+    // branch in the linear undo stack. Keep their referenced heavy blobs too.
+    nativeHistoryActionsRef.current.forEach((action) => {
+      if (action.snapshot) collect(action.snapshot);
+    });
+    for (const key of paintMap.keys()) if (!livePaint.has(key)) paintMap.delete(key);
+    for (const key of erosionMap.keys()) if (!liveErosion.has(key)) erosionMap.delete(key);
+    for (const key of sculptMap.keys()) if (!liveSculpt.has(key)) sculptMap.delete(key);
+    for (const key of surfaceMap.keys()) if (!liveSurface.has(key)) surfaceMap.delete(key);
+  }, []);
+
+  const recordHistory = useCallback(() => {
+    const eng = engineRef.current;
+    if (!eng || histSuppressRef.current) return;
+    const snap = captureSnapshot();
+    if (snap == null) return;
+    const h = historyRef.current;
+    if (h.present == null) { h.present = snap; return; }  // first run → baseline
+    if (snap === h.present) return;                        // nothing actually changed
+    const previous = h.present;
+    h.past.push(previous);
+    if (h.past.length > HISTORY_LIMIT) h.past.shift();
+    h.present = snap;
+    h.future.length = 0;
+    const actions = nativeHistoryActionsRef.current.slice(0, nativeHistoryCursorRef.current + 1);
+    actions.push({
+      id: crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`,
+      type: 'edit',
+      label: historyActionLabel(previous, snap),
+      timestamp: Date.now(),
+      snapshot: snap,
+    });
+    if (actions.length > HISTORY_LIMIT) actions.shift();
+    nativeHistoryActionsRef.current = actions;
+    nativeHistoryCursorRef.current = actions.length - 1;
+    setNativeHistoryActions(actions.map(({ snapshot, ...action }) => action));
+    prunePaintBlobs();
+    setHistState({ canUndo: h.past.length > 0, canRedo: false });
+  }, [captureSnapshot, prunePaintBlobs]);
+
+  const scheduleRecord = useCallback(() => {
+    if (histSuppressRef.current) return;
+    if (!bootedRef.current || landingRef.current?.visible) return;
+    if (histTimerRef.current) clearTimeout(histTimerRef.current);
+    histTimerRef.current = setTimeout(() => {
+      histTimerRef.current = null;
+      recordHistory();
+    }, 350);
+  }, [recordHistory]);
+  scheduleRecordRef.current = scheduleRecord;
+
+  const flushRecord = useCallback(() => {
+    if (histTimerRef.current) { clearTimeout(histTimerRef.current); histTimerRef.current = null; }
+    recordHistory();
+  }, [recordHistory]);
+
+  const applySnapshot = useCallback(async (snapStr) => {
+    const eng = engineRef.current;
+    if (!eng || !snapStr) return;
+    const previousWorldMode = worldModeRef.current;
+    let snap;
+    try { snap = JSON.parse(snapStr); } catch { return; }
+    histSuppressRef.current = true;
+    try {
+      // hydrate the heavy paint blob (kept out of the history string)
+      snap.paint = (snap.paintRev ?? 0) > 0
+        ? (paintBlobsRef.current.get(snap.paintRev) ?? null)
+        : null;
+      // and the heavy baked-erosion blob (delta grid + masks)
+      snap.erosion = (snap.erosionRev ?? 0) > 0
+        ? (erosionBlobsRef.current.get(snap.erosionRev) ?? null)
+        : null;
+      snap.manualSculpt = (snap.manualSculptRev ?? 0) > 0
+        ? (manualSculptBlobsRef.current.get(snap.manualSculptRev) ?? null)
+        : null;
+      snap.manualSurface = (snap.manualSurfaceRev ?? 0) > 0
+        ? (manualSurfaceBlobsRef.current.get(snap.manualSurfaceRev) ?? null)
+        : null;
+      // a different world mode is a heavy, async rebuild — do it first (and
+      // quietly) through the same blocking-overlay path as the mode bar.
+      if (snap.worldMode && snap.worldMode !== worldModeRef.current) {
+        await runModeSwitchRef.current(snap.worldMode, { silent: true });
+      }
+      await eng.restoreState(snap);
+      // sync the React mirrors the engine has no callback for
+      setDebugFlags({ ...DEFAULT_DEBUG_FLAGS, ...(snap.debug || {}) });
+      setCullingEnabled(snap.cullingEnabled !== false);
+      setBehindCameraCulling(snap.behindCameraCulling !== false);
+      // restoring paint bumps the live layer revision, so the live state now
+      // serialises with a newer paintRev than the snapshot we navigated to.
+      // Re-baseline `present` to the actual live state so the next edit diffs
+      // against it (and we don't log a spurious "paintRev-only" history entry).
+      const live = captureSnapshot();
+      if (live) historyRef.current.present = live;
+      return true;
+    } catch (err) {
+      console.warn('History restore failed', err);
+      if (worldModeRef.current !== previousWorldMode) {
+        await runModeSwitchRef.current(previousWorldMode, { silent: true });
+      }
+      return false;
+    } finally {
+      // The engine promise includes structural compilation and the final
+      // full-resolution terrain frame; leave one task for React callbacks.
+      setTimeout(() => { histSuppressRef.current = false; }, 60);
+    }
+  }, [captureSnapshot]);
+
+  const restoreNativeHistoryAction = useCallback((id) => {
+    if (histSuppressRef.current || modeLockRef.current) return;
+    flushRecord();
+    const actions = nativeHistoryActionsRef.current;
+    const index = actions.findIndex((action) => action.id === id);
+    if (index < 0) return;
+    const h = historyRef.current;
+    const previous = {
+      past: [...h.past],
+      future: [...h.future],
+      present: h.present,
+      cursor: nativeHistoryCursorRef.current,
+    };
+    h.past = actions.slice(0, index).map((action) => action.snapshot);
+    h.present = actions[index].snapshot;
+    // Redo pops from the end, so keep the next action at the end of the stack.
+    h.future = actions.slice(index + 1).reverse().map((action) => action.snapshot);
+    nativeHistoryCursorRef.current = index;
+    setHistState({ canUndo: h.past.length > 0, canRedo: h.future.length > 0 });
+    void applySnapshot(h.present).then((restored) => {
+      if (restored) return;
+      Object.assign(h, {
+        past: previous.past,
+        future: previous.future,
+        present: previous.present,
+      });
+      nativeHistoryCursorRef.current = previous.cursor;
+      setHistState({
+        canUndo: h.past.length > 0,
+        canRedo: h.future.length > 0,
+      });
+    });
+  }, [applySnapshot, flushRecord]);
+
+  const undo = useCallback(() => {
+    if (histSuppressRef.current || modeLockRef.current) return;
+    flushRecord();
+    const h = historyRef.current;
+    if (!h.past.length) return;
+    const previous = {
+      past: [...h.past],
+      future: [...h.future],
+      present: h.present,
+      cursor: nativeHistoryCursorRef.current,
+    };
+    h.future.push(h.present);
+    h.present = h.past.pop();
+    nativeHistoryCursorRef.current = Math.max(-1, Math.min(nativeHistoryActionsRef.current.length - 1, h.past.length - 1));
+    setHistState({ canUndo: h.past.length > 0, canRedo: true });
+    void applySnapshot(h.present).then((restored) => {
+      if (restored) return;
+      Object.assign(h, {
+        past: previous.past,
+        future: previous.future,
+        present: previous.present,
+      });
+      nativeHistoryCursorRef.current = previous.cursor;
+      setHistState({
+        canUndo: h.past.length > 0,
+        canRedo: h.future.length > 0,
+      });
+    });
+  }, [flushRecord, applySnapshot]);
+
+  const redo = useCallback(() => {
+    if (histSuppressRef.current || modeLockRef.current) return;
+    flushRecord();
+    const h = historyRef.current;
+    if (!h.future.length) return;
+    const previous = {
+      past: [...h.past],
+      future: [...h.future],
+      present: h.present,
+      cursor: nativeHistoryCursorRef.current,
+    };
+    h.past.push(h.present);
+    h.present = h.future.pop();
+    nativeHistoryCursorRef.current = Math.max(-1, Math.min(nativeHistoryActionsRef.current.length - 1, h.past.length - 1));
+    setHistState({ canUndo: true, canRedo: h.future.length > 0 });
+    void applySnapshot(h.present).then((restored) => {
+      if (restored) return;
+      Object.assign(h, {
+        past: previous.past,
+        future: previous.future,
+        present: previous.present,
+      });
+      nativeHistoryCursorRef.current = previous.cursor;
+      setHistState({
+        canUndo: h.past.length > 0,
+        canRedo: h.future.length > 0,
+      });
+    });
+  }, [flushRecord, applySnapshot]);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.defaultPrevented) return;
+      const tag = e.target?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || e.target?.isContentEditable) return;
+      if (e.ctrlKey || e.metaKey) {
+      const k = String(e.key ?? '').toLowerCase();
+      if (k === 'z' && !e.shiftKey) { e.preventDefault(); undo(); }
+      else if (k === 'y' || (k === 'z' && e.shiftKey)) { e.preventDefault(); redo(); }
+      else if (k === 's' && e.shiftKey) { e.preventDefault(); engineRef.current?.createSnapshot('Creator checkpoint'); }
+      return;
+      }
+      const k = String(e.key ?? '').toLowerCase();
+      if (k === 's') engineRef.current?.setSplineEditingEnabled(!splineState.enabled);
+      else if (k === 'r' && e.shiftKey && !e.altKey) engineRef.current?.createSpline('river');
+      else if (k === 'r' && e.altKey && !e.shiftKey) engineRef.current?.createSpline('road');
+      else if (k === 'a') engineRef.current?.setAnalysisSettings({ enabled: !analysisState.enabled });
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [undo, redo, splineState.enabled, analysisState.enabled]);
+
+  // ---- export: blocking overlay, button disabled via panel busy state ----
+  const onExport = (options) => {
+    exportFailedRef.current = false;
+    return loading.run('export', { blocking: true, label: 'Exporting…', detail: 'Preparing scene…' }, async (update) => {
+      blockingUpdateRef.current = update;
+      try {
+        const exported = await engine().export3DTerrain(options);
+        if (!exported) exportFailedRef.current = true;
+      } finally {
+        blockingUpdateRef.current = null;
+      }
+    }).then(() => {
+      if (!exportFailedRef.current) showToast('Export complete', 'success');
+    });
+  };
+
+  const onExportScreenshot = () => { engine().exportScreenshot(); };
+  const onExportHeightmap = () => { engine().exportHeightmap(); };
+
+  const onRegenerate = () => {
+    loading.run('regen', { blocking: false, label: 'Regenerating…' }, async () => {
+      engine().regenerate();
+      await new Promise((r) => setTimeout(r, 30));
+    });
+  };
+
+  const onRandomizeTerrain = () => {
+    engine().randomizeSeed();
+    engine().regenerate();
+  };
+
+  const isStudio = worldMode === 'studio';
+  const isInfinite = worldMode === 'infinite';
+  const isPlanet = worldMode === 'planet';
+  const paintMode = !!paintState?.enabled;
+  const manualMode = projectMode === 'manual';
+  const manualBaseSource = manualTerrainState?.baseSource === 'nodes'
+    ? 'nodes'
+    : manualTerrainState?.baseSource === 'procedural'
+      ? 'procedural'
+      : 'flat';
+  const hybridManualMode = manualMode && manualBaseSource !== 'flat';
+  const manualWorkspaceActive = manualMode && (!hybridManualMode || manualWorkspace === 'manual');
+  const workspaceProjectMode = hybridManualMode && manualWorkspace === 'base'
+    ? manualBaseSource
+    : projectMode;
+  const exploring = exploreMode !== 'none' && exploreMode !== 'freecam';
+  const planetExploring = isPlanet && exploring;
+  const fpsView = isInfinite || planetExploring;
+  const touchExplore = isInfinite || exploring;
+  const studioLike = isStudio || (isPlanet && !exploring);
+  const showStudioUI = !previewMode && !paintMode && studioLike;
+  const nodeToolsVisible = !['nodes', 'manual'].includes(workspaceProjectMode) || uiPrefs.nodeToolsVisible !== false;
+  const showToolPanels = !previewMode && !paintMode && !planetExploring && nodeToolsVisible;
+  const searchEnabled = showToolPanels && workspaceProjectMode === 'procedural';
+  const nodesWorkspaceActive = workspaceProjectMode === 'nodes' && isStudio && !previewMode && !paintMode && !landing?.visible;
+
+  const handleTerrainGraphChange = useCallback((next, meta = {}) => {
+    setTerrainGraph(next);
+    pendingGraphRef.current = next;
+    if (meta.structural) {
+      if (graphUniformFrameRef.current) cancelAnimationFrame(graphUniformFrameRef.current);
+      graphUniformFrameRef.current = null;
+      if (graphCompileTimerRef.current) clearTimeout(graphCompileTimerRef.current);
+      if (graphCompileIdleRef.current) {
+        const { kind, id } = graphCompileIdleRef.current;
+        if (kind === 'idle') cancelIdleCallback(id); else cancelAnimationFrame(id);
+        graphCompileIdleRef.current = null;
+      }
+      for (const nodeId of meta.compileNodeIds || []) pendingGraphCompileNodesRef.current.add(nodeId);
+      setGraphState((current) => ({
+        ...current,
+        compiling: true,
+        compilingNodeIds: [...pendingGraphCompileNodesRef.current],
+      }));
+      graphCompileTimerRef.current = setTimeout(() => {
+        graphCompileTimerRef.current = null;
+        const dispatch = () => {
+          graphCompileIdleRef.current = null;
+          const pending = pendingGraphRef.current;
+          const affectedNodeIds = [...pendingGraphCompileNodesRef.current];
+          pendingGraphRef.current = null;
+          pendingGraphCompileNodesRef.current.clear();
+          if (pending) engineRef.current?.setTerrainGraph(pending, { structural: true, affectedNodeIds });
+        };
+        if (typeof requestIdleCallback === 'function') {
+          const id = requestIdleCallback(dispatch, { timeout: 650 });
+          graphCompileIdleRef.current = { kind: 'idle', id };
+        } else {
+          const id = requestAnimationFrame(dispatch);
+          graphCompileIdleRef.current = { kind: 'frame', id };
+        }
+      }, 280);
+    } else if (!graphCompileTimerRef.current && !graphCompileIdleRef.current && !graphUniformFrameRef.current) {
+      // Range inputs can emit faster than the display refresh rate. Repack the
+      // latest uniform values once per frame instead of evaluating every
+      // intermediate pointer event.
+      graphUniformFrameRef.current = requestAnimationFrame(() => {
+        graphUniformFrameRef.current = null;
+        const pending = pendingGraphRef.current;
+        pendingGraphRef.current = null;
+        if (pending) engineRef.current?.setTerrainGraph(pending, { structural: false });
+      });
+    }
+  }, []);
+
+  const handleStartBlankGraph = useCallback((mode = 'terrain') => {
+    if (graphCompileTimerRef.current) clearTimeout(graphCompileTimerRef.current);
+    if (graphCompileIdleRef.current) {
+      const { kind, id } = graphCompileIdleRef.current;
+      if (kind === 'idle') cancelIdleCallback(id); else cancelAnimationFrame(id);
+    }
+    if (graphUniformFrameRef.current) cancelAnimationFrame(graphUniformFrameRef.current);
+    graphUniformFrameRef.current = null;
+    graphCompileTimerRef.current = null; graphCompileIdleRef.current = null; pendingGraphRef.current = null;
+    pendingGraphCompileNodesRef.current.clear();
+    const next = createBlankGraph(mode);
+    setTerrainGraph(next);
+    engineRef.current?.setTerrainGraph(next, { structural: true, affectedNodeIds: next.nodes.map((node) => node.id) });
+  }, []);
+
+  const handleApplyNodeTemplate = useCallback(async (templateId) => {
+    const template = getNodeProjectTemplate(templateId);
+    if (template.id === 'nodes-blank') return false;
+    const confirmed = await showConfirm({
+      title: `Load ${template.name}?`,
+      message: 'This replaces the current terrain graph with the selected recipe. You can undo the change from History.',
+      confirmLabel: 'Replace graph',
+    });
+    if (!confirmed) return false;
+
+    if (graphCompileTimerRef.current) clearTimeout(graphCompileTimerRef.current);
+    if (graphCompileIdleRef.current) {
+      const { kind, id } = graphCompileIdleRef.current;
+      if (kind === 'idle') cancelIdleCallback(id); else cancelAnimationFrame(id);
+    }
+    if (graphUniformFrameRef.current) cancelAnimationFrame(graphUniformFrameRef.current);
+    graphUniformFrameRef.current = null;
+    graphCompileTimerRef.current = null;
+    graphCompileIdleRef.current = null;
+    pendingGraphRef.current = null;
+    pendingGraphCompileNodesRef.current.clear();
+
+    const next = createNodeTemplateGraph(template.id);
+    const nextView = { x: 0, y: 0, zoom: 1 };
+    setTerrainGraph(next);
+    setGraphView(nextView);
+    engineRef.current?.setGraphView(nextView);
+    const graphResult = engineRef.current?.setTerrainGraph(next, {
+      structural: true,
+      atomic: true,
+      affectedNodeIds: next.nodes.map((node) => node.id),
+    });
+    const result = await graphResult?.ready;
+    if (!graphResult?.ok || result?.error) {
+      const error = result?.error ?? new Error('Terrain graph could not be compiled');
+      showToast(error.message, 'error');
+      return false;
+    }
+    showToast(`${template.name} recipe loaded`, 'success');
+    return true;
+  }, [showConfirm, showToast]);
+
+  useEffect(() => () => {
+    if (graphCompileTimerRef.current) clearTimeout(graphCompileTimerRef.current);
+    if (graphCompileIdleRef.current) {
+      const { kind, id } = graphCompileIdleRef.current;
+      if (kind === 'idle') cancelIdleCallback(id); else cancelAnimationFrame(id);
+    }
+    if (graphUniformFrameRef.current) cancelAnimationFrame(graphUniformFrameRef.current);
+  }, []);
+
+  const handleGraphView = useCallback((next) => {
+    setGraphView(next);
+    engineRef.current?.setGraphView(next);
+  }, []);
+
+  const formatSearchValue = useCallback((item) => {
+    const id = item.settingId;
+    const paramsStyle = params.planetStyle ?? {};
+    const palette = paramsStyle.palette ?? {};
+
+    switch (id) {
+      case 'terrain.heightScale': return num(params.heightScale, 0, ' m');
+      case 'terrain.seaLevel': return num(params.seaLevel, 0, ' m');
+      case 'terrain.noiseScale': return num(params.noiseScale, 1);
+      case 'terrain.noiseStrength': return num(params.noiseStrength, 2);
+      case 'terrain.terrainSmoothing': return num(params.terrainSmoothing, 2);
+      case 'terrain.octaves': return String(params.octaves);
+      case 'terrain.persistence': return num(params.persistence, 2);
+      case 'terrain.lacunarity': return num(params.lacunarity, 2);
+      case 'terrain.ridge': return num(params.ridge, 2);
+      case 'terrain.warp': return num(params.warp, 2);
+      case 'terrain.falloff': return num(params.falloff, 2);
+      case 'terrain.normalStrength': return num(params.normalStrength, 2);
+      case 'terrain.aoStrength': return num(params.aoStrength, 2);
+      case 'visuals.normalStrength': return num(params.normalStrength, 2);
+      case 'visuals.aoStrength': return num(params.aoStrength, 2);
+      case 'visuals.aoRidge': return num(params.aoRidge ?? 0, 2);
+      case 'visuals.visualsPixelatedEnabled': return yesNo(!!params.visualsPixelatedEnabled);
+      case 'visuals.visualsPixelResolution': return `${Math.round(params.visualsPixelResolution ?? 240)}p`;
+      case 'visuals.visualsDitheringEnabled': return yesNo(!!params.visualsDitheringEnabled);
+      case 'visuals.visualsDitheringStrength': return num(params.visualsDitheringStrength ?? 0.65, 2);
+      case 'visuals.visualsDitheringLevels': return String(Math.round(params.visualsDitheringLevels ?? 8));
+      case 'visuals.visualsDitheringScale': return num(params.visualsDitheringScale ?? 2, 0, ' px');
+      case 'visuals.visualsCrtEnabled': return yesNo(!!params.visualsCrtEnabled);
+      case 'visuals.visualsCrtStrength': return num(params.visualsCrtStrength ?? 0.5, 2);
+      case 'visuals.visualsCrtLensBend': return num(params.visualsCrtLensBend ?? 0.35, 2);
+      case 'visuals.visualsCrtLineWidth': return num(params.visualsCrtLineWidth ?? 2, 2, ' px');
+      case 'visuals.visualsChromaticAberrationEnabled': return yesNo(!!params.visualsChromaticAberrationEnabled);
+      case 'visuals.visualsChromaticAberrationStrength': return num(params.visualsChromaticAberrationStrength ?? 1.5, 1, ' px');
+      case 'terrain.heightMap':
+      case 'terrain.noiseMap':
+      case 'terrain.biomeMap':
+        return params.importedMaps?.[id.split('.')[1]]?.fileName ?? 'No file';
+
+      case 'biomes.biomeScale': return num(params.biomeScale, 2);
+      case 'biomes.tempBias': return num(params.tempBias, 2);
+      case 'biomes.moistScale': return num(params.moistScale, 2);
+      case 'biomes.moistBias': return num(params.moistBias, 2);
+      case 'biomes.snowLine': return num(params.snowLine, 2);
+      case 'biomes.snowSlopeMin': return num(params.snowSlopeMin ?? 0.30, 2);
+      case 'biomes.snowSlopeMax': return num(params.snowSlopeMax ?? 0.62, 2);
+      case 'biomes.rockSlopeLo': return num(params.rockSlopeLo ?? 0.42, 2);
+      case 'biomes.rockSlopeHi': return num(params.rockSlopeHi ?? 0.72, 2);
+      case 'biomes.biomeDebug': return yesNo(params.biomeDebug);
+
+      case 'world.chunkCount': return `${params.chunkCount} × ${params.chunkCount}`;
+      case 'world.chunkSize': return String(params.chunkSize);
+      case 'world.chunkGrid': return yesNo(params.chunkGrid);
+      case 'world.planetRadius': return `${Math.round(params.planetRadius / 1000)}k`;
+      case 'world.planetFaceGrid': return `${params.planetFaceGrid} / face`;
+
+      case 'water.waterAnim': return yesNo(params.waterAnim);
+      case 'water.waterMode': return params.waterMode ?? 'legacy';
+      case 'water.waterEnabled': return yesNo(params.waterEnabled !== false && params.waterMode !== 'off');
+      case 'water.seaLevel': return num(params.seaLevel, 0, ' m');
+
+      case 'planet.water.deep': return hex(palette.deep);
+      case 'planet.water.shallow': return hex(palette.shallow);
+      case 'planet.water.foam': return hex(palette.foam);
+      case 'planet.paletteSaturation': return num(paramsStyle.paletteSaturation ?? 1, 2);
+      case 'planet.paletteContrast': return num(paramsStyle.paletteContrast ?? 1, 2);
+
+      case 'performance.preset': return perf?.preset ?? 'high';
+      case 'performance.rendererBackend': return labelRendererBackend(perf?.rendererBackend);
+      case 'performance.gpuPreference': return labelGpuPreference(perf?.gpuPreference);
+      case 'performance.useWorker': return yesNo(perf?.useWorker);
+      case 'performance.autoPerf': return yesNo(perf?.autoPerf);
+      case 'performance.onDemandStudio': return yesNo(perf?.onDemandStudio);
+      case 'performance.renderScale': return num(perf?.renderScale, 2, 'x');
+      case 'performance.resolutionDenoiseMode': return perf?.resolutionDenoiseMode === 'pixelated' ? 'Pixelated Denoise' : 'Clean Denoise';
+      case 'performance.resolutionScale': return num(perf?.resolutionScale, 2, 'x');
+      case 'performance.lodDistanceScale': return num(perf?.lodDistanceScale, 2, 'x');
+      case 'performance.viewRadius': return `${perf?.viewRadius ?? '—'} chunks`;
+      case 'performance.maxCreatesPerFrame': return String(perf?.maxCreatesPerFrame ?? '—');
+      case 'performance.triangleBudget': return `${num((perf?.triangleBudget ?? 0) / 1e6, 1)}M`;
+      case 'performance.cullingAggressiveness': return num(perf?.cullingAggressiveness, 1);
+      case 'performance.waterQuality':
+        return ({ 0: 'Low', 1: 'Medium', 2: 'High' }[perf?.waterQuality] ?? 'Custom');
+      case 'performance.waterReflection': return num(perf?.waterReflection, 2, 'x');
+      case 'performance.waterDetail': return num(perf?.waterDetail, 2, 'x');
+      case 'performance.waterWaves': return num(perf?.waterWaves, 2, 'x');
+      case 'performance.underwaterEffect': return yesNo(perf?.underwaterEffect !== false);
+      case 'performance.waterDistance': return num(perf?.waterDistance, 2, 'x');
+      case 'performance.fogDistance': return num(perf?.fogDistance, 2, 'x');
+      case 'performance.terrainDetailQuality':
+        return ({ 0: 'Off', 1: 'Low', 2: 'Medium', 3: 'High' }[perf?.terrainDetailQuality] ?? 'High');
+      case 'performance.terrainDetailScale': return num(perf?.terrainDetailScale, 2, 'x');
+      case 'performance.terrainDetailStrength': return num(perf?.terrainDetailStrength, 2, 'x');
+      case 'performance.terrainDetailNormal': return num(perf?.terrainDetailNormal, 2, 'x');
+      case 'performance.terrainDetailNear': return num(perf?.terrainDetailNear, 0, 'm');
+      case 'performance.terrainDetailFar': return num(perf?.terrainDetailFar, 0, 'm');
+      case 'performance.terrainRockSlope': return num(perf?.terrainRockSlope, 2);
+      case 'performance.terrainRockSharpness': return num(perf?.terrainRockSharpness, 2);
+      case 'performance.terrainTriplanar': return yesNo(perf?.terrainTriplanar !== false);
+      case 'performance.terrainShoreRange': return num(perf?.terrainShoreRange, 0, 'm');
+      case 'performance.terrainShoreWetness': return num(perf?.terrainShoreWetness, 2, 'x');
+      case 'performance.cloudFallback': return perf?.cloudFallback ?? 'none';
+      case 'performance.cloudSteps': return `${perf?.cloudSteps ?? '—'} steps`;
+      case 'performance.cloudSelfShadow': return yesNo(perf?.cloudSelfShadow !== false);
+      case 'performance.cloudLightMode': return yesNo(!!perf?.cloudLightMode);
+      case 'performance.cloudLightSteps': return `${perf?.cloudLightSteps ?? '—'} steps`;
+      case 'performance.cloudStepLOD': return yesNo(!!perf?.cloudStepLOD);
+      case 'performance.cloudOctaves': return String(perf?.cloudOctaves ?? '—');
+      case 'performance.cloudDetailOctaves': return String(perf?.cloudDetailOctaves ?? '—');
+      case 'performance.cloudUseErosion': return yesNo(perf?.cloudUseErosion !== false);
+      case 'performance.cloudMaxDistance': return num(perf?.cloudMaxDistance, 1, 'x');
+
+      case 'skybox.timeOfDay': return formatTimeOfDay(timeOfDay);
+      case 'skybox.skyboxEnabled': return yesNo(params.skyboxEnabled !== false);
+      case 'skybox.skyboxBrightness': return num(params.skyboxBrightness ?? 1, 2);
+      case 'skybox.skyboxHaze': return num(params.skyboxHaze ?? 0.55, 2);
+      case 'skybox.skyboxStars': return yesNo(params.skyboxStars !== false);
+
+      case 'lighting.sunAzimuth': return `${Math.round(params.sunAzimuth ?? 0)}°`;
+      case 'lighting.sunElevation': return `${Math.round(params.sunElevation ?? 0)}°`;
+      case 'lighting.cloudShadowsEnabled': return yesNo(!!params.cloudShadowsEnabled);
+      case 'lighting.cloudShadowOpacity': return num(params.cloudShadowOpacity ?? 0.45, 2);
+      case 'lighting.godRays': return num(params.visualsSunRaysStrength ?? 0.22, 2);
+      case 'lighting.sunColor': return hex(paramsStyle.sunColor);
+      case 'lighting.sunIntensity': return num(paramsStyle.sunIntensity ?? 1.25, 2);
+      case 'lighting.fogDensity': return num(params.fogDensity, 2);
+      case 'lighting.skyAmbient': return hex(paramsStyle.skyAmbient);
+      case 'lighting.groundBounce': return hex(paramsStyle.groundBounce);
+
+      case 'clouds.cloudsEnabled': return yesNo(params.cloudsEnabled);
+      case 'clouds.cloudCoverage': return num(params.cloudCoverage ?? 0, 2);
+      case 'clouds.cloudDensity': return num(params.cloudDensity ?? 0, 2);
+      case 'clouds.cloudSoftness': return num(params.cloudSoftness ?? 0, 2);
+      case 'clouds.cloudAltitude': return num(params.cloudAltitude ?? 0, 0, 'm');
+      case 'clouds.cloudThickness': return num(params.cloudThickness ?? 0, 0, 'm');
+      case 'clouds.cloudScale': return num(params.cloudScale ?? 0, 1);
+      case 'clouds.cloudDetailScale': return num(params.cloudDetailScale ?? 0, 1);
+      case 'clouds.cloudDetailStrength': return num(params.cloudDetailStrength ?? 0, 2);
+      case 'clouds.cloudErosionScale': return num(params.cloudErosionScale ?? 0, 1);
+      case 'clouds.cloudErosionStrength': return num(params.cloudErosionStrength ?? 0, 2);
+      case 'clouds.cloudWindDir': return `${Math.round(params.cloudWindDir ?? 0)}°`;
+      case 'clouds.cloudWindSpeed': return num(params.cloudWindSpeed ?? 0, 2);
+      case 'clouds.cloudRotationSpeed': return num(params.cloudRotationSpeed ?? 0, 2);
+      case 'clouds.cloudLightAbsorption': return num(params.cloudLightAbsorption ?? 3, 2);
+      case 'clouds.cloudShadowStrength': return num(params.cloudShadowStrength ?? 0, 2);
+      case 'clouds.cloudScatteringStrength': return num(params.cloudScatteringStrength ?? 0, 2);
+      case 'clouds.cloudAtmosphereInfluence': return num(params.cloudAtmosphereInfluence ?? 1, 2);
+      case 'clouds.cloudSunResponse': return num(params.cloudSunResponse ?? 1, 2);
+      case 'clouds.cloudAmbientResponse': return num(params.cloudAmbientResponse ?? 1, 2);
+      case 'clouds.cloudSilverLining': return num(params.cloudSilverLining ?? 0.25, 2);
+      case 'clouds.cloudNoiseVariant': return String(params.cloudNoiseVariant ?? 'default');
+      case 'clouds.cloudColor': return hex(params.cloudColor);
+      case 'clouds.cloudShadowColor': return hex(params.cloudShadowColor);
+
+      case 'debug.autoUpdate': return yesNo(params.autoUpdate);
+      case 'debug.freezeCulling': return yesNo(!!debugFlags.freezeCulling);
+      case 'debug.freezeLod': return yesNo(!!debugFlags.freezeLod);
+      case 'debug.forceRender': return yesNo(!!debugFlags.forceRender);
+      case 'debug.disableHeightBake': return yesNo(!!debugFlags.disableHeightBake);
+      case 'debug.mergeDebug': return yesNo(!!debugFlags.mergeDebug);
+      case 'debug.terrainDetailDebug': return String(debugFlags.terrainDetailDebug ?? 'off');
+
+      case 'export.format': return 'GLB / GLTF';
+      default:
+        if (item?.isSection) return 'Section';
+        return 'Set';
+    }
+  }, [params, perf, timeOfDay, debugFlags]);
+
+  const settingsSearchResults = useMemo(() => {
+    if (!settingsSearchOpen || !searchEnabled) return [];
+    return searchSettings(settingsSearchQuery, (panelId) => (
+      panelAvailable(panelId, worldMode)
+      && (!realTerrainMode || REAL_TERRAIN_PANEL_IDS.includes(panelId))
+    ))
+      .filter((item) => !realTerrainMode || item.panelId !== 'terrain' || item.tabId === 'import')
+      .map((item) => ({ ...item, valueText: formatSearchValue(item) }));
+  }, [settingsSearchOpen, settingsSearchQuery, searchEnabled, worldMode, realTerrainMode, formatSearchValue]);
+
+  const groupedSettingsSearchResults = useMemo(() => {
+    const map = new Map();
+    settingsSearchResults.forEach((item, flatIndex) => {
+      const entry = map.get(item.panelId) ?? {
+        panelId: item.panelId,
+        panelLabel: getPanelDisplay(item.panelId, worldMode).label,
+        items: [],
+      };
+      entry.items.push({ ...item, flatIndex });
+      map.set(item.panelId, entry);
+    });
+    const order = new Map(PANEL_ORDER.map((id, index) => [id, index]));
+    return [...map.values()]
+      .sort((a, b) => (order.get(a.panelId) ?? 999) - (order.get(b.panelId) ?? 999))
+      .map((group) => ({ ...group, items: group.items.sort((a, b) => a.flatIndex - b.flatIndex) }));
+  }, [settingsSearchResults, worldMode]);
+
+  const openSettingsSearch = () => {
+    if (!searchEnabled) return;
+    setSettingsSearchOpen(true);
+  };
+
+  const closeSettingsSearch = () => {
+    setSettingsSearchOpen(false);
+    setSettingsSearchIndex(0);
+  };
+
+  const confirmSettingsSearch = (index = settingsSearchIndex) => {
+    const item = settingsSearchResults[index];
+    if (!item) return;
+    setActivePanel(item.panelId);
+    setSettingsTarget({
+      panelId: item.panelId,
+      tabId: item.tabId ?? null,
+      subTabId: item.subTabId ?? null,
+      perfTabId: item.perfTabId ?? null,
+      sectionLabel: item.sectionLabel ?? null,
+      settingId: item.settingId,
+      label: item.label,
+      isSection: !!item.isSection,
+    });
+    closeSettingsSearch();
+  };
+
+  const confirmSettingsSearchPanel = (panelId) => {
+    if (!panelAvailable(panelId, worldMode)) return;
+    setActivePanel(panelId);
+    setSettingsTarget(null);
+    closeSettingsSearch();
+  };
+
+  useEffect(() => {
+    if (!searchEnabled && settingsSearchOpen) closeSettingsSearch();
+  }, [searchEnabled, settingsSearchOpen]);
+
+  useEffect(() => {
+    setSettingsSearchIndex((cur) => (settingsSearchResults.length ? Math.min(cur, settingsSearchResults.length - 1) : 0));
+  }, [settingsSearchResults.length]);
+
+  useEffect(() => {
+    if (!searchEnabled) return;
+    const onKeyDown = (e) => {
+      const key = String(e.key ?? '').toLowerCase();
+      if ((e.metaKey || e.ctrlKey) && key === 'k') {
+        e.preventDefault();
+        openSettingsSearch();
+        return;
+      }
+      if (e.key === 'Escape' && settingsSearchOpen) {
+        e.preventDefault();
+        closeSettingsSearch();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown, true);
+    return () => window.removeEventListener('keydown', onKeyDown, true);
+  }, [settingsSearchOpen, searchEnabled]);
+
+  useEffect(() => {
+    if (!uiSettingsOpen) return undefined;
+    const onKey = (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        setUiSettingsOpen(false);
+      }
+    };
+    window.addEventListener('keydown', onKey, true);
+    return () => window.removeEventListener('keydown', onKey, true);
+  }, [uiSettingsOpen]);
+
+  const projectPanelAvailable = (id) => {
+    if (realTerrainMode) return REAL_TERRAIN_PANEL_IDS.includes(id);
+    return !['nodes', 'manual'].includes(workspaceProjectMode) || NODE_PANEL_IDS.includes(id);
+  };
+  const togglePanel = (id) => {
+    if (!projectPanelAvailable(id)) return;
+    setActivePanel((cur) => (cur === id ? null : id));
+  };
+  const effectivePanel = showToolPanels && panelAvailable(activePanel, worldMode) && projectPanelAvailable(activePanel) ? activePanel : null;
+  const drawerOpen = !!effectivePanel;
+  const toolsRailAttr = toolsRailLayout.edge ?? 'left';
+  const drawerSideAttr = drawerLayout.side ?? 'right';
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(MANUAL_LIBRARY_HEIGHT_KEY, String(Math.round(manualLibraryHeight)));
+    } catch { /* The layout still works when storage is unavailable. */ }
+  }, [manualLibraryHeight]);
+
+  const handleToolsRailLayout = useCallback((next) => {
+    setToolsRailLayout(next);
+    saveToolsRailLayout(next);
+  }, []);
+
+  const handleDrawerLayout = useCallback((next) => {
+    setDrawerLayout(next);
+    saveDrawerLayout(next);
+  }, []);
+
+  const handleUiPrefs = useCallback((next) => {
+    setUiPrefs(next);
+    saveUiPrefs(next);
+  }, []);
+
+  const block = blockingTask(loading.tasks);
+  const nonBlock = nonBlockingTask(loading.tasks);
+  const showBlockingOverlay = block && !landing?.visible;
+
+  useLayoutEffect(() => {
+    if (!showStudioUI || !isStudio || !engineRef.current) return;
+    if (nodesWorkspaceActive && !nodesPreviewVisible) {
+      engineRef.current.setMinimapCanvases(null, null);
+      return;
+    }
+    engineRef.current.setMinimapCanvases(minimapBaseRef.current, minimapOverlayRef.current);
+  }, [showStudioUI, isStudio, effectivePanel, nodesWorkspaceActive, nodesPreviewVisible]);
+
+  const landingMode = landing?.visible;
+  const landingActive = landing?.visible && !landing?.exiting;
+
+  useEffect(() => {
+    const eng = engineRef.current;
+    if (!eng) return;
+    eng.setLandingShowcase(landingActive);
+  }, [landingActive]);
+
+  // Once the landing showcase finishes, re-baseline the undo history to the
+  // state the user actually starts editing from (so the first Ctrl+Z doesn't
+  // jump back into a showcase preset). Only while no edits have been made yet.
+  useEffect(() => {
+    if (landingActive || !bootedRef.current) return;
+    const h = historyRef.current;
+    if (h.past.length === 0 && h.future.length === 0) {
+      const snap = captureSnapshot();
+      if (snap) h.present = snap;
+    }
+  }, [landingActive, captureSnapshot]);
+
+  useEffect(() => {
+    if (!settingsTarget || !showToolPanels) return undefined;
+    let cancelled = false;
+    let attempts = 0;
+    const run = () => {
+      if (cancelled) return;
+      const target = document.querySelector(`[data-setting-id="${settingsTarget.settingId}"]`);
+      if (target) {
+        target.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        target.classList.add('setting-target-flash');
+        window.setTimeout(() => target.classList.remove('setting-target-flash'), 1200);
+        setSettingsTarget(null);
+        return;
+      }
+      attempts += 1;
+      if (attempts < 12) {
+        window.setTimeout(run, 80);
+      } else {
+        setSettingsTarget(null);
+      }
+    };
+    const timer = window.setTimeout(run, 120);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [settingsTarget, showToolPanels, effectivePanel]);
+
+  const applySurfaceTextures = useCallback(async ({ source, force = false } = {}) => {
+    const eng = engineRef.current;
+    if (!eng) return { anyPresent: false };
+    const surfaceTextureSource = normalizeSurfaceTextureSource({ surfaceTextureSource: source ?? eng.params?.surfaceTextureSource, surfaceTextureMode: eng.params?.surfaceTextureMode });
+    if (!sourceUsesTextureAtlas(surfaceTextureSource)) return { anyPresent: false, source: surfaceTextureSource };
+    if (!force && eng.installCachedSurfaceAtlas?.(surfaceTextureSource)) {
+      const cached = eng.getCachedSurfaceAtlas?.(surfaceTextureSource);
+      return {
+        anyPresent: !!cached?.anyPresent,
+        bakedAt: cached?.bakedAt,
+        coverage: cached?.coverage,
+        layers: cached?.layers,
+        source: surfaceTextureSource,
+        cached: true,
+      };
+    }
+    const atlas = await buildActiveSurfaceAtlas({ source: surfaceTextureSource });
+    eng.setSurfaceAtlas(atlas, surfaceTextureSource);
+    return {
+      anyPresent: atlas.anyPresent,
+      bakedAt: atlas.bakedAt,
+      coverage: atlas.coverage,
+      layers: atlas.layers,
+      source: surfaceTextureSource,
+      cached: false,
+    };
+  }, []);
+
+  useEffect(() => {
+    const source = normalizeSurfaceTextureSource(params);
+    if (!sourceUsesTextureAtlas(source) || !engineRef.current) return;
+    applySurfaceTextures({ source }).catch((err) => {
+      console.warn('Could not bake terrain surface textures', err);
+    });
+  }, [params.surfaceTextureSource, params.surfaceTextureMode, applySurfaceTextures]);
+
+  const handleResetPanel = useCallback((id) => {
+    if (id === 'terrain') resetSurfaceLibraryState();
+    engineRef.current?.resetPanelSettings(id);
+  }, []);
+
+  const runGeographicLoad = (runner, opts = {}) => loading.run('real-world-load', {
+    blocking: true,
+    label: 'Loading geographic terrain…',
+    detail: 'Downloading elevation and imagery…',
+  }, async (update) => {
+    blockingUpdateRef.current = update;
+    try {
+      return await runner((progress) => {
+        opts.onProgress?.(progress);
+        update({
+          progress,
+          detail: progress >= 1
+            ? 'Building geographic terrain…'
+            : 'Downloading elevation and imagery…',
+        });
+      });
+    } finally {
+      if (blockingUpdateRef.current === update) blockingUpdateRef.current = null;
+    }
+  });
+
+  const changeRealWorldImageryStyle = (style) => {
+    const eng = engine();
+    if (!eng.realWorldSource) return eng.setRealWorldImageryStyle(style);
+    return loading.run('real-world-imagery', {
+      blocking: true,
+      label: 'Loading map imagery…',
+      detail: 'Downloading the selected map style…',
+    }, async (update) => {
+      blockingUpdateRef.current = update;
+      try {
+        return await eng.setRealWorldImageryStyle(style);
+      } finally {
+        if (blockingUpdateRef.current === update) blockingUpdateRef.current = null;
+      }
+    });
+  };
+
+  const ctx = {
+    params, worldMode, onParam,
+    realTerrainMode, realWorldMapRequest,
+    settingsTarget,
+    settingsSearchOpen,
+    onSettingsTargetHandled: () => setSettingsTarget(null),
+    onPreset: (key) => engine().applyPresetByKey(key),
+    onRandomizeSeed: () => engine().randomizeSeed(),
+    onRandomizeTerrain,
+    onRegenerate,
+    planetStyleProps,
+    onStyleTuning: (key, v) => engine().setPlanetStyleTuning(key, v),
+    liveMetrics, camMode,
+    onMode: (mode) => { engine().setCameraMode(mode); setCamMode(mode); },
+    onFov: (fov) => engine().setFov(fov),
+    onFocusCenter: () => engine().focusCenter(),
+    boardSize,
+    cullingEnabled, behindCameraCulling,
+    onCullingEnabled: handleCullingEnabled, onBehindCameraCulling: handleBehindCameraCulling,
+    debugFlags, onDebugFlag: handleDebugFlag,
+    onResetPanel: handleResetPanel,
+    onApplySurfaceTextures: applySurfaceTextures,
+    gpu, perf,
+    rendererInfo: engineRef.current ? {
+      ...(engineRef.current.rendererConfig || {}),
+      capabilities: engineRef.current.rendererCapabilities,
+    } : null,
+    onPerfPreset: (key) => engine().setPerfPreset(key),
+    onPerfSetting: (key, value) => engine().setPerfSetting(key, value),
+    onCloudQuality: (key) => engine().setCloudQuality(key),
+    onExportWaterMasks: (opts) => engine().exportWaterMasks(opts),
+    onApplyWaterBaselineScene: async (sceneId) => {
+      const scene = getWaterBaselineScene(sceneId);
+      if (!scene) return;
+      try {
+        if (engine().worldMode !== scene.worldMode) {
+          await runModeSwitch(scene.worldMode, { silent: true });
+        }
+        if (engine().worldMode !== scene.worldMode) {
+          throw new Error(`Could not switch to ${scene.worldMode} mode`);
+        }
+        engine().applyWaterBaselineScene(sceneId);
+        setTimeOfDay(engine().timeOfDay);
+      } catch (error) {
+        console.error(error);
+        showToast(error?.message || 'Water baseline could not be loaded', 'error');
+      }
+    },
+    onCaptureWaterBaseline: async (sceneId) => {
+      try {
+        await engine().captureWaterBaseline(sceneId);
+      } catch (error) {
+        console.error(error);
+        showToast(error?.message || 'Water baseline capture failed', 'error');
+      }
+    },
+    // bake / clear change the baked delta (a heavy, non-param edit) — record a
+    // history entry afterwards so the whole bake is a single Ctrl+Z away.
+    onErosionBake: async (onProgress) => {
+      const ok = await engine().bakeErosion({ onProgress });
+      if (ok) flushRecord();
+      return ok;
+    },
+    onErosionReset: () => { engine().clearErosion(); flushRecord(); },
+    onErosionPreset: (key) => engine().applyErosionPreset(key),
+    erosionHasResult: engineRef.current?.erosionField?.hasResult?.() ?? false,
+    onPerfReset: () => engine().resetPerfSettings(),
+    timeOfDay, onTimeOfDay: handleTimeOfDay,
+    onExport, onExportScreenshot, onExportHeightmap,
+    onNoiseStack: (stack) => engine().setNoiseStack(stack),
+    onNoiseStackPreset: (key) => engine().applyNoiseStackPresetByKey(key),
+    tileDebug, importedMaps,
+    tiles, tileGridSize: 5, tileGridExtent: 2, tileAssemblyShape, diskRadiusCells,
+    onTileAssemblyShape: (shape) => engine().setTileAssemblyShape(shape),
+    onRemoveTile: (cx, cz) => engine().removeTile(cx, cz),
+    onTileDebug: (next) => engine().setTileDebug(next),
+    onImportTileMap: (type, file) => engine().importTileMap(type, file),
+    onTileMapSetting: (type, key, value) => engine().setTileMapSetting(type, key, value),
+    onLoadRealWorldLocation: (id, opts) => runGeographicLoad(
+      (onProgress) => engine().loadRealWorldLocation(id, { ...opts, onProgress }),
+      opts,
+    ),
+    onLoadRealWorldCustom: (spec, opts) => runGeographicLoad(
+      (onProgress) => engine().loadRealWorldCustom(spec, { ...opts, onProgress }),
+      opts,
+    ),
+    realWorldImageryStyle,
+    onRealWorldImageryStyle: changeRealWorldImageryStyle,
+    realWorldBuildingsVisible,
+    onRealWorldBuildingsVisible: (visible) => engine().setRealWorldBuildingsVisible(visible),
+    onSoloLayer: (id) => engine().setSoloLayer(id),
+    _soloLayerId: engineRef.current?._soloLayerId ?? null,
+    splineState, analysisState,
+    creatorHistory: { ...creatorHistory, actions: nativeHistoryActions },
+    onCreateSpline: (type) => engine().createSpline(type),
+    onConfirmSplineCreation: () => engine().confirmSplineCreation(),
+    onCancelSplineCreation: () => engine().cancelSplineCreation(),
+    onUpdateSpline: (id, patch) => engine().updateSpline(id, patch),
+    onDeleteSpline: (id) => engine().deleteSpline(id),
+    onDuplicateSpline: (id) => engine().duplicateSpline(id),
+    onSelectSpline: (id) => engine().selectSpline(id),
+    onAnalysisMode: (mode) => engine().setAnalysisMode(mode),
+    onAnalysisSettings: (patch) => engine().setAnalysisSettings(patch),
+    onCreateSnapshot: (name) => engine().createSnapshot(name),
+    onRestoreSnapshot: (id) => engine().restoreSnapshot(id),
+    onRestoreHistoryAction: restoreNativeHistoryAction,
+    onDeleteSnapshot: (id) => engine().deleteSnapshot(id),
+    onRenameSnapshot: (id, name) => engine().renameSnapshot(id, name),
+  };
+
+  return (
+    <div
+      id="app"
+      className={`${previewMode ? 'preview-mode' : ''}${landingMode ? ' landing-mode' : ''}${fpsView ? ' infinite-mode' : ''}${touchExplore ? ' fps-explore-mode' : ''}${exploreMode === 'plane' ? ' plane-mode' : ''}${drawerOpen ? ' side-drawer-open' : ''}${perfOverlay.settings.open ? ' perf-overlay-open' : ''}${nodesWorkspaceActive ? ' nodes-workspace-open' : ''}${manualWorkspaceActive ? ' manual-workspace-open' : ''}`}
+      onDragEnter={landingMode ? undefined : onFileDragEnter}
+      onDragOver={landingMode ? undefined : onFileDragOver}
+      onDragLeave={landingMode ? undefined : onFileDragLeave}
+      onDrop={landingMode ? undefined : onFileDrop}
+    >
+      {!landingMode && fileDragActive && (
+        <div className="file-drop-overlay" role="presentation">
+          <div className="file-drop-card">
+            <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden>
+              <path d="M12 3v11M12 3 8.2 6.8M12 3l3.8 3.8" stroke="currentColor" fill="none" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15" stroke="currentColor" fill="none" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span>Drop terrain file to load</span>
+          </div>
+        </div>
+      )}
+      <TopBar
+        projectMode={realTerrainMode ? 'real' : projectMode}
+        shortcutsEnabled={!landingMode}
+        projectName={projectName}
+        onProjectNameChange={updateProjectName}
+        previewMode={previewMode}
+        onNew={() => createProjectFromTemplate('blank', { editorMode: realTerrainMode ? 'real' : projectMode })}
+        onRandomize={() => engine().randomizeSeed()}
+        onSave={() => saveCurrentProject()}
+        onDownload={downloadCurrentProject}
+        onLoadJSON={loadProjectJSON}
+        canOpenInManual={worldMode === 'studio' && !realTerrainMode && ['procedural', 'nodes'].includes(projectMode)}
+        onOpenInManual={openInManualTerrain}
+        canImportTerrain={worldMode === 'studio' && !realTerrainMode && projectMode === 'manual'}
+        onImportTerrain={openManualTerrainImport}
+        manualBaseSource={hybridManualMode ? manualBaseSource : null}
+        manualWorkspace={manualWorkspace}
+        onManualWorkspace={(workspace) => {
+          const next = workspace === 'base' ? 'base' : 'manual';
+          setManualWorkspace(next);
+          setActivePanel(null);
+          engineRef.current?.setManualWorkspaceActive(next === 'manual');
+          if (next === 'base' && manualBaseSource === 'nodes') loadNodeWorkspace().catch(() => {});
+        }}
+        onOpenProjects={() => window.dispatchEvent(new Event('terrain-project:home'))}
+        onTogglePreview={() => setPreviewMode(!previewMode)}
+        nodeToolsVisible={uiPrefs.nodeToolsVisible !== false}
+        onToggleNodeTools={() => {
+          const visible = uiPrefs.nodeToolsVisible === false;
+          handleUiPrefs({ ...uiPrefs, nodeToolsVisible: visible });
+          if (!visible) setActivePanel(null);
+        }}
+        onToggleHelp={() => setHelpVisible((v) => !v)}
+        onResetView={() => engine().resetView()}
+        onOpenPanel={togglePanel}
+        activePanel={effectivePanel}
+        loading={nonBlock}
+        onUndo={undo}
+        onRedo={redo}
+        canUndo={histState.canUndo}
+        canRedo={histState.canRedo}
+        onOpenHistory={() => togglePanel('history')}
+        onOpenSettingsSearch={openSettingsSearch}
+        settingsSearchOpen={settingsSearchOpen}
+        onOpenUiSettings={() => setUiSettingsOpen(true)}
+        recentNotifications={recentNotifications}
+        notificationsIgnored={notificationsIgnored}
+        onClearNotifications={clearNotifications}
+        onToggleNotificationLogging={toggleNotificationLogging}
+      />
+
+      <ManualTerrainImportDialog
+        open={manualImportDialog.open}
+        loading={manualImportDialog.loading}
+        busy={manualImportDialog.busy}
+        projects={manualImportDialog.projects}
+        onClose={() => {
+          if (manualImportDialog.busy) return;
+          setManualImportDialog({ open: false, loading: false, busy: false, projects: [] });
+        }}
+        onImport={importTerrainIntoManual}
+      />
+
+      <div
+        id="main"
+        className="app-shell"
+        ref={appShellRef}
+        data-tools-rail={toolsRailAttr}
+        data-drawer-side={drawerSideAttr}
+        data-node-palette-side={nodesWorkspaceActive && nodePaletteDock.detached ? nodePaletteDock.side : 'attached'}
+        style={{
+          '--node-palette-shell-width': `${nodePaletteDock.width || 208}px`,
+          '--manual-library-height': `${manualLibraryHeight}px`,
+          '--manual-library-bottom-offset': toolsRailAttr === 'bottom' ? '58px' : '0px',
+        }}
+      >
+        {showToolPanels && (
+          <LeftToolbar
+            activePanel={effectivePanel}
+            worldMode={worldMode}
+            onSelect={togglePanel}
+            layout={toolsRailLayout}
+            onLayoutChange={handleToolsRailLayout}
+            shellRef={appShellRef}
+            showLabels={uiPrefs.toolbarLabels}
+            panelIds={realTerrainMode ? REAL_TERRAIN_PANEL_IDS : ['nodes', 'manual'].includes(workspaceProjectMode) ? NODE_PANEL_IDS : undefined}
+            realTerrainMode={realTerrainMode}
+          />
+        )}
+
+        <div className="viewport-area">
+          <canvas id="viewport" ref={canvasRef} className={webglError ? 'viewport-disabled' : ''} />
+          {webglError && (
+            <div className="webgl-error-overlay" role="alert">
+              <h2>WebGL unavailable</h2>
+              <p>{webglError}</p>
+              <p className="webgl-error-hint">
+                Close other 3D tabs, reload the page, or enable hardware acceleration in your browser settings
+                (Chrome: Settings → System → &quot;Use graphics acceleration when available&quot;).
+              </p>
+              <button type="button" onClick={() => window.location.reload()}>
+                Reload
+              </button>
+            </div>
+          )}
+          {showToolPanels && settingsSearchOpen && (
+            <SettingsSearchOverlay
+              open={settingsSearchOpen}
+              query={settingsSearchQuery}
+              groupedResults={groupedSettingsSearchResults}
+              flatResults={settingsSearchResults}
+              selectedIndex={settingsSearchIndex}
+              onChangeQuery={(value) => {
+                setSettingsSearchQuery(value);
+                setSettingsSearchIndex(0);
+              }}
+              onSelectIndex={setSettingsSearchIndex}
+              onConfirm={confirmSettingsSearch}
+              onConfirmPanel={confirmSettingsSearchPanel}
+              onClose={closeSettingsSearch}
+            />
+          )}
+
+          <div id="help-card" className={helpVisible && studioLike && !nodesWorkspaceActive ? '' : 'hidden'}>
+            <div className="help-row"><span className="help-ic">↻</span> Drag to orbit camera</div>
+            <div className="help-row"><span className="help-ic">🤏</span> Pinch to zoom • move two fingers to pan</div>
+            <div className="help-row"><span className="help-ic">🖱</span> Mouse: left pan • right orbit</div>
+          </div>
+
+          {showStudioUI && isStudio && !nodesWorkspaceActive && (
+            <MinimapOverlay
+              boardSize={boardSize}
+              baseRef={minimapBaseRef}
+              overlayRef={minimapOverlayRef}
+              drawerOpen={!!effectivePanel}
+              onConfigChange={(next) => engine()?.setMinimapConfig(next)}
+              onHoverChange={(hover) => engine()?.setMinimapHover(hover)}
+              onHoverInfoRequest={(x, y) => engine()?.getMinimapInfoAt(x, y) ?? null}
+            />
+          )}
+
+          {showStudioUI && isStudio && !landingMode && !nodesWorkspaceActive && workspaceProjectMode === 'procedural' && !realTerrainMode && (
+            <CreatorToolbar
+              active={splineState.enabled}
+              onToggle={() => engine().setSplineEditingEnabled(!splineState.enabled)}
+            />
+          )}
+
+          {paintMode && (
+            <PaintPanel
+              paintState={paintState}
+              onSetting={(key, value) => engine().setPaintSetting(key, value)}
+              onClear={() => engine().clearPaintLayers()}
+              onSetBaseMode={(mode) => engine().setPaintBaseMode(mode)}
+              onStartEmpty={() => engine().startEmptyTerrain()}
+              onExit={() => engine().setPaintMode(false)}
+            />
+          )}
+
+          {manualWorkspaceActive && isStudio && !previewMode && !landingMode && (
+            <ManualTerrainPanel
+              state={manualTerrainState}
+              boardSize={boardSize}
+              libraryHeight={manualLibraryHeight}
+              onLibraryHeightChange={setManualLibraryHeight}
+              inspectorReplaced={!!effectivePanel}
+              toolsRailVisible={showToolPanels}
+              toolsRailEdge={toolsRailAttr}
+              onPlacementType={(type) => engine().setManualPlacementType(type)}
+              onBeginDrag={(type) => engine().beginManualShapeDrag(type)}
+              onEndDrag={() => engine().endManualShapeDrag()}
+              onSelect={(id) => engine().selectManualShape(id)}
+              onTransformMode={(mode) => engine().setManualTransformMode(mode)}
+              onUpdate={(id, patch) => engine().updateManualShape(id, patch)}
+              onDelete={(id) => engine().deleteManualShape(id)}
+              onDuplicate={(id) => engine().duplicateManualShape(id)}
+              onReorder={(id, direction) => engine().moveManualShape(id, direction)}
+              onAddShapeLayer={(shapeId, type) => engine().addManualShapeLayer(shapeId, type)}
+              onUpdateShapeLayer={(shapeId, layerId, patch) => engine().updateManualShapeLayer(shapeId, layerId, patch)}
+              onDeleteShapeLayer={(shapeId, layerId) => engine().deleteManualShapeLayer(shapeId, layerId)}
+              onDuplicateShapeLayer={(shapeId, layerId) => engine().duplicateManualShapeLayer(shapeId, layerId)}
+              onReorderShapeLayer={(shapeId, layerId, direction) => engine().moveManualShapeLayer(shapeId, layerId, direction)}
+              onSculptEnabled={(enabled) => {
+                setActivePanel(null);
+                engine().setManualSculptEnabled(enabled);
+              }}
+              onSculptSetting={(key, value) => engine().setManualSculptSetting(key, value)}
+              onClearSculpt={() => engine().clearManualSculpt()}
+              onTexturePaintEnabled={(enabled) => {
+                setActivePanel(null);
+                engine().setManualTexturePaintEnabled(enabled);
+              }}
+              onTexturePaintSetting={(key, value) => engine().setManualTexturePaintSetting(key, value)}
+              onClearTexturePaint={() => engine().clearManualTexturePaint()}
+              onClearPropPaint={() => engine().clearManualPropPaint()}
+            />
+          )}
+
+          {showStudioUI && uiPrefs.cameraControls !== false && !nodesWorkspaceActive && (
+            <BottomToolbar
+              camMode={camMode}
+              onTopDown={() => { engine().setCameraView('top'); setCamMode('topdown'); }}
+              onAngled={() => { engine().setCameraView('angled'); setCamMode('orbit'); }}
+              onResetCamera={() => engine().resetView()}
+              exploreMode={exploreMode}
+              onExploreMode={selectExploreMode}
+            />
+          )}
+
+          {fpsView && (
+            <>
+              <InfiniteHUD
+                liveMetrics={liveMetrics}
+                isPlanet={isPlanet}
+                onReturn={() => selectWorldMode('studio')}
+                exploreMode={exploreMode}
+                onExploreMode={selectExploreMode}
+                quality={qualityPreset}
+                onQualityChange={handleQualityChange}
+                timeOfDay={timeOfDay}
+                onTimeOfDay={handleTimeOfDay}
+                behindCameraCulling={behindCameraCulling}
+                onBehindCameraCulling={handleBehindCameraCulling}
+                planetPreset={params.planetPreset}
+                onPlanetPreset={(key) => engine().applyPlanetPresetByKey(key)}
+                onGeneratePalette={() => engine().generatePalette()}
+                onRandomPlanet={() => engine().randomizePlanetPreset()}
+                perf={perf}
+                rendererInfo={engineRef.current ? {
+                  ...(engineRef.current.rendererConfig || {}),
+                  capabilities: engineRef.current.rendererCapabilities,
+                } : null}
+                gpu={gpu}
+                onPerfPreset={(key) => engine().setPerfPreset(key)}
+                onPerfSetting={(key, value) => engine().setPerfSetting(key, value)}
+                onPerfReset={() => engine().resetPerfSettings()}
+              />
+            </>
+          )}
+
+          {touchExplore && <TouchControls mode={exploreMode} onInput={handleTouchInput} />}
+
+          {exploreMode === 'plane' && <PlaneHUD liveMetrics={liveMetrics} />}
+
+          {nodesWorkspaceActive && terrainGraph ? (
+            <Suspense fallback={<div className="nodes-workspace-loading">Loading node editor…</div>}>
+              <NodeWorkspace
+                graph={terrainGraph}
+                graphView={graphView}
+                graphState={{ ...graphState, onDiagnostic: (message) => showToast(message, 'error') }}
+                onGraphChange={handleTerrainGraphChange}
+                onGraphViewChange={handleGraphView}
+                onStartBlank={handleStartBlankGraph}
+                onApplyTemplate={handleApplyNodeTemplate}
+                inspectorReplaced={!!effectivePanel}
+                onRequestInspector={() => setActivePanel(null)}
+                onPreviewVisibilityChange={setNodesPreviewVisible}
+                toolsRailVisible={showToolPanels}
+                toolsRailEdge={toolsRailAttr}
+                onPaletteDockChange={setNodePaletteDock}
+                preview={(
+                  <MinimapOverlay
+                    docked
+                    boardSize={boardSize}
+                    baseRef={minimapBaseRef}
+                    overlayRef={minimapOverlayRef}
+                    onConfigChange={(next) => engine()?.setMinimapConfig(next)}
+                    onHoverChange={(hover) => engine()?.setMinimapHover(hover)}
+                    onHoverInfoRequest={(x, y) => engine()?.getMinimapInfoAt(x, y) ?? null}
+                  />
+                )}
+              />
+            </Suspense>
+          ) : null}
+
+          <CompileProgressChip progress={compileProgress} />
+          {showBlockingOverlay && <LoadingOverlay task={block} />}
+        </div>
+
+        {showToolPanels && drawerOpen && (
+          <Suspense fallback={null}>
+            <SideDrawer
+              activePanel={effectivePanel}
+              ctx={ctx}
+              onClose={() => setActivePanel(null)}
+              layout={drawerLayout}
+              onLayoutChange={handleDrawerLayout}
+              shellRef={appShellRef}
+              toolsRailEdge={toolsRailAttr}
+            />
+          </Suspense>
+        )}
+      </div>
+
+      {!previewMode && !landingMode && projectMode === 'procedural' && (
+        <WorldModeBar
+          worldMode={realTerrainMode ? 'real' : worldMode}
+          onSetWorldMode={selectWorldMode}
+          modeLocked={modeLocked}
+          modeDisplay={uiPrefs.modeDisplay}
+          visible={!paintMode}
+        />
+      )}
+
+      {uiSettingsOpen && (
+        <UiSettingsPanel
+          open={uiSettingsOpen}
+          prefs={uiPrefs}
+          onChange={handleUiPrefs}
+          onClose={() => setUiSettingsOpen(false)}
+        />
+      )}
+
+      <StatusBar
+        status={status}
+        bgWork={bgWork}
+        gpu={gpu}
+        liveMetrics={liveMetrics}
+        worldMode={worldMode}
+        qualityPreset={fpsView ? qualityPreset : null}
+        exploreMode={exploreMode}
+        playerMode={playerMode}
+        perfOpen={perfOverlay.settings.open}
+        onPerfToggle={perfOverlay.toggleOpen}
+      />
+
+      {perfOverlay.settings.open && (
+        <Suspense fallback={null}>
+          <PerformanceOverlay
+            snapshot={perfOverlay.snapshot}
+            history={perfOverlay.history}
+            settings={perfOverlay.settings}
+            onClose={perfOverlay.toggleOpen}
+            onToggleSection={perfOverlay.toggleSection}
+            onSetShowWarnings={perfOverlay.setShowWarnings}
+          />
+        </Suspense>
+      )}
+    </div>
+  );
+}

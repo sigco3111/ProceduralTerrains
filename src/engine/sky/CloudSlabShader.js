@@ -1,0 +1,286 @@
+import * as THREE from 'three';
+import { CLOUD_NOISE_GLSL, CLOUD_FIELD_GLSL, CLOUD_SLAB_GLSL } from './cloudGLSL.js';
+
+// ============================================================================
+// CloudSlabShader: the flat-mode (studio board) analog of CloudVolumeShader.
+// Instead of a spherical shell it raymarches a horizontal slab between two
+// world-Y planes (uCloudBottom..uCloudTop), fading out past a horizontal radius
+// so the clouds sit over the board like a diorama layer.
+//
+// Shares the noise + cloud-field GLSL and all cloud uniforms with the spherical
+// shader — only the geometry of the marched volume differs. Drawn on a large
+// horizontal plane after opaque terrain has populated the depth buffer; the slab
+// segment is found analytically from the ray vs the two Y planes (clamped to
+// uCloudFar to bound the horizon). Opaque scene depth from a prepass clamps the
+// marched segment, so hidden clouds exit before doing expensive samples.
+//
+// Step counts are compile-time #defines (statically bounded loops) exactly as
+// in the spherical shader, to keep the ANGLE/D3D11 compiler happy.
+// ============================================================================
+
+const VERTEX = /* glsl */ `
+varying vec3 vWorldPos;
+void main() {
+  vec4 wp = modelMatrix * vec4(position, 1.0);
+  vWorldPos = wp.xyz;
+  gl_Position = projectionMatrix * viewMatrix * wp;
+}
+`;
+
+const FRAGMENT = /* glsl */ `
+precision highp float;
+
+${CLOUD_NOISE_GLSL}
+${CLOUD_FIELD_GLSL}
+${CLOUD_SLAB_GLSL}
+
+varying vec3 vWorldPos;
+
+uniform sampler2D tSceneDepth;
+uniform vec2 uDepthResolution;
+uniform mat4 uProjectionMatrixInverse;
+uniform mat4 uViewMatrixInverse;
+uniform float uDepthBias;
+uniform float uUseDepth;
+
+// Planar occupancy grid (XZ): a small map (built on the CPU from the coverage
+// field, conservative + dilated) telling whether a column over the board holds
+// any cloud. A cheap texture lookup lets the march skip the expensive density
+// over empty columns and reject empty rays — the freed budget also cuts grain.
+uniform sampler2D uCloudOccupancy;
+uniform float uUseOccupancy;
+uniform vec2 uOccCenter;   // board-center XZ
+uniform float uOccExtent;  // half-size of the mapped square (= fade radius)
+
+float occAt(vec3 P) {
+  vec2 uv = (P.xz - uOccCenter) / (2.0 * max(uOccExtent, 1.0)) + 0.5;
+  return texture2D(uCloudOccupancy, uv).r;
+}
+
+vec3 reconstructWorldPosition(vec2 uv, float depth) {
+  vec4 clip = vec4(uv * 2.0 - 1.0, depth * 2.0 - 1.0, 1.0);
+  vec4 view = uProjectionMatrixInverse * clip;
+  view.xyz /= view.w;
+  return (uViewMatrixInverse * vec4(view.xyz, 1.0)).xyz;
+}
+
+vec3 cl_resolveLighting(vec3 P, vec3 rd, float light, float cloudHeight) {
+  vec3 legacyAmbient = uCloudShadowColor * uCloudShadowStrength;
+  vec3 legacy = mix(legacyAmbient, uCloudColor, light)
+    * (0.55 + 0.45 * uCloudScattering * light);
+
+  float height01 = clamp(cloudHeight, 0.0, 1.0);
+  float sunVisibility = cl_sunVisibility(P, height01);
+  float shadowAmount = (1.0 - light) * uCloudShadowStrength;
+  float shadowedSun = mix(1.0, light, uCloudShadowStrength);
+  vec3 shadowTint = mix(vec3(1.0), uCloudShadowColor, shadowAmount);
+
+  vec3 skyAmbient = mix(uCloudAmbientBottom, uCloudAmbientTop, height01);
+  skyAmbient += uCloudGroundBounce * (1.0 - height01);
+
+  float sunView = max(dot(rd, normalize(uCloudSunDir)), 0.0);
+  float silverLining = pow(sunView, 12.0) * uCloudSilverLining * sunVisibility;
+  float phase = 0.65 + 0.35 * uCloudScattering + silverLining;
+
+  vec3 direct = uCloudDirectLight * sunVisibility * shadowedSun
+    * uCloudSunResponse * phase;
+  vec3 atmospheric = uCloudColor
+    * (skyAmbient * uCloudAmbientResponse + direct)
+    * shadowTint;
+
+  return mix(legacy, atmospheric, clamp(uCloudAtmosphereInfluence, 0.0, 1.0));
+}
+
+void main() {
+  vec3 ro = cameraPosition;
+  vec3 rd = normalize(vWorldPos - cameraPosition);
+
+  // intersect the ray with the two horizontal slab planes
+  float t0, t1;
+  if (abs(rd.y) < 1e-5) {
+    // near-horizontal ray: only inside the slab if the camera already is
+    if (ro.y <= uCloudBottom || ro.y >= uCloudTop) discard;
+    t0 = 0.0;
+    t1 = uCloudFar;
+  } else {
+    float ta = (uCloudBottom - ro.y) / rd.y;
+    float tb = (uCloudTop - ro.y) / rd.y;
+    t0 = max(min(ta, tb), 0.0);
+    t1 = min(max(ta, tb), uCloudFar);
+  }
+  if (t1 <= t0) discard;
+
+  // clamp the segment to the cloud disc (radius uCloudRadius around the board
+  // center): beyond it the radial fade is zero, so this both skips wasted
+  // marching AND keeps the step fine on grazing rays (much less stipple).
+  {
+    vec2 oc = ro.xz - uCloudCenter.xz;
+    vec2 dc = rd.xz;
+    float A = dot(dc, dc);
+    if (A > 1e-8) {
+      float B = dot(oc, dc);
+      float C = dot(oc, oc) - uCloudRadius * uCloudRadius;
+      float disc = B * B - A * C;
+      if (disc < 0.0) discard;                 // ray never crosses the disc
+      float sq = sqrt(disc);
+      t0 = max(t0, (-B - sq) / A);
+      t1 = min(t1, (-B + sq) / A);
+      if (t1 <= t0) discard;
+    } else {
+      // vertical ray: only inside the disc if the camera column is within it
+      if (dot(oc, oc) > uCloudRadius * uCloudRadius) discard;
+    }
+  }
+
+  // Preserve the unclipped slab interval as the global sampling domain.
+  // Terrain depth may shorten the visible part of the ray, but must not
+  // redistribute samples per pixel: doing so makes the cloud field jump at
+  // terrain triangle/chunk boundaries and creates geometric-looking holes.
+  float slabStart = t0;
+  float slabEnd = t1;
+
+  vec2 depthUv = gl_FragCoord.xy / max(uDepthResolution, vec2(1.0));
+  if (uUseDepth > 0.5 && depthUv.x >= 0.0 && depthUv.x <= 1.0 &&
+      depthUv.y >= 0.0 && depthUv.y <= 1.0) {
+    float sceneDepth = texture2D(tSceneDepth, depthUv).x;
+    if (sceneDepth < 0.99999) {
+      vec3 sceneHit = reconstructWorldPosition(depthUv, sceneDepth);
+      float hitT = dot(sceneHit - ro, rd);
+      if (hitT > 0.0 && hitT < t1) {
+        t1 = hitT - uDepthBias;
+        if (t1 <= t0) discard;
+      }
+    }
+  }
+
+  // distance LOD: fewer effective steps when far (uCloudStepScale<1); loop
+  // bound stays CLOUD_STEPS (static for ANGLE), extra iterations no-op.
+  // ADAPTIVE step spacing (see CloudVolumeShader): constant world-space sample
+  // spacing whatever the view angle, so the grazing/side view no longer stretches
+  // the samples into a hatch. Vertical crossings use few steps; long grazing rays
+  // use the full budget, still fully covered (stepLen ≤ seg/CLOUD_STEPS).
+  float slabSpan = max(uCloudTop - uCloudBottom, 1.0);
+  float targetStep = slabSpan / float(CLOUD_STEPS) / clamp(uCloudStepScale, 0.05, 1.0);
+  float segLen = slabEnd - slabStart;
+  int effSteps = int(clamp(segLen / targetStep, 8.0, float(CLOUD_STEPS)) + 0.5);
+  // Stable, ordered start-offset dither (spatial only, no time term) so the
+  // sampling lattice never crawls — see cl_ign / the spherical shader.
+  float dither = cl_ign(gl_FragCoord.xy);
+
+  float transmittance = 1.0;
+  vec3 scatter = vec3(0.0);
+
+  // Near-biased integration spends more samples close to the camera, where
+  // under-sampling is most visible. Each interval has its own physical length;
+  // that exact length must drive both Beer extinction and scattering.
+  //
+  // Occupancy still gates every expensive density evaluation, but it never
+  // rejects or leaps over a whole ray. Sparse three-point rejection and coarse
+  // strides can miss a thin occupied cell on oblique views, producing hard
+  // holes aligned to the occupancy grid.
+  for (int i = 0; i < CLOUD_STEPS; i++) {
+    float sampleIndex = float(i);
+    if (sampleIndex < float(effSteps) && transmittance > 0.01) {
+      float a = (sampleIndex + dither) / float(effSteps);
+      float b = (sampleIndex + 1.0 + dither) / float(effSteps);
+      float ta = pow(clamp(a, 0.0, 1.0), 1.35);
+      float tb = pow(clamp(b, 0.0, 1.0), 1.35);
+      float t = slabStart + segLen * ta;
+      float stepLength = min(segLen * (tb - ta), max(t1 - t, 0.0));
+      if (t < t1 && stepLength > 0.0) {
+        vec3 P = ro + rd * t;
+        float occ = uUseOccupancy > 0.5 ? occAt(P) : 1.0;
+        if (occ >= 0.5) {
+          vec2 sampleData = cloudSample(P);
+          float dens = sampleData.x;
+          if (dens > 0.001) {
+            float light = uCloudSelfShadow > 0.5 ? cl_lightTransmittance(P) : 1.0;
+            vec3 lit = cl_resolveLighting(P, rd, light, sampleData.y);
+            float dT = exp(-dens * stepLength * uCloudExtinction);
+            scatter += transmittance * (1.0 - dT) * lit;
+            transmittance *= dT;
+          }
+        }
+      }
+    }
+  }
+
+  float alpha = 1.0 - transmittance;
+  if (alpha < 0.004) discard;
+
+  vec3 col = scatter / max(alpha, 1e-4);
+  col = pow(clamp(col, 0.0, 1.0), vec3(1.0 / 2.2));
+  gl_FragColor = vec4(col, alpha);
+}
+`;
+
+export function createCloudSlabMaterial(steps = 24, lightSteps = 6, octaves = 5, detailOctaves = 4, useErosion = true, lightMode = 0) {
+  return new THREE.ShaderMaterial({
+    uniforms: {
+      uCloudBottom:          { value: 900 },
+      uCloudTop:             { value: 1520 },
+      uCloudRadius:          { value: 1500 },
+      uCloudFar:             { value: 9000 },
+      uCloudCenter:          { value: new THREE.Vector3() },
+      uCloudCoverage:        { value: 0.5 },
+      uCloudSoftness:        { value: 0.16 },
+      uCloudScale:           { value: 1.0 },
+      uCloudDetailScale:     { value: 3.0 },
+      uCloudDetailStrength:  { value: 0.35 },
+      uCloudErosionScale:    { value: 6.0 },
+      uCloudErosionStrength: { value: 0.30 },
+      uCloudExtinction:      { value: 0.013 },
+      uCloudLightAbsorption: { value: 3.0 },
+      uCloudShadowStrength:  { value: 0.6 },
+      uCloudScattering:      { value: 1.0 },
+      uCloudColor:           { value: new THREE.Color(1, 1, 1) },
+      uCloudShadowColor:     { value: new THREE.Color(0.42, 0.47, 0.60) },
+      uCloudDirectLight:     { value: new THREE.Color(1.0, 0.94, 0.82) },
+      uCloudAmbientTop:      { value: new THREE.Color(0.18, 0.23, 0.31) },
+      uCloudAmbientBottom:   { value: new THREE.Color(0.13, 0.16, 0.22) },
+      uCloudGroundBounce:    { value: new THREE.Color(0.05, 0.04, 0.03) },
+      uCloudAtmosphereInfluence: { value: 1.0 },
+      uCloudSunResponse:     { value: 1.0 },
+      uCloudAmbientResponse: { value: 1.0 },
+      uCloudSilverLining:    { value: 0.25 },
+      uCloudWind:            { value: new THREE.Vector3() },
+      uCloudNoiseOffset:     { value: new THREE.Vector3() },
+      uCloudDomainOrigin:    { value: new THREE.Vector3() },
+      uCloudRotation:        { value: 0.0 },
+      uCloudTime:            { value: 0.0 },
+      uCloudSelfShadow:      { value: 1.0 },
+      uCloudSunDir:          { value: new THREE.Vector3(0.4, 0.7, 0.5).normalize() },
+      uCloudStepScale:       { value: 1.0 },
+      uCloudEvolve:          { value: 0.03 },
+      tSceneDepth:           { value: null },
+      uDepthResolution:      { value: new THREE.Vector2(1, 1) },
+      uProjectionMatrixInverse: { value: new THREE.Matrix4() },
+      uViewMatrixInverse:    { value: new THREE.Matrix4() },
+      uDepthBias:            { value: 2.0 },
+      uUseDepth:             { value: 0.0 },
+      uCloudOccupancy:       { value: null },
+      uUseOccupancy:         { value: 0.0 },
+      uOccCenter:            { value: new THREE.Vector2() },
+      uOccExtent:            { value: 1500 },
+    },
+    defines: {
+      CLOUD_STEPS: Math.max(8, Math.round(steps)),
+      CLOUD_LIGHT_STEPS: Math.max(1, Math.round(lightSteps)),
+      CLOUD_OCTAVES: Math.max(1, Math.round(octaves)),
+      CLOUD_DETAIL_OCTAVES: Math.max(0, Math.round(detailOctaves)),
+      CLOUD_USE_EROSION: useErosion ? 1 : 0,
+      CLOUD_LIGHT_MODE: lightMode ? 1 : 0,
+    },
+    vertexShader: VERTEX,
+    fragmentShader: FRAGMENT,
+    transparent: true,
+    depthWrite: false,
+    depthTest: false,         // occlusion is handled by tSceneDepth per pixel
+    // BackSide on a box that ENCLOSES the slab volume: the back faces always
+    // project over the volume's screen footprint from inside, outside, above or
+    // below (mirrors the planet shell's BackSide sphere). A flat plane left the
+    // clouds clipped at grazing angles from below, where horizon-bound rays hit
+    // the finite plane beyond its extent and produced no fragment.
+    side: THREE.BackSide,
+  });
+}
