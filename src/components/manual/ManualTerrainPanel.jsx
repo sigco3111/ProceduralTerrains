@@ -278,8 +278,8 @@ export default function ManualTerrainPanel({
     let nextHeight = null;
     if (event.key === 'ArrowUp') nextHeight = libraryHeight + step;
     if (event.key === 'ArrowDown') nextHeight = libraryHeight - step;
-    if (event.key === 'Home') nextHeight = MIN_LIBRARY_HEIGHT;
-    if (event.key === 'End') nextHeight = MAX_LIBRARY_HEIGHT;
+    if (event.key === '홈') nextHeight = MIN_LIBRARY_HEIGHT;
+    if (event.key === '끝') nextHeight = MAX_LIBRARY_HEIGHT;
     if (nextHeight == null) return;
     event.preventDefault();
     onLibraryHeightChange?.(clampLibraryHeight(nextHeight, event.currentTarget));

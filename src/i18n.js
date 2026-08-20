@@ -1326,8 +1326,8 @@ const DICT = {
   // === 자주 쓰이는 키 ===
   "Insert": "Insert",
   "Delete": "삭제",
-  "Home": "Home",
-  "End": "End",
+  "Home": "홈",
+  "End": "끝",
   "Page Up": "Page Up",
   "Page Down": "Page Down",
   "PageUp": "PageUp",
@@ -6622,6 +6622,9 @@ const DICT = {
   "intel uhd": "Intel UHD",
   "mali-g": "Mali-G",
   "nvidia": "NVIDIA",
+
+  "Load \"${scene.label}\" before capturing it": "캡처 전에 \"${scene.label}\"을(를) 먼저 불러오세요",
+  "Water baseline \"${sceneId}\" requires ${scene.worldMode} mode": "물 기준 \"${sceneId}\"은(는) ${scene.worldMode} 모드가 필요합니다",
 
 };
 
