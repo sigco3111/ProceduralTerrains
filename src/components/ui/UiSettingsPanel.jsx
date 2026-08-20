@@ -15,7 +15,7 @@ export default function UiSettingsPanel({ open, prefs, onChange, onClose }) {
   const set = (patch) => onChange({ ...prefs, ...patch });
 
   return (
-    <div className="ui-settings-overlay" role="dialog" aria-modal="true" aria-label="UI settings">
+    <div className="ui-settings-overlay" role="dialog" aria-modal="true" aria-label="UI 설정">
       <button type="button" className="ui-settings-backdrop" aria-label="설정 닫기" onClick={onClose} />
       <div className="ui-settings-panel">
         <header className="ui-settings-header">

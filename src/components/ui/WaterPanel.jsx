@@ -265,7 +265,7 @@ export default function WaterPanelInner({
         {downgraded && (
           <p className="section-hint warning">
             Rendering as {effectiveLabel}
-            {isInfinite && val(params, 'waterAutoDowngradeInfinite') ? ' (auto-downgrade active)' : ''}
+            {isInfinite && val(params, 'waterAutoDowngradeInfinite') ? ' (자동 다운그레이드 활성)' : ''}
             {isPlanet && selectedRealistic ? ' (planet spherical fallback)' : ''}
           </p>
         )}
@@ -386,7 +386,7 @@ export default function WaterPanelInner({
                 value={val(params, 'waterBiomeColorEnabled')}
                 onChange={(v) => onParam('waterBiomeColorEnabled', v)}
                 settingId="water.waterBiomeColorEnabled"
-                info="Smoothly adapts water tint to the local procedural biome while preserving the selected base colors."
+                info="선택한 기본 색상을 유지하면서 로컬 절차적 바이옴에 물 색조를 부드럽게 적응시킵니다."
               />
               {val(params, 'waterBiomeColorEnabled') && (
                 <SliderCtl
@@ -667,7 +667,7 @@ export default function WaterPanelInner({
           options={WATER_BASELINE_SCENES}
           onChange={setBaselineScene}
           settingId="water.waterBaselineScene"
-          info="Load a fixed terrain, camera, water preset, and time of day for before/after comparisons."
+          info="전후 비교를 위해 고정된 지형, 카메라, 물 프리셋, 시간을 로드합니다."
         />
         <button
           type="button"
@@ -732,7 +732,7 @@ export default function WaterPanelInner({
             ? 'Export water masks from the tile height field, or use the Export panel for GLB output.'
             : isInfinite
               ? 'Mask export samples the current procedural height field at the board scale.'
-              : 'Mask export uses planet height sampling where available; GLB export includes the ocean shell.'}
+              : '마스크 내보내기는 가능한 경우 행성 높이 샘플링을 사용합니다. GLB 내보내기에는 해양 셸이 포함됩니다.'}
         </p>
         <button type="button" className="action-btn" onClick={() => onExportWaterMasks?.({ exportWaterMask: true, exportDepthMap: true })}>물 + 깊이 마스크 내보내기</button>
         <button type="button" className="action-btn" onClick={() => onExportWaterMasks?.({ exportShorelineMask: true, exportFoamMask: true })}>해안선 + 거품 마스크 내보내기</button>

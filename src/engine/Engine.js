@@ -3082,7 +3082,7 @@ export class Engine {
           if (this._pendingGraphCompileSig !== compiled.program.sig) return result;
           if (result?.error) {
             this._graphProgram = this._pendingGraphFallbackProgram;
-            this._graphDiagnostics = [{ code: 'shader-compile', message: 'Terrain graph shader compilation failed. The last valid terrain is still active.' }];
+            this._graphDiagnostics = [{ code: 'shader-compile', message: '지형 그래프 셰이더 컴파일 실패. 마지막 유효한 지형이 여전히 활성 상태입니다.' }];
             this._syncCpuHeightProgram();
             this.cb.onGraphState?.({ valid: false, compiling: false, compilingNodeIds: [], diagnostics: structuredClone(this._graphDiagnostics), slotCount: this._graphProgram?.slotCount || 0, colorSlotCount: this._graphProgram?.colorSlotCount || 0 });
             if (!silent) this.cb.onToast?.(this._graphDiagnostics[0].message);
@@ -5091,7 +5091,7 @@ export class Engine {
     this._bootWatchdogTimer = setTimeout(() => {
       this._bootWatchdogTimer = null;
       if (this._disposed || !this._bootPending || !this._bootFallbackFrameReady) return;
-      console.warn('[boot] interactive startup watchdog elapsed', this._bootReadinessSnapshot());
+      console.warn('[boot] 대화형 시작 워치독 경과', this._bootReadinessSnapshot());
       this.cb.onStatus?.('전체 화질 지형 및 물을 여전히 준비 중…', true);
       // Keep the safety frame behind the overlay. Performance work may take
       // longer, but an unfinished or low-detail terrain is never a normal
@@ -5157,7 +5157,7 @@ export class Engine {
     return this._releaseBootFallback(reason, { render: false });
   }
 
-  _completeBootIfQualityReady(reason = 'quality upgrades ready') {
+  _completeBootIfQualityReady(reason = '품질 업그레이드 준비 완료') {
     if (this._qualityPending === false || this._disposed) return false;
 
     const nodeMode = this.projectMode === 'nodes';
@@ -5268,7 +5268,7 @@ export class Engine {
   _releaseBootFallback(reason = 'fallback', { render = true } = {}) {
     if (!this._bootPending || this._disposed) return false;
 
-    const log = (reason === 'quality upgrades ready' || reason === '인터랙티브 지형 준비 완료')
+    const log = (reason === '품질 업그레이드 준비 완료' || reason === '인터랙티브 지형 준비 완료')
       ? console.info
       : console.warn;
     log(`[boot] releasing fallback: ${reason}`);
@@ -5276,7 +5276,7 @@ export class Engine {
       try {
         this._renderInitialStudioFrame();
       } catch (error) {
-        console.warn('Fallback frame render failed', error);
+        console.warn('대체 프레임 렌더 실패', error);
       }
     }
 
@@ -6656,7 +6656,7 @@ export class Engine {
       }
     }
 
-    throw failures[failures.length - 1] || new Error('unknown WebGPU module import failure');
+    throw failures[failures.length - 1] || new Error('알 수 없는 WebGPU 모듈 가져오기 실패');
   }
 
   _runErosionWorker({ width, height, heightmap, params, onProgress }) {

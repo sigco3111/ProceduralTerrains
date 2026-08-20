@@ -276,7 +276,7 @@ export class ManualTerrainModeManager {
     this.group.visible = true;
     this._syncVisuals();
     this._emit();
-    if (!silent) this.onToast?.('Manual Terrain — drag a shape onto the terrain, then use M / R / S to transform it');
+    if (!silent) this.onToast?.('수동 지형 — 모양을 지형으로 끌어다 놓고 M / R / S로 변형하세요');
   }
 
   disable() {
@@ -433,7 +433,7 @@ export class ManualTerrainModeManager {
     this._emit({ inspectorRequested: next });
     if (!silent) {
       this.onToast?.(next
-        ? 'Surface & Props Paint — left drag paints · Alt + left drag pans · right drag orbits'
+        ? '표면 및 프롭 페인트 — 왼쪽 드래그로 페인트 · Alt + 왼쪽 드래그로 팬 · 오른쪽 드래그로 궤도 회전'
         : '표면 & 소품 페인트 종료');
     }
   }
@@ -949,7 +949,7 @@ export class ManualTerrainModeManager {
       const paintingProps = this.texturePaint.mode === 'props';
       const label = paintingProps
         ? `페인팅된 지형 소품 (${this.texturePaint.tool})`
-        : `Painted terrain texture (${this.texturePaint.tool})`;
+        : `페인트된 지형 텍스처 (${this.texturePaint.tool})`;
       this._emit({
         documentChanged: true,
         surfaceChanged: true,

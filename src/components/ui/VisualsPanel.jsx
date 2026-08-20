@@ -173,7 +173,7 @@ export default function VisualsPanel({ ctx }) {
             value={!!val(params, 'visualsDitheringEnabled')}
             onChange={(v) => onParam('visualsDitheringEnabled', v)}
             settingId="visuals.visualsDitheringEnabled"
-            info="Applies visible ordered 4×4 dithering with adjustable color depth and pattern size."
+            info="조정 가능한 색상 깊이와 패턴 크기로 보이는 정렬된 4×4 디더링을 적용합니다."
           />
           <SliderCtl
             def={CAMERA_SLIDERS.ditheringStrength}
@@ -202,7 +202,7 @@ export default function VisualsPanel({ ctx }) {
             value={!!val(params, 'visualsCrtEnabled')}
             onChange={(v) => onParam('visualsCrtEnabled', v)}
             settingId="visuals.visualsCrtEnabled"
-            info="Adds adjustable scanlines, RGB mask, lens curvature, analog noise, and edge falloff."
+            info="조정 가능한 스캔라인, RGB 마스크, 렌즈 곡률, 아날로그 노이즈, 가장자리 감쇠를 추가합니다."
           />
           <SliderCtl
             def={CAMERA_SLIDERS.crtStrength}
@@ -231,7 +231,7 @@ export default function VisualsPanel({ ctx }) {
             value={!!val(params, 'visualsChromaticAberrationEnabled')}
             onChange={(v) => onParam('visualsChromaticAberrationEnabled', v)}
             settingId="visuals.visualsChromaticAberrationEnabled"
-            info="Separates red and blue channels toward the lens edges and combines with every other camera shader."
+            info="렌즈 가장자리를 향해 빨간색과 파란색 채널을 분리하고 다른 모든 카메라 셰이더와 결합합니다."
           />
           <SliderCtl
             def={CAMERA_SLIDERS.chromaticStrength}

@@ -447,7 +447,7 @@ export default function ImportMapsContent({ ctx }) {
         label="건물 가져오기"
         value={ctx.realWorldBuildingsVisible === true}
         onChange={(visible) => ctx.onRealWorldBuildingsVisible?.(visible)}
-        info="Fetch and show OpenStreetMap building volumes. Disabled by default to avoid public API rate limits."
+        info="OpenStreetMap 건물 볼륨을 가져와 표시합니다. 공개 API 요청 제한을 피하기 위해 기본적으로 비활성화됩니다."
         settingId="terrain.realWorldBuildings"
       />
       <RealWorldBrowser ctx={ctx} />

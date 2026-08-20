@@ -1,6 +1,6 @@
 export const BlenderPreset = {
   id: 'blender', label: '블렌더 씬',
-  description: 'GLB terrain package with baked material maps and scene notes.',
+  description: '베이크된 머티리얼 맵과 씬 노트가 포함된 GLB 지형 패키지.',
   defaults: {
     format: 'glb', meshRes: '512', texRes: '2048', includeMesh: true,
     includeSkirts: true, includeBase: true, bakeColor: true, bakeNormal: true,

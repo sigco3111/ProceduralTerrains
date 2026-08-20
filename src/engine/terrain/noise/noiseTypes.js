@@ -397,7 +397,7 @@ export const NOISE_TYPES = [
   {
     id: 'terrace', label: '테라스', category: 'modifier', badge: 'MOD',
     defaultBlend: 'replace', defaultStrength: 1.0,
-    desc: 'Quantizes the accumulated height into stepped terraces, plateaus, cliffs, and strata.',
+    desc: '누적된 높이를 계단식 테라스, 고원, 절벽, 지층으로 양자화합니다.',
     modKind: 'height',
     scaleKey: null, paKeys: ['count', 'smoothness'], pbKeys: [],
     params: [

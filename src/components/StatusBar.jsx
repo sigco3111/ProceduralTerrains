@@ -69,7 +69,7 @@ export default function StatusBar({
       <div className="sb-group sb-group-stats">
         {bgWork && (
           <>
-            <span className="sb-bgwork" title="Full-detail shaders are compiling in the background — brief hiccups are normal until this finishes">
+            <span className="sb-bgwork" title="전체 디테일 셰이더가 백그라운드에서 컴파일 중입니다 — 완료될 때까지 짧은 끊김이 정상입니다">
               <span className="status-dot busy" />
               {bgWork}
             </span>

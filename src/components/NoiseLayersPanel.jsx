@@ -436,7 +436,7 @@ export default function NoiseLayersPanel({ ctx, children }) {
           value={normalizeOutput}
           onChange={(value) => handleStackOutput({ normalizeOutput: value })}
           settingId="noise.stackNormalize"
-          info="Remap the raw stack by Min and Max, then apply a soft ceiling instead of hard flattening peaks."
+          info="최소와 최대 값으로 원시 스택을 다시 매핑한 다음, 봉우리를 단단히 평평하게 만드는 대신 부드러운 천장을 적용합니다."
         />
         <SliderCtl
           def={OUTPUT_MIN_DEF}

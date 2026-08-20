@@ -221,7 +221,7 @@ function GpuRendererSection({ perf, rendererInfo, onPerfSetting }) {
         <div className="gpu-cap-list">
           <CapabilityRow label="감지된 렌더러" value={rendererInfo?.activeBackendLabel || caps.detectedRenderer} />
           <CapabilityRow label="감지된 GPU" value={gpuInfo} title={caps.detectedGpu} />
-          <CapabilityRow label="GPU Timing" value={caps.gpuTiming?.supported ? '사용 가능' : '사용 불가'} />
+          <CapabilityRow label="GPU 타이밍" value={caps.gpuTiming?.supported ? '사용 가능' : '사용 불가'} />
           <CapabilityRow label="전력 환경설정" value={labelGpuPreference(activeGpuPreference)} />
           <CapabilityRow label="워커 렌더러" value={rendererInfo?.workerActive ? '활성' : '비활성'} />
           {perf.rendererBackend === 'webgpu' && !webgpuSupported && (

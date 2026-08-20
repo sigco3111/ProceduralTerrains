@@ -41,7 +41,7 @@ export const TERRAIN_GRADIENT_PRESETS = Object.freeze({
   }),
   river: Object.freeze({
     label: '강 계곡',
-    description: 'Dark wet channels, silty banks, muted floodplain vegetation, and cool weathered uplands.',
+    description: '어두운 습한 수로, 실트 둑, 톤 다운된 홍수터 식생, 시원한 풍화된 고지.',
     colors: Object.freeze(['#183a38', '#536448', '#81745a', '#9b9b91']),
     points: Object.freeze([0, 0.22, 0.58, 0.88]),
     variation: 0.2,
@@ -49,7 +49,7 @@ export const TERRAIN_GRADIENT_PRESETS = Object.freeze({
   }),
   canyon: Object.freeze({
     label: '퇴적 협곡',
-    description: 'Shadowed canyon floors, oxidized sandstone walls, pale shelves, and sun-bleached rims.',
+    description: '그림자가 진 협곡 바닥, 산화된 사암 벽, 창백한 선반, 햇볕에 바랜 가장자리.',
     colors: Object.freeze(['#3a302b', '#76503c', '#a06d48', '#c4a57f']),
     points: Object.freeze([0, 0.24, 0.64, 0.9]),
     variation: 0.22,

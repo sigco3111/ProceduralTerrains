@@ -283,7 +283,7 @@ export default function ColorPalettePanel({
           <span className="palette-generator-title">절차적 생성기</span>
         </div>
         <div className="row">
-          <div className="label-with-icon" data-tooltip="The style guidelines used by the procedural color generator (e.g. Desert, Lush, Toxic)">
+          <div className="label-with-icon" data-tooltip="절차적 색상 생성기에 사용되는 스타일 가이드라인 (예: 사막, 울창, 유독)">
             <span className="setting-icon">
               <svg viewBox="0 0 16 16" fill="none">
                 <circle cx="8" cy="8" r="5" stroke="currentColor" strokeWidth="1.2" />
@@ -340,7 +340,7 @@ export default function ColorPalettePanel({
             </button>
           </div>
         </div>
-        <button type="button" className="action-btn primary palette-generate-btn" onClick={handleGenerate} data-tooltip="Procedurally create a new color scheme for all height bands based on the seed and theme">
+        <button type="button" className="action-btn primary palette-generate-btn" onClick={handleGenerate} data-tooltip="시드와 테마를 기반으로 모든 고도 밴드의 새 색상표를 절차적으로 생성합니다">
           <svg viewBox="0 0 16 16" fill="none">
             <path d="M8 2v4M8 10v4M2 8h4M10 8h4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
             <circle cx="8" cy="8" r="2.5" stroke="currentColor" strokeWidth="1.2" />

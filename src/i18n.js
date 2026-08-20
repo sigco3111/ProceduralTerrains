@@ -2587,7 +2587,7 @@ const DICT = {
   "Face grid": "Face grid"
   "Failed sign-ins · 24h": "로그인 실패 · 24시간"
   "Fallback Mode": "Fallback Mode"
-  "Fallback frame render failed": "Fallback frame render failed"
+  "Fallback frame render failed": "대체 프레임 렌더 실패"
   "Falling": "낙하"
   "Fast Shadows": "Fast Shadows"
   "Fast Shadows (analytic)": "Fast Shadows (analytic)"
@@ -2668,7 +2668,7 @@ const DICT = {
   "GPU / Renderer": "GPU / 렌더러"
   "GPU Preference": "GPU 선호"
   "GPU Renderer": "GPU 렌더러"
-  "GPU Timing": "GPU Timing"
+  "GPU Timing": "GPU 타이밍"
   "GPU info hidden by browser": "GPU 정보가 브라우저에 의해 숨겨짐"
   "GPU info unavailable": "GPU info unavailable"
   "GPU preference": "GPU preference"
@@ -2944,7 +2944,7 @@ const DICT = {
   "Micro Detail": "미세 디테일"
   "Micro Wave Detail": "Micro Wave Detail"
   "Milford Sound": "밀포드 사운드"
-  "Mineral Scale": "Mineral Scale"
+  "Mineral Scale": "광물 스케일"
   "Mineral Variation": "광물 변화"
   "Minimal grid density for chunks near the horizon": "지평선 근처 청크의 최소 그리드 밀도"
   "Minimum Caustics Depth": "Minimum Caustics Depth"
@@ -3092,7 +3092,7 @@ const DICT = {
   "Painted manual terrain surface or props": "Painted manual terrain surface or props"
   "Painted terrain": "Painted terrain"
   "Painted terrain props (${this.texturePaint.tool})": "페인팅된 지형 소품 (${this.texturePaint.tool})"
-  "Painted terrain texture (${this.texturePaint.tool})": "Painted terrain texture (${this.texturePaint.tool})"
+  "Painted terrain texture (${this.texturePaint.tool})": "페인트된 지형 텍스처 (${this.texturePaint.tool})"
   "Palette Influence": "팔레트 영향"
   "Particles": "파티클"
   "Password changed. Your other sessions were signed out.": "Password changed. Your other sessions were signed out."
@@ -3709,7 +3709,7 @@ const DICT = {
   "Tropical Ocean": "열대 해양"
   "Tropical Ocean Planet": "열대 바다 행성"
   "Twist": "비틀기"
-  "UI settings": "UI settings"
+  "UI settings": "UI 설정"
   "Underwater Mode": "수중 모드"
   "Underwater caustics enabled": "수중 굴절광 활성화"
   "Underwater composite shader did not become ready": "수중 합성 셰이더가 준비되지 않음"
@@ -4144,7 +4144,7 @@ const DICT = {
   "props trees broadleaf conifer forest size height": "props trees broadleaf conifer forest size height"
   "quadro rtx": "quadro rtx"
   "quality profile performance": "quality profile performance"
-  "quality upgrades ready": "quality upgrades ready"
+  "quality upgrades ready": "품질 업그레이드 준비 완료"
   "radeon pro": "radeon pro"
   "real world earth latitude coordinates custom area import": "real world earth latitude coordinates custom area import"
   "real world earth longitude coordinates custom area import": "real world earth longitude coordinates custom area import"
@@ -4255,10 +4255,10 @@ const DICT = {
   "unavailable on this browser/device": "이 브라우저/디바이스에서 사용할 수 없음"
   "underwater submerged camera dive fog tint": "underwater submerged camera dive fog tint"
   "uniform float uEps;": "uniform float uEps;"
-  "unknown WebGPU module import failure": "unknown WebGPU module import failure"
+  "unknown WebGPU module import failure": "알 수 없는 WebGPU 모듈 가져오기 실패"
   "unknown time": "알 수 없는 시간"
   "useAuth must be used inside AuthProvider": "useAuth는 AuthProvider 내부에서 사용해야 합니다"
-  "useLoading must be used within a LoadingProvider": "useLoading must be used within a LoadingProvider"
+  "useLoading must be used within a LoadingProvider": "useLoading은 LoadingProvider 내에서 사용되어야 합니다"
   "usePopup must be used inside PopupProvider.": "usePopup must be used inside PopupProvider."
   "varying vec3 vTerrainPreviewNormal;": "varying vec3 vTerrainPreviewNormal;"
   "view radius streaming load": "view radius streaming load"
@@ -6232,6 +6232,183 @@ const DICT = {
   "THREE.TransformControls: The second parameter \"domElement\" is now mandatory.": "THREE.TransformControls: 두 번째 매개변수 \"domElement\"가 이제 필수입니다.",
   ". All geometries must have compatible attributes; make sure \"": ". 모든 지오메트리는 호환되는 속성을 가져야 합니다; 다음을 확인하세요 \"",
   "THREE.GLTFExporter: Could not export animation track \"%s\".": "THREE.GLTFExporter: 애니메이션 트랙 \"%s\"을(를) 내보낼 수 없습니다.",
+
+  "  Detected GPU: ${((n=s.rendererBackend.capabilities)==null?void 0:n.detectedGpu)||\"unavailable\"}": "  감지된 GPU: ${((n=s.rendererBackend.capabilities)==null?void 0:n.detectedGpu)||\"unavailable\"}",
+  "  Mode: ${s.summary.mode}   State: ${s.summary.state}   Quality: ${s.summary.qualityPreset}": "  모드: ${s.summary.mode}   상태: ${s.summary.state}   품질: ${s.summary.qualityPreset}",
+  " (auto-downgrade active)": " (자동 다운그레이드 활성)",
+  " Bank  / ": " 좌우 기울이기  / ",
+  " Cruise speed  /  Click to lock mouse": " 순항 속도  /  클릭하여 마우스 잠금",
+  " Jump/Swim up  · ": " 점프/수영 위로  · ",
+  " Look  · ": " 보기  · ",
+  " Pitch/bank  / ": " 상하/좌우 기울이기  / ",
+  " Run  · ": " 달리기  · ",
+  " Speed  · ": " 속도  · ",
+  " Throttle/brake  / ": " 가속/감속  / ",
+  " Up/Down  ·  Click to lock mouse": " 위/아래  ·  클릭하여 마우스 잠금",
+  " attribute.": " 속성.",
+  " morphAttribute.": " 모프 속성.",
+  " not found. Using fallback type ": " 을(를) 찾을 수 없음. 대체 타입 사용: ",
+  " texture units while this GPU supports only ": " 텍스처 유닛을 요청했지만 이 GPU는 ",
+  "\" attribute exists among all geometries, or in none of them.": "\" 속성은 모든 지오메트리에 존재하거나 아무것에도 존재하지 않아야 합니다.",
+  "\"string\" type argument expected": "\"string\" 타입 인자가 필요합니다",
+  "${$.mode||\"–\"} · ${y($.vertices||0)} verts · ${y($.triangles||0)} tris": "${$.mode||\"–\"} · ${y($.vertices||0)} 정점 · ${y($.triangles||0)} 삼각형",
+  "${((d=n.params)==null?void 0:d.preset)||\"alpine\"} terrain gradient": "${((d=n.params)==null?void 0:d.preset)||\"alpine\"} 지형 그라데이션",
+  "${((k=p[0])==null?void 0:k.name)||\"ZIP\"} import failed": "${((k=p[0])==null?void 0:k.name)||\"ZIP\"} 가져오기 실패",
+  "${((m=i.meta)==null?void 0:m.name)||\"Real-world\"} (${t.shortLabel})": "${((m=i.meta)==null?void 0:m.name)||\"실제 세계\"} (${t.shortLabel})",
+  "${(n==null?void 0:n.slotCount)||0} / 12 height · ${(n==null?void 0:n.colorSlotCount)||0} / 8 color": "${(n==null?void 0:n.slotCount)||0} / 12 높이 · ${(n==null?void 0:n.colorSlotCount)||0} / 8 색상",
+  "${E.username} will be signed out everywhere and unable to sign in until reactivated.": "${E.username} 님은 모든 기기에서 로그아웃되며 재활성화 전까지 로그인할 수 없습니다.",
+  "${E.username} will immediately lose access to administration data.": "${E.username} 님은 즉시 관리자 데이터에 대한 접근 권한을 잃게 됩니다.",
+  "${H.metadata.name} synced to the cloud.": "${H.metadata.name} 이(가) 클라우드에 동기화되었습니다.",
+  "${Math.floor(a/3600)}h ago": "${Math.floor(a/3600)}시간 전",
+  "${Xa(T)} has versions on this device and in the cloud. Choose the version to keep.": "${Xa(T)} 에는 이 기기와 클라우드에 버전이 있습니다. 유지할 버전을 선택하세요.",
+  "${Xa(T)} is now ${H}.": "${Xa(T)} 이(가) 현재 ${H} 입니다.",
+  "${a.toLocaleString()} × ${a.toLocaleString()} units": "${a.toLocaleString()} × ${a.toLocaleString()} 단위",
+  "${c.avg.toFixed(2)} ms (max ${c.max.toFixed(1)})": "${c.avg.toFixed(2)} ms (최대 ${c.max.toFixed(1)})",
+  "${de.revoked} session${de.revoked===1?\"\":\"s\"} revoked.": "${de.revoked} 개 세션${de.revoked===1?\"\":\"이\"} 해제되었습니다.",
+  "${e.type===\"river\"?\"River\":\"Road\"} ${t+1}": "${e.type===\"river\"?\"강\":\"도로\"} ${t+1}",
+  "${e===\"river\"?\"River\":\"Road\"}: click terrain to place points": "${e===\"river\"?\"강\":\"도로\"}: 지형을 클릭하여 점 배치",
+  "${g?\"Disable\":\"Enable\"} ${a}": "${a} ${g?\"비활성화\":\"활성화\"}",
+  "${n.label} is compiling": "${n.label} 컴파일 중",
+  "${nt.format(t.counts.activeUsers)} active": "${nt.format(t.counts.activeUsers)} 활성",
+  "${o===\"nodes\"?\"Nodes\":\"Procedural\"} terrain projects": "${o===\"nodes\"?\"노드\":\"프로시저럴\"} 지형 프로젝트",
+  "${r===\"terrain\"?\"Terrain\":\"Noise\"} nodes": "${r===\"terrain\"?\"지형\":\"노이즈\"} 노드",
+  "${s}m ago": "${s}분 전",
+  "${t.shortLabel} tiles could not be loaded.": "${t.shortLabel} 타일을 불러올 수 없습니다.",
+  "${u.label} accepts ${u.type===je?\"Color\":\"Height\"} cables": "${u.label} 은(는) ${u.type===je?\"색상\":\"높이\"} 케이블을 허용합니다",
+  "${u.requestedGpuPreferenceLabel||\"GPU\"} preference requested; browser may ignore it": "${u.requestedGpuPreferenceLabel||\"GPU\"} 환경설정 요청됨; 브라우저가 무시할 수 있음",
+  "${y.description} Click to add or drag onto the graph.": "${y.description} 클릭하여 추가하거나 그래프로 드래그하세요.",
+  ". .morphTargetsRelative must be consistent throughout all geometries.": ". 모든 지오메트리에서 morphTargetsRelative는 일관되어야 합니다.",
+  ". All geometries must have compatible attributes; make sure \"": ". 모든 지오메트리는 호환되는 속성을 가져야 합니다. 다음을 확인하세요: \"",
+  ". Make sure all geometries have the same number of attributes.": ". 모든 지오메트리의 속성 개수가 동일한지 확인하세요.",
+  ". The geometry must have either an index or a position attribute": ". 지오메트리에는 인덱스 또는 위치 속성이 있어야 합니다.",
+  "A continuous river trunk, converging tributaries, floodplain shaping, and damp valley color.": "연속된 강 본류, 합류하는 지류, 홍수터 형성, 축축한 계곡 색상.",
+  "A staged massif with shaped body, broken strata, scree, drainage, and alpine surface color.": "성형된 본체, 깨어진 지층, 암설, 배수, 알파인 표면 색상을 갖춘 단계적 산괴.",
+  "Adds adjustable scanlines, RGB mask, lens curvature, analog noise, and edge falloff.": "조정 가능한 스캔라인, RGB 마스크, 렌즈 곡률, 아날로그 노이즈, 가장자리 감쇠를 추가합니다.",
+  "All water quality modes are available. Best mode for high-quality water and screenshots.": "모든 수질 모드를 사용할 수 있습니다. 고품질 물과 스크린샷에 최적의 모드입니다.",
+  "Applies visible ordered 4×4 dithering with adjustable color depth and pattern size.": "조정 가능한 색상 깊이와 패턴 크기로 보이는 정렬된 4×4 디더링을 적용합니다.",
+  "Apply a curated global style theme including terrain shape, biomes, colors, and atmosphere": "지형 형태, 바이옴, 색상, 분위기를 포함한 엄선된 글로벌 스타일 테마를 적용합니다",
+  "Apply the baked erosion to the terrain. Toggle to compare Before / After. Disabled until you bake.": "베이크된 침식을 지형에 적용합니다. 토글하여 전/후를 비교하세요. 베이크하기 전에는 비활성화됩니다.",
+  "Asymmetric dune seas with slip faces, macro undulation, sand ripples, and warm desert grading.": "활사면, 매크로 잔물결, 모래 잔물결, 따뜻한 사막 그라데이션을 갖춘 비대칭 사구 바다.",
+  "Blends X/Y/Z projections so cliffs don't stretch. Off = cheaper planar world-XZ.": "절벽이 늘어나지 않도록 X/Y/Z 투영을 블렌드합니다. 끄기 = 더 저렴한 평면 world-XZ.",
+  "Broad combined landforms with mass shaping, strata, thermal weathering, and temperate color.": "대규모 성형, 지층, 열풍화, 온대 색상을 갖춘 광범위한 복합 지형.",
+  "Cloud sync is unavailable right now. Your local projects are safe on this device.": "현재 클라우드 동기화를 사용할 수 없습니다. 로컬 프로젝트는 이 기기에 안전하게 보관됩니다.",
+  "Dark wet channels, silty banks, muted floodplain vegetation, and cool weathered uplands.": "어두운 습한 수로, 실트 둑, 톤 다운된 홍수터 식생, 시원한 풍화된 고지.",
+  "DepthTexture format must be either THREE.DepthFormat or THREE.DepthStencilFormat": "DepthTexture 포맷은 THREE.DepthFormat 또는 THREE.DepthStencilFormat이어야 합니다",
+  "Engine presets currently package studio terrain exports; planet export keeps its native layout.": "엔진 프리셋은 현재 스튜디오 지형 내보내기를 패키징합니다. 행성 내보내기는 네이티브 레이아웃을 유지합니다.",
+  "Fetch and show OpenStreetMap building volumes. Disabled by default to avoid public API rate limits.": "OpenStreetMap 건물 볼륨을 가져와 표시합니다. 공개 API 요청 제한을 피하기 위해 기본적으로 비활성화됩니다.",
+  "Full-detail shaders are compiling in the background — brief hiccups are normal until this finishes": "전체 디테일 셰이더가 백그라운드에서 컴파일 중입니다 — 완료될 때까지 짧은 끊김이 정상입니다",
+  "GLB terrain package with baked material maps and scene notes.": "베이크된 머티리얼 맵과 씬 노트가 포함된 GLB 지형 패키지.",
+  "GLTFExporter: Only POSITION and NORMAL morph are supported.": "GLTFExporter: POSITION 및 NORMAL 모프만 지원됩니다.",
+  "Hover around the circular edge and click the highlighted ring to expand the disk.": "원형 가장자리를 호버하고 강조된 링을 클릭하여 디스크를 확장하세요.",
+  "Imported ${((ja=p.metadata)==null?void 0:ja.name)||\"terrain\"} into Manual Terrain": "${((ja=p.metadata)==null?void 0:ja.name)||\"terrain\"}을(를) 수동 지형으로 가져왔습니다",
+  "Load \"${t.label}\" before capturing it": "캡처하기 전에 \"${t.label}\"을(를) 로드하세요",
+  "Load a fixed terrain, camera, water preset, and time of day for before/after comparisons.": "전후 비교를 위해 고정된 지형, 카메라, 물 프리셋, 시간을 로드합니다.",
+  "Manual Terrain — drag a shape onto the terrain, then use M / R / S to transform it": "수동 지형 — 모양을 지형으로 끌어다 놓고 M / R / S로 변형하세요",
+  "Map container is being reused by another instance": "맵 컨테이너가 다른 인스턴스에서 재사용되고 있습니다",
+  "Map container not found.": "맵 컨테이너를 찾을 수 없습니다.",
+  "Mask export uses planet height sampling where available; GLB export includes the ocean shell.": "마스크 내보내기는 가능한 경우 행성 높이 샘플링을 사용합니다. GLB 내보내기에는 해양 셸이 포함됩니다.",
+  "Must add layer to map before using getCenter()": "getCenter()를 사용하기 전에 레이어를 맵에 추가해야 합니다",
+  "No nodes match “": "“와(과) 일치하는 노드가 없습니다",
+  "Number of chunks culled (hidden) because they are outside the camera view or behind the camera": "카메라 뷰 밖에 있거나 카메라 뒤에 있어 컬링(숨김)된 청크 수",
+  "Overpass query failed: ${f.remark}": "Overpass 쿼리 실패: ${f.remark}",
+  "Overpass request failed (${m.status})": "Overpass 요청 실패 (${m.status})",
+  "Packaging ${m.toUpperCase()}…": "${m.toUpperCase()} 패키징 중…",
+  "Page ": "페이지 ",
+  "Paint Mode — left drag paints · right drag orbits · Shift + wheel changes brush size": "페인트 모드 — 왼쪽 드래그로 페인트 · 오른쪽 드래그로 궤도 회전 · Shift + 휠로 브러시 크기 변경",
+  "Paint independent grass, flower, rock, and tree density directly onto Manual Terrain.": "수동 지형에 풀, 꽃, 바위, 나무 밀도를 독립적으로 페인트합니다.",
+  "Palette: ${e}": "팔레트: ${e}",
+  "Pixel ratio high: ${i.pixelRatio.toFixed(2)}": "픽셀 비율 높음: ${i.pixelRatio.toFixed(2)}",
+  "Please only hide this attribution when you are subscribed to React Flow Pro: ${ni}": "React Flow Pro를 구독할 때만 이 속성을 숨기세요: ${ni}",
+  "Press enter or space to select a node. Press delete to remove it and escape to cancel.": "Enter 또는 Space를 눌러 노드를 선택하세요. Delete를 눌러 제거하고 Esc를 눌러 취소하세요.",
+  "Press enter or space to select an edge. You can then press delete to remove it or escape to cancel.": "Enter 또는 Space를 눌러 엣지를 선택하세요. 그런 다음 Delete를 눌러 제거하거나 Esc를 눌러 취소할 수 있습니다.",
+  "Procedurally create a new color scheme for all height bands based on the seed and theme": "시드와 테마를 기반으로 모든 고도 밴드의 새 색상표를 절차적으로 생성합니다",
+  "Quantizes the accumulated height into stepped terraces, plateaus, cliffs, and strata.": "누적된 높이를 계단식 테라스, 고원, 절벽, 지층으로 양자화합니다.",
+  "Rain droplets in the hydraulic pass. More = deeper valleys/ravines, slower bake.": "수력 패스의 빗방울. 많을수록 더 깊은 계곡/협곡, 베이크가 느려집니다.",
+  "Raymarch step count. Higher = smoother clouds, lower FPS. Shared with Performance settings.": "레이마칭 단계 수. 높을수록 매끄러운 구름, FPS 감소. 성능 설정과 공유됩니다.",
+  "Recent activity${l?": "최근 활동${l?",
+  "Remap the raw stack by Min and Max, then apply a soft ceiling instead of hard flattening peaks.": "최소와 최대 값으로 원시 스택을 다시 매핑한 다음, 봉우리를 단단히 평평하게 만드는 대신 부드러운 천장을 적용합니다.",
+  "Reordered ${a.name}": "${a.name} 순서 변경됨",
+  "Secondary sun-direction march for soft self-shadowing (costlier). Shared with Performance settings.": "부드러운 자체 그림자를 위한 보조 태양 방향 행진 (비용이 더 많이 듭니다). 성능 설정과 공유됩니다.",
+  "Select a location ": "위치 선택 ",
+  "Separates red and blue channels toward the lens edges and combines with every other camera shader.": "렌즈 가장자리를 향해 빨간색과 파란색 채널을 분리하고 다른 모든 카메라 셰이더와 결합합니다.",
+  "Shadowed canyon floors, oxidized sandstone walls, pale shelves, and sun-bleached rims.": "그림자가 진 협곡 바닥, 산화된 사암 벽, 창백한 선반, 햇볕에 바랜 가장자리.",
+  "Show a bounded volumetric cloud layer that follows the camera across the infinite world.": "무한 세계에서 카메라를 따라가는 경계가 있는 볼류메트릭 구름 레이어를 표시합니다.",
+  "Smoothly adapts water tint to the local procedural biome while preserving the selected base colors.": "선택한 기본 색상을 유지하면서 로컬 절차적 바이옴에 물 색조를 부드럽게 적응시킵니다.",
+  "Studio": "스튜디오",
+  "Surface & Props Paint — left drag paints · Alt + left drag pans · right drag orbits": "표면 및 프롭 페인트 — 왼쪽 드래그로 페인트 · Alt + 왼쪽 드래그로 팬 · 오른쪽 드래그로 궤도 회전",
+  "THREE.BufferGeometry.toNonIndexed(): BufferGeometry is already non-indexed.": "THREE.BufferGeometry.toNonIndexed(): BufferGeometry가 이미 비인덱스입니다.",
+  "THREE.BufferGeometryUtils: .mergeGeometries() failed while trying to merge the ": "THREE.BufferGeometryUtils: 병합 시도 중 .mergeGeometries() 실패: ",
+  "THREE.Color: Unknown color ": "THREE.Color: 알 수 없는 색상 ",
+  "THREE.DataUtils.toHalfFloat(): Value out of range.": "THREE.DataUtils.toHalfFloat(): 값이 범위를 벗어났습니다.",
+  "THREE.ExtrudeGeometry: vec does not exist": "THREE.ExtrudeGeometry: vec가 존재하지 않습니다",
+  "THREE.GLTFExporter: Could not export animation track \"%s\".": "THREE.GLTFExporter: 애니메이션 트랙 \"%s\"을(를) 내보낼 수 없습니다.",
+  "THREE.GLTFExporter: Creating normalized normal attribute from the non-normalized one.": "THREE.GLTFExporter: 비정규화된 법선 속성에서 정규화된 법선 속성을 생성합니다.",
+  "THREE.GLTFExporter: Light decay may be lost. glTF is physically-based, and expects light.decay=2.": "THREE.GLTFExporter: 광원 감쇠가 손실될 수 있습니다. glTF는 물리 기반으로 light.decay=2를 기대합니다.",
+  "THREE.GLTFExporter: Merged metalnessMap and roughnessMap textures.": "THREE.GLTFExporter: metalnessMap과 roughnessMap 텍스처를 병합했습니다.",
+  "THREE.GLTFExporter: Morph target interpolation mode not yet supported. Using LINEAR instead.": "THREE.GLTFExporter: 모프 타겟 보간 모드가 아직 지원되지 않습니다. 대신 LINEAR를 사용합니다.",
+  "THREE.GLTFExporter: UV channels for metalnessMap and roughnessMap textures must match.": "THREE.GLTFExporter: metalnessMap과 roughnessMap 텍스처의 UV 채널이 일치해야 합니다.",
+  "THREE.ImageUtils.sRGBToLinear(): Unsupported image type. No color space conversion applied.": "THREE.ImageUtils.sRGBToLinear(): 지원되지 않는 이미지 유형입니다. 색상 공간 변환이 적용되지 않았습니다.",
+  "THREE.Line.computeLineDistances(): Computation only possible with non-indexed BufferGeometry.": "THREE.Line.computeLineDistances(): 비인덱스 BufferGeometry에서만 계산 가능합니다.",
+  "THREE.MathUtils: .setQuaternionFromProperEuler() encountered an unknown order: ": "THREE.MathUtils: .setQuaternionFromProperEuler() 알 수 없는 순서를 만남: ",
+  "THREE.Matrix4.makeOrthographic(): Invalid coordinate system: ": "THREE.Matrix4.makeOrthographic(): 잘못된 좌표계: ",
+  "THREE.Matrix4.makePerspective(): Invalid coordinate system: ": "THREE.Matrix4.makePerspective(): 잘못된 좌표계: ",
+  "THREE.Object3D.add: object not an instance of THREE.Object3D.": "THREE.Object3D.add: 객체가 THREE.Object3D의 인스턴스가 아닙니다.",
+  "THREE.PropertyBinding: Can not bind to morphTargetInfluences because node does not have a geometry.": "THREE.PropertyBinding: 노드에 지오메트리가 없으므로 morphTargetInfluences에 바인딩할 수 없습니다.",
+  "THREE.Raycaster: Unsupported camera type: ": "THREE.Raycaster: 지원되지 않는 카메라 유형: ",
+  "THREE.Texture: Property .encoding has been replaced by .colorSpace.": "THREE.Texture: .encoding 속성이 .colorSpace로 대체되었습니다.",
+  "THREE.TransformControls: The second parameter \"domElement\" is now mandatory.": "THREE.TransformControls: 이제 두 번째 매개변수 \"domElement\"가 필수입니다.",
+  "THREE.Triangle.getUV() has been renamed to THREE.Triangle.getInterpolation().": "THREE.Triangle.getUV()이(가) THREE.Triangle.getInterpolation()으로 이름이 변경되었습니다.",
+  "THREE.WebGLAttributes: Unsupported buffer data format: ": "THREE.WebGLAttributes: 지원되지 않는 버퍼 데이터 형식: ",
+  "THREE.WebGLCubeRenderTarget: option.encoding has been replaced by option.colorSpace.": "THREE.WebGLCubeRenderTarget: option.encoding이 option.colorSpace로 대체되었습니다.",
+  "THREE.WebGLRenderTarget: option.encoding has been replaced by option.colorSpace.": "THREE.WebGLRenderTarget: option.encoding이 option.colorSpace로 대체되었습니다.",
+  "THREE.WebGLRenderer.copyTextureToTexture3D: can only be used with WebGL2.": "THREE.WebGLRenderer.copyTextureToTexture3D: WebGL2에서만 사용할 수 있습니다.",
+  "THREE.WebGLRenderer.copyTextureToTexture3D: untested support for compressed srcTexture.": "THREE.WebGLRenderer.copyTextureToTexture3D: 압축된 srcTexture에 대한 테스트되지 않은 지원.",
+  "THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not THREE.WebGLRenderTarget.": "THREE.WebGLRenderer.readRenderTargetPixels: renderTarget가 THREE.WebGLRenderTarget이 아닙니다.",
+  "THREE.WebGLRenderer: Attempt to load unsupported compressed texture format in .setTextureCube()": "THREE.WebGLRenderer: .setTextureCube()에서 지원되지 않는 압축 텍스처 형식을 로드하려고 시도",
+  "THREE.WebGLRenderer: Attempt to load unsupported compressed texture format in .uploadTexture()": "THREE.WebGLRenderer: .uploadTexture()에서 지원되지 않는 압축 텍스처 형식을 로드하려고 시도",
+  "THREE.WebGLRenderer: Context Lost.": "THREE.WebGLRenderer: 컨텍스트 손실.",
+  "THREE.WebGLRenderer: Context Restored.": "THREE.WebGLRenderer: 컨텍스트 복원됨.",
+  "THREE.WebGLRenderer: Maximum number of simultaneously usable uniforms groups reached.": "THREE.WebGLRenderer: 동시에 사용할 수 있는 uniforms 그룹의 최대 수에 도달했습니다.",
+  "THREE.WebGLRenderer: Property .outputEncoding has been removed. Use .outputColorSpace instead.": "THREE.WebGLRenderer: .outputEncoding 속성이 제거되었습니다. 대신 .outputColorSpace를 사용하세요.",
+  "THREE.WebGLRenderer: Shader chunk \"%s\" has been deprecated. Use \"%s\" instead.": "THREE.WebGLRenderer: 셰이더 청크 \"%s\"이(가) 더 이상 사용되지 않습니다. 대신 \"%s\"을(를) 사용하세요.",
+  "THREE.WebGLRenderer: Texture marked for update but no image data found.": "THREE.WebGLRenderer: 업데이트용으로 표시된 텍스처이지만 이미지 데이터를 찾을 수 없습니다.",
+  "THREE.WebGLRenderer: Unable to use RectAreaLight. Missing WebGL extensions.": "THREE.WebGLRenderer: RectAreaLight를 사용할 수 없습니다. WebGL 확장이 누락되었습니다.",
+  "THREE.WebGLRenderer: Use UnsignedInt248Type for DepthStencilFormat DepthTexture.": "THREE.WebGLRenderer: DepthStencilFormat DepthTexture에는 UnsignedInt248Type을 사용하세요.",
+  "THREE.WebGLRenderer: Use UnsignedShortType or UnsignedIntType for DepthFormat DepthTexture.": "THREE.WebGLRenderer: DepthFormat DepthTexture에는 UnsignedShortType 또는 UnsignedIntType을 사용하세요.",
+  "THREE.WebGLTextures: THREE.Data3DTexture and THREE.DataArrayTexture only supported with WebGL2.": "THREE.WebGLTextures: THREE.Data3DTexture 및 THREE.DataArrayTexture는 WebGL2에서만 지원됩니다.",
+  "THREE.WebGLTextures: sRGB encoded textures have to use RGBAFormat and UnsignedByteType.": "THREE.WebGLTextures: sRGB 인코딩 텍스처는 RGBAFormat 및 UnsignedByteType을 사용해야 합니다.",
+  "THREE.WebXRManager: Cannot change framebuffer scale while presenting.": "THREE.WebXRManager: 프레젠테이션 중에는 프레임버퍼 스케일을 변경할 수 없습니다.",
+  "THREE.WebXRManager: Cannot change reference space type while presenting.": "THREE.WebXRManager: 프레젠테이션 중에는 참조 공간 유형을 변경할 수 없습니다.",
+  "Terrain graph shader compilation failed. The last valid terrain is still active.": "지형 그래프 셰이더 컴파일 실패. 마지막 유효한 지형이 여전히 활성 상태입니다.",
+  "The style guidelines used by the procedural color generator (e.g. Desert, Lush, Toxic)": "절차적 색상 생성기에 사용되는 스타일 가이드라인 (예: 사막, 울창, 유독)",
+  "This graph needs ${m} parameter slots; the realtime limit is ${Dl}.": "이 그래프에는 ${m}개의 매개변수 슬롯이 필요합니다. 실시간 한도는 ${Dl}입니다.",
+  "Three Terrain": "3개 지형",
+  "Transformed ${((m=this.selectedShape)==null?void 0:m.name)??\"terrain shape\"}": "${((m=this.selectedShape)==null?void 0:m.name)??\"terrain shape\"} 변형됨",
+  "UniformsUtils: Textures of render targets cannot be cloned via cloneUniforms() or mergeUniforms().": "UniformsUtils: 렌더 타겟의 텍스처는 cloneUniforms() 또는 mergeUniforms()를 통해 복제할 수 없습니다.",
+  "Unsupported working color space, \"${i}\".": "지원되지 않는 작업 색상 공간, \"${i}\".",
+  "Water baseline \"${e}\" requires ${t.worldMode} mode": "물 기준 \"${e}\"에는 ${t.worldMode} 모드가 필요합니다",
+  "Water baseline captured: ${t.label}": "물 기준 캡처됨: ${t.label}",
+  "Water preset: ${e}": "물 프리셋: ${e}",
+  "WebGLRenderer: Floating point depth texture requires WebGL2.": "WebGLRenderer: 부동 소수점 깊이 텍스처에는 WebGL2가 필요합니다.",
+  "[boot] interactive startup watchdog elapsed": "[boot] 대화형 시작 워치독 경과",
+  "[boot] releasing fallback: ${e}": "[boot] 폴백 해제 중: ${e}",
+  "[boot] safe placeholder ${(t??0).toFixed(0)}ms; elapsed ${(performance.now()-e).toFixed(0)}ms": "[boot] 안전한 자리 표시자 ${(t??0).toFixed(0)}ms; 경과 ${(performance.now()-e).toFixed(0)}ms",
+  "[boot] water init ${(performance.now()-t).toFixed(0)}ms (precompiled)": "[boot] 물 초기화 ${(performance.now()-t).toFixed(0)}ms (사전 컴파일됨)",
+  "[object Array]": "[객체 배열]",
+  "[webgl] context lost; aborting shader waits": "[webgl] 컨텍스트 손실; 셰이더 대기 중단",
+  "[webgl] context restored": "[webgl] 컨텍스트 복원됨",
+  "byte normalized": "바이트 정규화",
+  "callback is not a function": "콜백이 함수가 아닙니다",
+  "invalid distance": "잘못된 거리",
+  "invalid gzip data": "잘못된 gzip 데이터",
+  "invalid zlib data: ": "잘못된 zlib 데이터: ",
+  "short normalized": "short 정규화",
+  "transition not found": "전환을 찾을 수 없음",
+  "unknown compression type ": "알 수 없는 압축 유형 ",
+  "unsigned byte normalized": "unsigned byte 정규화",
+  "useBatchContext must be used within a BatchProvider": "useBatchContext는 BatchProvider 내에서 사용되어야 합니다",
+  "wrong event specified:": "잘못된 이벤트가 지정됨:",
+  "wrong listener type: ": "잘못된 리스너 유형: ",
 
 };
 
