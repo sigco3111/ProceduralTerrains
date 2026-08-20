@@ -174,7 +174,7 @@ export class PlanetExporter {
     quadMesh.material = bakeMat;
 
     const group = new THREE.Group();
-    group.name = 'Planet';
+    group.name = '행성';
     const vps = meshRes + 1;
     const tmp = new THREE.Vector3();
 
@@ -246,7 +246,7 @@ export class PlanetExporter {
 
     // --- water shell ---
     if (exportWater && seaLevel > 0.5) {
-      onToast('Adding ocean shell…');
+      onToast('해양 셸 추가 중…');
       const waterGeo = new THREE.SphereGeometry(radius + seaLevel, 128, 96);
       const waterMat = new THREE.MeshStandardMaterial({
         name: 'Planet_Ocean', color: 0x12506a,

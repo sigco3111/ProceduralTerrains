@@ -229,7 +229,7 @@ export class TerrainHeightSampler {
       wetland: clamp((weights.wetland ?? 0) + (overrides.wetland ?? 0), 0, 1),
       mountains: clamp((weights.mountains ?? 0) + (overrides.mountains ?? 0), 0, 1),
     } : weights;
-    let label = 'Forest';
+    let label = '숲';
     let score = 0.18;
     for (const [key, value] of Object.entries(painted)) {
       if (value > score) {

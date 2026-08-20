@@ -6,7 +6,7 @@
 // TIME_ELAPSED query around the frame's GL work and read finished results on a
 // later frame. We NEVER block waiting on a result and NEVER force a GPU sync.
 //
-// If the extension is unavailable the profiler reports `supported: false` and
+// If the extension is unavailable the profiler reports `지원: 아니오` and
 // the overlay shows "GPU timing: unavailable on this browser/device".
 // ============================================================================
 

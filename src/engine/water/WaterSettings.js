@@ -232,12 +232,12 @@ export function valWater(params, key) {
 
 export const WORLD_MODE_WATER_LABELS = {
   studio: 'Tile',
-  infinite: 'Infinite World',
-  planet: 'Planet',
+  infinite: '무한 세계',
+  planet: '행성',
 };
 
 export const WORLD_MODE_WATER_HINTS = {
-  studio: 'All water quality modes are available. Best mode for high-quality water and screenshots.',
+  studio: '모든 수질 모드를 사용할 수 있습니다. 고품질 물과 스크린샷에 최적의 모드입니다.',
   infinite: 'Water plane follows the camera across streamed chunks. Colors, sea level, and mode changes apply live.',
   planet: 'Spherical ocean shell wraps the planet. Colors and animation apply live; Realistic modes render as Legacy until spherical volumetric water is ready.',
 };

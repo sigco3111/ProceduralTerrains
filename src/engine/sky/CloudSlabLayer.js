@@ -315,7 +315,7 @@ export class CloudSlabLayer {
 
     const done = promise.then((result) => {
       if (result?.ready === false || result?.aborted === true) {
-        throw new Error('Cloud shader did not become ready');
+        throw new Error('클라우드 셰이더가 준비되지 않았습니다');
       }
       return result;
     });

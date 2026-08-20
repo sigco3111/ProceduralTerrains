@@ -110,7 +110,7 @@ export class PlayerController {
     if (iLen > 1e-6) { ix /= iLen; iz /= iLen; }
 
     const running = (locked || touch) && (keys.has('ShiftLeft') || keys.has('ShiftRight'));
-    const jumpKey = (locked || touch) && keys.has('Space');
+    const jumpKey = (locked || touch) && keys.has('우주');
     const downKey = (locked || touch) && (keys.has('ControlLeft') || keys.has('KeyC'));
 
     // jump buffering (so a press just before landing still jumps)

@@ -4,7 +4,7 @@
 //
 // Data flow: the engine writes into the shared `profiler` singleton every
 // frame; this hook reads a snapshot on an interval (NOT every render frame) and
-// merges in the engine's structured diagnostics + the app's loading tasks. The
+// merges in the engine'의 구조화된 진단 + 앱's loading tasks. The
 // overlay/badge re-render only at the poll rate, so the debug UI can never
 // become a per-frame performance problem itself.
 // ============================================================================

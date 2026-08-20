@@ -214,7 +214,7 @@ export class PlanetController {
     if (wl > 1e-6) { wx /= wl; wy /= wl; wz /= wl; }
 
     const running = canInput && (keys.has('ShiftLeft') || keys.has('ShiftRight'));
-    const jumpKey = canInput && keys.has('Space');
+    const jumpKey = canInput && keys.has('우주');
     if (jumpKey && !this._jumpHeld) this._jumpBuf = cfg.jumpBufferTime;
     else this._jumpBuf = Math.max(0, this._jumpBuf - dt);
     this._jumpHeld = jumpKey;

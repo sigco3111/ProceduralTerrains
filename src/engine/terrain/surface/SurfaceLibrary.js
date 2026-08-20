@@ -131,7 +131,7 @@ function writeSelectionStore(store) {
   }
 }
 
-// Persisted (localStorage) "which variant is the default for this material" choice.
+// Persisted (localStorage) "이 머티리얼의 기본 변형" choice.
 export function getActiveVariant(materialId) {
   return readSelectionStore()[materialId] || 'base';
 }

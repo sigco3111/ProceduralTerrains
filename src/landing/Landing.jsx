@@ -260,7 +260,7 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
     };
     reader.readAsText(file);
   };
-  const hasFileDrag = (e) => Array.from(e.dataTransfer?.types ?? []).includes('Files');
+  const hasFileDrag = (e) => Array.from(e.dataTransfer?.types ?? []).includes('파일');
   const onFileDragEnter = (e) => {
     if (!hasFileDrag(e)) return;
     e.preventDefault();
@@ -288,7 +288,7 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
   };
   const renameProject = async (project) => {
     if (!project || projectActionBusy) return;
-    const nextName = (await showPrompt({ title: 'Rename project', inputLabel: 'Project name', initialValue: project.metadata.name, confirmLabel: 'Rename', maxLength: 120 }))?.trim();
+    const nextName = (await showPrompt({ title: '프로젝트 이름 변경', inputLabel: '프로젝트 이름', initialValue: project.metadata.name, confirmLabel: '이름 변경', maxLength: 120 }))?.trim();
     if (!nextName || nextName === project.metadata.name) return;
     setProjectActionBusy(true);
     try { await projectStore.rename(project, nextName); } catch { /* the project remains selected */ }
@@ -318,7 +318,7 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
     const cloudProject = cloudEntry?.cloudProject;
     const isSynced = cloudEntry?.state === 'synced';
     const VisibilityIcon = VISIBILITY_ICONS[cloudProject?.visibility] || Lock;
-    const syncLabel = isSynced ? 'Synced to cloud' : 'Not synced to cloud';
+    const syncLabel = isSynced ? '클라우드에 동기화됨' : '클라우드에 동기화되지 않음';
     const visibilityLabel = cloudProject?.visibility ? `Cloud visibility: ${cloudProject.visibility}` : '';
     const SyncIcon = isSynced ? CloudCheck : CloudOff;
     return (
@@ -330,7 +330,7 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
           {cloudProject && <span className={`lp-card-visibility-icon ${cloudProject.visibility}`}><VisibilityIcon size={12} aria-hidden /></span>}
         </span>
         <span className={`lp-template-kind-badge ${project.terrain.workspacePreset === 'real-terrain' ? 'real' : project.terrain.editorMode}`}>
-          {project.terrain.workspacePreset === 'real-terrain' ? 'Real terrain' : project.terrain.editorMode === 'nodes' ? 'Nodes' : project.terrain.editorMode === 'manual' ? 'Manual' : 'Procedural'}
+          {project.terrain.workspacePreset === 'real-terrain' ? '실제 지형' : project.terrain.editorMode === 'nodes' ? '노드' : project.terrain.editorMode === 'manual' ? '매뉴얼' : '절차적'}
         </span>
         <span className="lp-card-info">
           <strong>{project.metadata.name}</strong>
@@ -385,18 +385,18 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
       )}
 
       <header className="lp-nav">
-        <button type="button" className="lp-brand" onClick={goHome} title="Return to home"><Logo size={24} /><strong>{APP_NAME}</strong></button>
-        <nav className="lp-nav-links" aria-label="Main navigation">
+        <button type="button" className="lp-brand" onClick={goHome} title="홈으로 돌아가기"><Logo size={24} /><strong>{APP_NAME}</strong></button>
+        <nav className="lp-nav-links" aria-label="기본 탐색">
           <button type="button" className={view === 'projects' ? 'active' : ''} onClick={() => showView('projects')}>프로젝트</button>
           <button type="button" className={view === 'templates' ? 'active' : ''} onClick={() => openTemplates()}>템플릿</button>
           <button type="button" className={view === 'community' ? 'active' : ''} onClick={() => showView('community')}>커뮤니티</button>
           <a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer">문서</a>
         </nav>
         <div className="lp-nav-actions">
-          <button type="button" className="lp-nav-credits" onClick={() => setCreditsOpen(true)} aria-label="Open credits and links" title="Credits and links"><CircleHelp size={17} /></button>
+          <button type="button" className="lp-nav-credits" onClick={() => setCreditsOpen(true)} aria-label="크레딧 및 링크 열기" title="크레딧 및 링크"><CircleHelp size={17} /></button>
           {user ? <>
-            {user.role === 'admin' && <button type="button" className={`lp-admin-chip${view === 'admin' ? ' active' : ''}`} title="Open administration" onClick={() => showView('admin')}><ShieldCheck size={14} /><span>관리자</span></button>}
-            <button type="button" className={`lp-account-chip${view === 'profile' ? ' active' : ''}`} title="Open your profile" onClick={() => showView('profile')}>
+            {user.role === 'admin' && <button type="button" className={`lp-admin-chip${view === 'admin' ? ' active' : ''}`} title="관리 열기" onClick={() => showView('admin')}><ShieldCheck size={14} /><span>관리자</span></button>}
+            <button type="button" className={`lp-account-chip${view === 'profile' ? ' active' : ''}`} title="프로필 열기" onClick={() => showView('profile')}>
               {avatarUrl(user) ? <img src={avatarUrl(user)} alt="" /> : <UserRound size={14} />}
               <span>{user.username}</span>
             </button>
@@ -465,7 +465,7 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
                     </div>
                   )}
                 </div>
-                <div className="lp-project-tabs" role="tablist" aria-label="Project storage">
+                <div className="lp-project-tabs" role="tablist" aria-label="프로젝트 저장소">
                   <button type="button" role="tab" aria-selected={projectsTab === 'local'} aria-controls="local-projects-panel" className={projectsTab === 'local' ? 'active' : ''} onClick={() => setProjectsTab('local')}>로컬 프로젝트</button>
                   <button type="button" role="tab" aria-selected={projectsTab === 'cloud'} aria-controls="cloud-projects-panel" className={projectsTab === 'cloud' ? 'active' : ''} onClick={() => setProjectsTab('cloud')}>클라우드 프로젝트</button>
                 </div>
@@ -474,7 +474,7 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
                     <div className="lp-search">
                       <Search size={14} aria-hidden />
 
-                      <input type="search" placeholder="Search projects…" value={query} onChange={(event) => setQuery(event.target.value)} aria-label="Search local projects" />
+                      <input type="search" placeholder="프로젝트 검색…" value={query} onChange={(event) => setQuery(event.target.value)} aria-label="로컬 프로젝트 검색" />
                     </div>
                     {projects.length === 0 ? emptyProjects
                       : filtered.length === 0 ? <p className="lp-no-results">No project matches &ldquo;{query.trim()}&rdquo;.</p>
@@ -516,14 +516,14 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
             <section className="lp-section lp-view">
               <div className="lp-section-head lp-template-section-head">
                 <div><h2>지형 템플릿</h2><p>Choose one authoring workflow. Procedural selections preview live; Nodes opens straight into the editor.</p></div>
-                <div className="lp-template-kind-switch" role="tablist" aria-label="Template type">
+                <div className="lp-template-kind-switch" role="tablist" aria-label="템플릿 타입">
                   <button type="button" role="tab" aria-selected={templateKind === 'procedural'} className={templateKind === 'procedural' ? 'active' : ''} onClick={() => openTemplates('procedural')}><SlidersHorizontal size={13} />절차적</button>
                   <button type="button" role="tab" aria-selected={templateKind === 'nodes'} className={templateKind === 'nodes' ? 'active' : ''} onClick={() => openTemplates('nodes')}><Boxes size={13} />노드</button>
                 </div>
               </div>
               <div className="lp-search">
                 <Search size={14} aria-hidden />
-                <input type="search" placeholder={`Search ${templateKind === 'nodes' ? 'Nodes' : 'procedural'} templates…`} value={query} onChange={(event) => setQuery(event.target.value)} aria-label="Search templates" />
+                <input type="search" placeholder={`Search ${templateKind === 'nodes' ? 'Nodes' : 'procedural'} templates…`} value={query} onChange={(event) => setQuery(event.target.value)} aria-label="템플릿 검색" />
               </div>
               {filtered.length === 0 && <p className="lp-no-results">No template matches &ldquo;{query.trim()}&rdquo;.</p>}
               <div className="lp-card-grid">
@@ -535,13 +535,13 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
                         <strong>{item.name}</strong>
                         <small>{item.description}</small>
                       </span>
-                      <span className={`lp-template-kind-badge ${templateKind}`}>{templateKind === 'nodes' ? 'Nodes' : 'Procedural'}</span>
+                      <span className={`lp-template-kind-badge ${templateKind}`}>{templateKind === 'nodes' ? '노드' : '절차적'}</span>
                     </button>
                   </article>
                 ))}
               </div>
               {templateKind === 'nodes' ? (
-                <section className={`lp-node-color-options${nodeColorsEnabled ? ' enabled' : ''}`} aria-label="Node template color options">
+                <section className={`lp-node-color-options${nodeColorsEnabled ? ' enabled' : ''}`} aria-label="노드 템플릿 색상 옵션">
                   <div className="lp-node-color-copy">
                     <span className="lp-node-color-icon"><Palette size={16} aria-hidden /></span>
                     <span><strong>노드 색상</strong><small>이 템플릿이 열릴 때 지형 색상 그래프를 적용합니다.</small></span>
@@ -554,20 +554,20 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
                     onClick={() => setNodeColorsEnabled((enabled) => !enabled)}
                   >
                     {nodeColorsEnabled ? <Eye size={13} aria-hidden /> : <EyeOff size={13} aria-hidden />}
-                    {nodeColorsEnabled ? 'Applied' : 'Project palette'}
+                    {nodeColorsEnabled ? '적용됨' : '프로젝트 팔레트'}
                   </button>
                   <label className="lp-node-color-preset">
                     <span>색상 프리셋</span>
                     <span className="lp-node-color-select">
                       <i style={{ background: terrainGradientCss(nodeColorPreset) }} aria-hidden />
-                      <select value={nodeColorPreset} onChange={(event) => { setNodeColorPreset(event.target.value); setNodeColorsEnabled(true); }} aria-label="Template color preset">
+                      <select value={nodeColorPreset} onChange={(event) => { setNodeColorPreset(event.target.value); setNodeColorsEnabled(true); }} aria-label="템플릿 색상 프리셋">
                         {TERRAIN_GRADIENT_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
                       </select>
                     </span>
                   </label>
                 </section>
               ) : null}
-              <p className="lp-template-hint">{templateKind === 'nodes' ? 'Node templates load instantly; open the 2D preview when you need it.' : 'Selecting a template previews it live in the background.'}</p>
+              <p className="lp-template-hint">{templateKind === 'nodes' ? 'Node templates load instantly; open the 2D preview when you need it.' : '템플릿을 선택하면 백그라운드에서 실시간으로 미리 봅니다.'}</p>
               <button type="button" className="lp-primary lp-template-create" onClick={() => create(template.id, templateKind)} disabled={!menuReady || exiting}><FilePlus2 size={15} /> Create {template.name}</button>
             </section>
             );
@@ -577,11 +577,11 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
 
           <footer className="lp-footer">
             <div className="lp-footer-socials">
-              <a className="lp-footer-donation" href="https://ko-fi.com/zyfod" target="_blank" rel="noopener noreferrer" aria-label="Donate on Ko-fi" title="Donate on Ko-fi"><SiKofi size={15} aria-hidden="true" /><span>기부</span></a>
-              <a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository" title="GitHub"><FaGithub size={17} /></a>
-              <a href={AUTHOR_X_URL} target="_blank" rel="noopener noreferrer" aria-label="Open X profile" title="X"><FaXTwitter size={15} /></a>
-              <a href={AUTHOR_PORTFOLIO_URL} target="_blank" rel="noopener noreferrer" aria-label="Open portfolio" title="Portfolio"><Globe2 size={16} /></a>
-              <a href="mailto:zyfodexe@gmail.com" aria-label="Email zyfodexe@gmail.com" title="Email zyfodexe@gmail.com"><Mail size={16} /></a>
+              <a className="lp-footer-donation" href="https://ko-fi.com/zyfod" target="_blank" rel="noopener noreferrer" aria-label="Ko-fi로 후원하기" title="Ko-fi로 후원하기"><SiKofi size={15} aria-hidden="true" /><span>기부</span></a>
+              <a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer" aria-label="GitHub 저장소 열기" title="GitHub"><FaGithub size={17} /></a>
+              <a href={AUTHOR_X_URL} target="_blank" rel="noopener noreferrer" aria-label="X 프로필 열기" title="X"><FaXTwitter size={15} /></a>
+              <a href={AUTHOR_PORTFOLIO_URL} target="_blank" rel="noopener noreferrer" aria-label="포트폴리오 열기" title="포트폴리오"><Globe2 size={16} /></a>
+              <a href="mailto:zyfodexe@gmail.com" aria-label="이메일 zyfodexe@gmail.com" title="이메일 zyfodexe@gmail.com"><Mail size={16} /></a>
             </div>
             <div className="lp-footer-meta">
               <span>© {new Date().getFullYear()} {APP_NAME}.</span>
@@ -595,8 +595,8 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
         <div className={`landing-preview-loader is-${visualBootStage}`} role="status" aria-live="polite">
           <div className="landing-preview-loader-content">
             <span className="landing-preview-spinner" aria-hidden="true" />
-            <strong>{visualBootStage === 'loading' ? 'Starting terrain editor' : 'Terrain ready'}</strong>
-            <small>{visualBootStage === 'loading' ? 'Preparing your random terrain workspace…' : 'Bringing your workspace into view…'}</small>
+            <strong>{visualBootStage === 'loading' ? '지형 편집기 시작' : '지형 준비 완료'}</strong>
+            <small>{visualBootStage === 'loading' ? '무작위 지형 작업 공간 준비 중…' : '작업 공간을 화면으로 가져오는 중…'}</small>
           </div>
         </div>
       )}
@@ -604,7 +604,7 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
         <section className="landing-create-dialog" role="dialog" aria-modal="true" aria-labelledby="create-terrain-title" onMouseDown={(event) => event.stopPropagation()}>
           <header>
             <div><span>새 프로젝트</span><h2 id="create-terrain-title">지형을 만드는 방법을 선택하세요</h2><p>각 프로젝트는 하나의 작성 워크플로를 사용합니다. 네 가지 모두 저장 및 내보내기가 가능합니다.</p></div>
-            <button type="button" onClick={() => setCreateOpen(false)} aria-label="Close"><X size={16} /></button>
+            <button type="button" onClick={() => setCreateOpen(false)} aria-label="닫기"><X size={16} /></button>
           </header>
           <div className="landing-create-options">
             <button type="button" onClick={() => chooseTemplateWorkflow('procedural')} disabled={!menuReady || exiting}>

@@ -347,7 +347,7 @@ async function fetchBboxStitched(bbox, z, tileUrl, missingFill, { onProgress, si
   let done = 0, ok = 0;
   for (let ty = ty0; ty <= ty1; ty++) {
     for (let tx = tx0; tx <= tx1; tx++) {
-      if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
+      if (signal?.aborted) throw new DOMException('중단됨', '중단 오류');
       const img = await loadTile(tileUrl(z, tx, ty), signal);
       const dx = (tx - tx0) * TILE, dy = (ty - ty0) * TILE;
       if (img) { sctx.drawImage(img, dx, dy); ok++; }
@@ -541,7 +541,7 @@ export function compositeCellPatches(cells, tiles, { maxSide = 4096 } = {}) {
   const cols = maxX - minX + 1, rows = maxZ - minZ + 1;
 
   const anchor = cells['0,0'] ?? Object.values(cells)[0];
-  if (!anchor) throw new Error('No elevation patches to composite.');
+  if (!anchor) throw new Error('합성할 고도 패치가 없습니다.');
   // Per-cell output resolution: anchor resolution, downscaled so the union
   // texture never exceeds maxSide per axis (matches the image-import cap).
   const scale = Math.min(1, maxSide / (cols * anchor.width), maxSide / (rows * anchor.height));
@@ -625,7 +625,7 @@ export function compositeCellImagery(cells, tiles, { maxSide = 4096 } = {}) {
   const cols = maxX - minX + 1, rows = maxZ - minZ + 1;
 
   const anchor = cells['0,0'] ?? Object.values(cells)[0];
-  if (!anchor) throw new Error('No imagery patches to composite.');
+  if (!anchor) throw new Error('합성할 이미지 패치가 없습니다.');
   const scale = Math.min(1, maxSide / (cols * anchor.width), maxSide / (rows * anchor.height));
   const cw = Math.max(1, Math.round(anchor.width * scale));
   const ch = Math.max(1, Math.round(anchor.height * scale));

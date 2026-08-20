@@ -119,39 +119,39 @@ function TerrainPanel({ ctx }) {
   const activeTab = realTerrainMode ? 'import' : tab;
   const onErosionTab = !realTerrainMode && isStudio && activeTab === 'erosion';
   const tabs = realTerrainMode ? [
-    { id: 'import', label: 'Import' },
+    { id: 'import', label: '가져오기' },
   ] : [
-    { id: 'shape', label: 'Shape' },
-    { id: 'noise', label: 'Noise' },
-    { id: 'surface', label: 'Surface' },
-    ...(isStudio ? [{ id: 'erosion', label: 'Erosion' }] : []),
-    ...(isStudio ? [{ id: 'import', label: 'Import' }] : []),
+    { id: 'shape', label: '형태' },
+    { id: 'noise', label: '노이즈' },
+    { id: 'surface', label: '표면' },
+    ...(isStudio ? [{ id: 'erosion', label: '침식' }] : []),
+    ...(isStudio ? [{ id: 'import', label: '가져오기' }] : []),
   ];
   return (
-    <SidePanel title={realTerrainMode ? 'Real terrain' : 'Terrain'} description={realTerrainMode ? 'Geographic elevation, imagery, and buildings.' : 'Shape and surface generation.'} onClose={ctx.onClose}
+    <SidePanel title={realTerrainMode ? '실제 지형' : '지형'} description={realTerrainMode ? '지리적 고도, 이미지 및 건물.' : '모양과 표면 생성.'} onClose={ctx.onClose}
       footer={onErosionTab
         ? <ErosionTabFooter erosion={erosion} />
         : realTerrainMode ? null : <RandomizeTerrainButton onRandomize={ctx.onRandomizeTerrain} />}>
       {!realTerrainMode && <PanelTabs active={activeTab} onChange={setTab} tabs={tabs} />}
       {activeTab === 'shape' && (
         <>
-          <SelectRow label="Preset" value={params.preset} settingId="terrain.preset"
+          <SelectRow label="프리셋" value={params.preset} settingId="terrain.preset"
             options={Object.entries(PRESETS).map(([key, p]) => ({ value: key, label: p.label }))}
-            onChange={ctx.onPreset} info="Global terrain layout preset." />
+            onChange={ctx.onPreset} info="전역 지형 레이아웃 프리셋." />
           <SeedRow seed={params.seed} onParam={onParam} onRandomizeSeed={ctx.onRandomizeSeed} />
           {TERRAIN_SLIDERS.map((def) => (
             <SliderCtl key={def.key} def={def} value={params[def.key]} onChange={(v) => onParam(def.key, v)} settingId={`terrain.${def.key}`} />
           ))}
-          <SelectRow label="Edge Falloff" value={params.edgeFalloffMode ?? 'island'}
-            options={[{ value: 'island', label: 'Island' }, { value: 'mountains', label: 'Mountains' }]}
+          <SelectRow label="가장자리 감쇠" value={params.edgeFalloffMode ?? 'island'}
+            options={[{ value: 'island', label: '섬' }, { value: 'mountains', label: '산맥' }]}
             onChange={(v) => onParam('edgeFalloffMode', v)} info="Island fades terrain toward the boundary. Mountains preserves the terrain and adds ridged noise around the outer edge." />
         </>
       )}
       {activeTab === 'noise' && (
         <>
-          <SelectRow label="Noise Preset" value={params.noisePreset ?? 'default'} settingId="terrain.noisePreset"
+          <SelectRow label="노이즈 프리셋" value={params.noisePreset ?? 'default'} settingId="terrain.noisePreset"
             options={Object.entries(NOISE_PRESETS).map(([key, p]) => ({ value: key, label: p.label }))}
-            onChange={ctx.planetStyleProps.onNoisePreset} info="Baseline noise shape configuration." />
+            onChange={ctx.planetStyleProps.onNoisePreset} info="기본 노이즈 모양 구성." />
           {NOISE_SLIDERS.map((def) => (
             <SliderCtl key={def.key} def={def} value={params[def.key]} onChange={(v) => onParam(def.key, v)} settingId={`terrain.${def.key}`} />
           ))}
@@ -161,7 +161,7 @@ function TerrainPanel({ ctx }) {
       {onErosionTab && <ErosionTabContent ctx={ctx} erosion={erosion} />}
       {activeTab === 'import' && isStudio && <ImportMapsContent ctx={ctx} />}
       {!realTerrainMode && !onErosionTab && (
-        <PanelResetButton label="Reset Terrain Settings" onClick={() => ctx.onResetPanel?.('terrain')} settingId="terrain.reset" />
+        <PanelResetButton label="지형 설정 초기화" onClick={() => ctx.onResetPanel?.('terrain')} settingId="terrain.reset" />
       )}
     </SidePanel>
   );
@@ -169,10 +169,10 @@ function TerrainPanel({ ctx }) {
 
 function WorldPanel({ ctx }) {
   return (
-    <SidePanel title="World" description="Layout, tiles, chunking and grid." onClose={ctx.onClose}>
+    <SidePanel title="세계" description="레이아웃, 타일, 청크, 그리드." onClose={ctx.onClose}>
       <WorldPanelInner params={ctx.params} worldMode={ctx.worldMode} onParam={ctx.onParam} />
       {ctx.worldMode === 'studio' && <TilesContent ctx={ctx} />}
-      <PanelResetButton label="Reset World Settings" onClick={() => ctx.onResetPanel?.('world')} settingId="world.reset" />
+      <PanelResetButton label="월드 설정 초기화" onClick={() => ctx.onResetPanel?.('world')} settingId="world.reset" />
     </SidePanel>
   );
 }
@@ -198,31 +198,31 @@ function PlanetPanel({ ctx }) {
 }
 
 const EROSION_MAIN = [
-  { key: 'erosionStrength', label: 'Strength', min: 0, max: 1, step: 0.01, digits: 2, info: 'Master blend of the eroded result over the base terrain (0 = none).' },
-  { key: 'erosionDroplets', label: 'Droplets', min: 0, max: 200000, step: 5000, digits: 0, info: 'Rain droplets in the hydraulic pass. More = deeper valleys/ravines, slower bake.' },
-  { key: 'erosionLifetime', label: 'Droplet Lifetime', min: 5, max: 80, step: 1, digits: 0, info: 'Max steps each droplet travels before evaporating.' },
-  { key: 'erosionSeed', label: 'Seed', min: 1, max: 999, step: 1, digits: 0, info: 'Deterministic random seed for droplet spawn positions.' },
+  { key: 'erosionStrength', label: '세기', min: 0, max: 1, step: 0.01, digits: 2, info: 'Master blend of the eroded result over the base terrain (0 = none).' },
+  { key: 'erosionDroplets', label: '물방울', min: 0, max: 200000, step: 5000, digits: 0, info: 'Rain droplets in the hydraulic pass. More = deeper valleys/ravines, slower bake.' },
+  { key: 'erosionLifetime', label: '물방울 수명', min: 5, max: 80, step: 1, digits: 0, info: '증발하기 전 각 물방울이 이동하는 최대 단계.' },
+  { key: 'erosionSeed', label: 'Seed', min: 1, max: 999, step: 1, digits: 0, info: '물방울 생성 위치의 결정론적 랜덤 시드.' },
 ];
 
 const EROSION_ADVANCED = [
-  { key: 'erosionRadius', label: 'Erosion Radius', min: 1, max: 6, step: 1, digits: 0, info: 'Brush radius for material removal (larger = smoother channels).' },
-  { key: 'erosionErosionRate', label: 'Erosion Strength', min: 0, max: 1, step: 0.01, digits: 2, info: 'How aggressively fast-moving water carves terrain.' },
-  { key: 'erosionDeposition', label: 'Deposition', min: 0, max: 1, step: 0.01, digits: 2, info: 'How readily carried sediment settles back out.' },
-  { key: 'erosionSedimentCapacity', label: 'Sediment Capacity', min: 1, max: 12, step: 0.5, digits: 1, info: 'How much material a droplet can carry before depositing.' },
-  { key: 'erosionEvaporation', label: 'Evaporation', min: 0, max: 0.1, step: 0.005, digits: 3, info: 'Water lost per step (higher = shorter drainage lines).' },
-  { key: 'erosionGravity', label: 'Gravity', min: 1, max: 12, step: 0.5, digits: 1, info: 'Downhill acceleration of droplets.' },
-  { key: 'erosionInertia', label: 'Inertia', min: 0, max: 0.95, step: 0.01, digits: 2, info: 'How much droplets keep their direction vs. follow the slope.' },
-  { key: 'erosionThermalStrength', label: 'Thermal Strength', min: 0, max: 1, step: 0.01, digits: 2, info: 'Strength of loose-material sliding off steep slopes.' },
-  { key: 'erosionThermalIterations', label: 'Thermal Iterations', min: 0, max: 100, step: 5, digits: 0, info: 'Relaxation passes for the thermal (talus) erosion.' },
-  { key: 'erosionTalus', label: 'Talus Angle', min: 0.1, max: 2, step: 0.05, digits: 2, info: 'Slope steepness (relative to cell size) above which material slides.' },
-  { key: 'erosionSmoothing', label: 'Smoothing', min: 0, max: 1, step: 0.01, digits: 2, info: 'Final low-pass blend to soften noise.' },
+  { key: 'erosionRadius', label: '침식 반경', min: 1, max: 6, step: 1, digits: 0, info: 'Brush radius for material removal (larger = smoother channels).' },
+  { key: 'erosionErosionRate', label: '침식 세기', min: 0, max: 1, step: 0.01, digits: 2, info: '빠르게 흐르는 물이 지형을 얼마나 공격적으로 조각하는지.' },
+  { key: 'erosionDeposition', label: '퇴적', min: 0, max: 1, step: 0.01, digits: 2, info: '운반된 퇴적물이 다시 얼마나 쉽게 침전되는지.' },
+  { key: 'erosionSedimentCapacity', label: '퇴적물 용량', min: 1, max: 12, step: 0.5, digits: 1, info: '물방울이 퇴적 전에 운반할 수 있는 재료의 양.' },
+  { key: 'erosionEvaporation', label: '증발', min: 0, max: 0.1, step: 0.005, digits: 3, info: 'Water lost per step (higher = shorter drainage lines).' },
+  { key: 'erosionGravity', label: '중력', min: 1, max: 12, step: 0.5, digits: 1, info: '물방울의 하강 가속.' },
+  { key: 'erosionInertia', label: '관성', min: 0, max: 0.95, step: 0.01, digits: 2, info: '물방울이 방향을 유지하는 양 vs. 경사를 따르는 양.' },
+  { key: 'erosionThermalStrength', label: '열 침식 세기', min: 0, max: 1, step: 0.01, digits: 2, info: '가파른 경사면을 따라 헐거운 물질이 미끄러지는 정도.' },
+  { key: 'erosionThermalIterations', label: '열 침식 반복', min: 0, max: 100, step: 5, digits: 0, info: 'Relaxation passes for the thermal (talus) erosion.' },
+  { key: 'erosionTalus', label: '테일러스 각도', min: 0.1, max: 2, step: 0.05, digits: 2, info: 'Slope steepness (relative to cell size) above which material slides.' },
+  { key: 'erosionSmoothing', label: '스무딩', min: 0, max: 1, step: 0.01, digits: 2, info: '노이즈를 부드럽게 만드는 최종 로우패스 블렌드.' },
 ];
 
 const EROSION_PHASE_LABEL = {
-  sampling: 'Sampling base terrain…',
-  hydraulic: 'Hydraulic pass',
-  thermal: 'Thermal pass',
-  done: 'Updating terrain…',
+  sampling: '기본 지형 샘플링 중…',
+  hydraulic: '수력 패스',
+  thermal: '열 패스',
+  done: '지형 업데이트 중…',
   starting: 'Starting…',
 };
 
@@ -326,7 +326,7 @@ function BiomesPanel({ ctx }) {
 function WaterPanel({ ctx }) {
   const { stats } = useLiveMetrics(ctx.liveMetrics);
   return (
-    <SidePanel title="물" description="Ocean surface, quality modes and volumetric settings." onClose={ctx.onClose}>
+    <SidePanel title="물" description="바다 표면, 품질 모드, 볼류메트릭 설정." onClose={ctx.onClose}>
       <WaterPanelInner
         params={ctx.params}
         onParam={ctx.onParam}
