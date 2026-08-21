@@ -390,7 +390,7 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
           <button type="button" className={view === 'projects' ? 'active' : ''} onClick={() => showView('projects')}>프로젝트</button>
           <button type="button" className={view === 'templates' ? 'active' : ''} onClick={() => openTemplates()}>템플릿</button>
           <button type="button" className={view === 'community' ? 'active' : ''} onClick={() => showView('community')}>커뮤니티</button>
-          <a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer">문서</a>
+          <a href="/ProceduralTerrains/USAGE.md" target="_blank" rel="noopener noreferrer">문서</a>
         </nav>
         <div className="lp-nav-actions">
           <button type="button" className="lp-nav-credits" onClick={() => setCreditsOpen(true)} aria-label="크레딧 및 링크 열기" title="크레딧 및 링크"><CircleHelp size={17} /></button>

@@ -14,8 +14,6 @@
 | **무한 세계** | 카메라 주변으로 청크가 스트리밍되는 그리드. FPS 걷기 / 비행기 탐험 지원 |
 | **행성** | 큐브-스피어 기반 절차적 행성. 대기, 볼류메트릭 구름, 궤도 카메라 지원 |
 
-![Procedural Terrains - 한글화 스크린샷](docs/screenshot.png)
-
 ---
 
 ## ✨ 핵심 특징
@@ -147,9 +145,12 @@ MySQL이 구성되면 `npm run migrate:api`를 실행하세요. 클래식 Linux,
 
 ## 📚 문서
 
-- [`design-qa.md`](design-qa.md) — 디자인 결정 및 QA 노트
-- [`progress.md`](progress.md) — 개발 진행 상황
-- [`docs/`](docs/) — 추가 문서
+- 📖 **[사용법 가이드 (USAGE.md)](USAGE.md)** — 상세 사용법, 단축키, 워크플로, 문제 해결 (한국어)
+- 🏗️ [아키텍처 (docs/ARCHITECTURE-ROADMAP.md)](docs/ARCHITECTURE-ROADMAP.md) — 아키텍처 + 로드맵
+- ⚡ [성능 (docs/PERFORMANCE.md)](docs/PERFORMANCE.md) — 성능 최적화 심화
+- 🌊 [물 시스템 (docs/WATER-BASELINES.md)](docs/WATER-BASELINES.md) — 물 시스템 베이스라인
+- 🎨 [디자인 결정 (design-qa.md)](design-qa.md) — 디자인 결정 및 QA 노트
+- 📊 [개발 진행 (progress.md)](progress.md) — 개발 진행 상황
 
 ---
 
