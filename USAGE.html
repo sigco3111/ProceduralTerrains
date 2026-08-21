@@ -632,6 +632,173 @@ npm run dev
 
 <hr>
 
+<h2 id="10-계정-시스템">10. 계정 시스템</h2>
+
+<p>계정은 <strong>선택 사항</strong>입니다. 로그인 없이도 모든 핵심 기능 (지형 생성, 저장, 내보내기)을 로컬에서 완전하게 사용할 수 있습니다. 계정은 클라우드 동기화, 프로젝트 공유, 커뮤니티 갤러리 게시 등에만 필요합니다.</p>
+
+<h3>10.1 계정은 어디에 저장되나?</h3>
+
+<div class="note">
+<p><strong>📍 핵심: 계정 정보는 <code>MySQL/MariaDB</code> 데이터베이스에 저장됩니다.</strong></p>
+<p>프론트엔드 (브라우저)에는 저장되지 않습니다. 비밀번호는 서버에서 <strong>scrypt 해싱</strong> 후 저장되어 원본 복원이 불가능합니다.</p>
+</div>
+
+<pre class="diagram">┌─────────────────────────────────────────────────────────────┐
+│  [브라우저]                  [Node.js API 서버]              │
+│   ┌──────────────┐            ┌─────────────────┐           │
+│   │ AuthPage     │  HTTPS/HTTP  │ auth-routes.js  │           │
+│   │ (React)      │ ────────────▶│ Fastify          │           │
+│   └──────┬───────┘              └────────┬────────�           │
+│          │                               │                    │
+│          │ HTTP-only Cookie              │ mysql2/promise     │
+│          │ "session_token"               ▼                    │
+│          │                       ┌─────────────────�           │
+│          │                       │   MySQL 8+      │           │
+│          │                       │   MariaDB 10.6+ │           │
+│          ▼                       │                 │           │
+│   ┌──────────────┐              │  ┌────────────┐  │           │
+│   │ 메모리 캐시  │              │  │  users     │  │           │
+│   │ (user 상태)  │              │  ├────────────┤  │           │
+│   └──────────────┘              │  │  sessions  │  │           │
+│                                  │  ├────────────┤  │           │
+│                                  │  │  projects  │  │           │
+│                                  │  │  profiles  │  │           │
+│                                  │  │  activity  │  │           │
+│                                  │  │  ...       │  │           │
+│                                  │  └────────────┘  │           │
+│                                  └─────────────────┘           │
+└─────────────────────────────────────────────────────────────┘</pre>
+
+<h4>저장되는 테이블 (MySQL)</h4>
+
+<table>
+<tr><th>테이블</th><th>저장 내용</th></tr>
+<tr><td><code>users</code></td><td>UUID, 이메일, 사용자 이름, <strong>scrypt 해시된 비밀번호</strong>, 표시 이름, 웹사이트, 이메일 인증 시각, 상태 (active/suspended/deleted), 생성/수정/삭제 시각</td></tr>
+<tr><td><code>sessions</code></td><td>UUID, user_id, <strong>세션 토큰 SHA-256 해시</strong> (원본 토큰은 브라우저에만), user-agent, IP, 만료 시각, 마지막 활동 시각</td></tr>
+<tr><td><code>user_profiles</code></td><td>사용자 추가 프로필 정보 (아바타 메타데이터 등)</td></tr>
+<tr><td><code>projects</code></td><td>클라우드에 저장된 프로젝트 (JSON 메타데이터, 썸네일, visibility 등)</td></tr>
+<tr><td><code>admin_audit_events</code></td><td>관리자 활동 로그 (계정 정지/삭제/권한 변경 등)</td></tr>
+</table>
+
+<h4>저장 위치별 분류</h4>
+
+<table>
+<tr><th>데이터 종류</th><th>저장 위치</th></tr>
+<tr><td><strong>이메일 / 사용자 이름</strong></td><td>MySQL <code>users</code> 테이블</td></tr>
+<tr><td><strong>비밀번호</strong></td><td>MySQL <code>users.password_hash</code> (scrypt 한 방향 해시)</td></tr>
+<tr><td><strong>세션 토큰</strong></td><td>원본은 브라우저 HTTP-only 쿠키, 해시만 MySQL <code>sessions</code> 테이블</td></tr>
+<tr><td><strong>아바타 이미지</strong></td><td>MySQL <code>user_profiles</code> 메타 + 서버 파일 시스템 (데이터 디렉터리)</td></tr>
+<tr><td><strong>프로젝트 (시드/파라미터/썸네일)</strong></td><td>MySQL <code>projects</code> 테이블 + 서버 파일 시스템</td></tr>
+<tr><td><strong>로컬 IndexedDB 프로젝트</strong></td><td>브라우저 (서버에 전송 안 됨)</td></tr>
+</table>
+
+<div class="note warning">
+<p><strong>�️ 라이브 데모의 계정</strong></p>
+<p>현재 한글화 데모(<code>sigco3111.github.io</code>)는 정적 호스팅만 제공하므로 백엔드 API가 없습니다. <strong>계정 기능을 사용하려면 직접 호스팅</strong>(<code>npm run dev:api</code> + MySQL)이 필요합니다.</p>
+</div>
+
+<h3>10.2 로그인 프로세스 (3단계)</h3>
+
+<pre class="diagram">┌──────────────────────────────────────────────────────────────┐
+│  [1] 사용자가 폼 작성                                          │
+│     • 식별자: 이메일 또는 사용자 이름                          │
+│     • 비밀번호                                                 │
+└──────────────────────────────────┬───────────────────────────┘
+                                   │
+                                   ▼
+┌──────────────────────────────────────────────────────────────┐
+│  [2] POST /api/v1/auth/login                                   │
+│     • 입력 검증 (validateLogin)                                │
+│     • users 테이블에서 email 또는 username 조회                │
+│     • 비밀번호 검증 (verifyPassword + timingSafeEqual)        │
+│     • 더미 해시 비교 (계정 열거 공격 방어)                      │
+│     • 성공 시 createSession()                                  │
+│       - 32바이트 랜덤 토큰 생성 (base64url)                    │
+│       - 토큰 SHA-256 해시만 MySQL sessions에 저장              │
+│       - 원본 토큰은 Set-Cookie 헤더로 브라우저에 전달           │
+│     • 보안 이벤트 로깅 (auth.login)                            │
+└──────────────────────────────────┬───────────────────────────┘
+                                   │
+                                   ▼
+┌──────────────────────────────────────────────────────────────┐
+│  [3] 브라우저에 세션 유지                                       │
+│     • HTTP-only 쿠키로 토큰 저장 (JavaScript 접근 불가)        │
+│     • SameSite=Lax (프로덕션) / Strict (개발)                  │
+│     • Secure: true (HTTPS 필수)                                │
+│     • 만료: config.session.ttlDays (기본 14일)                 │
+│     • 다음 요청부터 자동으로 /api/v1/auth/session 호출          │
+└──────────────────────────────────────────────────────────────┘</pre>
+
+<h3>10.3 인증 보안 핵심</h3>
+
+<table>
+<tr><th>보안 기능</th><th>구현</th></tr>
+<tr><td><strong>비밀번호 해싱</strong></td><td>scrypt (cost=16384, blockSize=8) + 16바이트 솔트, 한 방향 해시</td></tr>
+<tr><td><strong>타이밍 공격 방지</strong></td><td><code>timingSafeEqual</code> + 미존재 계정에 더미 해시 비교</td></tr>
+<tr><td><strong>세션 토큰</strong></td><td>32바이트 랜덤 → base64url, 서버에는 SHA-256 해시만 저장</td></tr>
+<tr><td><strong>쿠키 설정</strong></td><td>HTTP-only, SameSite=Lax, Secure (HTTPS), domain 제한</td></tr>
+<tr><td><strong>Rate Limiting</strong></td><td>로그인 10/분, 등록 5/분 (IP 기준)</td></tr>
+<tr><td><strong>세션 정리</strong></td><td>로그인 시 만료된 세션 500개까지 opportunistic 정리</td></tr>
+<tr><td><strong>감사 로깅</strong></td><td>로그인 성공/실패 모두 <code>admin_audit_events</code>에 기록</td></tr>
+</table>
+
+<h3>10.4 데이터 흐름 요약</h3>
+
+<pre><code>사용자 입력 (이메일/사용자 이름 + 비밀번호)
+            │
+            ▼
+   AuthPage.jsx (React) ──── 검증, 에러 표시
+            │
+            │ fetch POST /api/v1/auth/login
+            │ credentials: 'include' (쿠키 자동 첨부)
+            ▼
+   auth-routes.js (Fastify)
+            │
+            ├── validateLogin() - 형식 검증
+            ├── DB 조회 (email 또는 username)
+            ├── verifyPassword() - scrypt + timingSafeEqual
+            ├── createSession()
+            │   ├── randomBytes(32) → token
+            │   ├── SHA-256(token) → sessions.token_hash
+            │   └── Set-Cookie: token (HTTP-only)
+            │
+            └── 200 OK { user: {...} } 또는 401 INVALID_CREDENTIALS
+            │
+            ▼
+   AuthContext.jsx
+            │
+            ├── 성공 → setUser(result.user)
+            └── 실패 → showPopup(에러 메시지)
+</code></pre>
+
+<h3>10.5 로컬에서 계정 기능 활성화</h3>
+
+<pre><code># 1. MySQL 데이터베이스 생성
+mysql -u root -p
+CREATE DATABASE procedural_terrains
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_0900_ai_ci;
+CREATE USER 'terrain'@'127.0.0.1' IDENTIFIED BY 'long-password';
+GRANT ALL PRIVILEGES ON procedural_terrains.* TO 'terrain'@'127.0.0.1';
+FLUSH PRIVILEGES;
+
+# 2. 환경 변수 설정
+cp .env.example .env
+cp api/.env.example api/.env
+# → api/.env에서 DB 연결 정보 수정
+
+# 3. 의존성 설치 + 마이그레이션
+npm install
+npm --prefix api install
+npm run migrate:api
+
+# 4. 프론트엔드 + API 동시 실행
+npm run dev         # → http://localhost:6061
+npm run dev:api     # → http://localhost:6062
+</code></pre>
+
+<hr>
+
 <h2>🔗 관련 링크</h2>
 
 <ul>
