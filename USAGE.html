@@ -125,17 +125,14 @@
     border-top: 1px solid var(--border);
     margin: 40px 0;
   }
-  /* 다이어그램 박스 */
   pre.diagram {
     background: var(--card);
     border: 1px solid var(--border);
     color: var(--text-muted);
     font-size: 0.88em;
   }
-  /* 강조 */
   strong { color: var(--text); font-weight: 600; }
   em { color: var(--accent); font-style: normal; }
-  /* 배지 스타일 */
   .badge {
     display: inline-block;
     padding: 2px 8px;
@@ -148,7 +145,6 @@
   .badge.success { background: rgba(63, 185, 80, 0.15); color: var(--success); }
   .badge.warning { background: rgba(210, 153, 34, 0.15); color: var(--warning); }
   .badge.danger { background: rgba(248, 81, 73, 0.15); color: var(--danger); }
-  /* 상단 네비게이션 */
   .top-nav {
     position: sticky;
     top: 0;
@@ -198,8 +194,8 @@
 <nav class="top-nav">
   <a href="/ProceduralTerrains/">🏔️ 절차적 지형 (앱으로)</a>
   <a href="/ProceduralTerrains/README.html">📄 README</a>
-  <a href="/ProceduralTerrains/USAGE.html">📖 사용법 가이드</a>
-  <a href="https://github.com/sigco3111/ProceduralTerrains" target="_blank" rel="noopener noreferrer">💻 GitHub</a>
+  <a href="/ProceduralTerrains/USAGE.html">� 사용법 가이드</a>
+  <a href="https://github.com/sigco3111/ProceduralTerrains" target="_blank" rel="noopener noreferrer">� GitHub</a>
 </nav>
 
 <h1>절차적 지형 사용법 (Procedural Terrains User Guide)</h1>
@@ -223,6 +219,7 @@
   <li><a href="#7-내보내기-워크플로">내보내기 워크플로</a></li>
   <li><a href="#8-성능-최적화">성능 최적화</a></li>
   <li><a href="#9-문제-해결">문제 해결</a></li>
+  <li><a href="#10-계정-시스템">계정 시스템</a></li>
 </ol>
 </div>
 
@@ -273,7 +270,7 @@ npm run dev
 │          │                                                   │
 ├──────────┴───────────────────────────────────────────────────┤
 │ [C] 하단 상태바  ─  카메라 모드 / 단축키 힌트 / FPS / 위치     │
-└──────────────────────────────────────────────────────────────�</pre>
+└──────────────────────────────────────────────────────────────┘</pre>
 
 <table>
 <tr><th>영역</th><th>위치</th><th>주요 역할</th></tr>
@@ -304,7 +301,7 @@ npm run dev
 <h4>특징</h4>
 <ul>
   <li>청크별 LOD가 적용된 고정 지형 보드</li>
-  <li><strong>페인팅, 다중 타일 어셴블리, 정밀 내보내기</strong>에 최적</li>
+  <li><strong>페인팅, 다중 타일 어셈블리, 정밀 내보내기</strong>에 최적</li>
   <li>사각형 또는 원형(디스크) 레이아웃 선택 가능</li>
   <li>실제 지형 하이맵 가져오기 지원</li>
 </ul>
@@ -316,7 +313,7 @@ npm run dev
   <li>GLB/OBJ/Unity/Unreal로 내보낼 때</li>
 </ul>
 
-<h3>� 무한 세계 모드 (Infinite World)</h3>
+<h3>🟩 무한 세계 모드 (Infinite World)</h3>
 
 <blockquote>카메라 주변으로 청크가 스트리밍되는 무한 지형.</blockquote>
 
@@ -348,7 +345,7 @@ npm run dev
 <pre class="diagram">        .---.
       /  ◯◯◯  \
      |  ◯ 🌎 ◯  |    ← 대기 + 볼류메트릭 구름
-     |  ◯◯◯◯◯  |    ← �도 카메라
+     |  ◯◯◯◯◯  |    ← 궤도 카메라
       \  ◯◯  /
         '---'</pre>
 
@@ -356,7 +353,7 @@ npm run dev
 <ul>
   <li>큐브-스피어 절차적 행성</li>
   <li>대기, 볼류메트릭 구름, 궤도 카메라</li>
-  <li>행성 익스포터로 큐브맵 높이 베이킹</li>
+  <li>행성 익스포터로 큐브� 높이 베이킹</li>
 </ul>
 
 <h4>사용 시나리오</h4>
@@ -377,7 +374,7 @@ npm run dev
 <tr><td><strong>좌측 드래그</strong></td><td>보드 위에서 팬 (경계 클램프)</td></tr>
 <tr><td><strong>우측 드래그</strong></td><td>궤도 회전</td></tr>
 <tr><td><strong>스크롤</strong></td><td>줌 인/아웃</td></tr>
-<tr><td><strong>하단 툴바 버튼</strong></td><td><code>위에서 보기</code> / <code>비스듬히</code> / <code>카메라 리셋</code></td></tr>
+<tr><td><strong>하단 �바 버튼</strong></td><td><code>위에서 보기</code> / <code>비스듬히</code> / <code>카메라 리셋</code></td></tr>
 </table>
 
 <h3>4.2 탐험 모드 (무한 세계 / 행성)</h3>
@@ -414,7 +411,7 @@ npm run dev
 <pre><code>1. 홈 화면에서 "템플릿 둘러보기" 클릭
 2. 원하는 템플릿 선택 (예: "섬", "산맥", "사막")
 3. 자동으로 에디터가 열리고 3D 뷰포트에 미리보기 표시
-4. 좌측 툴바에서 "지형" 선택
+4. 좌측 �바에서 "지형" 선택
 5. 우측 패널에서 노이즈/모양 파라미터 조정
    → 슬라이더는 GPU 셰이더 유니폼에 실시간 반영
 6. 마음에 들면 상단 바 "저장" 클릭
@@ -493,7 +490,7 @@ npm run dev
 
 <h2 id="7-내보내기-워크플로">7. 내보내기 워크플로</h2>
 
-<p>좌측 �바에서 <strong>"내보내기"</strong> → <strong>"내보내기 패널"</strong> 선택.</p>
+<p>좌측 툴바에서 <strong>"내보내기"</strong> → <strong>"내보내기 패널"</strong> 선택.</p>
 
 <h3>7.1 빠른 내보내기</h3>
 
@@ -546,7 +543,7 @@ npm run dev
 
 <table>
 <tr><th>설정</th><th>조정 방향</th></tr>
-<tr><td><strong>픽셀 비율 (Pixel Ratio)</strong></td><td>약한 GPU → 0.5~0.75로 낮�</td></tr>
+<tr><td><strong>픽셀 비율 (Pixel Ratio)</strong></td><td>약한 GPU → 0.5~0.75로 낮춤</td></tr>
 <tr><td><strong>LOD 예산 (LOD Budget)</strong></td><td>삼각형 수 한도를 낮춰 멀리 있는 지형 단순화</td></tr>
 <tr><td><strong>노이즈 옥타브 수</strong></td><td>4~6 옥타브로 감소</td></tr>
 <tr><td><strong>물 품질 모드</strong></td><td><code>High</code> → <code>Medium</code> → <code>Legacy</code></td></tr>
@@ -579,7 +576,7 @@ npm run dev
 
 <h2 id="9-문제-해결">9. 문제 해결</h2>
 
-<h3>9.1 페이지가 하얗게 보임 (흰화면)</h3>
+<h3>9.1 페이지가 하얗게 보임 (�화면)</h3>
 
 <table>
 <tr><th>원인</th><th>해결</th></tr>
@@ -597,7 +594,7 @@ npm run dev
 <ol>
   <li><strong>성능 오버레이</strong> 토글 (<code>Ctrl+Shift+P</code>)</li>
   <li>FPS가 30 이하라면 위의 <a href="#8-성능-최적화">성능 최적화</a> 참조</li>
-  <li>다른 탭/앱 닫기 (특히 비디오, 3D 게임)</li>
+  <li>다른 탭/� 닫기 (특히 비디오, 3D 게임)</li>
   <li>하드웨어 가속 활성화 (브라우저 설정)</li>
 </ol>
 
@@ -619,19 +616,6 @@ npm run dev
 
 <hr>
 
-<h2>� 추가 문서</h2>
-
-<table>
-<tr><th>문서</th><th>내용</th></tr>
-<tr><td><a href="/ProceduralTerrains/README.html">README.md</a></td><td>메인 소개 + 아키텍처</td></tr>
-<tr><td><a href="/ProceduralTerrains/USAGE.html">USAGE.md</a></td><td>상세 사용법 (현재 문서)</td></tr>
-<tr><td><a href="https://github.com/sigco3111/ProceduralTerrains/blob/main/docs/PERFORMANCE.md">docs/PERFORMANCE.md</a></td><td>성능 최적화 심화</td></tr>
-<tr><td><a href="https://github.com/sigco3111/ProceduralTerrains/blob/main/docs/WATER-BASELINES.md">docs/WATER-BASELINES.md</a></td><td>물 시스템 베이스라인</td></tr>
-<tr><td><a href="https://github.com/sigco3111/ProceduralTerrains/blob/main/docs/ARCHITECTURE-ROADMAP.md">docs/ARCHITECTURE-ROADMAP.md</a></td><td>아키텍처 로드맵</td></tr>
-</table>
-
-<hr>
-
 <h2 id="10-계정-시스템">10. 계정 시스템</h2>
 
 <p>계정은 <strong>선택 사항</strong>입니다. 로그인 없이도 모든 핵심 기능 (지형 생성, 저장, 내보내기)을 로컬에서 완전하게 사용할 수 있습니다. 계정은 클라우드 동기화, 프로젝트 공유, 커뮤니티 갤러리 게시 등에만 필요합니다.</p>
@@ -648,23 +632,21 @@ npm run dev
 │   ┌──────────────┐            ┌─────────────────┐           │
 │   │ AuthPage     │  HTTPS/HTTP  │ auth-routes.js  │           │
 │   │ (React)      │ ────────────▶│ Fastify          │           │
-│   └──────┬───────┘              └────────┬────────�           │
+│   └──────┬───────┘              └────────┬────────┘           │
 │          │                               │                    │
 │          │ HTTP-only Cookie              │ mysql2/promise     │
 │          │ "session_token"               ▼                    │
-│          │                       ┌─────────────────�           │
-│          │                       │   MySQL 8+      │           │
-│          │                       │   MariaDB 10.6+ │           │
-│          ▼                       │                 │           │
-│   ┌──────────────┐              │  ┌────────────┐  │           │
-│   │ 메모리 캐시  │              │  │  users     │  │           │
-│   │ (user 상태)  │              │  ├────────────┤  │           │
-│   └──────────────┘              │  │  sessions  │  │           │
+│          ▼                       ┌─────────────────┐           │
+│   ┌──────────────┐              │   MySQL 8+      │           │
+│   │ 메모리 캐시  │              │   MariaDB 10.6+ │           │
+│   │ (user 상태)  │              │  ┌────────────┐  │           │
+│   └──────────────┘              │  │  users     │  │           │
+│                                  │  ├────────────┤  │           │
+│                                  │  │  sessions  │  │           │
 │                                  │  ├────────────┤  │           │
 │                                  │  │  projects  │  │           │
 │                                  │  │  profiles  │  │           │
 │                                  │  │  activity  │  │           │
-│                                  │  │  ...       │  │           │
 │                                  │  └────────────┘  │           │
 │                                  └─────────────────┘           │
 └─────────────────────────────────────────────────────────────┘</pre>
@@ -688,12 +670,12 @@ npm run dev
 <tr><td><strong>비밀번호</strong></td><td>MySQL <code>users.password_hash</code> (scrypt 한 방향 해시)</td></tr>
 <tr><td><strong>세션 토큰</strong></td><td>원본은 브라우저 HTTP-only 쿠키, 해시만 MySQL <code>sessions</code> 테이블</td></tr>
 <tr><td><strong>아바타 이미지</strong></td><td>MySQL <code>user_profiles</code> 메타 + 서버 파일 시스템 (데이터 디렉터리)</td></tr>
-<tr><td><strong>프로젝트 (시드/파라미터/썸네일)</strong></td><td>MySQL <code>projects</code> 테이블 + 서버 파일 시스템</td></tr>
+<tr><td><strong>프로젝트 (시드/파라미터/썰네일)</strong></td><td>MySQL <code>projects</code> 테이블 + 서버 파일 시스템</td></tr>
 <tr><td><strong>로컬 IndexedDB 프로젝트</strong></td><td>브라우저 (서버에 전송 안 됨)</td></tr>
 </table>
 
 <div class="note warning">
-<p><strong>�️ 라이브 데모의 계정</strong></p>
+<p><strong>⚠️ 라이브 데모의 계정</strong></p>
 <p>현재 한글화 데모(<code>sigco3111.github.io</code>)는 정적 호스팅만 제공하므로 백엔드 API가 없습니다. <strong>계정 기능을 사용하려면 직접 호스팅</strong>(<code>npm run dev:api</code> + MySQL)이 필요합니다.</p>
 </div>
 
