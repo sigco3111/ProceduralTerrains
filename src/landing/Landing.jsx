@@ -429,8 +429,8 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
           {view === 'home' && <>
             <section className="lp-hero">
               <div className="lp-version-pill">v{APP_VERSION}</div>
-              <h1>제작<em>멋진 세계</em>절차적 파워로</h1>
-              <p>{APP_NAME} helps you generate, shape, and texture terrain for your projects.</p>
+              <h1>절차적 지형 제작</h1>
+              <p>{APP_NAME}가 프로젝트를 위한 지형 생성, 모양 편집, 텍스처 적용을 도와드립니다.</p>
               <div className="lp-hero-actions">
                 <button type="button" className="lp-primary" onClick={() => setCreateOpen(true)} disabled={!menuReady || exiting}><Plus size={15} /> 지형 만들기</button>
                 <button type="button" className="lp-secondary" onClick={() => openTemplates()}><LayoutTemplate size={14} />템플릿 둘러보기</button>
@@ -515,7 +515,7 @@ export default function Landing({ exiting, bootReady, onLaunch }) {
             return (
             <section className="lp-section lp-view">
               <div className="lp-section-head lp-template-section-head">
-                <div><h2>지형 템플릿</h2><p>Choose one authoring workflow. Procedural selections preview live; Nodes opens straight into the editor.</p></div>
+                <div><h2>지형 템플릿</h2><p>하나의 제작 워크플로를 선택하세요. 절차적 선택은 실시간 미리보기가 제공되며, 노드는 에디터에서 바로 열립니다.</p></div>
                 <div className="lp-template-kind-switch" role="tablist" aria-label="템플릿 타입">
                   <button type="button" role="tab" aria-selected={templateKind === 'procedural'} className={templateKind === 'procedural' ? 'active' : ''} onClick={() => openTemplates('procedural')}><SlidersHorizontal size={13} />절차적</button>
                   <button type="button" role="tab" aria-selected={templateKind === 'nodes'} className={templateKind === 'nodes' ? 'active' : ''} onClick={() => openTemplates('nodes')}><Boxes size={13} />노드</button>
