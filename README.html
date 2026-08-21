@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>절차적 지형 (Procedural Terrains) - 한글화</title>
+<style>
+  :root { --bg: #0f1419; --card: #1a2028; --border: #2d3748; --text: #e6edf3; --text-muted: #8b949e; --accent: #58a6ff; --accent-bg: #1f2d3d; --code-bg: #161b22; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.7; font-size: 16px; }
+  body { max-width: 980px; margin: 0 auto; padding: 32px 24px 80px; }
+  h1 { font-size: 2.2em; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+  h2 { font-size: 1.6em; margin-top: 48px; padding-bottom: 8px; border-bottom: 1px solid var(--border); color: var(--accent); }
+  h3 { font-size: 1.25em; margin-top: 32px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  blockquote { margin: 16px 0; padding: 12px 16px; border-left: 4px solid var(--accent); background: var(--card); border-radius: 0 6px 6px 0; color: var(--text-muted); }
+  code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-family: 'SF Mono', Monaco, monospace; font-size: 0.92em; color: #f0883e; }
+  pre { background: var(--code-bg); padding: 16px; border-radius: 8px; overflow-x: auto; border: 1px solid var(--border); line-height: 1.5; }
+  pre code { background: transparent; color: var(--text); padding: 0; font-size: 0.9em; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; background: var(--card); border-radius: 8px; overflow: hidden; }
+  th, td { padding: 12px 16px; border-bottom: 1px solid var(--border); text-align: left; }
+  th { background: var(--accent-bg); color: var(--accent); font-weight: 600; }
+  tr:last-child td { border-bottom: none; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+  ul, ol { padding-left: 28px; }
+  .top-nav { position: sticky; top: 0; background: rgba(15, 20, 25, 0.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); padding: 12px 0; margin-bottom: 24px; z-index: 100; }
+  .top-nav a { color: var(--text-muted); margin-right: 16px; font-size: 0.95em; }
+  .top-nav a:hover { color: var(--accent); }
+  strong { color: var(--text); font-weight: 600; }
+  em { color: var(--accent); font-style: normal; }
+  img { max-width: 100%; border-radius: 8px; margin: 16px 0; }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a href="/ProceduralTerrains/">🏔️ 절차적 지형 (�으로)</a>
+  <a href="/ProceduralTerrains/README.html">📄 README</a>
+  <a href="/ProceduralTerrains/USAGE.html">📖 사용법 가이드</a>
+  <a href="https://github.com/sigco3111/ProceduralTerrains" target="_blank" rel="noopener noreferrer">💻 GitHub</a>
+</nav>
+
+<h1>절차적 지형 (Procedural Terrains) - 한글화</h1>
+<p><strong>React + Vite + Three.js (WebGL2)</strong> 기반의 셰이더 중심 절차적 지형 생성기 및 에디터입니다.</p>
+<p>높이, 법선, 생태계 색상은 모두 <strong>GPU에서 실시간 계산</strong>되며, CPU에서 베이크된 하이맵이 실시간 뷰를 구동하지 않습니다. 상단 바에서 전환 가능한 <strong>세 가지 월드 모드</strong>가 제공됩니다.</p>
+<p><a href="https://sigco3111.github.io/ProceduralTerrains/"><img src="https://img.shields.io/badge/Live-GitHub%20Pages-222222?style=for-the-badge&logo=githubpages&logoColor=white" alt="Live"></a></p>
+<p>라이브 데모 : https://sigco3111.github.io/ProceduralTerrains/</p>
+<table><tr><th>모드</th><th>설명</th></tr><tr><td><strong>타일</strong></td><td>청크별 LOD가 적용된 고정 지형 보드. 페인팅, 다중 타일 레이아웃, 내보내기에 최적</td></tr><tr><td><strong>무한 세계</strong></td><td>카메라 주변으로 청크가 스트리밍되는 그리드. FPS 걷기 / 비행기 탐험 지원</td></tr><tr><td><strong>행성</strong></td><td>큐브-스피어 기반 절차적 행성. 대기, 볼류메트릭 구름, 궤도 카메라 지원</td></tr></table>
+<hr>
+<h2>✨ 핵심 특징</h2>
+<li><strong>결정론적</strong>: 지형은 <code>(world XZ, seed, params)</code>의 순수 함수. 시드는 mulberry32 PRNG를 통해 도메인 오프셋을 구동하며, 형태 결정에 <code>Math.random()</code>은 사용되지 않습니다.</li>
+<li><strong>레이어드 노이즈</strong>: 타입이 지정된 노이즈 레이어 스택(add, carve, replace 등)이 셰이더로 코드젠되며, 모든 저장 데이터에 직렬화됩니다.</li>
+<li><strong>균열 없음</strong>: 청크 지오메트리는 버텍스 셰이더에서 스커트 링을 드롭하여 서로 다른 LOD의 인접 청크 사이에 빈틈이 없습니다.</li>
+<li><strong>라이브 편집</strong>: 대부분의 슬라이더는 셰이더 유니폼에 매핑되며, 청크 수/크기, 타일 레이아웃, 행성 반경 등 일부 구조적 키만 지오메트리 재빌드를 트리거합니다.</li>
+<li><strong>카메라가 지형을 만들지 않음</strong>: LOD는 시점 의존적이지만 높이 필드는 그렇지 않습니다.</li>
+<li><strong>실행 취소 / 다시 실행</strong>: <code>Ctrl+Z</code> / <code>Ctrl+Y</code>로 전체 프로젝트 상태(파라미터, 타일, 페인트 레이어) 관리.</li>
+<li><strong>저장 / 불러오기</strong>: 시드 + 모든 파라미터를 JSON으로 상단 바에서 처리.</li>
+<hr>
+<h2>🚀 빠른 시작</h2>
+<pre><code>sh</code></pre>
+<p>개발 서버는 <strong>http://localhost:6061</strong>에서 시작되며, 로컬 네트워크에서도 접근 가능합니다 (Vite가 모든 인터페이스에서 수신 대기하여 LAN URL을 출력합니다. 예: <code>http://192.168.x.x:6061</code>).</p>
+<p>6061 포트가 이미 사용 중인 경우, Vite는 다음 사용 가능한 포트를 자동으로 선택합니다.</p>
+<p>프로덕션 빌드: <code>npm run build</code> (<code>dist/</code>에 출력), <code>npm run preview</code>로 미리보기.</p>
+<hr>
+<h2>🏗️ 아키텍처</h2>
+<p>WebGL <strong>엔진</strong>은 프레임워크에 독립적(<code>src/engine/</code>)이고, 에디터 <strong>UI</strong>는 React(<code>src/components/</code>)입니다. 둘은 <code>Engine</code> 메서드 + 콜백 객체를 통해 통신하며, React는 엔진의 파라미터 상태를 미러링하여 사이드 패널 컨트롤을 렌더링합니다.</p>
+<table><tr><th>영역</th><th>주요 파일</th></tr><tr><td><strong>코어</strong></td><td><a href="src/engine/Engine.js">src/engine/Engine.js</a> — 렌더러, 씬, 파라미터→유니폼 배관, 저장/불러오기, 실행 취소 상태</td></tr><tr><td><strong>타일 보드</strong></td><td><a href="src/engine/terrain/TerrainBoard.js">src/engine/terrain/TerrainBoard.js</a>, <a href="src/engine/terrain/ChunkGeometry.js">ChunkGeometry.js</a>, <a href="src/engine/terrain/BoardPlinth.js">BoardPlinth.js</a></td></tr><tr><td><strong>무한 세계</strong></td><td><a href="src/engine/terrain/InfiniteWorld.js">src/engine/terrain/InfiniteWorld.js</a> — 스트리밍 청크, 삼각형 예산, 카메라 뒤 컬링</td></tr><tr><td><strong>행성</strong></td><td><a href="src/engine/terrain/PlanetWorld.js">src/engine/terrain/PlanetWorld.js</a>, <a href="src/engine/terrain/PlanetMaterial.js">PlanetMaterial.js</a>, <a href="src/engine/terrain/PlanetOrbitControls.js">PlanetOrbitControls.js</a></td></tr><tr><td><strong>노이즈 스택</strong></td><td><a href="src/engine/terrain/noise/NoiseStack.js">src/engine/terrain/noise/NoiseStack.js</a>, <a href="src/engine/terrain/noise/noiseStackCodegen.js">noiseStackCodegen.js</a> — 레이어드, 직렬화 가능한 노이즈 레이어를 GLSL로 컴파일</td></tr><tr><td><strong>셰이더</strong></td><td><a href="src/engine/terrain/terrainGLSL.js">src/engine/terrain/terrainGLSL.js</a>, <a href="src/engine/terrain/TerrainMaterial.js">TerrainMaterial.js</a>, <a href="src/engine/terrain/WaterMaterial.js">WaterMaterial.js</a></td></tr><tr><td><strong>물</strong></td><td><a href="src/engine/water/WaterSystem.js">src/engine/water/WaterSystem.js</a>, <a href="src/engine/water/RealisticWaterMaterial.js">RealisticWaterMaterial.js</a>, <a href="src/engine/render/UnderwaterEffect.js">UnderwaterEffect.js</a></td></tr><tr><td><strong>하늘 & 구름</strong></td><td><a href="src/engine/sky/ProceduralSky.js">src/engine/sky/ProceduralSky.js</a>, <a href="src/engine/sky/CloudSlabLayer.js">CloudSlabLayer.js</a>, <a href="src/engine/sky/PlanetCloudChunks.js">PlanetCloudChunks.js</a>, <a href="src/engine/sky/TimeOfDay.js">TimeOfDay.js</a></td></tr><tr><td><strong>스타일</strong></td><td><a href="src/engine/style/PlanetStyleManager.js">src/engine/style/PlanetStyleManager.js</a>, <a href="src/engine/style/ColorPalette.js">ColorPalette.js</a></td></tr><tr><td><strong>페인팅</strong></td><td><a href="src/paint/PaintModeManager.js">src/paint/PaintModeManager.js</a> — 높이 / 생태계 / 소품 브러시 레이어 (타일 모드)</td></tr><tr><td><strong>내보내기</strong></td><td><a href="src/engine/terrain/TerrainExporter.js">src/engine/terrain/TerrainExporter.js</a>, <a href="src/engine/terrain/PlanetExporter.js">PlanetExporter.js</a></td></tr><tr><td><strong>UI</strong></td><td><a href="src/App.jsx">src/App.jsx</a>, <a href="src/components/panels/index.jsx">src/components/panels/index.jsx</a> — 스키마 기반 사이드 패널, 설정 검색, 성능 오버레이</td></tr></table>
+<hr>
+<h2>🎮 타일 모드 추가 기능</h2>
+<li><strong>다중 타일 어셈블리</strong>: 그리드에 타일을 배치하여 더 큰 풍경을 구성. 병합 또는 타일별로 내보내기.</li>
+<li><strong>사각형 또는 원형 레이아웃</strong>: 원형 모드는 지형을 디스크로 클립하고, 링 확장을 지원하며, 지형 실루엣을 따라가는 방사형 벽을 렌더링합니다.</li>
+<li><strong>페인팅 모드</strong>: 보드에 높이, 강, 생태계, 절차적 소품을 브러시합니다.</li>
+<li><strong>실제 지형 하이맵</strong>: 위치 기반 고도 데이터를 가져옵니다 (미리보기, 대체 또는 블렌드).</li>
+<li><strong>근접 디테일 레이어</strong>: 타일 모드에서 카메라 근처에 추가 표면 디테일.</li>
+<hr>
+<h2>🕹️ 조작</h2>
+<p><strong>에디터 카메라 (타일 모드)</strong><br>
+<li><strong>좌측 드래그</strong> — 보드 위에서 팬 (클램프됨)</li><br>
+<li><strong>우측 드래그</strong> — 궤도</li><br>
+<li><strong>스크롤</strong> — 줌</li><br>
+<li>하단 툴바: 위에서 보기 /비스듬히 / 카메라 초기화</li></p>
+<p><strong>탐험 (무한 세계 & 행성)</strong><br>
+<li>하단 툴바 <strong>탐험</strong> 메뉴: <strong>걷기</strong> (FPS) 또는 <strong>비행기</strong> (비행 통과)</li><br>
+<li>모바일에서는 터치 컨트롤 사용</li></p>
+<p><strong>단축키</strong><br>
+<li><code>Ctrl+K</code> — 모든 설정 검색</li><br>
+<li><code>Ctrl+Z</code> / <code>Ctrl+Y</code> — 실행 취소 / 다시 실행</li><br>
+<li><code>Ctrl+Shift+P</code> — 개발자 성능 오버레이 (상태 표시줄의 FPS 배지를 통해서도 접근 가능)</li></p>
+<hr>
+<h2>📤 내보내기</h2>
+<p>빠른 작업 (내보내기 패널):<br>
+<li><strong>스크린샷</strong> — 현재 뷰포트의 PNG</li><br>
+<li><strong>하이맵</strong> — 동일한 셰이더에서 직교 회색조 베이크</li></p>
+<p>전체 내보내기 (선택적 콘텐츠가 포함된 ZIP):<br>
+<li>지형 메시는 <strong>GLB/GLTF</strong> 또는 <strong>OBJ</strong> (해상도, 스커트, 베이스 슬랩 설정 가능). 다중 타일 사각형 보드는 하나의 결합된 메쉬로 또는 ZIP의 타일별 패키로 내보낼 수 있습니다.</li><br>
+<li>베이크된 <strong>컬러</strong>, <strong>법선</strong> 및 <strong>하이맵</strong> 텍스처</li><br>
+<li><strong>생태계 스플랫</strong> 맵, <strong>충돌</strong> 메쉬, 수면 메쉬</li><br>
+<li>물 마스크 (깊이, 해안선, 거품) 및 재가져오기를 위한 프리셋 JSON</li></p>
+<h3>프로덕션 프리셋</h3>
+<p>내보내기 패널에는 <strong>프로덕션 체크</strong> 프리플라이트 및 <strong>Unity Terrain</strong>, <strong>Unreal Landscape</strong>, <strong>Godot Terrain3D</strong>, <strong>Blender Scene</strong>, <strong>Three.js Viewer Assets</strong> 대상 프리셋이 포함되어 있습니다. 엔진 프리셋은 파일을 가져오기 지향 폴더로 패키징하며 <code>terrain.json</code>과 <code>README.txt</code>가 함께 제공됩니다. Unity와 Unreal은 리틀 엔디언 부호 없는 16비트 원시 하이맵(<code>.raw</code> / <code>.r16</code>)을 사용합니다. 체커는 잘못된 자산 선택을 차단하고, GPU 베이크가 시작되기 전에 고메모리 맵이나 누락된 물 마스크를 플래그합니다.</p>
+<p>행성 모드에는 큐브맵 높이 베이킹이 가능한 전용 행성 익스포터가 있습니다.</p>
+<hr>
+<h2>💾 로컬 프로젝트</h2>
+<p>홈 화면은 로컬 우선 프로젝트 허브입니다. 빈 지형을 만들거나 Island, Mountain Range, Desert 템플릿에서 시작한 다음, 에디터에서 <strong>저장</strong>을 사용하여 브라우저에 프로젝트를 영구 저장하세요. 프로젝트에는 버전이 지정된 지형 데이터, 메타데이터, 에디터에서 캡처한 썸네일 및 최근 프로젝트 항목이 포함됩니다. 저장은 IndexedDB를 사용하며 localStorage 폴백을 사용하고, <strong>프로젝트</strong> 버튼으로 허브를 다시 열 수 있습니다. 기존 시드 JSON 파일은 계속 가져올 수 있습니다.</p>
+<hr>
+<h2>⚡ 성능 노트</h2>
+<p>법선은 프래그먼트별로 유한 차분법으로 계산되며(픽셀당 여러 번 높이 평가), 이는 낮은 지오메트리 LOD에서도 멀리 있는 지형을 선명하게 유지합니다. <strong>성능</strong> 패널은 GPU 티어 감지, 품질 프리셋, LOD 예산, 렌더러 옵션을 제공합니다. 약한 GPU에서는 픽셀 비율을 낮추고, 옥타브/레이어 수를 줄이거나, 더 가벼운 물 품질 모드로 전환하세요.</p>
+<hr>
+<h2>🌐 선택적 계정 API</h2>
+<p>로그인과 등록은 <a href="api/"><code>api/</code></a>의 독립적인 자체 호스팅 가능한 Node.js/MySQL 서비스로 백업됩니다. 에디터는 로컬 우선이며 계정 없이도 완전히 사용할 수 있습니다.</p>
+<p>로컬 개발을 위해서는 두 환경 예시를 모두 복사하고 별도의 터미널에서 프런트엔드와 API를 시작하세요:</p>
+<pre><code>sh</code></pre>
+<p>MySQL이 구성되면 <code>npm run migrate:api</code>를 실행하세요. 클래식 Linux, PM2, MySQL, Nginx 배포 지침은 <a href="api/README.md"><code>api/README.md</code></a>에 있습니다.</p>
+<hr>
+<h2>📚 문서</h2>
+<li>📖 <strong><a href="USAGE.md">사용법 가이드 (USAGE.md)</a></strong> — 상세 사용법, 단축키, 워크플로, 문제 해결 (한국어)</li>
+<li>🏗️ <a href="docs/ARCHITECTURE-ROADMAP.md">아키텍처 (docs/ARCHITECTURE-ROADMAP.md)</a> — 아키텍처 + 로드맵</li>
+<li>⚡ <a href="docs/PERFORMANCE.md">성능 (docs/PERFORMANCE.md)</a> — 성능 최적화 심화</li>
+<li>🌊 <a href="docs/WATER-BASELINES.md">물 시스템 (docs/WATER-BASELINES.md)</a> — 물 시스템 베이스라인</li>
+<li>🎨 <a href="design-qa.md">디자인 결정 (design-qa.md)</a> — 디자인 결정 및 QA 노트</li>
+<li>📊 <a href="progress.md">개발 진행 (progress.md)</a> — 개발 진행 상황</li>
+<hr>
+<h2>📄 라이선스</h2>
+<p>원본 라이선스를 따릅니다. 자세한 내용은 <a href="LICENSE">LICENSE</a>를 참조하세요.</p>
+<h2>🙏 크레딧</h2>
+<p>원본 제작: <a href="https://github.com/ZyFou">ZyFou</a><br>
+한글화: <a href="https://github.com/sigco3111">sigco3111</a></p>
+
+</body>
+</html>
